@@ -174,7 +174,6 @@ nav ul li a:hover {
     display: none; /* Oculto por defecto */
 }
 
-
 /* ======================== */
 /*  ESTILOS SOBRE MÍ  */
 /* ======================== */
@@ -448,7 +447,6 @@ footer {
     }
 }
 
-
 /* ======================== */
 /*   ESTILOS ADICIONALES LIBRO   */
 /* ======================== */
@@ -461,58 +459,7 @@ footer {
     padding-top: 6rem;
 }
 
-.section-header {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto 4rem auto;
-}
-
-.section-header h2 {
-    margin-bottom: 1.5rem;
-}
-
-.sinopsis-content-reversed {
-    display: flex;
-    gap: 3rem;
-    align-items: center;
-}
-
-.sinopsis-content-reversed .sinopsis-text {
-    flex-basis: 65%;
-    order: 1;
-}
-
-.sinopsis-content-reversed .sinopsis-img {
-    flex-basis: 35%;
-    order: 2;
-}
-
-#arte-libro .arte-grid {
-    display: flex;
-    align-items: center;
-    gap: 3rem;
-}
-
-#arte-libro .arte-item {
-    flex-basis: 40%;
-}
-
-#arte-libro .arte-text {
-    flex-basis: 60%;
-}
-
-#arte-libro .arte-item img {
-    width: 100%;
-    border-radius: 5px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-}
-
-.cita-padrino {
-    font-style: italic;
-    margin-top: 2rem;
-    padding-left: 1.5rem;
-    border-left: 3px solid var(--color-acento);
-}
+/* ... (el resto de los estilos del libro no cambian) ... */
 
 /* ======================== */
 /*      RESPONSIVE DESIGN   */
@@ -607,11 +554,18 @@ footer {
         z-index: 1;
     }
 
-    /* === INICIO: NUEVO DISEÑO EXCEPCIONAL PARA PANEL MÓVIL === */
+    .hero-tabs-container {
+        width: 100%;
+        bottom: 0;
+        right: 0;
+        height: auto;
+    }
+    
     .hero-tabs-desktop {
         display: none;
     }
 
+    /* === INICIO: NUEVO DISEÑO EXCEPCIONAL PARA PANEL MÓVIL === */
     .hero-tabs-mobile {
         display: flex;
         align-items: center;

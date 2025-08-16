@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Eventos para la vista de escritorio
-        heroTabs.forEach((tab, index) => {
+        document.querySelectorAll('.hero-tabs-desktop .hero-tab').forEach((tab, index) => {
             tab.addEventListener('click', function(event) {
                 if (event.target.closest('.book-link')) {
                     return; 
@@ -115,9 +115,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- LÓGICA DE LA GALERÍA DINÁMICA (SOLO SE EJECUTA SI ENCUENTRA LOS ELEMENTOS EN LIBRO.HTML) ---
     async function construirGaleriaPublica() {
         const galeriaContainer = document.getElementById('galeria-interactiva');
-        if (!galeriaContainer) return; // Si no encuentra la galería, no hace nada más.
+        if (!galeriaContainer) return;
 
-        // Espera un poco para dar tiempo a que los servicios de Firebase se carguen desde el HTML
         await new Promise(resolve => setTimeout(resolve, 100)); 
 
         if (!window.firebaseServices) {
@@ -128,17 +127,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const imagenPrincipal = document.getElementById('imagen-principal');
         const bgDesenfocado = document.getElementById('galeria-bg-desenfocado');
-        const descripcionContainer = document.getElementById('descripcion-principal'); // Obtenemos el contenedor
-        const descripcionParrafo = descripcionContainer.querySelector('p'); // Obtenemos el párrafo
+        const descripcionContainer = document.getElementById('descripcion-principal');
+        const descripcionParrafo = descripcionContainer.querySelector('p');
         const miniaturasContainer = document.getElementById('galeria-lista-miniaturas');
-        let visibilityTimer; // Para controlar el temporizador
+        let visibilityTimer;
 
         try {
             const q = query(collection(db, 'gallery'), orderBy('order'));
             const snapshot = await getDocs(q);
             const galeriaFotos = snapshot.docs.map(doc => doc.data());
 
-            miniaturasContainer.innerHTML = ''; // Limpiamos las miniaturas
+            miniaturasContainer.innerHTML = '';
             galeriaFotos.forEach(foto => {
                 const miniaturaItem = document.createElement('div');
                 miniaturaItem.className = 'miniatura-item';
@@ -166,18 +165,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     descripcionParrafo.textContent = description;
                     imagenPrincipal.style.opacity = '1';
 
-                    // === INICIO DE LA MODIFICACIÓN ===
-                    // Limpiamos cualquier temporizador anterior
                     clearTimeout(visibilityTimer);
-
-                    // Forzamos la visibilidad de la descripción
                     descripcionContainer.classList.add('visible-temporarily');
-
-                    // Creamos un nuevo temporizador para ocultarla después de 2.5 segundos
                     visibilityTimer = setTimeout(() => {
                         descripcionContainer.classList.remove('visible-temporarily');
                     }, 2500);
-                    // === FIN DE LA MODIFICACIÓN ===
 
                 }, 300);
 
@@ -193,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (todasLasMiniaturas.length > 0) {
-                actualizarVisor(todasLasMiniaturas[0]); // Mostramos la primera imagen
+                actualizarVisor(todasLasMiniaturas[0]);
             } else {
                 if(descripcionParrafo) descripcionParrafo.textContent = "La galería de momentos está vacía.";
             }
@@ -203,7 +195,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Intenta construir la galería
     construirGaleriaPublica();
 
 });
