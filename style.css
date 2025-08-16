@@ -134,7 +134,7 @@ nav ul li a:hover {
     z-index: 2;
 }
 
-.hero-tabs {
+.hero-tabs-container {
     position: absolute;
     z-index: 3;
     bottom: 15rem;
@@ -169,6 +169,11 @@ nav ul li a:hover {
     font-size: 1.1rem;
     margin: 0;
 }
+
+.hero-tabs-mobile {
+    display: none; /* Oculto por defecto */
+}
+
 
 /* ======================== */
 /*  ESTILOS SOBRE MÍ  */
@@ -405,7 +410,6 @@ footer {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* === INICIO: NUEVA ANIMACIÓN DE GLOW PARA EL LIBRO === */
 @keyframes glow-pulse {
     0%, 100% {
         transform: translateY(-50%) scale(1);
@@ -423,12 +427,10 @@ footer {
 }
 
 .book-link:hover .tab-detail-image {
-    animation: none; /* Detiene la animación al pasar el ratón */
+    animation: none;
     transform: translateY(-50%) scale(1.1);
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 0 25px rgba(188, 160, 125, 0.8);
 }
-/* === FIN: NUEVA ANIMACIÓN === */
-
 
 .book-link:active .tab-detail-image {
     transform: translateY(-50%) scale(1.02);
@@ -596,13 +598,7 @@ footer {
     }
 
     .hero-dynamic {
-        min-height: 60vh;
-        padding: 2rem 1rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
+        min-height: 100vh;
     }
 
     .hero-background-container {
@@ -611,85 +607,100 @@ footer {
         z-index: 1;
     }
 
-    /* === INICIO: DISEÑO VISTOSO Y FUNCIONAL PARA PESTAÑAS MÓVILES === */
-    .hero-tabs {
-        position: static;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        gap: 0.5rem;
-        width: 100%;
-        padding: 1rem 0;
-        margin-top: 70vh;
-    }
-
-    .hero-tab {
-        flex: 0 1 auto; /* Permite que los botones se encojan si es necesario */
-        padding: 0.6rem 0.8rem;
-        background-color: rgba(26, 26, 26, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 8px;
-        border-bottom: none;
-        opacity: 0.8;
-        transition: all 0.3s ease;
-    }
-
-    .hero-tab.active {
-        opacity: 1;
-        background-color: rgba(188, 160, 125, 0.3);
-        color: var(--color-blanco);
-        transform: scale(1.05);
-        border-color: rgba(188, 160, 125, 0.5);
-    }
-
-    .hero-tab h2 {
-        font-size: 0.9rem; /* Tamaño ajustado para que quepa el texto */
-        text-align: center;
-        margin: 0;
-        font-family: var(--fuente-texto);
-        font-weight: 500;
-    }
-    /* === FIN: DISEÑO VISTOSO === */
-
-    #escritora-tab .book-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    #escritora-tab {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-    }
-
-    #escritora-tab p {
+    /* === INICIO: NUEVO DISEÑO EXCEPCIONAL PARA PANEL MÓVIL === */
+    .hero-tabs-desktop {
         display: none;
     }
 
-    .tab-detail-image {
-        display: block !important;
+    .hero-tabs-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: absolute;
+        bottom: 2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 400px;
+        background-color: rgba(26, 26, 26, 0.7);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0.5rem;
+        z-index: 10;
+    }
+
+    .mobile-nav-arrow {
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        transition: color 0.3s, transform 0.3s;
+    }
+
+    .mobile-nav-arrow:hover {
+        color: var(--color-blanco);
+        transform: scale(1.1);
+    }
+
+    .mobile-tab-display {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        color: var(--color-acento);
+        flex-grow: 1;
+    }
+
+    .mobile-tab-display h2 {
+        font-size: 1.1rem;
+        font-family: var(--fuente-texto);
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        color: var(--color-acento);
+        margin: 0;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
     }
     
-    #escritora-tab .tab-detail-image {
+    .mobile-tab-display h2.visible {
+        opacity: 1;
+    }
+
+    #mobile-book-link {
+        display: none;
+        line-height: 0;
+    }
+    
+    #mobile-book-link.visible {
+        display: block;
+    }
+
+    #mobile-book-link .tab-detail-image {
         position: static;
         transform: none;
         opacity: 1;
         height: 30px;
         width: auto;
         border-radius: 3px;
-        margin: 0;
         animation: mobile-book-pulse 2.5s ease-in-out infinite;
         transition: transform 0.2s ease;
     }
 
-    #escritora-tab .book-link:active .tab-detail-image {
+    #mobile-book-link:active .tab-detail-image {
         animation: none;
         transform: scale(0.9);
     }
+    /* === FIN: NUEVO DISEÑO EXCEPCIONAL === */
     
     .hero-tab p {
+        display: none;
+    }
+
+    .tab-detail-image {
         display: none;
     }
 
@@ -1317,49 +1328,6 @@ footer {
     .miniatura-item {
         margin-bottom: 0;
         flex: 0 0 120px;
-    }
-}
-
-/* ==================================================== */
-/*   NUEVOS ESTILOS PARA EL BOTÓN-LIBRO EN MÓVIL (V2)   */
-/* ==================================================== */
-@media (max-width: 768px) {
-    #escritora-tab .book-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    #escritora-tab {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-    }
-
-    #escritora-tab p {
-        display: none;
-    }
-
-    .tab-detail-image {
-        display: block !important;
-    }
-    
-    #escritora-tab .tab-detail-image {
-        position: static;
-        transform: none;
-        opacity: 1;
-        height: 30px;
-        width: auto;
-        border-radius: 3px;
-        margin: 0;
-        animation: mobile-book-pulse 2.5s ease-in-out infinite;
-        transition: transform 0.2s ease;
-    }
-
-    #escritora-tab .book-link:active .tab-detail-image {
-        animation: none;
-        transform: scale(0.9);
     }
 }
 
