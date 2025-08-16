@@ -380,10 +380,9 @@ footer {
 .book-link {
     text-decoration: none;
     display: inline-block;
-    pointer-events: none; /* === LÍNEA AÑADIDA: Desactiva el click por defecto === */
+    pointer-events: none;
 }
 
-/* === REGLA AÑADIDA: Reactiva el click solo cuando la pestaña está activa === */
 #escritora-tab.active .book-link {
     pointer-events: auto;
 }
@@ -400,98 +399,51 @@ footer {
     top: 300%;
     transform: translateY(-50%);
     border-radius: 4px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     opacity: 0;
     transition: opacity 0.4s ease-out, transform 0.4s ease-out, box-shadow 0.3s ease;
     transition-delay: 0.2s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* === INICIO: NUEVOS ESTILOS CREATIVOS PARA EL INDICADOR === */
-.click-indicator {
-    position: absolute;
-    top: 300%;
-    right: calc(10% + 125px);
-    transform: translateY(-50%);
-    color: var(--color-magenta-libro);
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.click-indicator span {
-    font-family: var(--fuente-texto);
-    font-size: 1.2rem;
-    font-weight: 500;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
-}
-
-.click-indicator i {
-    font-size: 1.4rem;
-    transform: rotate(70deg);
-}
-
-@keyframes point-and-fade {
-    0% {
-        transform: translate(-15px, -50%);
-        opacity: 0;
+/* === INICIO: NUEVA ANIMACIÓN DE GLOW PARA EL LIBRO === */
+@keyframes glow-pulse {
+    0%, 100% {
+        transform: translateY(-50%) scale(1);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0px rgba(188, 160, 125, 0);
     }
-    30%, 70% {
-        transform: translate(0, -50%);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(0, -50%);
-        opacity: 0;
+    50% {
+        transform: translateY(-50%) scale(1.05);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(188, 160, 125, 0.7);
     }
 }
-
-.hero-tab.active .click-indicator {
-    animation: point-and-fade 3s ease-in-out infinite;
-    animation-delay: 0.8s;
-}
-/* === FIN: NUEVOS ESTILOS CREATIVOS === */
-
 
 .hero-tab.active .tab-detail-image {
     opacity: 1;
-    transform: translateY(-50%);
+    animation: glow-pulse 2.5s ease-in-out infinite;
 }
 
 .book-link:hover .tab-detail-image {
-    transform: translateY(-50%) scale(1.05);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+    animation: none; /* Detiene la animación al pasar el ratón */
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 0 25px rgba(188, 160, 125, 0.8);
 }
+/* === FIN: NUEVA ANIMACIÓN === */
+
 
 .book-link:active .tab-detail-image {
     transform: translateY(-50%) scale(1.02);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
 }
 
-@keyframes pulsate {
-    0% { transform: translateY(-50%) scale(1); }
-    50% { transform: translateY(-50%) scale(1.03); }
-    100% { transform: translateY(-50%) scale(1); }
-}
-
 @keyframes mobile-book-pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-.hero-tab.active .tab-detail-image {
-    animation: pulsate 2.5s ease-in-out infinite;
-}
-
-.book-link:hover .tab-detail-image,
-.book-link:hover .click-indicator {
-    animation: none;
-}
-
-.book-link:hover .click-indicator {
-    opacity: 0;
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3), 0 0 0px rgba(188, 160, 125, 0);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.4), 0 0 12px rgba(188, 160, 125, 0.7);
+    }
 }
 
 
@@ -659,32 +611,27 @@ footer {
         z-index: 1;
     }
 
+    /* === INICIO: DISEÑO VISTOSO Y FUNCIONAL PARA PESTAÑAS MÓVILES === */
     .hero-tabs {
         position: static;
         display: flex;
         flex-direction: row;
         justify-content: center;
-        gap: 0.8rem;
+        gap: 0.5rem;
         width: 100%;
         padding: 1rem 0;
-        overflow-x: auto;
-        scrollbar-width: none;
         margin-top: 70vh;
     }
 
-    .hero-tabs::-webkit-scrollbar {
-        display: none;
-    }
-
     .hero-tab {
-        flex: 0 0 auto;
-        padding: 0.6rem 1rem;
-        background-color: rgba(255, 255, 255, 0.1);
+        flex: 0 1 auto; /* Permite que los botones se encojan si es necesario */
+        padding: 0.6rem 0.8rem;
+        background-color: rgba(26, 26, 26, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 8px;
         border-bottom: none;
-        opacity: 0.7;
-        transition: opacity 0.3s, transform 0.3s;
-        z-index: 2;
+        opacity: 0.8;
+        transition: all 0.3s ease;
     }
 
     .hero-tab.active {
@@ -692,19 +639,57 @@ footer {
         background-color: rgba(188, 160, 125, 0.3);
         color: var(--color-blanco);
         transform: scale(1.05);
+        border-color: rgba(188, 160, 125, 0.5);
     }
 
     .hero-tab h2 {
-        font-size: 1.2rem;
+        font-size: 0.9rem; /* Tamaño ajustado para que quepa el texto */
         text-align: center;
         margin: 0;
+        font-family: var(--fuente-texto);
+        font-weight: 500;
+    }
+    /* === FIN: DISEÑO VISTOSO === */
+
+    #escritora-tab .book-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
     }
 
-    .hero-tab p {
+    #escritora-tab {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    #escritora-tab p {
         display: none;
     }
 
     .tab-detail-image {
+        display: block !important;
+    }
+    
+    #escritora-tab .tab-detail-image {
+        position: static;
+        transform: none;
+        opacity: 1;
+        height: 30px;
+        width: auto;
+        border-radius: 3px;
+        margin: 0;
+        animation: mobile-book-pulse 2.5s ease-in-out infinite;
+        transition: transform 0.2s ease;
+    }
+
+    #escritora-tab .book-link:active .tab-detail-image {
+        animation: none;
+        transform: scale(0.9);
+    }
+    
+    .hero-tab p {
         display: none;
     }
 
@@ -1349,7 +1334,7 @@ footer {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.75rem;
+        gap: 0.5rem;
     }
 
     #escritora-tab p {
@@ -1360,31 +1345,13 @@ footer {
         display: block !important;
     }
     
-    #escritora-tab .click-indicator {
-        position: static;
-        transform: none;
-        opacity: 1;
-        animation: none;
-        pointer-events: auto;
-    }
-
-    #escritora-tab .click-indicator span {
-        display: none;
-    }
-
-    #escritora-tab .click-indicator i {
-        color: var(--color-magenta-libro);
-        transform: rotate(70deg); /* === VALOR MODIFICADO === */
-    }
-    
     #escritora-tab .tab-detail-image {
         position: static;
         transform: none;
         opacity: 1;
-        height: 35px;
+        height: 30px;
         width: auto;
         border-radius: 3px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         margin: 0;
         animation: mobile-book-pulse 2.5s ease-in-out infinite;
         transition: transform 0.2s ease;
