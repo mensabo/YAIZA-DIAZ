@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yaiza Díaz - Presentadora, Escritora y Comunicadora</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="script.js" defer></script>
+</head>
+<body>
+    
+    <header>
+        <nav class="container">
+            <div class="nav-title">
+                <h1>YAIZA DÍAZ</h1>
+            </div>
+            <button id="mobile-menu-toggle" aria-label="Abrir menú de navegación">☰</button>
+            <ul id="nav-links">
+                <li><a href="#sobre-mi">Sobre mí</a></li>
+                <li><a href="#portfolio">Trayectoria</a></li>
+                <li><a href="#prensa">Eventos</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero-dynamic">
+        <div class="hero-background-container"></div>
+        
+        <div class="hero-tabs">
+            <div class="hero-tab" data-bg-image="images/presentadora-bg.jpg" data-bg-position="right 10%">
+                <h2>Presentadora</h2>
+                <p>Comunicando la actualidad con rigor y cercanía.</p>
+            </div>
+            
+            <!-- === INICIO DE LA ESTRUCTURA MODIFICADA === -->
+            <div class="hero-tab" id="escritora-tab" data-bg-image="images/escritora-bg.jpg" data-bg-position="center 20%">
+                <h2>Escritora</h2>
+                <p>Creando historias que conectan y emocionan.</p>
+                <a href="libro.html" class="book-link">
+                    <!-- INDICADOR VISUAL AÑADIDO -->
+                    <div class="click-indicator">
+                        <span>Entra</span>
+                        <i class="fa-solid fa-arrow-pointer"></i>
+                    </div>
+                    <img class="tab-detail-image" src="images/portada-libro.png" alt="Portada del libro La Hija del Ciego">
+                </a>
+            </div>
+            <!-- === FIN DE LA ESTRUCTURA MODIFICADA === -->
+
+            <div class="hero-tab" data-bg-image="images/comunicadora-bg.jpeg" data-bg-position="center 20%">
+                <h2>Comunicadora</h2>
+                <p>Desarrollando estrategias y representando marcas.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre-mi">
+        <div class="container about-content">
+            <h2>Comunicadora Polifacética</h2>
+            <div class="header-line"></div>
+            <p>Periodista, presentadora, locutora y escritora con una sólida carrera forjada en televisión y en la dirección de comunicación estratégica para marcas de primer nivel.</p>
+            <blockquote class="about-quote">"Mi objetivo es comunicar con rigor y cercanía, creando puentes entre la información y las personas."</blockquote>
+            <p>Desde presentar informativos en Televisión Canaria durante más de una década hasta dirigir documentales y publicar mi propia novela, mi motor es la pasión por la comunicación en todas sus facetas.</p>
+        </div>
+    </section>
+
+    <section id="portfolio">
+        <div class="container">
+            <h2>Trayectoria Profesional</h2>
+            <div class="portfolio-grid">
+                <div class="project-card">
+                    <img src="images/portfolio-1.png" alt="Presentadora de Informativos">
+                    <div class="card-content">
+                        <span class="project-category">Televisión</span>
+                        <h4>Presentadora de Informativos (2007-2021)</h4>
+                        <p>Televisión Canaria (RTVC)</p>
+                        <p>Directora y presentadora de programas de investigación como 'Nivel4', así como de los principales informativos de la cadena (Telenoticias, Canarias Express).</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <img src="images/portfolio-2.jpeg" alt="Directora de Comunicación">
+                    <div class="card-content">
+                        <span class="project-category">Comunicación</span>
+                        <h4>Directora de Comunicación (2021-2024)</h4>
+                        <p>Jefa de Prensa y Dircom</p>
+                        <p>Liderando la estrategia de comunicación para Dreamland Studios, la editorial Kinnamon, la empresa de renovables EAVE y el grupo inmobiliario Inmogold.</p>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <img src="images/portfolio-3.jpeg" alt="Escritora y Creadora">
+                    <div class="card-content">
+                        <span class="project-category">Creación</span>
+                        <h4>Escritora y Creadora</h4>
+                        <p>Proyectos con Sello Propio</p>
+                        <p>Autora de la novela "La hija del ciego" (3ª Edición), creadora del canal de divulgación "<a href="http://www.formulatriplerosa.es" target="_blank" rel="noopener noreferrer">Fórmula Triple Rosa</a>" y directora de documentales de calado social.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="prensa">
+        <div class="container events-list">
+            <h2>Presentadora de Eventos</h2>
+            <p>A lo largo de 18 años, he tenido el placer de conducir numerosos eventos para marcas e instituciones como:</p>
+            <div class="event-tags">
+                <span>Premios Cadena Dial</span>
+                <span>Caixa</span>
+                <span>50 Aniv. Toyota Canarias</span>
+                <span>Madrid Fusión</span>
+                <span>Gobierno de España</span>
+                <span>Premios Atlántico Hoy</span>
+                <span>Eventos de Ciberseguridad</span>
+                <span>Gobierno de Canarias</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto">
+        <div class="container">
+            <h2>Hablemos</h2>
+            <p>Si tienes una propuesta de colaboración, una historia que contar o quieres contactar para un evento, no dudes en escribirme.</p>
+            <a href="mailto:yaizadiaztv@gmail.com" class="email-link">yaizadiaztv@gmail.com</a>
+            <div class="social-icons">
+                <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-social-icons">
+                <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

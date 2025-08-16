@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Administrar Galería</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div id="login-container">
+        <h2>Acceso al Panel</h2>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button id="login-button">Entrar</button>
+    </div>
+
+    <div id="admin-panel" style="display:none;">
+        <header>
+            <h1>Gestionar Galería del Libro</h1>
+            <button id="logout-button">Cerrar Sesión</button>
+        </header>
+
+        <div id="drop-zone">
+            <p>Arrastra y suelta las fotos aquí o haz clic para seleccionarlas</p>
+            <input type="file" id="file-input" multiple accept="image/*" style="display:none;">
+        </div>
+        
+        <p>Arrastra las imágenes para reordenarlas. Edita la descripción y pulsa Guardar.</p>
+        <div id="gallery-list"></div>
+        <button id="save-button">Guardar Cambios</button>
+    </div>
+    
+    <!-- 1. Carga la configuración desde el archivo externo -->
+    <script src="config.js"></script>
+
+    <!-- 2. SDK de Firebase v9 (Recomendado) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
+        import { getFirestore, collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-storage.js";
+
+        // La variable 'firebaseConfig' ahora viene del archivo config.js
+      
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // Hacemos las funciones y variables accesibles globalmente
+        window.firebaseServices = {
+            auth, signInWithEmailAndPassword, onAuthStateChanged, signOut,
+            db, collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc,
+            storage, ref, uploadBytes, getDownloadURL, deleteObject
+        };
+    </script>
+
+    <!-- Librería para arrastrar y soltar -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    
+    <!-- Nuestro script de administración -->
+    <script src="admin.js" type="module"></script>
+</body>
+</html>
