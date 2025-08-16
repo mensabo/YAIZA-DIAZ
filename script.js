@@ -15,23 +15,46 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- LÓGICA DEL HERO DINÁMICO (SOLO SE EJECUTA SI ENCUENTRA LOS ELEMENTOS EN INDEX.HTML) ---
+    // --- LÓGICA DEL HERO DINÁMICO ---
     const heroTabs = document.querySelectorAll('.hero-tab');
     if (heroTabs.length > 0) {
         const backgroundContainer = document.querySelector('.hero-background-container');
+        const mobileTabTitle = document.getElementById('mobile-tab-title');
+        const mobileBookLink = document.getElementById('mobile-book-link');
+        const prevBtn = document.getElementById('prev-tab-btn');
+        const nextBtn = document.getElementById('next-tab-btn');
         let currentIndex = 0;
         let slideInterval;
 
+        function updateMobileDisplay(index) {
+            if (!mobileTabTitle) return;
+            
+            mobileTabTitle.classList.remove('visible');
+            setTimeout(() => {
+                const currentTab = heroTabs[index];
+                mobileTabTitle.textContent = currentTab.querySelector('h2').textContent;
+                
+                // Mostrar u ocultar el logo del libro
+                if (currentTab.id === 'escritora-tab') {
+                    mobileBookLink.classList.add('visible');
+                } else {
+                    mobileBookLink.classList.remove('visible');
+                }
+                
+                mobileTabTitle.classList.add('visible');
+            }, 200);
+        }
+        
         function showTab(index) {
             if (!heroTabs[index] || !backgroundContainer) return;
 
             const newBgImage = heroTabs[index].dataset.bgImage;
-            const newBgPosition = heroTabs[index].dataset.bgPosition || 'center center'; // Lee la posición específica
+            const newBgPosition = heroTabs[index].dataset.bgPosition || 'center center';
             backgroundContainer.style.opacity = 0;
 
             setTimeout(() => {
                 backgroundContainer.style.backgroundImage = `url('${newBgImage}')`;
-                backgroundContainer.style.backgroundPosition = newBgPosition; // Aplica la posición específica
+                backgroundContainer.style.backgroundPosition = newBgPosition;
                 backgroundContainer.style.opacity = 1;
             }, 300);
 
@@ -41,6 +64,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             heroTabs[index].classList.add('active');
             currentIndex = index;
+
+            updateMobileDisplay(index);
         }
 
         function nextTab() {
@@ -48,21 +73,39 @@ document.addEventListener('DOMContentLoaded', function() {
             showTab(nextIndex);
         }
 
+        function prevTab() {
+            const prevIndex = (currentIndex - 1 + heroTabs.length) % heroTabs.length;
+            showTab(prevIndex);
+        }
+
         function startCarousel() {
             clearInterval(slideInterval);
             slideInterval = setInterval(nextTab, 5000);
         }
 
+        // Eventos para la vista de escritorio
         heroTabs.forEach((tab, index) => {
             tab.addEventListener('click', function(event) {
                 if (event.target.closest('.book-link')) {
-                    return; // Permite que el enlace del libro funcione
+                    return; 
                 }
                 event.preventDefault();
                 showTab(index);
                 startCarousel();
             });
         });
+
+        // Eventos para la nueva vista móvil
+        if (prevBtn && nextBtn) {
+            prevBtn.addEventListener('click', () => {
+                prevTab();
+                startCarousel();
+            });
+            nextBtn.addEventListener('click', () => {
+                nextTab();
+                startCarousel();
+            });
+        }
 
         // Inicia el carrusel
         showTab(0);

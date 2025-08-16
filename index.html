@@ -29,27 +29,42 @@
     <section class="hero-dynamic">
         <div class="hero-background-container"></div>
         
-        <div class="hero-tabs">
-            <div class="hero-tab" data-bg-image="images/presentadora-bg.jpg" data-bg-position="right 10%">
-                <h2>Presentadora</h2>
-                <p>Comunicando la actualidad con rigor y cercanía.</p>
-            </div>
-            
-            <!-- === INICIO DE LA ESTRUCTURA MODIFICADA === -->
-            <div class="hero-tab" id="escritora-tab" data-bg-image="images/escritora-bg.jpg" data-bg-position="center 20%">
-                <h2>Escritora</h2>
-                <p>Creando historias que conectan y emocionan.</p>
-                <a href="libro.html" class="book-link">
-                    <img class="tab-detail-image" src="images/portada-libro.png" alt="Portada del libro La Hija del Ciego">
-                </a>
-            </div>
-            <!-- === FIN DE LA ESTRUCTURA MODIFICADA === -->
+        <!-- === INICIO: ESTRUCTURA DE PESTAÑAS MODIFICADA PARA AMBAS VISTAS === -->
+        <div class="hero-tabs-container">
+            <!-- Contenedor para la vista de escritorio -->
+            <div class="hero-tabs-desktop">
+                <div class="hero-tab" data-bg-image="images/presentadora-bg.jpg" data-bg-position="right 10%">
+                    <h2>Presentadora</h2>
+                    <p>Comunicando la actualidad con rigor y cercanía.</p>
+                </div>
+                
+                <div class="hero-tab" id="escritora-tab" data-bg-image="images/escritora-bg.jpg" data-bg-position="center 20%">
+                    <h2>Escritora</h2>
+                    <p>Creando historias que conectan y emocionan.</p>
+                    <a href="libro.html" class="book-link">
+                        <img class="tab-detail-image" src="images/portada-libro.png" alt="Portada del libro La Hija del Ciego">
+                    </a>
+                </div>
 
-            <div class="hero-tab" data-bg-image="images/comunicadora-bg.jpeg" data-bg-position="center 20%">
-                <h2>Comunicadora</h2>
-                <p>Desarrollando estrategias y representando marcas.</p>
+                <div class="hero-tab" data-bg-image="images/comunicadora-bg.jpeg" data-bg-position="center 20%">
+                    <h2>Comunicadora</h2>
+                    <p>Desarrollando estrategias y representando marcas.</p>
+                </div>
+            </div>
+
+            <!-- Contenedor para la nueva vista móvil -->
+            <div class="hero-tabs-mobile">
+                <button class="mobile-nav-arrow" id="prev-tab-btn" aria-label="Sección anterior"><i class="fas fa-chevron-left"></i></button>
+                <div class="mobile-tab-display">
+                    <h2 id="mobile-tab-title"></h2>
+                    <a href="libro.html" class="book-link" id="mobile-book-link">
+                        <img class="tab-detail-image" src="images/portada-libro.png" alt="Portada del libro La Hija del Ciego">
+                    </a>
+                </div>
+                <button class="mobile-nav-arrow" id="next-tab-btn" aria-label="Siguiente sección"><i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
+        <!-- === FIN: ESTRUCTURA DE PESTAÑAS MODIFICADA === -->
     </section>
 
     <section id="sobre-mi">
