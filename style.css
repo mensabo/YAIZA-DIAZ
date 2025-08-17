@@ -421,7 +421,7 @@ footer {
 
 .hero-tab.active .tab-detail-image {
     opacity: 1;
-    animation: glow-pulse 2.5s ease-in-out infinite;
+    animation: glow-pulse 2.s ease-in-out infinite;
 }
 
 .book-link:hover .tab-detail-image {
@@ -1314,6 +1314,11 @@ footer {
         min-height: 100vh;
     }
 
+    .hero-background-container {
+        background-size: cover;
+        z-index: 1;
+    }
+
     .hero-tabs-container {
         width: 100%;
         bottom: 0;
@@ -1393,7 +1398,7 @@ footer {
         line-height: 0; 
         position: relative;
         overflow: hidden;
-        border-radius: 3px; /* Es importante que el contenedor tenga el mismo borde que la imagen */
+        border-radius: 3px;
     }
     
     #mobile-book-link.visible {
@@ -1514,6 +1519,7 @@ footer {
         padding: 2rem 1.5rem;
     }
 
+    /* Limpiamos los efectos de la página libro en móvil */
     .libro-hero-img {
         max-width: 280px;
         margin: 0 auto;
@@ -1523,6 +1529,7 @@ footer {
     
     .libro-hero-img img {
         transition: transform 0.2s ease;
+        animation: none; /* Quitamos la animación de la página del libro */
     }
 
     .libro-hero-img:active img {

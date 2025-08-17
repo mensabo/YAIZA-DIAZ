@@ -58,16 +58,34 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 200);
         }
         
+        // ==================================================================
+        // FUNCIÓN 'showTab' CORREGIDA, LIMPIA Y FUNCIONAL
+        // ==================================================================
         function showTab(index) {
             if (!heroTabs[index] || !backgroundContainer) return;
 
             const newBgImage = heroTabs[index].dataset.bgImage;
             const newBgPosition = heroTabs[index].dataset.bgPosition || 'center center';
+            
+            document.body.classList.remove('slide-0', 'slide-1', 'slide-2');
+            document.body.classList.add('slide-' + index);
+
             backgroundContainer.style.opacity = 0;
 
             setTimeout(() => {
                 backgroundContainer.style.backgroundImage = `url('${newBgImage}')`;
-                backgroundContainer.style.backgroundPosition = newBgPosition;
+
+                // --- INICIO DE LA CORRECCIÓN ---
+                // Si es la primera pestaña (índice 0) Y la pantalla es de móvil (<= 768px)...
+                if (index === 0 && window.innerWidth <= 768) {
+                    // ...forzamos la imagen a bajar al 100% (borde inferior).
+                    backgroundContainer.style.backgroundPosition = 'center 100%';
+                } else {
+                    // Para el resto de casos (otras pestañas o vista de escritorio), usamos el valor del HTML.
+                    backgroundContainer.style.backgroundPosition = newBgPosition;
+                }
+                // --- FIN DE LA CORRECCIÓN ---
+
                 backgroundContainer.style.opacity = 1;
             }, 300);
 
@@ -97,6 +115,12 @@ document.addEventListener('DOMContentLoaded', function() {
             showTab(nextIndex);
         }
         
+        // --- AÑADIMOS LA FUNCIÓN PARA IR HACIA ATRÁS ---
+        function prevTab() {
+            const prevIndex = (currentIndex - 1 + heroTabs.length) % heroTabs.length;
+            showTab(prevIndex);
+        }
+        
         function startCarousel() {
             clearInterval(slideInterval);
             slideInterval = setInterval(nextTab, 5000);
@@ -114,6 +138,38 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         createDots();
+
+        // --- INICIO: LÓGICA DE SWIPE AÑADIDA ---
+        const heroSection = document.querySelector('.hero-dynamic');
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        heroSection.addEventListener('touchstart', function(event) {
+            touchStartX = event.changedTouches[0].screenX;
+        }, false);
+
+        heroSection.addEventListener('touchend', function(event) {
+            touchEndX = event.changedTouches[0].screenX;
+            handleSwipeGesture();
+        }, false); 
+
+        function handleSwipeGesture() {
+            // Un swipe necesita un mínimo de movimiento, por ejemplo 50px
+            const swipeThreshold = 50;
+            // Deslizar a la izquierda (siguiente)
+            if (touchStartX - touchEndX > swipeThreshold) {
+                nextTab();
+                startCarousel(); // Reinicia el temporizador
+            }
+            
+            // Deslizar a la derecha (anterior)
+            if (touchEndX - touchStartX > swipeThreshold) {
+                prevTab();
+                startCarousel(); // Reinicia el temporizador
+            }
+        }
+        // --- FIN: LÓGICA DE SWIPE ---
+        
         showTab(0);
         startCarousel();
     }
@@ -216,41 +272,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const openModal = () => videoModal.classList.add('visible');
         const closeModal = () => videoModal.classList.remove('visible');
 
-        videoTrigger.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            openModal();
-        });
-
+        videoTrigger.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); openModal(); });
         closeVideoModalBtn.addEventListener('click', closeModal);
-        videoModal.addEventListener('click', (e) => {
-            if (e.target === videoModal) closeModal();
-        });
+        videoModal.addEventListener('click', (e) => { if (e.target === videoModal) closeModal(); });
     }
 
     if (letterTrigger && letterModal && closeLetterModalBtn) {
         const openModal = () => letterModal.classList.add('visible');
         const closeModal = () => letterModal.classList.remove('visible');
 
-        letterTrigger.addEventListener('click', (e) => {
-            e.preventDefault();
-            openModal();
-        });
-
+        letterTrigger.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
         closeLetterModalBtn.addEventListener('click', closeModal);
-        letterModal.addEventListener('click', (e) => {
-            if (e.target === letterModal) closeModal();
-        });
+        letterModal.addEventListener('click', (e) => { if (e.target === letterModal) closeModal(); });
     }
 
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            if (videoModal && videoModal.classList.contains('visible')) {
-                videoModal.classList.remove('visible');
-            }
-            if (letterModal && letterModal.classList.contains('visible')) {
-                letterModal.classList.remove('visible');
-            }
+            if (videoModal && videoModal.classList.contains('visible')) videoModal.classList.remove('visible');
+            if (letterModal && letterModal.classList.contains('visible')) letterModal.classList.remove('visible');
         }
     });
     // === FIN: LÓGICA DE MODALES ===
@@ -270,10 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         backToTopButton.addEventListener('click', (e) => {
             e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
 });
