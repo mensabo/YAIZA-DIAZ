@@ -1,4 +1,3 @@
-// Espera a que el DOM esté completamente cargado para ejecutar el código
 document.addEventListener('DOMContentLoaded', function() {
 
     // --- LÓGICA COMÚN PARA EL MENÚ (SE EJECUTA EN TODAS LAS PÁGINAS) ---
@@ -21,11 +20,26 @@ document.addEventListener('DOMContentLoaded', function() {
         const backgroundContainer = document.querySelector('.hero-background-container');
         const mobileTabTitle = document.getElementById('mobile-tab-title');
         const mobileBookLink = document.getElementById('mobile-book-link');
-        const prevBtn = document.getElementById('prev-tab-btn');
-        const nextBtn = document.getElementById('next-tab-btn');
+        const dotsNavContainer = document.getElementById('hero-dots-nav');
         let currentIndex = 0;
         let slideInterval;
 
+        function createDots() {
+            if (!dotsNavContainer) return;
+            dotsNavContainer.innerHTML = '';
+            heroTabs.forEach((_, index) => {
+                const dot = document.createElement('button');
+                dot.classList.add('hero-dot');
+                dot.dataset.index = index;
+                dot.setAttribute('aria-label', `Ir a la sección ${index + 1}`);
+                dot.addEventListener('click', () => {
+                    showTab(index);
+                    startCarousel();
+                });
+                dotsNavContainer.appendChild(dot);
+            });
+        }
+        
         function updateMobileDisplay(index) {
             if (!mobileTabTitle) return;
             
@@ -34,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const currentTab = heroTabs[index];
                 mobileTabTitle.textContent = currentTab.querySelector('h2').textContent;
                 
-                // Mostrar u ocultar el logo del libro
                 if (currentTab.id === 'escritora-tab') {
                     mobileBookLink.classList.add('visible');
                 } else {
@@ -63,8 +76,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentActiveTab.classList.remove('active');
             }
             heroTabs[index].classList.add('active');
-            currentIndex = index;
+            
+            if (dotsNavContainer) {
+                const currentActiveDot = dotsNavContainer.querySelector('.hero-dot.active');
+                if (currentActiveDot) {
+                    currentActiveDot.classList.remove('active');
+                }
+                const newActiveDot = dotsNavContainer.querySelector(`.hero-dot[data-index="${index}"]`);
+                if (newActiveDot) {
+                    newActiveDot.classList.add('active');
+                }
+            }
 
+            currentIndex = index;
             updateMobileDisplay(index);
         }
 
@@ -72,18 +96,12 @@ document.addEventListener('DOMContentLoaded', function() {
             const nextIndex = (currentIndex + 1) % heroTabs.length;
             showTab(nextIndex);
         }
-
-        function prevTab() {
-            const prevIndex = (currentIndex - 1 + heroTabs.length) % heroTabs.length;
-            showTab(prevIndex);
-        }
-
+        
         function startCarousel() {
             clearInterval(slideInterval);
             slideInterval = setInterval(nextTab, 5000);
         }
 
-        // Eventos para la vista de escritorio
         document.querySelectorAll('.hero-tabs-desktop .hero-tab').forEach((tab, index) => {
             tab.addEventListener('click', function(event) {
                 if (event.target.closest('.book-link')) {
@@ -94,25 +112,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 startCarousel();
             });
         });
-
-        // Eventos para la nueva vista móvil
-        if (prevBtn && nextBtn) {
-            prevBtn.addEventListener('click', () => {
-                prevTab();
-                startCarousel();
-            });
-            nextBtn.addEventListener('click', () => {
-                nextTab();
-                startCarousel();
-            });
-        }
-
-        // Inicia el carrusel
+        
+        createDots();
         showTab(0);
         startCarousel();
     }
 
-    // --- LÓGICA DE LA GALERÍA DINÁMICA (SOLO SE EJECUTA SI ENCUENTRA LOS ELEMENTOS EN LIBRO.HTML) ---
+    // --- LÓGICA DE LA GALERÍA DINÁMICA (SOLO EN LIBRO.HTML) ---
     async function construirGaleriaPublica() {
         const galeriaContainer = document.getElementById('galeria-interactiva');
         if (!galeriaContainer) return;
@@ -197,11 +203,61 @@ document.addEventListener('DOMContentLoaded', function() {
     
     construirGaleriaPublica();
 
-});
-// ===============================================
-//  LÓGICA PARA EL BOTÓN DE VOLVER ARRIBA
-// ===============================================
-document.addEventListener('DOMContentLoaded', function() {
+    // === INICIO: LÓGICA DE MODALES (SOLO EN LIBRO.HTML) ===
+    const videoTrigger = document.getElementById('alberto-leon-video-trigger');
+    const videoModal = document.getElementById('video-modal');
+    const closeVideoModalBtn = document.getElementById('modal-close-btn');
+
+    const letterTrigger = document.getElementById('open-letter-modal');
+    const letterModal = document.getElementById('letter-modal');
+    const closeLetterModalBtn = document.getElementById('letter-modal-close-btn');
+
+    if (videoTrigger && videoModal && closeVideoModalBtn) {
+        const openModal = () => videoModal.classList.add('visible');
+        const closeModal = () => videoModal.classList.remove('visible');
+
+        videoTrigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openModal();
+        });
+
+        closeVideoModalBtn.addEventListener('click', closeModal);
+        videoModal.addEventListener('click', (e) => {
+            if (e.target === videoModal) closeModal();
+        });
+    }
+
+    if (letterTrigger && letterModal && closeLetterModalBtn) {
+        const openModal = () => letterModal.classList.add('visible');
+        const closeModal = () => letterModal.classList.remove('visible');
+
+        letterTrigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal();
+        });
+
+        closeLetterModalBtn.addEventListener('click', closeModal);
+        letterModal.addEventListener('click', (e) => {
+            if (e.target === letterModal) closeModal();
+        });
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (videoModal && videoModal.classList.contains('visible')) {
+                videoModal.classList.remove('visible');
+            }
+            if (letterModal && letterModal.classList.contains('visible')) {
+                letterModal.classList.remove('visible');
+            }
+        }
+    });
+    // === FIN: LÓGICA DE MODALES ===
+    
+    // ===============================================
+    //  LÓGICA PARA EL BOTÓN DE VOLVER ARRIBA
+    // ===============================================
     const backToTopButton = document.getElementById('volver-arriba-btn');
 
     if (backToTopButton) {

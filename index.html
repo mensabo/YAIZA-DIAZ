@@ -18,10 +18,10 @@
             </div>
             <button id="mobile-menu-toggle" aria-label="Abrir menú de navegación">☰</button>
             <ul id="nav-links">
-                <li><a href="#sobre-mi">Sobre mí</a></li>
+                <li><a href="#sobre-mi">SOBRE MÍ</a></li>
                 <li><a href="#portfolio">Trayectoria</a></li>
-                <li><a href="#prensa">Eventos</a></li>
-                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="#prensa">Eventos y Publicidad</a></li>
+                <li><a href="#contacto">CONTACTO</a></li>
             </ul>
         </nav>
     </header>
@@ -34,8 +34,14 @@
             <!-- Contenedor para la vista de escritorio -->
             <div class="hero-tabs-desktop">
                 <div class="hero-tab" data-bg-image="images/presentadora-bg.jpg" data-bg-position="right 10%">
-                    <h2>Presentadora</h2>
+                    <h2>Presentadora y TV</h2>
                     <p>Comunicando la actualidad con rigor y cercanía.</p>
+                </div>
+
+                <!-- SECCIÓN RENOMBRADA Y REORDENADA -->
+                <div class="hero-tab" data-bg-image="images/comunicadora-bg.jpeg" data-bg-position="center 20%">
+                    <h2>Eventos y Publicidad</h2>
+                    <p>Conduciendo galas y representando marcas con profesionalidad.</p>
                 </div>
                 
                 <div class="hero-tab" id="escritora-tab" data-bg-image="images/escritora-bg.jpg" data-bg-position="center 20%">
@@ -45,31 +51,25 @@
                         <img class="tab-detail-image" src="images/portada-libro.png" alt="Portada del libro La Hija del Ciego">
                     </a>
                 </div>
-
-                <div class="hero-tab" data-bg-image="images/comunicadora-bg.jpeg" data-bg-position="center 20%">
-                    <h2>Comunicadora</h2>
-                    <p>Desarrollando estrategias y representando marcas.</p>
-                </div>
             </div>
 
-            <!-- Contenedor para la nueva vista móvil -->
+                       <!-- Contenedor para la nueva vista móvil -->
             <div class="hero-tabs-mobile">
-                <button class="mobile-nav-arrow" id="prev-tab-btn" aria-label="Sección anterior"><i class="fas fa-chevron-left"></i></button>
+                <!-- El título y el logo del libro se mostrarán aquí -->
                 <div class="mobile-tab-display">
                     <h2 id="mobile-tab-title"></h2>
                     <a href="libro.html" class="book-link" id="mobile-book-link">
                         <img class="tab-detail-image" src="images/portada-libro.png" alt="Portada del libro La Hija del Ciego">
                     </a>
                 </div>
-                <button class="mobile-nav-arrow" id="next-tab-btn" aria-label="Siguiente sección"><i class="fas fa-chevron-right"></i></button>
+                <!-- La nueva navegación de puntos se generará aquí -->
+                <div id="hero-dots-nav"></div>
             </div>
-        </div>
-        <!-- === FIN: ESTRUCTURA DE PESTAÑAS MODIFICADA === -->
     </section>
 
     <section id="sobre-mi">
         <div class="container about-content">
-            <h2>Comunicadora Polifacética</h2>
+            <h2>SOBRE MÍ</h2>
             <div class="header-line"></div>
             <p>Periodista, presentadora, locutora y escritora con una sólida carrera forjada en televisión y en la dirección de comunicación estratégica para marcas de primer nivel.</p>
             <blockquote class="about-quote">"Mi objetivo es comunicar con rigor y cercanía, creando puentes entre la información y las personas."</blockquote>
@@ -106,17 +106,14 @@
                     <div class="card-content">
                         <span class="project-category">Creación</span>
                         <h4>Escritora y Creadora</h4>
-                        <p>Proyectos con Sello Propio</p>
-                        <p>Autora de la novela "La hija del ciego" (3ª Edición), creadora del canal de divulgación "<a href="http://www.formulatriplerosa.es" target="_blank" rel="noopener noreferrer">Fórmula Triple Rosa</a>" y directora de documentales de calado social.</p>
-                    </div>
+                        <p>Proyectos con sello propio</p>
+                       <p>Autora de la novela <a href="libro.html" class="formula-rosa-link">"La hija del ciego"</a> (3ª Edición), Creadora de <a href="https://www.formulatriplerosa.es" class="formula-rosa-link" target="_blank" rel="noopener noreferrer">@formulatriplerosa</a> y directora de documentales de calado social.</p>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
     <section id="prensa">
         <div class="container events-list">
-            <h2>Presentadora de Eventos</h2>
+            <h2>Eventos y Publicidad</h2>
             <p>A lo largo de 18 años, he tenido el placer de conducir numerosos eventos para marcas e instituciones como:</p>
             <div class="event-tags">
                 <span>Premios Cadena Dial</span>
@@ -133,8 +130,8 @@
 
     <section id="contacto">
         <div class="container">
-            <h2>Hablemos</h2>
-            <p>Si tienes una propuesta de colaboración, una historia que contar o quieres contactar para un evento, no dudes en escribirme.</p>
+            <h2>CONTACTO</h2>
+            <p>Si tienes una propuesta de colaboración o quieres contactar para un evento, no dudes en escribirme.</p>
             <a href="mailto:yaizadiaztv@gmail.com" class="email-link">yaizadiaztv@gmail.com</a>
             <div class="social-icons">
                 <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>

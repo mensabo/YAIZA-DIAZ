@@ -47,6 +47,8 @@
                 <h2>La Hija del Ciego</h2>
                 <p class="subtitulo-libro">"Un trabajo que nos hace reír, llorar y pensar… Nos tapa los ojos y nos suelta de la mano. Si hoy tuviera que definir la ceguera, les diría que lean y abracen a La hija del ciego. A partir de entonces todo tendrá sentido”.</p>
                 <p class="autor-cita">- Christian Santana Hernández, Prologuista</p>
+                <!-- === BOTÓN DE LA CARTA MODIFICADO === -->
+                <a href="#" id="open-letter-modal" class="letter-button"><i class="fas fa-envelope-open-text"></i> Leer la carta de la autora</a>
                 <a href="#comprar-libro" class="buy-button">Comprar la novela</a>
             </div>
         </div>
@@ -59,15 +61,22 @@
                 <h2>La razón de ser de una periodista</h2>
                 <p>A sus treinta y ocho años y con una dilatada carrera profesional de catorce años en Televisión Canaria, Yaiza Díaz (1983) se anima a publicar su primera novela, un trabajo que llevaba gestando toda una vida.</p>
             </div>
-            <div class="sinopsis-content-reversed">
+            <div class="sinopsis-content">
+                <div class="sinopsis-img">
+                    <img src="images/yaiza-bn.jpg" alt="Foto de Yaiza Díaz">
+                </div>
                 <div class="sinopsis-text">
                     <p>Díaz resume la esencia de este libro en la historia de una niña, Marina, que nace con la necesidad de comunicar y explicarle a su padre ciego cómo era el mundo para que no perdiera detalle.</p>
                     <blockquote>"Esta es mi razón de ser como periodista, porque esa niña soy yo, y este libro es una muestra de amor hacia mi padre que ahora quiero compartir con todos ustedes con el fin de acercarles la ceguera de la manera más natural, como la vivimos en mi casa".</blockquote>
                     <p>La periodista advierte que es un libro solo apto para las personas que leen con el corazón, pues lleva toda una vida almacenando situaciones en su mente porque <strong>“sabía que algún día tenía que contarlo”</strong>.</p>
                 </div>
+            </div>
+             <div class="sinopsis-content-reversed" style="margin-top: 4rem;">
+                 <div class="sinopsis-text">
+                    <p class="pie-de-foto" style="text-align: left; font-size: 1.1rem; font-style: italic;">"Si cierras los ojos y dejas que tu corazón lea, verás mucho más de lo que ves. Verás la vida de un ciego como nunca nadie te la contó. Te lo dice su hermano, que lo quiere con el alma”.<br><strong>- Jaime Díaz, tío de la autora.</strong></p>
+                </div>
                 <div class="sinopsis-img">
                     <img src="images/foto-tio.jpg" alt="Tio Yaiza Díaz con su familia">
-                    <p class="pie-de-foto">"Si cierras los ojos y dejas que tu corazón lea, verás mucho más de lo que ves. Verás la vida de un ciego como nunca nadie te la contó. Te lo dice su hermano, que lo quiere con el alma”.<br><strong>- Jaime Díaz, tío de la autora.</strong></p>
                 </div>
             </div>
         </div>
@@ -103,9 +112,9 @@
                     <p class="pie-de-foto">Rafael de Lorenzo y Yaiza Díaz con el lienzo de la portada.</p>
                 </div>
                 <div class="arte-text">
-                    <p>La novela destaca por su llamativa portada, una descriptiva imagen de los paseos compartidos entre Yaiza y su padre. Ha sido retratada por el artista, también lagunero, <strong>Alberto León</strong>, quien expone en la Graffik Gallery de Londres y cuenta con galería propia en Barcelona.</p>
-                    <p>La foto de la contraportada es obra de la paisana y fotógrafa internacional <strong>Yapci Ramos</strong>. Con todo esto, Díaz nos presenta un libro con papel reciclado, letra apta para gente con dificultades visuales y, lo más importante, de color <strong>magenta, el color de una auténtica princesa guerrera</strong>.</p>
-                    <p class="cita-padrino">"Cuando busques la verdad y no lo veas nada claro, asume que la oscuridad es la luz, vista desde el otro lado".<br><strong>- Rafael de Lorenzo, Secretario General del Consejo General de la ONCE, quien apadrina la obra.</strong></p>
+                    <blockquote>"Cuando busques la verdad y no lo veas nada claro, asume que la oscuridad es la luz, vista desde el otro lado".<cite>- Rafael de Lorenzo, Secretario General del Consejo General de la ONCE, quien apadrina la obra.</cite></blockquote>
+                    <p>La novela destaca por su llamativa portada, una descriptiva imagen de los paseos compartidos entre Yaiza y su padre. Ha sido retratada por el artista, también lagunero, <strong><a href="https://albertoleon.es/" target="_blank" rel="noopener noreferrer">Alberto León</a></strong> <i class="fas fa-video video-icon-trigger" id="alberto-leon-video-trigger" aria-label="Ver vídeos"></i>, quien expone en la Graffik Gallery de Londres y cuenta con galería propia en Barcelona.</p>
+                    <p>La foto de la contraportada es obra de la paisana y fotógrafa internacional <strong><a href="https://yapciramos.com/" target="_blank" rel="noopener noreferrer">Yapci Ramos</a></strong>. Con todo esto, Díaz nos presenta un libro con papel reciclado, letra apta para gente con dificultades visuales y, lo más importante, de color <span class="text-magenta"><strong>magenta, el color de una auténtica princesa guerrera</strong></span>.</p>
                 </div>
             </div>
         </div>
@@ -126,7 +135,6 @@
         <div class="container">
             <h2>Momentos</h2>
             <div id="galeria-interactiva">
-                <!-- Visor principal (se queda como está) -->
                 <div id="galeria-principal">
                     <div id="galeria-bg-desenfocado"></div>
                     <img id="imagen-principal" src="" alt="Visor principal de la galería de momentos">
@@ -134,15 +142,12 @@
                         <p>Cargando galería...</p>
                     </div>
                 </div>
-                <!-- Lista de miniaturas (Ahora está vacía, el script la llenará) -->
                 <div id="galeria-lista-miniaturas">
-                    <!-- Las miniaturas se insertarán aquí dinámicamente -->
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ... (El resto de secciones como prensa-libro, comprar-libro, etc. no cambian) ... -->
     <section id="prensa-libro">
         <div class="container">
             <h2>El libro en los medios</h2>
@@ -223,13 +228,42 @@
                 <div class="opcion-card">
                     <h3>Audiolibro (ONCE)</h3>
                     <p>La novela ha sido locutada por la propia autora para el servicio de audiolibros para afiliados de la ONCE, haciendo la historia accesible para todos.</p>
-                    <a href="#" class="buy-button-image-bg buy-button-once">Acceder como afiliado</a>
-                </div>
+                    <a href="https://club.once.es/afiliados/login?came_from=/afiliados/servicios#content" class="buy-button-image-bg buy-button-once" target="_blank" rel="noopener noreferrer">Acceder como afiliado</a>
             </div>
-        </div>
-    </section>
+            </section>
     
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
+    
+    <div id="video-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="modal-close-btn" class="modal-close" aria-label="Cerrar">&times;</button>
+            <h3>Vídeos de Alberto León</h3>
+            <p>Descubre más sobre el artista de la portada.</p>
+            <div class="modal-links">
+                <a href="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FLe%C3%B3n1.mp4?alt=media&token=57603b2c-8794-4fb5-8723-e524d15142b8" target="_blank" rel="noopener noreferrer" class="modal-button">Proceso Creativo</a>
+                <a href="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FLe%C3%B3n2.mp4?alt=media&token=fe3a7383-7a53-42b2-83c8-2a64a56c240e" target="_blank" rel="noopener noreferrer" class="modal-button">Ver Entrevista</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- === INICIO: ESTRUCTURA DEL MODAL DE LA CARTA === -->
+    <div id="letter-modal" class="modal-overlay">
+        <div class="modal-content letter-content">
+            <button id="letter-modal-close-btn" class="modal-close" aria-label="Cerrar">&times;</button>
+            <div class="letter-body">
+                <p>Me crié regalando suerte, compartiendo cada día una sonrisa. Con la intención más consciente de mostrar agradecimiento, mi disciplina llegaba a tornarse frágil cuando mi cuerpo ya llevaba varias horas de pie junto a mi padre en su oficina [una mesa con mamparas de plástico y una silla plegable de madera...] El cariño de los clientes que le compraban el cupón nos hacía felices, no tanto lo prejuicios.</p>
+                <p>Mi libertad era un desafío, mi padre ciego mi cordón umbilical, mi misión describirle como era el mundo para que no perdiera detalle. La necesidad de comunicar con la que nací me llevó a escoger esta profesión, periodismo.</p>
+                <p>Aprendí a ver la vida con otros ojos y ahora con "La hija del ciego" te acerco con esmerada naturalidad a la ceguera.</p>
+                <p>Querer seguir compartiendo mi suerte, no fue un camino fácil, la lucha por ser alguien como esos clientes importantes de mi padre, tampoco.</p>
+                <p>Salí de Tenerife para llegar a Madrid, allí él llegó antes al cielo. Nos despedimos en la lejanía para que la ausencia no doliera tanto. En mis pasos: radio, prensa escrita, gabinete de prensa, televisión, presentaciones, dirección audiovisual... Sí, un extenso curriculum que discurre por el mismo sendero, contar algo.</p>
+                <p>Con La hija del ciego me abro en canal, volviendo a esos inicios en los que de nuevo me expongo a ser juzgada, pero si me lees con el corazón sentirás que te regalo una sonrisa que convertirá cualquier oscuridad en color, todos los de sus ojos, ¡los colores de la vida!</p>
+                <p>Deseo que puedas disfrutar de este homenaje al amor padre e hija.</p>
+                <footer class="letter-signature">"La vida son palabras que generan sensaciones" <br><strong>Yaiza Díaz.</strong></footer>
+            </div>
+        </div>
+    </div>
+    <!-- === FIN: ESTRUCTURA DEL MODAL DE LA CARTA === -->
+
     <footer>
         <div class="container">
             <div class="footer-social-icons">
