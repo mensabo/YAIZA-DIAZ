@@ -42,6 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         function updateMobileDisplay(index) {
             if (!mobileTabTitle) return;
+
+            const mobileAnnotation = document.querySelector('.click-annotation-mobile');
             
             mobileTabTitle.classList.remove('visible');
             setTimeout(() => {
@@ -50,17 +52,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 if (currentTab.id === 'escritora-tab') {
                     mobileBookLink.classList.add('visible');
+                    if (mobileAnnotation) mobileAnnotation.classList.add('visible');
                 } else {
                     mobileBookLink.classList.remove('visible');
+                    if (mobileAnnotation) mobileAnnotation.classList.remove('visible');
                 }
                 
                 mobileTabTitle.classList.add('visible');
             }, 200);
         }
         
-        // ==================================================================
-        // FUNCIÓN 'showTab' CORREGIDA, LIMPIA Y FUNCIONAL
-        // ==================================================================
         function showTab(index) {
             if (!heroTabs[index] || !backgroundContainer) return;
 
@@ -75,16 +76,11 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 backgroundContainer.style.backgroundImage = `url('${newBgImage}')`;
 
-                // --- INICIO DE LA CORRECCIÓN ---
-                // Si es la primera pestaña (índice 0) Y la pantalla es de móvil (<= 768px)...
                 if (index === 0 && window.innerWidth <= 768) {
-                    // ...forzamos la imagen a bajar al 100% (borde inferior).
                     backgroundContainer.style.backgroundPosition = 'center 100%';
                 } else {
-                    // Para el resto de casos (otras pestañas o vista de escritorio), usamos el valor del HTML.
                     backgroundContainer.style.backgroundPosition = newBgPosition;
                 }
-                // --- FIN DE LA CORRECCIÓN ---
 
                 backgroundContainer.style.opacity = 1;
             }, 300);
@@ -115,7 +111,6 @@ document.addEventListener('DOMContentLoaded', function() {
             showTab(nextIndex);
         }
         
-        // --- AÑADIMOS LA FUNCIÓN PARA IR HACIA ATRÁS ---
         function prevTab() {
             const prevIndex = (currentIndex - 1 + heroTabs.length) % heroTabs.length;
             showTab(prevIndex);
@@ -139,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         createDots();
 
-        // --- INICIO: LÓGICA DE SWIPE AÑADIDA ---
         const heroSection = document.querySelector('.hero-dynamic');
         let touchStartX = 0;
         let touchEndX = 0;
@@ -154,21 +148,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }, false); 
 
         function handleSwipeGesture() {
-            // Un swipe necesita un mínimo de movimiento, por ejemplo 50px
             const swipeThreshold = 50;
-            // Deslizar a la izquierda (siguiente)
             if (touchStartX - touchEndX > swipeThreshold) {
                 nextTab();
-                startCarousel(); // Reinicia el temporizador
+                startCarousel();
             }
-            
-            // Deslizar a la derecha (anterior)
             if (touchEndX - touchStartX > swipeThreshold) {
                 prevTab();
-                startCarousel(); // Reinicia el temporizador
+                startCarousel();
             }
         }
-        // --- FIN: LÓGICA DE SWIPE ---
         
         showTab(0);
         startCarousel();
@@ -292,7 +281,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (letterModal && letterModal.classList.contains('visible')) letterModal.classList.remove('visible');
         }
     });
-    // === FIN: LÓGICA DE MODALES ===
     
     // ===============================================
     //  LÓGICA PARA EL BOTÓN DE VOLVER ARRIBA

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periodismo de Investigación - Yaiza Díaz</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .video-fallback {
+            position: relative;
+            background-color: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+        }
+        .video-fallback video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+        }
+        .play-button-overlay {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(200, 0, 0, 0.7);
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+        .play-button-overlay:hover {
+            background-color: rgba(220, 0, 0, 0.9);
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body class="libro-page">
+    
+    <header>
+        <nav class="container">
+            <div class="nav-title">
+                <h1>YAIZA DÍAZ</h1>
+            </div>
+            <ul id="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="comunicacion.html">Comunicación</a></li>
+                <li><a href="investigacion.html">Documentales</a></li>
+                <li><a href="libro.html">Libro</a></li>
+                <li><a href="index.html#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="return-bar">
+        <div class="container">
+            <a href="index.html#portfolio" class="breadcrumb-return-link">
+                <i class="fas fa-arrow-left"></i> Volver a Trayectoria
+            </a>
+        </div>
+    </div>
+
+    <!-- ========= CONTENIDO PRINCIPAL DE LA PÁGINA ========= -->
+    <section id="investigacion-main">
+        <div class="container comunicacion-content">
+            <h2>Periodismo Científico y de Investigación</h2>
+            <div class="header-line"></div>
+
+            <div class="comunicacion-section">
+                <h3>Premios y Reconocimientos</h3>
+                <p>La Asociación Romí Camela Nakerar reconoció la trayectoria de la periodista concediéndole el premio a la comunicación por su reportaje "Mujeres Gitanas". Así mismo, Díaz también se hizo con el premio Top Artistas Canarios 2020 a mejor periodista y presentadora.</p>
+                
+                <div class="video-fallback">
+                    <video autoplay loop muted playsinline>
+                        <source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FMujeres%20Gitanas.mp4?alt=media&token=760da2bf-9a4d-4eb8-830b-7704841d4e39" type="video/mp4">
+                    </video>
+                    <a href="https://www.youtube.com/watch?v=sAHeK631yqQ" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="comunicacion-section">
+                <h3>Trilogía sobre el COVID: “Enemigo Equivocado” (RTVC)</h3>
+                <p>“Enemigo equivocado” es una trilogía de reportajes de investigación que abordan la pandemia desde el punto de vista científico, tecnológico y estratégico en Canarias y en el mundo.</p>
+                
+                <p style="margin-top: 2rem;"><strong>Parte 1: ¿Nos hemos equivocado de enemigo?</strong></p>
+                <div class="video-fallback">
+                    <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fvirus1.mp4?alt=media&token=bbad93bf-ea8d-4c35-8b97-fc16e87f2dc9" type="video/mp4"></video>
+                    <a href="https://www.youtube.com/watch?v=IsYrl9T5gq4" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
+                </div>
+                
+                <p style="margin-top: 2rem;"><strong>Parte 2: Rastro Digital</strong></p>
+                <div class="video-fallback">
+                    <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fvirus2.mp4?alt=media&token=9f70f4a3-947e-4fce-b7cd-002bd340b0c3" type="video/mp4"></video>
+                    <a href="https://www.youtube.com/watch?v=fWQ-G2cKVMs" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
+                </div>
+
+                <p style="margin-top: 2rem;"><strong>Parte 3: La Estrategia</strong></p>
+                <div class="video-fallback">
+                    <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FVirus3.mp4?alt=media&token=ed72dd26-81d6-4300-bf0d-d83614582bc3" type="video/mp4"></video>
+                    <a href="https://www.youtube.com/watch?v=8H1c8Ap8CYU" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="comunicacion-section">
+                <h3>Nivel 4: Trilogía “Amenaza Bajo el Mar”</h3>
+                <p>Investigación sobre una base secreta de la marina americana en La Palma y la actual lucha por los recursos minerales submarinos en aguas canarias.</p>
+                
+                <p style="margin-top: 2rem;"><strong>Capítulo 1: La base secreta</strong></p>
+                <div class="video-fallback">
+                    <video autoplay loop muted playsinline><!-- CAMBIO: Pega aquí la URL de Firebase para el preview de 'Nivel 4 - 1' --><source src="" type="video/mp4"></video>
+                    <a href="https://www.youtube.com/watch?v=l-PcUnGlnOY" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
+                </div>
+                
+                <p style="margin-top: 2rem;"><strong>Capítulo 2: La guerra por los recursos</strong></p>
+                <div class="video-fallback">
+                    <video autoplay loop muted playsinline><!-- CAMBIO: Pega aquí la URL de Firebase para el preview de 'Nivel 4 - 2' --><source src="" type="video/mp4"></video>
+                    <a href="https://www.youtube.com/watch?v=HDUG_mqDKLI" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
+                </div>
+
+                <p style="margin-top: 2rem;"><strong>Capítulo 3: El fondo soberano</strong></p>
+                <div class="video-fallback">
+                    <video autoplay loop muted playsinline><!-- CAMBIO: Pega aquí la URL de Firebase para el preview de 'Nivel 4 - 3' --><source src="" type="video/mp4"></video>
+                    <a href="https://www.youtube.com/watch?v=4kDoxqf_fBE" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            
+            <div class="comunicacion-section">
+                <h3>Noche de Reporteros</h3>
+                <h4 style="margin-top: 2rem; font-size: 1.5rem;">Hasta que nos extingamos</h4>
+                <p>Reportaje que explora la deuda ecológica del planeta y el Movimiento por la Extinción Humana Voluntaria.</p>
+                <div class="video-fallback">
+                    <video autoplay loop muted playsinline><!-- CAMBIO: Pega aquí la URL de Firebase para el preview de 'Extincion' --><source src="" type="video/mp4"></video>
+                    <a href="https://www.youtube.com/watch?v=ETnrDmK69eY" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
+                </div>
+                
+                <h4 style="margin-top: 2rem; font-size: 1.5rem;">Inteligencia Artificial en la Medicina</h4>
+                <p>Una investigación sobre cómo la telemedicina y la IA están revolucionando el sector salud.</p>
+                <div class="video-fallback">
+                    <video autoplay loop muted playsinline><!-- CAMBIO: Pega aquí la URL de Firebase para el preview de 'IA Medicina' --><source src="" type="video/mp4"></video>
+                    <a href="https://www.youtube.com/watch?v=ZQUjA8pN5p4" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="comunicacion-section">
+                <h3>Otros Reportajes de Calado Social</h3>
+                <p>Documental "Vidas Transdiversas".</p>
+                <div class="video-fallback">
+                    <video autoplay loop muted playsinline>
+                        <!-- CAMBIO: Pega aquí la URL de Firebase para el preview de 'Vidas Transdiversas' -->
+                        <source src="" type="video/mp4">
+                    </video>
+                    <!-- CAMBIO: Cuando tengas la URL del vídeo completo, pégala aquí -->
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
+                </div>
+                 
+                <p style="margin-top: 2rem;">Reportaje sobre Anorexia y Bulimia.</p>
+                <div class="video-fallback">
+                    <video autoplay loop muted playsinline><!-- CAMBIO: Pega aquí la URL de Firebase para el preview de 'Anorexia' --><source src="" type="video/mp4"></video>
+                    <a href="https://www.youtube.com/watch?v=IVBfoJdEbTQ" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
+                </div>
+
+                <p style="margin-top: 2rem;">Reportaje sobre Mujeres en la política.</p>
+                <div class="video-fallback">
+                    <video autoplay loop muted playsinline><!-- CAMBIO: Pega aquí la URL de Firebase para el preview de 'Mujeres Politica' --><source src="" type="video/mp4"></video>
+                    <a href="https://www.youtube.com/watch?v=3Y0197XDIlE" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-social-icons">
+                 <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>

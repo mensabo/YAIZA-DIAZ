@@ -93,7 +93,8 @@ nav ul {
 }
 
 nav ul li a {
-    color: var(--color-blanco);
+    /* CAMBIO: Color de enlaces del menú a dorado */
+    color: var(--color-acento);
     text-decoration: none;
     padding: 1rem;
     font-weight: 500;
@@ -101,7 +102,8 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    color: var(--color-acento);
+    /* CAMBIO: Hover a color blanco */
+    color: var(--color-blanco);
 }
 
 /* ================================================== */
@@ -421,7 +423,7 @@ footer {
 
 .hero-tab.active .tab-detail-image {
     opacity: 1;
-    animation: glow-pulse 2.s ease-in-out infinite;
+    animation: glow-pulse 2s ease-in-out infinite;
 }
 
 .book-link:hover .tab-detail-image {
@@ -1222,6 +1224,112 @@ footer {
     }
 }
 
+/* ==================================================== */
+/*   ESTILOS PARA LA ANOTACIÓN "CLICK AQUÍ" DEL LIBRO   */
+/* ==================================================== */
+.click-annotation {
+    position: absolute;
+    top: 130%; 
+    right: 30%;
+    
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    transition-delay: 0.5s;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+}
+
+#escritora-tab.active .click-annotation {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.annotation-text {
+    font-family: var(--fuente-manuscrita);
+    font-size: 2rem;
+    color: var(--color-blanco);
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+    margin-bottom: -25px; 
+}
+
+.annotation-arrow {
+    width: 100px;
+    height: 100px;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.7));
+    animation: bounce-arrow 2s infinite;
+    animation-delay: 1.5s;
+}
+
+@keyframes bounce-arrow {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-15px);
+    }
+    60% {
+        transform: translateY(-7px);
+    }
+}
+
+/* ======================================================= */
+/* --- ESTILOS PARA LA PÁGINA DE COMUNICACIÓN Y ENLACES --- */
+/* ======================================================= */
+.comunicacion-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.comunicacion-section {
+    margin-bottom: 4rem;
+}
+.comunicacion-section h3 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--color-acento);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+.comunicacion-section p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+.project-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+.project-card-link .project-card h4 {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 4px;
+}
+.project-card-link .project-card h4::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-acento);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease-out;
+}
+.project-card-link:hover .project-card h4 {
+    color: var(--color-acento);
+}
+.project-card-link:hover .project-card h4::after {
+    transform: scaleX(1);
+}
+
+.card-link-indicator {
+    display: none;
+}
 
 /* ======================== */
 /*      RESPONSIVE DESIGN   */
@@ -1303,11 +1411,11 @@ footer {
     }
 
     #nav-links li {
-        margin: 2rem 0;
+        margin: 1.5rem 0;
     }
 
     #nav-links a {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
 
     .hero-dynamic {
@@ -1348,6 +1456,7 @@ footer {
     }
 
     .mobile-tab-display {
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1392,7 +1501,6 @@ footer {
         transform: scale(1.3);
     }
     
-    /* --- INICIO: NUEVO EFECTO DE BRILLO PARA EL ICONO DEL LIBRO --- */
     #mobile-book-link {
         display: none;
         line-height: 0; 
@@ -1413,14 +1521,12 @@ footer {
         left: 0;
         width: 50%;
         height: 100%;
-        
         background: linear-gradient(
             to right, 
             rgba(255, 255, 255, 0) 0%, 
             rgba(255, 255, 255, 0.5) 50%, 
             rgba(255, 255, 255, 0) 100%
         );
-        
         animation: shine-sweep 3s infinite;
         animation-delay: 1.5s;
     }
@@ -1442,8 +1548,7 @@ footer {
         animation: none;
         transform: scale(0.95);
     }
-    /* --- FIN DEL NUEVO EFECTO --- */
-
+    
     .hero-tab p {
         display: none;
     }
@@ -1519,7 +1624,6 @@ footer {
         padding: 2rem 1.5rem;
     }
 
-    /* Limpiamos los efectos de la página libro en móvil */
     .libro-hero-img {
         max-width: 280px;
         margin: 0 auto;
@@ -1529,10 +1633,62 @@ footer {
     
     .libro-hero-img img {
         transition: transform 0.2s ease;
-        animation: none; /* Quitamos la animación de la página del libro */
+        animation: none;
     }
 
     .libro-hero-img:active img {
         transform: scale(0.97);
+    }
+
+    .click-annotation-desktop {
+        display: none;
+    }
+
+    .click-annotation-mobile {
+        display: flex;
+        position: absolute;
+        top: -20px;
+        right: -70px;
+        transform: scale(0.8);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+        flex-direction: column;
+        align-items: center;
+    }
+    .click-annotation-mobile.visible {
+        opacity: 1;
+    }
+    .click-annotation-mobile .annotation-text {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+    .click-annotation-mobile .annotation-arrow {
+        position: absolute;
+        top: 85px;
+        left: -30px;
+        width: 40px;
+        height: 40px;
+        transform: rotate(90deg);
+    }
+    
+    .card-content {
+        position: relative;
+        padding-bottom: 4rem; 
+    }
+
+    .card-link-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        position: absolute;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        background-color: var(--color-acento);
+        color: var(--color-blanco);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
     }
 }
