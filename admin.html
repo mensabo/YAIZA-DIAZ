@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Administrar Galería</title>
+    <title>Administrar Galerías</title>
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -15,9 +15,22 @@
 
     <div id="admin-panel" style="display:none;">
         <header>
-            <h1>Gestionar Galería del Libro</h1>
+            <!-- Título principal actualizado -->
+            <h1>Gestionar Galerías</h1>
             <button id="logout-button">Cerrar Sesión</button>
         </header>
+
+        <!-- AÑADIDO: Selector de galería -->
+        <div class="gallery-selector-container">
+            <label for="gallery-selector">Selecciona la galería a editar:</label>
+            <select id="gallery-selector">
+                <option value="gallery">Galería del Libro</option>
+                <option value="modeling_gallery">Galería de Modelaje</option>
+            </select>
+        </div>
+
+        <!-- AÑADIDO: Título dinámico para la galería actual -->
+        <h2 id="current-gallery-title"></h2>
 
         <div id="drop-zone">
             <p>Arrastra y suelta las fotos aquí o haz clic para seleccionarlas</p>

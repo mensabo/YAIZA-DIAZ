@@ -22,14 +22,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('save-button');
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
+    // AÑADIDO: Nuevos elementos del DOM
+    const gallerySelector = document.getElementById('gallery-selector');
+    const currentGalleryTitle = document.getElementById('current-gallery-title');
+
 
     let sortableInstance = null;
+    // AÑADIDO: Variables para gestionar la galería activa
+    let currentCollection = 'gallery'; // Por defecto, la del libro
+    let currentStoragePath = 'gallery/'; // Por defecto, la carpeta del libro
+
+    // --- LÓGICA DE SELECCIÓN DE GALERÍA ---
+    gallerySelector.addEventListener('change', (e) => {
+        const selectedValue = e.target.value;
+        currentCollection = selectedValue;
+        // La carpeta de storage se llamará igual que la colección
+        currentStoragePath = `${selectedValue}/`; 
+        
+        updateAdminUI(selectedValue);
+        loadGallery();
+    });
+
+    function updateAdminUI(galleryId) {
+        if (galleryId === 'gallery') {
+            currentGalleryTitle.textContent = "Editando: Galería del Libro";
+        } else if (galleryId === 'modeling_gallery') {
+            currentGalleryTitle.textContent = "Editando: Galería de Modelaje";
+        }
+    }
 
     // --- AUTENTICACIÓN ---
     onAuthStateChanged(auth, user => {
         if (user) {
             loginContainer.style.display = 'none';
             adminPanel.style.display = 'block';
+            // Al iniciar sesión, carga la galería por defecto (Libro)
+            updateAdminUI(currentCollection);
             loadGallery();
         } else {
             loginContainer.style.display = 'block';
@@ -44,9 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     logoutButton.addEventListener('click', () => signOut(auth));
 
-    // --- LÓGICA DE LA GALERÍA ---
+    // --- LÓGICA DE LA GALERÍA (Ahora es dinámica) ---
     async function loadGallery() {
-        const q = query(collection(db, 'gallery'), orderBy('order'));
+        galleryList.innerHTML = '<p>Cargando imágenes...</p>';
+        // MODIFICADO: Usa la variable 'currentCollection'
+        const q = query(collection(db, currentCollection), orderBy('order'));
         const snapshot = await getDocs(q);
         const photos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         renderGallery(photos);
@@ -54,6 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderGallery(photos) {
         galleryList.innerHTML = '';
+        if (photos.length === 0) {
+            galleryList.innerHTML = '<p>No hay imágenes en esta galería. ¡Sube algunas!</p>';
+        }
         photos.forEach(photo => {
             const div = document.createElement('div');
             div.className = 'gallery-item';
@@ -81,12 +114,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentCount = galleryList.querySelectorAll('.gallery-item').length;
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
-            const storageRef = ref(storage, `gallery/${Date.now()}_${file.name}`);
+            // MODIFICADO: Usa la variable 'currentStoragePath'
+            const storageRef = ref(storage, `${currentStoragePath}${Date.now()}_${file.name}`);
             
             await uploadBytes(storageRef, file);
             const url = await getDownloadURL(storageRef);
             
-            await addDoc(collection(db, 'gallery'), {
+            // MODIFICADO: Usa la variable 'currentCollection'
+            await addDoc(collection(db, currentCollection), {
                 src: url,
                 descripcion: "Nueva imagen",
                 order: currentCount + i
@@ -100,7 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const items = galleryList.querySelectorAll('.gallery-item');
         
         items.forEach((item, index) => {
-            const docRef = doc(db, 'gallery', item.dataset.id);
+            // MODIFICADO: Usa la variable 'currentCollection'
+            const docRef = doc(db, currentCollection, item.dataset.id);
             batch.update(docRef, {
                 descripcion: item.querySelector('.description-input').value,
                 order: index
@@ -118,8 +154,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const item = e.target.closest('.gallery-item');
             const docId = item.dataset.id;
             const imgSrc = item.querySelector('img').src;
-
-            await deleteDoc(doc(db, 'gallery', docId));
+            
+            // MODIFICADO: Usa la variable 'currentCollection'
+            await deleteDoc(doc(db, currentCollection, docId));
+            
+            // El borrado del storage funciona igual, ya que obtiene la ruta del src
             const storageRef = ref(storage, imgSrc);
             await deleteObject(storageRef);
 
