@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modelo - Yaiza Díaz</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="libro-page">
+    
+    <header>
+        <nav class="container">
+            <div class="nav-title">
+                <h1>YAIZA DÍAZ</h1>
+            </div>
+            <ul id="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="comunicacion.html">Comunicación</a></li>
+                <li><a href="investigacion.html">Documentales</a></li>
+                <li><a href="premios.html">Premios</a></li>
+                <li><a href="libro.html">Libro</a></li>
+                <li><a href="modelaje.html">Modelo</a></li>
+                <li><a href="index.html#prensa">Eventos</a></li>
+                <li><a href="index.html#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="return-bar">
+        <div class="container">
+            <a href="index.html#portfolio" class="breadcrumb-return-link">
+                <i class="fas fa-arrow-left"></i> Volver a Trayectoria
+            </a>
+        </div>
+    </div>
+
+    <!-- ========= CONTENIDO PRINCIPAL DE LA PÁGINA ========= -->
+    <section id="modelo-main">
+        <div class="container">
+            <h2>Modelo</h2>
+            <div class="header-line"></div>
+            <p class="section-intro">Aquí puedes ver una selección de trabajos de modelaje y sesiones fotográficas realizadas con diferentes fotógrafos.</p>
+
+            <!-- Este contenedor se rellenará dinámicamente con las fotos de Firebase -->
+            <div id="gallery-grid-modelo" class="gallery-grid">
+                <!-- Mensaje de carga inicial -->
+                <p>Cargando galería de fotos...</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- LIGHTBOX PARA VER LAS IMÁGENES EN GRANDE -->
+    <div id="lightbox-modal" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <span class="lightbox-prev">&#10094;</span>
+        <span class="lightbox-next">&#10095;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-image" src="" alt="Visor de imágenes de modelaje">
+            <div id="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-social-icons">
+                 <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- SDK de Firebase (necesario para cargar las fotos) -->
+    <script src="config.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+        import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        window.firebaseServices = {
+            db, collection, getDocs, orderBy, query
+        };
+    </script>
+
+    <!-- Nuestro script principal con la lógica de la galería -->
+    <script src="script.js" defer></script>
+</body>
+</html>

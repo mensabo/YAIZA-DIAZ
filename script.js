@@ -248,6 +248,129 @@ document.addEventListener('DOMContentLoaded', function() {
     
     construirGaleriaPublica();
 
+    // --- LÓGICA DE LA GALERÍA DE MODELAJE (SOLO EN MODELAJE.HTML) ---
+    let modeloFotos = []; // Array to store photos for the lightbox
+    let currentImageIndex = -1;
+
+    async function construirGaleriaModelo() {
+        const galleryGrid = document.getElementById('gallery-grid-modelo');
+        if (!galleryGrid) return; // Only run on the modelaje page
+
+        // Wait a moment for Firebase to be ready
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        if (!window.firebaseServices) {
+            console.error("Firebase no está listo en esta página.");
+            galleryGrid.innerHTML = "<p>Error al conectar con la base de datos.</p>";
+            return;
+        }
+        const { db, collection, getDocs, orderBy, query } = window.firebaseServices;
+
+        try {
+            // IMPORTANT: Assumes a new collection in Firestore named 'modeling_gallery'
+            const q = query(collection(db, 'modeling_gallery'), orderBy('order'));
+            const snapshot = await getDocs(q);
+            
+            // Store photos for lightbox navigation
+            modeloFotos = snapshot.docs.map(doc => doc.data());
+
+            if (modeloFotos.length === 0) {
+                galleryGrid.innerHTML = "<p>La galería está vacía en este momento.</p>";
+                return;
+            }
+
+            galleryGrid.innerHTML = ''; // Clear loading message
+            modeloFotos.forEach((foto, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-grid-item';
+                item.dataset.index = index; // Set index for lightbox
+                
+                item.innerHTML = `
+                    <img src="${foto.src}" alt="${foto.description || 'Foto de modelaje'}">
+                    <div class="gallery-item-overlay">
+                        <p>${foto.description || ''}</p>
+                    </div>
+                `;
+                galleryGrid.appendChild(item);
+            });
+        } catch (error) {
+            console.error("Error al cargar la galería de modelaje:", error);
+            galleryGrid.innerHTML = "<p>No se pudo cargar la galería. Inténtalo de nuevo más tarde.</p>";
+        }
+    }
+
+    // --- LÓGICA DEL LIGHTBOX (PARA PÁGINA DE MODELAJE) ---
+    function initLightbox() {
+        const modal = document.getElementById('lightbox-modal');
+        if (!modal) return; // Only run if lightbox HTML exists
+
+        const galleryGrid = document.getElementById('gallery-grid-modelo');
+        const closeBtn = document.querySelector('.lightbox-close');
+        const prevBtn = document.querySelector('.lightbox-prev');
+        const nextBtn = document.querySelector('.lightbox-next');
+        const lightboxImage = document.getElementById('lightbox-image');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+
+        function openModal(index) {
+            currentImageIndex = parseInt(index);
+            updateLightboxImage();
+            modal.classList.add('visible');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+
+        function closeModal() {
+            modal.classList.remove('visible');
+            document.body.style.overflow = 'auto';
+        }
+
+        function updateLightboxImage() {
+            if (currentImageIndex < 0 || currentImageIndex >= modeloFotos.length) return;
+            const photo = modeloFotos[currentImageIndex];
+            lightboxImage.src = photo.src;
+            lightboxCaption.textContent = photo.description || '';
+        }
+
+        function showNext() {
+            currentImageIndex = (currentImageIndex + 1) % modeloFotos.length;
+            updateLightboxImage();
+        }
+
+        function showPrev() {
+            currentImageIndex = (currentImageIndex - 1 + modeloFotos.length) % modeloFotos.length;
+            updateLightboxImage();
+        }
+
+        if (galleryGrid) {
+            galleryGrid.addEventListener('click', e => {
+                const item = e.target.closest('.gallery-grid-item');
+                if (item) {
+                    openModal(item.dataset.index);
+                }
+            });
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        nextBtn.addEventListener('click', showNext);
+        prevBtn.addEventListener('click', showPrev);
+        
+        modal.addEventListener('click', e => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', e => {
+            if (!modal.classList.contains('visible')) return;
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowRight') showNext();
+            if (e.key === 'ArrowLeft') showPrev();
+        });
+    }
+
+    // Call functions to build galleries and initialize features
+    construirGaleriaModelo();
+    initLightbox();
+
     // === INICIO: LÓGICA DE MODALES (SOLO EN LIBRO.HTML) ===
     const videoTrigger = document.getElementById('alberto-leon-video-trigger');
     const videoModal = document.getElementById('video-modal');
@@ -300,4 +423,4 @@ document.addEventListener('DOMContentLoaded', function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
-});
+})

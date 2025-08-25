@@ -49,7 +49,12 @@ h1, h2, h3, h4 {
 h2 {
     font-size: 2.5rem;
     text-align: center;
-    margin-bottom: 4rem;
+    margin-bottom: 4rem; /* Espacio por defecto para títulos SIN línea */
+}
+
+/* Reduce el margen de H2 si va seguido de la línea, para un espaciado consistente */
+h2:has(+ .header-line) {
+    margin-bottom: 1.5rem;
 }
 
 section {
@@ -188,10 +193,6 @@ nav ul li a:hover {
     max-width: 750px;
     margin: 0 auto;
     text-align: center;
-}
-
-.about-content h2 {
-    margin-bottom: 1rem;
 }
 
 .header-line {
@@ -556,10 +557,6 @@ footer {
     text-align: center;
     max-width: 800px;
     margin: 0 auto 4rem auto;
-}
-
-.section-header h2 {
-    margin-bottom: 1.5rem;
 }
 
 .sinopsis-content,
@@ -963,13 +960,15 @@ footer {
     overflow: hidden;
 }
 
-.video-container iframe {
+.video-container iframe,
+.video-container video {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
 }
+
 .video-container p {
     color: white;
     position: absolute;
@@ -1455,6 +1454,149 @@ footer {
 }
 
 /* ======================== */
+/*   PÁGINA MODELO Y LIGHTBOX */
+/* ======================== */
+.section-intro {
+    text-align: center;
+    max-width: 700px;
+    margin: -2rem auto 4rem auto;
+    font-size: 1.1rem;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.gallery-grid-item {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+}
+
+.gallery-grid-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-grid-item img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    display: block;
+    background-color: #e9e9e9;
+}
+
+.gallery-item-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+    padding: 2rem 1rem 1rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+}
+
+.gallery-grid-item:hover .gallery-item-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.gallery-item-overlay p {
+    margin: 0;
+    font-size: 0.9rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+
+/* --- Lightbox --- */
+.lightbox {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 3000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(26, 26, 26, 0.9);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.lightbox.visible {
+    display: block;
+}
+
+.lightbox-content {
+    margin: auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 900px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+}
+
+#lightbox-image {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 4px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
+#lightbox-caption {
+    margin-top: 15px;
+    color: #ccc;
+    font-size: 1.1rem;
+    height: 30px;
+}
+
+.lightbox-close, .lightbox-prev, .lightbox-next {
+    cursor: pointer;
+    position: absolute;
+    color: white;
+    font-size: 35px;
+    font-weight: bold;
+    transition: 0.3s;
+    user-select: none;
+}
+
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover {
+    color: #bbb;
+}
+
+.lightbox-close {
+    top: 15px;
+    right: 35px;
+    font-size: 45px;
+}
+
+.lightbox-prev, .lightbox-next {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.lightbox-prev {
+    left: 20px;
+}
+
+.lightbox-next {
+    right: 20px;
+}
+
+/* ======================== */
 /*      RESPONSIVE DESIGN   */
 /* ======================== */
 @media (max-width: 900px) {
@@ -1819,4 +1961,12 @@ footer {
     .letter-body { padding: 1.5rem; }
     .letter-body p { font-size: 1.3rem; line-height: 2; }
     .letter-body .letter-signature { font-size: 1.4rem; }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+    .lightbox-prev, .lightbox-next {
+        font-size: 24px;
+    }
 }
