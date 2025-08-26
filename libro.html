@@ -56,7 +56,7 @@
         </div>
     </section>
 
-    <!-- ========= EL CORAZÓN DE LA HISTORIA ========= -->
+    <!-- ========= EL CORAZÓN DE LA HISTORIA (PARTE 1) ========= -->
     <section id="sinopsis" class="section-gray">
         <div class="container">
              <div class="section-header">
@@ -74,26 +74,30 @@
                     <p>La periodista advierte que es un libro solo apto para las personas que leen con el corazón, pues lleva toda una vida almacenando situaciones en su mente porque <strong>“sabía que algún día tenía que contarlo”</strong>.</p>
                 </div>
             </div>
-             <div class="sinopsis-content-reversed" style="margin-top: 1rem;">
+        </div>
+    </section>
+
+    <!-- ========= BOOK TRAILER (NUEVA POSICIÓN) ========= -->
+    <section id="book-trailer">
+        <div class="container">
+            <h2>Book Trailer</h2>
+            <div class="header-line"></div>
+            <div class="video-container">
+                <video src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fbooktrailer.mp4?alt=media&token=281311c1-7ee6-46ef-81a7-c45bc9061f9c" controls playsinline></video>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========= CITA Y FOTO DEL TÍO (NUEVA SECCIÓN) ========= -->
+    <section id="cita-tio" class="section-gray">
+        <div class="container">
+            <div class="sinopsis-content-reversed">
                  <div class="sinopsis-text">
                     <p class="pie-de-foto" style="text-align: left; font-size: 1.1rem; font-style: italic;">"Si cierras los ojos y dejas que tu corazón lea, verás mucho más de lo que ves. Verás la vida de un ciego como nunca nadie te la contó. Te lo dice su hermano, que lo quiere con el alma”.<br><strong>- Jaime Díaz, tío de la autora.</strong></p>
                 </div>
                 <div class="sinopsis-img">
                     <img src="images/foto-tio.jpg" alt="Tio Yaiza Díaz con su familia">
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========= BOOK TRAILER (MOVED HERE) ========= -->
-    <section id="book-trailer">
-        <div class="container">
-            <h2>Book Trailer</h2>
-            <div class="header-line"></div>
-            <div class="video-container">
-                <!-- CAMBIO: Se ha reemplazado el <iframe> de YouTube por la etiqueta <video> -->
-                <!-- Pega la URL de tu vídeo de Firebase Storage en el atributo 'src' -->
-                <video src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fbooktrailer.mp4?alt=media&token=281311c1-7ee6-46ef-81a7-c45bc9061f9c" controls playsinline></video>
             </div>
         </div>
     </section>
@@ -258,9 +262,9 @@
 
     <!-- === INICIO: ESTRUCTURA DEL MODAL DE LA CARTA (V4: EXPERIENCIA PREMIUM) === -->
     <div id="letter-modal" class="modal-overlay">
+        <!-- **** CAMBIO ESTRUCTURAL CLAVE: Botón de cierre movido aquí **** -->
+        <button id="letter-modal-close-btn" class="modal-close" aria-label="Cerrar">&times;</button>
         <div class="modal-content letter-content">
-            <button id="letter-modal-close-btn" class="modal-close" aria-label="Cerrar">&times;</button>
-            
             <div class="envelope-wrapper">
                 <!-- El Sobre (se quedará en el fondo) -->
                 <div class="envelope">
@@ -279,7 +283,6 @@
                     <footer class="letter-signature">"La vida son palabras que generan sensaciones" <br><strong>Yaiza Díaz.</strong></footer>
                 </div>
             </div>
-
         </div>
     </div>
     <!-- === FIN: ESTRUCTURA DEL MODAL DE LA CARTA === -->
