@@ -1,4 +1,3 @@
-// Espera a que los servicios de Firebase estén listos en la ventana
 document.addEventListener('DOMContentLoaded', () => {
     const services = window.firebaseServices;
     if (!services) {
@@ -6,12 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // --- DESESTRUCTURAMOS LOS SERVICIOS ---
     const { auth, signInWithEmailAndPassword, onAuthStateChanged, signOut } = services;
     const { db, collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc } = services;
     const { storage, ref, uploadBytes, getDownloadURL, deleteObject } = services;
 
-    // --- ELEMENTOS DEL DOM ---
     const loginContainer = document.getElementById('login-container');
     const adminPanel = document.getElementById('admin-panel');
     const emailInput = document.getElementById('email');
@@ -22,21 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('save-button');
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
-    // AÑADIDO: Nuevos elementos del DOM
     const gallerySelector = document.getElementById('gallery-selector');
     const currentGalleryTitle = document.getElementById('current-gallery-title');
 
-
     let sortableInstance = null;
-    // AÑADIDO: Variables para gestionar la galería activa
-    let currentCollection = 'gallery'; // Por defecto, la del libro
-    let currentStoragePath = 'gallery/'; // Por defecto, la carpeta del libro
+    let currentCollection = 'gallery';
+    let currentStoragePath = 'gallery/';
 
-    // --- LÓGICA DE SELECCIÓN DE GALERÍA ---
     gallerySelector.addEventListener('change', (e) => {
         const selectedValue = e.target.value;
         currentCollection = selectedValue;
-        // La carpeta de storage se llamará igual que la colección
         currentStoragePath = `${selectedValue}/`; 
         
         updateAdminUI(selectedValue);
@@ -48,15 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
             currentGalleryTitle.textContent = "Editando: Galería del Libro";
         } else if (galleryId === 'modeling_gallery') {
             currentGalleryTitle.textContent = "Editando: Galería de Modelaje";
+        } else if (galleryId === 'television_gallery') {
+            currentGalleryTitle.textContent = "Editando: Galería de Televisión";
         }
     }
 
-    // --- AUTENTICACIÓN ---
     onAuthStateChanged(auth, user => {
         if (user) {
             loginContainer.style.display = 'none';
             adminPanel.style.display = 'block';
-            // Al iniciar sesión, carga la galería por defecto (Libro)
             updateAdminUI(currentCollection);
             loadGallery();
         } else {
@@ -72,10 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     logoutButton.addEventListener('click', () => signOut(auth));
 
-    // --- LÓGICA DE LA GALERÍA (Ahora es dinámica) ---
     async function loadGallery() {
         galleryList.innerHTML = '<p>Cargando imágenes...</p>';
-        // MODIFICADO: Usa la variable 'currentCollection'
         const q = query(collection(db, currentCollection), orderBy('order'));
         const snapshot = await getDocs(q);
         const photos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -104,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
         sortableInstance = new Sortable(galleryList, { animation: 150 });
     }
 
-    // --- ACCIONES (SUBIR, GUARDAR, BORRAR) ---
     dropZone.addEventListener('click', () => fileInput.click());
     dropZone.addEventListener('dragover', e => e.preventDefault());
     dropZone.addEventListener('drop', e => { e.preventDefault(); handleFiles(e.dataTransfer.files); });
@@ -114,13 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentCount = galleryList.querySelectorAll('.gallery-item').length;
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
-            // MODIFICADO: Usa la variable 'currentStoragePath'
             const storageRef = ref(storage, `${currentStoragePath}${Date.now()}_${file.name}`);
             
             await uploadBytes(storageRef, file);
             const url = await getDownloadURL(storageRef);
             
-            // MODIFICADO: Usa la variable 'currentCollection'
             await addDoc(collection(db, currentCollection), {
                 src: url,
                 descripcion: "Nueva imagen",
@@ -135,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const items = galleryList.querySelectorAll('.gallery-item');
         
         items.forEach((item, index) => {
-            // MODIFICADO: Usa la variable 'currentCollection'
             const docRef = doc(db, currentCollection, item.dataset.id);
             batch.update(docRef, {
                 descripcion: item.querySelector('.description-input').value,
@@ -155,10 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const docId = item.dataset.id;
             const imgSrc = item.querySelector('img').src;
             
-            // MODIFICADO: Usa la variable 'currentCollection'
             await deleteDoc(doc(db, currentCollection, docId));
             
-            // El borrado del storage funciona igual, ya que obtiene la ruta del src
             const storageRef = ref(storage, imgSrc);
             await deleteObject(storageRef);
 

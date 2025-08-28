@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .video-thumbnail-link { display: block; position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px; background-color: #000; }
+        .video-thumbnail-link img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+        .video-thumbnail-link:hover img { transform: scale(1.05); }
+        .play-button-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background-color: rgba(0, 0, 0, 0.5); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: all 0.3s ease; border: 2px solid white; }
+        .video-thumbnail-link:hover .play-button-overlay { background-color: rgba(204, 0, 0, 0.8); transform: translate(-50%, -50%) scale(1.1); }
+    </style>
 </head>
 <body class="libro-page">
     
@@ -18,8 +25,10 @@
             <ul id="nav-links">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="television.html">Televisión</a></li>
+                <li><a href="publicidad.html">Publicidad</a></li>
                 <li><a href="comunicacion.html">Comunicación</a></li>
                 <li><a href="investigacion.html">Documentales</a></li>
+                <li><a href="proyectos.html">Proyectos</a></li>
                 <li><a href="premios.html">Premios</a></li>
                 <li><a href="libro.html">Libro</a></li>
                 <li><a href="modelaje.html">Modelo</a></li>
@@ -44,26 +53,83 @@
             <div class="header-line"></div>
 
             <div class="comunicacion-section">
+                <h3>Presentadora de Telenoticias Fin de Semana (RTVC)</h3>
+                <p>Como uno de los rostros principales de los informativos de Televisión Canaria, Yaiza Díaz estuvo al frente de las ediciones de fin de semana, trasladando la actualidad del archipiélago.</p>
+                <a href="https://www.youtube.com/watch?v=6j0JrC1dYFg" target="_blank" rel="noopener noreferrer" class="video-thumbnail-link">
+                    <img src="https://img.youtube.com/vi/6j0JrC1dYFg/hqdefault.jpg" alt="Miniatura Telenoticias Fin de Semana">
+                    <div class="play-button-overlay"><i class="fas fa-play"></i></div>
+                </a>
+            </div>
+
+            <div class="comunicacion-section">
+                <h3>Presentadora de Telenoticias 1 (RTVC)</h3>
+                <p>También fue la encargada de presentar el Telenoticias 1, el informativo de mediodía de la cadena, uno de los espacios de mayor audiencia para mantener informados a los canarios.</p>
+                <a href="https://www.youtube.com/watch?v=iOY994IXcJ0" target="_blank" rel="noopener noreferrer" class="video-thumbnail-link">
+                    <img src="https://img.youtube.com/vi/iOY994IXcJ0/hqdefault.jpg" alt="Miniatura Telenoticias 1">
+                    <div class="play-button-overlay"><i class="fas fa-play"></i></div>
+                </a>
+            </div>
+
+            <div class="comunicacion-section">
+                <h3>Reportaje 'Bueno, Bonito y Barato' (RTVC)</h3>
+                <p>Reportaje realizado para el programa "Canarias Hoy" de Televisión Canaria, donde Yaiza Díaz visita el mayor rastro de antigüedades de Canarias para descubrir objetos únicos y sus historias.</p>
+                <a href="https://www.youtube.com/watch?v=yVGlZAg_fgM" target="_blank" rel="noopener noreferrer" class="video-thumbnail-link">
+                    <img src="https://img.youtube.com/vi/yVGlZAg_fgM/hqdefault.jpg" alt="Miniatura del reportaje Bueno, Bonito y Barato">
+                    <div class="play-button-overlay"><i class="fas fa-play"></i></div>
+                </a>
+            </div>
+
+            <div class="comunicacion-section">
+                <h3>Especial 10º Aniversario de Canarias Radio (RTVC)</h3>
+                <p>Con motivo del décimo aniversario de Canarias Radio, Yaiza Díaz elaboró y presentó un reportaje especial. Aquí se muestra la conexión en directo con el informativo "Buenos Días Canarias" para presentar el trabajo.</p>
+                <a href="https://www.youtube.com/watch?v=rOdh71Cd668" target="_blank" rel="noopener noreferrer" class="video-thumbnail-link">
+                    <img src="https://img.youtube.com/vi/rOdh71Cd668/hqdefault.jpg" alt="Miniatura Especial 10 Años de Canarias Radio">
+                    <div class="play-button-overlay"><i class="fas fa-play"></i></div>
+                </a>
+            </div>
+
+            <div class="comunicacion-section">
                 <h3>PROMO DEL PROGRAMA: ECOMINUTOS</h3>
-                <p>
-                    Yaiza Díaz ha trabajado para productoras externas con proyectos concienciados con el medio ambiente como ECOMINUTO, en tan solo un minuto la presentadora daba consejos sobre sostenibilidad.
-                </p>
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/0CoL_nJow-g" title="Promo Ecominutos" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
+                <p>Yaiza Díaz ha trabajado para productoras externas con proyectos concienciados con el medio ambiente como ECOMINUTO, en tan solo un minuto la presentadora daba consejos sobre sostenibilidad.</p>
+                <a href="https://www.youtube.com/watch?v=0CoL_nJow-g" target="_blank" rel="noopener noreferrer" class="video-thumbnail-link">
+                    <img src="https://img.youtube.com/vi/0CoL_nJow-g/hqdefault.jpg" alt="Miniatura Promo Ecominutos">
+                    <div class="play-button-overlay"><i class="fas fa-play"></i></div>
+                </a>
             </div>
 
             <div class="comunicacion-section">
                 <h3>Píldora Sostenible</h3>
-                <p>Una de las píldoras grabada en un hotel sostenible en Lanzarote.</p>
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/Uza5nNuGl6E" title="Píldora Ecominutos Hotel Sostenible" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
+                <p>Una de las píldoras grabada en un hotel sostenible en Lanzarote para el programa ECOMINUTO.</p>
+                <a href="https://www.youtube.com/watch?v=Uza5nNuGl6E" target="_blank" rel="noopener noreferrer" class="video-thumbnail-link">
+                    <img src="https://img.youtube.com/vi/Uza5nNuGl6E/hqdefault.jpg" alt="Miniatura Píldora Sostenible">
+                    <div class="play-button-overlay"><i class="fas fa-play"></i></div>
+                </a>
             </div>
+        </div>
+    </section>
 
+    <!-- ========= NUEVA SECCIÓN DE GALERÍA ========= -->
+    <section id="galeria-television" class="section-gray">
+        <div class="container">
+            <h2>Galería</h2>
+            <div class="header-line"></div>
+            <div id="gallery-grid-television" class="gallery-grid">
+                <p>Cargando galería...</p>
+            </div>
         </div>
     </section>
     
+    <!-- LIGHTBOX PARA VER LAS IMÁGENES EN GRANDE -->
+    <div id="lightbox-modal" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <span class="lightbox-prev">&#10094;</span>
+        <span class="lightbox-next">&#10095;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-image" src="" alt="Visor de imágenes de televisión">
+            <div id="lightbox-caption"></div>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <div class="footer-social-icons">
@@ -75,6 +141,17 @@
         </div>
     </footer>
 
+    <!-- Scripts de Firebase y el principal -->
+    <script src="config.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+        import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        window.firebaseServices = {
+            db, collection, getDocs, orderBy, query
+        };
+    </script>
     <script src="script.js" defer></script>
 </body>
 </html>

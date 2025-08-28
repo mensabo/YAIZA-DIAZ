@@ -246,76 +246,114 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    construirGaleriaPublica();
-
-    // --- LÓGICA DE LA GALERÍA DE MODELAJE (SOLO EN MODELAJE.HTML) ---
-    let modeloFotos = []; // Array to store photos for the lightbox
+    // Declaraciones de variables para las galerías con lightbox
+    let activePhotos = [];
     let currentImageIndex = -1;
 
+    // --- LÓGICA DE LA GALERÍA DE MODELAJE (SOLO EN MODELAJE.HTML) ---
     async function construirGaleriaModelo() {
         const galleryGrid = document.getElementById('gallery-grid-modelo');
-        if (!galleryGrid) return; // Only run on the modelaje page
+        if (!galleryGrid) return;
 
-        // Wait a moment for Firebase to be ready
         await new Promise(resolve => setTimeout(resolve, 100));
 
         if (!window.firebaseServices) {
-            console.error("Firebase no está listo en esta página.");
+            console.error("Firebase no está listo.");
             galleryGrid.innerHTML = "<p>Error al conectar con la base de datos.</p>";
             return;
         }
         const { db, collection, getDocs, orderBy, query } = window.firebaseServices;
 
         try {
-            // IMPORTANT: Assumes a new collection in Firestore named 'modeling_gallery'
             const q = query(collection(db, 'modeling_gallery'), orderBy('order'));
             const snapshot = await getDocs(q);
+            const modeloFotos = snapshot.docs.map(doc => doc.data());
             
-            // Store photos for lightbox navigation
-            modeloFotos = snapshot.docs.map(doc => doc.data());
+            if (modeloFotos.length > 0) activePhotos = modeloFotos;
 
             if (modeloFotos.length === 0) {
                 galleryGrid.innerHTML = "<p>La galería está vacía en este momento.</p>";
                 return;
             }
 
-            galleryGrid.innerHTML = ''; // Clear loading message
+            galleryGrid.innerHTML = '';
             modeloFotos.forEach((foto, index) => {
                 const item = document.createElement('div');
                 item.className = 'gallery-grid-item';
-                item.dataset.index = index; // Set index for lightbox
+                item.dataset.index = index;
                 
                 item.innerHTML = `
-                    <img src="${foto.src}" alt="${foto.description || 'Foto de modelaje'}">
-                    <div class="gallery-item-overlay">
-                        <p>${foto.description || ''}</p>
-                    </div>
+                    <img src="${foto.src}" alt="${foto.descripcion || 'Foto de modelaje'}">
+                    <div class="gallery-item-overlay"><p>${foto.descripcion || ''}</p></div>
                 `;
                 galleryGrid.appendChild(item);
             });
         } catch (error) {
             console.error("Error al cargar la galería de modelaje:", error);
-            galleryGrid.innerHTML = "<p>No se pudo cargar la galería. Inténtalo de nuevo más tarde.</p>";
+            galleryGrid.innerHTML = "<p>No se pudo cargar la galería.</p>";
         }
     }
 
-    // --- LÓGICA DEL LIGHTBOX (PARA PÁGINA DE MODELAJE) ---
+    // --- AÑADIDO: LÓGICA PARA LA GALERÍA DE TELEVISIÓN ---
+    async function construirGaleriaTelevision() {
+        const galleryGrid = document.getElementById('gallery-grid-television');
+        if (!galleryGrid) return; // Solo se ejecuta en television.html
+
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        if (!window.firebaseServices) {
+            console.error("Firebase no está listo.");
+            galleryGrid.innerHTML = "<p>Error al conectar con la base de datos.</p>";
+            return;
+        }
+        const { db, collection, getDocs, orderBy, query } = window.firebaseServices;
+
+        try {
+            const q = query(collection(db, 'television_gallery'), orderBy('order'));
+            const snapshot = await getDocs(q);
+            const televisionFotos = snapshot.docs.map(doc => doc.data());
+
+            if (televisionFotos.length > 0) activePhotos = televisionFotos;
+
+            if (televisionFotos.length === 0) {
+                galleryGrid.innerHTML = "<p>La galería está vacía en este momento.</p>";
+                return;
+            }
+
+            galleryGrid.innerHTML = '';
+            televisionFotos.forEach((foto, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-grid-item';
+                item.dataset.index = index;
+                
+                item.innerHTML = `
+                    <img src="${foto.src}" alt="${foto.descripcion || 'Foto de televisión'}">
+                    <div class="gallery-item-overlay"><p>${foto.descripcion || ''}</p></div>
+                `;
+                galleryGrid.appendChild(item);
+            });
+        } catch (error) {
+            console.error("Error al cargar la galería de televisión:", error);
+            galleryGrid.innerHTML = "<p>No se pudo cargar la galería.</p>";
+        }
+    }
+
+    // --- LÓGICA DEL LIGHTBOX (AHORA GENÉRICA) ---
     function initLightbox() {
         const modal = document.getElementById('lightbox-modal');
-        if (!modal) return; // Only run if lightbox HTML exists
+        if (!modal) return;
 
-        const galleryGrid = document.getElementById('gallery-grid-modelo');
         const closeBtn = document.querySelector('.lightbox-close');
         const prevBtn = document.querySelector('.lightbox-prev');
         const nextBtn = document.querySelector('.lightbox-next');
         const lightboxImage = document.getElementById('lightbox-image');
         const lightboxCaption = document.getElementById('lightbox-caption');
-
+        
         function openModal(index) {
             currentImageIndex = parseInt(index);
             updateLightboxImage();
             modal.classList.add('visible');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            document.body.style.overflow = 'hidden';
         }
 
         function closeModal() {
@@ -324,40 +362,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function updateLightboxImage() {
-            if (currentImageIndex < 0 || currentImageIndex >= modeloFotos.length) return;
-            const photo = modeloFotos[currentImageIndex];
+            if (currentImageIndex < 0 || currentImageIndex >= activePhotos.length) return;
+            const photo = activePhotos[currentImageIndex];
             lightboxImage.src = photo.src;
-            lightboxCaption.textContent = photo.description || '';
+            lightboxCaption.textContent = photo.descripcion || '';
         }
 
         function showNext() {
-            currentImageIndex = (currentImageIndex + 1) % modeloFotos.length;
+            currentImageIndex = (currentImageIndex + 1) % activePhotos.length;
             updateLightboxImage();
         }
 
         function showPrev() {
-            currentImageIndex = (currentImageIndex - 1 + modeloFotos.length) % modeloFotos.length;
+            currentImageIndex = (currentImageIndex - 1 + activePhotos.length) % activePhotos.length;
             updateLightboxImage();
         }
 
-        if (galleryGrid) {
-            galleryGrid.addEventListener('click', e => {
-                const item = e.target.closest('.gallery-grid-item');
-                if (item) {
-                    openModal(item.dataset.index);
-                }
-            });
-        }
+        document.body.addEventListener('click', e => {
+            const item = e.target.closest('.gallery-grid-item');
+            if (item && (item.parentElement.id === 'gallery-grid-modelo' || item.parentElement.id === 'gallery-grid-television')) {
+                openModal(item.dataset.index);
+            }
+        });
 
         closeBtn.addEventListener('click', closeModal);
         nextBtn.addEventListener('click', showNext);
         prevBtn.addEventListener('click', showPrev);
         
-        modal.addEventListener('click', e => {
-            if (e.target === modal) {
-                closeModal();
-            }
-        });
+        modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 
         document.addEventListener('keydown', e => {
             if (!modal.classList.contains('visible')) return;
@@ -367,8 +399,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Call functions to build galleries and initialize features
+    // Llamadas a todas las funciones de construcción de galerías
+    construirGaleriaPublica();
     construirGaleriaModelo();
+    construirGaleriaTelevision();
     initLightbox();
 
     // === INICIO: LÓGICA DE MODALES (SOLO EN LIBRO.HTML) ===
@@ -423,4 +457,4 @@ document.addEventListener('DOMContentLoaded', function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
-})
+});

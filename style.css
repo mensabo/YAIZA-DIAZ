@@ -382,6 +382,137 @@ footer {
     transform: translateY(-3px);
 }
 
+/* ================================================== */
+/* ESTILOS DE GALERÍA (MODELAJE, TELEVISIÓN, ETC.) */
+/* ================================================== */
+.section-intro {
+    text-align: center;
+    max-width: 700px;
+    margin: -2rem auto 4rem auto;
+    font-size: 1.1rem;
+}
+
+/* --- INICIO: NUEVO DISEÑO DE GALERÍA ASIMÉTRICA --- */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 280px; /* Altura base de las filas */
+    gap: 1.5rem;
+}
+
+.gallery-grid-item {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+}
+
+.gallery-grid-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Reglas para crear el collage asimétrico */
+.gallery-grid-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+.gallery-grid-item:nth-child(4) { grid-row: span 2; }
+.gallery-grid-item:nth-child(5) { grid-column: span 2; }
+.gallery-grid-item:nth-child(8) { grid-column: span 2; grid-row: span 2; }
+.gallery-grid-item:nth-child(11) { grid-row: span 2; }
+
+.gallery-grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background-color: #e9e9e9;
+}
+
+.gallery-item-overlay {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: white;
+    padding: 2rem 1rem 1rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+}
+
+.gallery-grid-item:hover .gallery-item-overlay {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.gallery-item-overlay p {
+    margin: 0;
+    font-size: 0.9rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+}
+/* --- FIN: NUEVO DISEÑO DE GALERÍA --- */
+
+/* --- Lightbox --- */
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 3000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(26, 26, 26, 0.9);
+    backdrop-filter: blur(8px);
+}
+
+.lightbox.visible { display: block; }
+
+.lightbox-content {
+    margin: auto;
+    padding: 20px;
+    width: 90%;
+    max-width: 900px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+}
+
+#lightbox-image {
+    max-width: 100%;
+    max-height: 80vh;
+    border-radius: 4px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
+#lightbox-caption {
+    margin-top: 15px;
+    color: #ccc;
+    font-size: 1.1rem;
+    height: 30px;
+}
+
+.lightbox-close, .lightbox-prev, .lightbox-next {
+    cursor: pointer;
+    position: absolute;
+    color: white;
+    font-size: 35px;
+    font-weight: bold;
+    transition: 0.3s;
+    user-select: none;
+}
+
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover {
+    color: #bbb;
+}
+
+.lightbox-close { top: 15px; right: 35px; font-size: 45px; }
+.lightbox-prev, .lightbox-next { top: 50%; transform: translateY(-50%); }
+.lightbox-prev { left: 20px; }
+.lightbox-next { right: 20px; }
+
 /* ==================================================== */
 /*   ESTILOS Y EFECTOS PARA LA PORTADA DEL LIBRO      */
 /* ==================================================== */
@@ -798,9 +929,8 @@ footer {
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-
 /* ==================================================================== */
-/* === ESTILOS CARTA DE LA AUTORA (MODAL) - SECCIÓN CORREGIDA === */
+/* === ESTILOS CARTA DE LA AUTORA (MODAL) === */
 /* ==================================================================== */
 
 #letter-modal .modal-content {
@@ -814,50 +944,38 @@ footer {
     box-shadow: none;
 }
 
-/* === INICIO: NUEVO ESTILO MEJORADO PARA EL BOTÓN DE CIERRE DE LA CARTA === */
-
 #letter-modal .modal-close {
-    position: fixed; /* Clave: Lo posiciona relativo a la ventana del navegador */
-    top: 1.5rem;     /* Distancia desde arriba */
-    right: 1.5rem;   /* Distancia desde la derecha */
-    z-index: 2010;   /* Asegura que esté por encima de todo el contenido del modal */
-
-    /* Estilo visual para máxima visibilidad y elegancia */
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    z-index: 2010;
     width: 40px;
     height: 40px;
     background-color: rgba(0, 0, 0, 0.4);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%; /* Lo convierte en un círculo */
-    
-    /* Centrado perfecto del aspa '×' */
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.8rem;
     line-height: 1;
     text-shadow: none;
-
-    /* Interacción y animación */
     cursor: pointer;
     transition: opacity 0.3s ease, transform 0.2s ease, background-color 0.2s ease;
-    
-    /* Estado inicial (oculto) */
     opacity: 0;
     pointer-events: none;
 }
 
 #letter-modal.visible .modal-close {
-    opacity: 1; /* Lo hace visible cuando el modal aparece */
-    pointer-events: auto; /* Permite hacer clic en él */
+    opacity: 1;
+    pointer-events: auto;
 }
 
 #letter-modal .modal-close:hover {
     background-color: rgba(0, 0, 0, 0.6);
-    transform: scale(1.1); /* Efecto de ampliación al pasar el ratón */
+    transform: scale(1.1);
 }
-
-/* === FIN: NUEVO ESTILO MEJORADO === */
 
 .envelope {
     position: absolute;
@@ -949,6 +1067,7 @@ footer {
     padding: 0;
     background: transparent;
 }
+
 .letter-signature strong {
     color: #8c765a;
 }
@@ -1259,7 +1378,7 @@ footer {
 }
 
 /* ===================================================== */
-/*   BARRA DE RETORNO ELEGANTE (DISEÑO REFINADO) V2      */
+/*   BARRA DE RETORNO ELEGANTE */
 /* ===================================================== */
 .return-bar {
     background-color: var(--color-blanco);
@@ -1310,29 +1429,25 @@ footer {
 }
 
 /* =================================== */
-/*   ESTILOS BOTÓN VOLVER ARRIBA       */
+/*   BOTÓN VOLVER ARRIBA       */
 /* =================================== */
 #volver-arriba-btn {
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 999;
-    
     width: 40px;
     height: 40px;
     background-color: var(--color-magenta-libro);
     color: var(--color-blanco);
-    
     border: none;
     border-radius: 50%;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1rem;
     text-decoration: none;
-    
     opacity: 0;
     visibility: hidden;
     transform: translateY(15px);
@@ -1369,12 +1484,10 @@ footer {
     position: absolute;
     top: 130%; 
     right: 30%;
-    
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.5s ease-out, transform 0.5s ease-out;
     transition-delay: 0.5s;
-    
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1421,9 +1534,11 @@ footer {
     max-width: 800px;
     margin: 0 auto;
 }
+
 .comunicacion-section {
     margin-bottom: 4rem;
 }
+
 .comunicacion-section h3 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
@@ -1431,21 +1546,25 @@ footer {
     padding-bottom: 0.5rem;
     display: inline-block;
 }
+
 .comunicacion-section p {
     font-size: 1.1rem;
     line-height: 1.7;
     margin-bottom: 1.5rem;
 }
+
 .project-card-link {
     text-decoration: none;
     color: inherit;
     display: block;
 }
+
 .project-card-link .project-card h4 {
     position: relative;
     display: inline-block;
     padding-bottom: 4px;
 }
+
 .project-card-link .project-card h4::after {
     content: '';
     position: absolute;
@@ -1458,158 +1577,17 @@ footer {
     transform-origin: left;
     transition: transform 0.3s ease-out;
 }
+
 .project-card-link:hover .project-card h4 {
     color: var(--color-acento);
 }
+
 .project-card-link:hover .project-card h4::after {
     transform: scaleX(1);
 }
 
 .card-link-indicator {
     display: none;
-}
-
-/* ======================== */
-/*   PÁGINA MODELO Y LIGHTBOX */
-/* ======================== */
-.section-intro {
-    text-align: center;
-    max-width: 700px;
-    margin: -2rem auto 4rem auto;
-    font-size: 1.1rem;
-}
-
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-
-.gallery-grid-item {
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-    position: relative;
-}
-
-.gallery-grid-item:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-}
-
-.gallery-grid-item img {
-    width: 100%;
-    height: 350px;
-    object-fit: cover;
-    display: block;
-    background-color: #e9e9e9;
-}
-
-.gallery-item-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    color: white;
-    padding: 2rem 1rem 1rem;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.3s, transform 0.3s;
-    pointer-events: none;
-}
-
-.gallery-grid-item:hover .gallery-item-overlay {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.gallery-item-overlay p {
-    margin: 0;
-    font-size: 0.9rem;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-}
-
-/* --- Lightbox --- */
-.lightbox {
-    display: none; /* Hidden by default */
-    position: fixed;
-    z-index: 3000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(26, 26, 26, 0.9);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
-}
-
-.lightbox.visible {
-    display: block;
-}
-
-.lightbox-content {
-    margin: auto;
-    padding: 20px;
-    width: 90%;
-    max-width: 900px;
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    text-align: center;
-}
-
-#lightbox-image {
-    max-width: 100%;
-    max-height: 80vh;
-    border-radius: 4px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.5);
-}
-
-#lightbox-caption {
-    margin-top: 15px;
-    color: #ccc;
-    font-size: 1.1rem;
-    height: 30px;
-}
-
-.lightbox-close, .lightbox-prev, .lightbox-next {
-    cursor: pointer;
-    position: absolute;
-    color: white;
-    font-size: 35px;
-    font-weight: bold;
-    transition: 0.3s;
-    user-select: none;
-}
-
-.lightbox-close:hover,
-.lightbox-prev:hover,
-.lightbox-next:hover {
-    color: #bbb;
-}
-
-.lightbox-close {
-    top: 15px;
-    right: 35px;
-    font-size: 45px;
-}
-
-.lightbox-prev, .lightbox-next {
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.lightbox-prev {
-    left: 20px;
-}
-
-.lightbox-next {
-    right: 20px;
 }
 
 /* ======================== */
@@ -1634,6 +1612,19 @@ footer {
     .miniatura-item {
         margin-bottom: 0;
         flex: 0 0 120px;
+    }
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: 250px;
+    }
+    /* Reseteamos las reglas de expansión para tablet */
+    .gallery-grid-item:nth-child(1),
+    .gallery-grid-item:nth-child(4),
+    .gallery-grid-item:nth-child(5),
+    .gallery-grid-item:nth-child(8),
+    .gallery-grid-item:nth-child(11) {
+        grid-column: unset;
+        grid-row: unset;
     }
 }
 
@@ -1678,7 +1669,6 @@ footer {
         max-width: 300px;
         height: 100vh;
         background-color: rgba(20, 20, 20, 0.95);
-        -webkit-backdrop-filter: blur(8px);
         backdrop-filter: blur(8px);
         flex-direction: column;
         justify-content: center;
@@ -1986,10 +1976,7 @@ footer {
     }
     
     .gallery-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 1rem;
-    }
-    .lightbox-prev, .lightbox-next {
-        font-size: 24px;
+        grid-template-columns: 1fr;
+        grid-auto-rows: 300px;
     }
 }

@@ -8,18 +8,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        .video-fallback {
+        /* Modificado para que el contenedor del enlace sea el bloque principal */
+        a.video-fallback {
+            display: block;
             position: relative;
             background-color: #000;
             border-radius: 8px;
             overflow: hidden;
             aspect-ratio: 16 / 9;
+            text-decoration: none;
         }
         .video-fallback video {
             width: 100%;
             height: 100%;
             object-fit: cover;
             opacity: 0.9;
+            /* Añadida transición para el efecto hover */
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        /* Añadido efecto hover sobre el vídeo */
+        a.video-fallback:hover video {
+            transform: scale(1.05);
+            opacity: 1;
         }
         .play-button-overlay {
             position: absolute;
@@ -38,8 +48,10 @@
             border: 1px solid rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
+            z-index: 2;
         }
-        .play-button-overlay:hover {
+        /* Modificado para que el hover se active en todo el contenedor */
+        a.video-fallback:hover .play-button-overlay {
             background-color: rgba(220, 0, 0, 0.9);
             transform: scale(1.1);
             border-color: rgba(255, 255, 255, 0.7);
@@ -55,8 +67,11 @@
             </div>
             <ul id="nav-links">
                 <li><a href="index.html">Inicio</a></li>
+                <li><a href="television.html">Televisión</a></li>
+                <li><a href="publicidad.html">Publicidad</a></li>
                 <li><a href="comunicacion.html">Comunicación</a></li>
                 <li><a href="investigacion.html">Documentales</a></li>
+                <li><a href="proyectos.html">Proyectos</a></li>
                 <li><a href="premios.html">Premios</a></li>
                 <li><a href="libro.html">Libro</a></li>
                 <li><a href="modelaje.html">Modelo</a></li>
@@ -85,22 +100,22 @@
                 <p>“Enemigo equivocado” es una trilogía de reportajes de investigación que abordan la pandemia desde el punto de vista científico, tecnológico y estratégico en Canarias y en el mundo.</p>
                 
                 <p style="margin-top: 2rem;"><strong>Parte 1: ¿Nos hemos equivocado de enemigo?</strong></p>
-                <div class="video-fallback">
+                <a href="https://www.youtube.com/watch?v=IsYrl9T5gq4" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fvirus1.mp4?alt=media&token=bbad93bf-ea8d-4c35-8b97-fc16e87f2dc9" type="video/mp4"></video>
-                    <a href="https://www.youtube.com/watch?v=IsYrl9T5gq4" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
-                </div>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
                 
                 <p style="margin-top: 2rem;"><strong>Parte 2: Rastro Digital</strong></p>
-                <div class="video-fallback">
+                <a href="https://www.youtube.com/watch?v=fWQ-G2cKVMs" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fvirus2.mp4?alt=media&token=9f70f4a3-947e-4fce-b7cd-002bd340b0c3" type="video/mp4"></video>
-                    <a href="https://www.youtube.com/watch?v=fWQ-G2cKVMs" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
-                </div>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
 
                 <p style="margin-top: 2rem;"><strong>Parte 3: La Estrategia</strong></p>
-                <div class="video-fallback">
+                <a href="https://www.youtube.com/watch?v=8H1c8Ap8CYU" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FVirus3.mp4?alt=media&token=ed72dd26-81d6-4300-bf0d-d83614582bc3" type="video/mp4"></video>
-                    <a href="https://www.youtube.com/watch?v=8H1c8Ap8CYU" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
-                </div>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
             </div>
 
             <div class="comunicacion-section">
@@ -108,67 +123,65 @@
                 <p>Investigación sobre una base secreta de la marina americana en La Palma y la actual lucha por los recursos minerales submarinos en aguas canarias.</p>
                 
                 <p style="margin-top: 2rem;"><strong>Capítulo 1: La base secreta</strong></p>
-                <div class="video-fallback">
+                <a href="https://www.youtube.com/watch?v=l-PcUnGlnOY" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FMar1.mp4?alt=media&token=79fd2545-b5e9-4d2d-a12a-4bdef4cf0c4f" type="video/mp4"></video>
-                    <a href="https://www.youtube.com/watch?v=l-PcUnGlnOY" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
-                </div>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
                 
                 <p style="margin-top: 2rem;"><strong>Capítulo 2: La guerra por los recursos</strong></p>
-                <div class="video-fallback">
+                <a href="https://www.youtube.com/watch?v=HDUG_mqDKLI" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FMar2.mp4?alt=media&token=a2921e13-a98f-42a1-b8ec-49a32a4d5efe" type="video/mp4"></video>
-                    <a href="https://www.youtube.com/watch?v=HDUG_mqDKLI" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
-                </div>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
 
                 <p style="margin-top: 2rem;"><strong>Capítulo 3: El fondo soberano</strong></p>
-                <div class="video-fallback">
+                <a href="https://www.youtube.com/watch?v=4kDoxqf_fBE" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FMAR3.mp4?alt=media&token=e6f7d087-4157-4264-abef-c4db3340201a" type="video/mp4"></video>
-                    <a href="https://www.youtube.com/watch?v=4kDoxqf_fBE" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
-                </div>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
             </div>
             
             <div class="comunicacion-section">
                 <h3>Noche de Reporteros</h3>
                 <h4 style="margin-top: 2.5rem; font-size: 1.5rem;">Hasta que nos extingamos</h4>
                 <p>Reportaje que explora la deuda ecológica del planeta y el Movimiento por la Extinción Humana Voluntaria.</p>
-                <div class="video-fallback">
+                <a href="https://www.youtube.com/watch?v=ETnrDmK69eY" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FMAR4.mp4?alt=media&token=5f9a49cf-40ee-4a20-808e-468ffc31f4bd" type="video/mp4"></video>
-                    <a href="https://www.youtube.com/watch?v=ETnrDmK69eY" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
-                </div>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
                 
                 <h4 style="margin-top: 2.5rem; font-size: 1.5rem;">Inteligencia Artificial en la Medicina</h4>
                 <p>Una investigación sobre cómo la telemedicina y la IA están revolucionando el sector salud.</p>
-                <div class="video-fallback">
+                <a href="https://www.youtube.com/watch?v=ZQUjA8pN5p4" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FMedicina.mp4?alt=media&token=90ad512d-8369-43df-9c6d-4222013807bb" type="video/mp4"></video>
-                    <a href="https://www.youtube.com/watch?v=ZQUjA8pN5p4" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
-                </div>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
             </div>
 
             <div class="comunicacion-section">
                 <h3>Otros Reportajes de Calado Social</h3>
-                <h4 style="margin-top: 2.5rem; font-size: 1.5rem;">Vidas Transdiversas</h4>
-                <p>Documental "Vidas Transdiversas".</p>
-                <div class="video-fallback">
+                <h4 style="margin-top: 2.5rem; font-size: 1.5rem;">DIRECTORA DE DOCUMENTAL: VIDAS TRANSDIVERSAS</h4>
+                <p>Un documental guionizado y dirigido por Yaiza Díaz para SODEPAL en la isla de La Palma, donde personas transexuales locales y otras con repercusión a nivel internacional y nacional como Carla Antonelli, Ángela Ponce e Isabel Torres hacen una reflexión sobre sus vidas y logran que el espectador empatice con la necesidad de que haya una ley que ampare la transexualidad.</p>
+                <a href="https://www.facebook.com/watch/live/?ref=watch_permalink&v=1215255425661591" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline>
-                        <!-- CAMBIO: Pega aquí la URL de Firebase para el preview de 'Vidas Transdiversas' -->
-                        <source src="" type="video/mp4">
+                        <source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Ftransd.mp4?alt=media&token=feac2605-7ae1-403b-a909-86f905ac66c1" type="video/mp4">
                     </video>
-                    <!-- CAMBIO: Cuando tengas la URL del vídeo completo, pégala aquí -->
-                    <a href="#" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
-                </div>
+                    <span class="play-button-overlay"><i class="fab fa-facebook"></i></span>
+                </a>
                  
                 <h4 style="margin-top: 2.5rem; font-size: 1.5rem;">Anorexia y Bulimia</h4>
                 <p>Reportaje sobre Anorexia y Bulimia.</p>
-                <div class="video-fallback">
+                <a href="https://www.youtube.com/watch?v=IVBfoJdEbTQ" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fbulimia.mp4?alt=media&token=26df4074-344e-4066-a8c7-5a9e68d2482e" type="video/mp4"></video>
-                    <a href="https://www.youtube.com/watch?v=IVBfoJdEbTQ" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
-                </div>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
 
                 <h4 style="margin-top: 2.5rem; font-size: 1.5rem;">Mujeres en la Política</h4>
                 <p>Reportaje sobre Mujeres en la política.</p>
-                <div class="video-fallback">
-                    <video autoplay loop muted playsinline><!-- CAMBIO: Pega aquí la URL de Firebase para el preview de 'Mujeres Politica' --><source src="" type="video/mp4"></video>
-                    <a href="https://www.youtube.com/watch?v=3Y0197XDIlE" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
-                </div>
+                <a href="https://www.youtube.com/watch?v=3Y0197XDIlE" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fpolitica.mp4?alt=media&token=56b1c286-f301-484a-8694-1cbc380f08cd" type="video/mp4"></video>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
             </div>
 
         </div>

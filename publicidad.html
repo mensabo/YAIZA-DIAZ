@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelo - Yaiza Díaz</title>
+    <title>Publicidad - Yaiza Díaz</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -33,38 +33,28 @@
 
     <div class="return-bar">
         <div class="container">
-            <a href="index.html#portfolio" class="breadcrumb-return-link">
-                <i class="fas fa-arrow-left"></i> Volver a Trayectoria
+            <a href="index.html" class="breadcrumb-return-link">
+                <i class="fas fa-arrow-left"></i> Volver a Inicio
             </a>
         </div>
     </div>
 
     <!-- ========= CONTENIDO PRINCIPAL DE LA PÁGINA ========= -->
-    <section id="modelo-main">
-        <div class="container">
-            <h2>Modelo</h2>
+    <section id="publicidad-main">
+        <div class="container comunicacion-content">
+            <h2>Publicidad</h2>
             <div class="header-line"></div>
-            <p class="section-intro">Aquí puedes ver una selección de trabajos de modelaje y sesiones fotográficas realizadas con diferentes fotógrafos.</p>
 
-            <!-- Este contenedor se rellenará dinámicamente con las fotos de Firebase -->
-            <div id="gallery-grid-modelo" class="gallery-grid">
-                <!-- Mensaje de carga inicial -->
-                <p>Cargando galería de fotos...</p>
+            <div class="comunicacion-section">
+                <h3>Próximamente</h3>
+                <p>
+                    Aquí se mostrará una selección de los trabajos publicitarios y spots para televisión más destacados.
+                </p>
             </div>
+
         </div>
     </section>
     
-    <!-- LIGHTBOX PARA VER LAS IMÁGENES EN GRANDE -->
-    <div id="lightbox-modal" class="lightbox">
-        <span class="lightbox-close">&times;</span>
-        <span class="lightbox-prev">&#10094;</span>
-        <span class="lightbox-next">&#10095;</span>
-        <div class="lightbox-content">
-            <img id="lightbox-image" src="" alt="Visor de imágenes de modelaje">
-            <div id="lightbox-caption"></div>
-        </div>
-    </div>
-
     <footer>
         <div class="container">
             <div class="footer-social-icons">
@@ -76,19 +66,6 @@
         </div>
     </footer>
 
-    <!-- SDK de Firebase (necesario para cargar las fotos) -->
-    <script src="config.js"></script>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        window.firebaseServices = {
-            db, collection, getDocs, orderBy, query
-        };
-    </script>
-
-    <!-- Nuestro script principal con la lógica de la galería -->
     <script src="script.js" defer></script>
 </body>
 </html>

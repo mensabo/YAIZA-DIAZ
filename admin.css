@@ -1,48 +1,217 @@
-body { font-family: sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-#login-container, #admin-panel { max-width: 900px; margin: 2rem auto; padding: 2rem; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-radius: 8px; }
-h1 { text-align: center; color: #1a1a1a; margin-top: 0;}
-h2 { text-align: center; color: #1a1a1a; margin-top: 0;} /* Estilo genérico para H2 */
-input, button { display: block; width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 4px; border: 1px solid #ddd; box-sizing: border-box; }
-button { background-color: #bca07d; color: white; border: none; cursor: pointer; font-size: 1rem; transition: background-color 0.2s; }
-button:hover { background-color: #a78d6b; }
-#logout-button { width: auto; padding: 8px 15px; font-size: 0.9rem; }
+/* ======================================== */
+/*          PANEL DE ADMINISTRACIÓN         */
+/* ======================================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
-/* AÑADIDO: Estilos para el contenedor del selector */
-.gallery-selector-container {
+:root {
+    --color-primario: #333;
+    --color-fondo: #f7f8fc;
+    --color-blanco: #ffffff;
+    --color-acento: #bca07d;
+    --color-acento-hover: #a78d6b;
+    --color-rojo: #e74c3c;
+    --color-gris-borde: #dde2ec;
+    --color-gris-texto: #555;
+    --fuente-principal: 'Poppins', sans-serif;
+    --sombra-suave: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--fuente-principal);
+    background-color: var(--color-fondo);
+    color: var(--color-primario);
+    margin: 0;
+    padding: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#login-container, #admin-panel {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    background: var(--color-blanco);
+    box-shadow: var(--sombra-suave);
+    border-radius: 12px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 2rem;
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--color-gris-borde);
+}
+
+h1 {
+    font-size: 1.8rem;
+    color: var(--color-primario);
+    margin: 0;
+}
+
+h2 {
+    text-align: left;
+    font-size: 1.5rem;
+    color: var(--color-acento);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+}
+
+/* === Formularios y Botones === */
+input, select {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-gris-borde);
+    box-sizing: border-box;
+    font-family: var(--fuente-principal);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--color-acento);
+    box-shadow: 0 0 0 3px rgba(188, 160, 125, 0.2);
+}
+
+button {
+    background-color: var(--color-acento);
+    color: var(--color-blanco);
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 12px 20px;
+    border-radius: 8px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+    background-color: var(--color-acento-hover);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+#save-button {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+#logout-button {
+    background: none;
+    color: var(--color-gris-texto);
+    font-size: 0.9rem;
+    padding: 8px 0;
+}
+
+#logout-button:hover {
+    background: none;
+    color: var(--color-primario);
+}
+
+/* === Selectores de Galería === */
+.gallery-selector-container {
+    margin-bottom: 2rem;
 }
 
 .gallery-selector-container label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: #333;
+    color: var(--color-primario);
 }
 
-#gallery-selector {
-    width: 100%;
-    padding: 12px;
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    font-size: 1rem;
-}
-
-/* AÑADIDO: Estilo para el título de la galería actual */
-#current-gallery-title {
-    font-size: 1.8rem;
-    color: var(--color-acento);
-    margin-top: 0;
+/* === Zona de Arrastrar y Soltar === */
+#drop-zone {
+    border: 2px dashed var(--color-gris-borde);
+    padding: 2.5rem;
+    text-align: center;
     margin-bottom: 1.5rem;
+    cursor: pointer;
+    background-color: var(--color-fondo);
+    border-radius: 12px;
+    transition: border-color 0.2s, background-color 0.2s;
 }
 
-#drop-zone { border: 2px dashed #bca07d; padding: 2rem; text-align: center; margin-bottom: 1.5rem; cursor: pointer; background-color: #fdfaf6; }
-#gallery-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-.gallery-item { background: #f9f9f9; padding: 0.5rem; border: 1px solid #eee; border-radius: 4px; text-align: center; }
-.gallery-item img { width: 100%; height: 100px; object-fit: cover; margin-bottom: 10px; }
-.description-input { width: 100%; height: 60px; font-size: 0.8rem; padding: 5px; border: 1px solid #ddd; border-radius: 3px; }
-.delete-button { background-color: #e74c3c; font-size: 0.8rem; padding: 5px; margin-top: 5px; }
-.sortable-ghost { opacity: 0.4; background-color: #f0eada; }
+#drop-zone:hover {
+    border-color: var(--color-acento);
+    background-color: #fdfaf6;
+}
+
+#drop-zone p {
+    margin: 0;
+    color: var(--color-gris-texto);
+    font-weight: 500;
+}
+
+/* === Lista de Galería === */
+#gallery-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.gallery-item {
+    background: var(--color-blanco);
+    border: 1px solid var(--color-gris-borde);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra-suave);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    background-color: #eee;
+}
+
+.description-input {
+    width: 100%;
+    height: 70px;
+    font-size: 0.85rem;
+    padding: 8px;
+    border: 1px solid var(--color-gris-borde);
+    border-radius: 6px;
+    resize: vertical;
+}
+
+.delete-button {
+    background-color: var(--color-rojo);
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    margin-top: 10px;
+    opacity: 0.8;
+}
+
+.delete-button:hover {
+    opacity: 1;
+    background-color: #c0392b;
+}
+
+.sortable-ghost {
+    opacity: 0.4;
+    background-color: #f0eada;
+    border: 2px dashed var(--color-acento);
+}
