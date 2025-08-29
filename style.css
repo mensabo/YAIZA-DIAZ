@@ -275,7 +275,7 @@ nav ul li a:hover {
 /* ======================== */
 /*      SECCIÓN EVENTOS      */
 /* ======================== */
-#prensa {
+#prensa, #habilidades {
     background-color: var(--color-blanco);
     text-align: center;
 }
@@ -483,6 +483,7 @@ footer {
     max-height: 80vh;
     border-radius: 4px;
     box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    transition: opacity 0.15s ease-in-out;
 }
 
 #lightbox-caption {
@@ -492,7 +493,7 @@ footer {
     height: 30px;
 }
 
-.lightbox-close, .lightbox-prev, .lightbox-next {
+.lightbox-prev, .lightbox-next {
     cursor: pointer;
     position: absolute;
     color: white;
@@ -500,18 +501,45 @@ footer {
     font-weight: bold;
     transition: 0.3s;
     user-select: none;
+    top: 50%; 
+    transform: translateY(-50%);
 }
 
-.lightbox-close:hover,
 .lightbox-prev:hover,
 .lightbox-next:hover {
     color: #bbb;
 }
 
-.lightbox-close { top: 15px; right: 35px; font-size: 45px; }
-.lightbox-prev, .lightbox-next { top: 50%; transform: translateY(-50%); }
 .lightbox-prev { left: 20px; }
 .lightbox-next { right: 20px; }
+
+/* REGLA CORREGIDA PARA EL BOTÓN DE CERRAR */
+.lightbox-close {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.7);
+    text-align: center;
+    line-height: 40px; /* Centra la 'x' verticalmente */
+    font-size: 28px;
+    font-weight: normal;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    z-index: 3001; /* Se asegura de que esté por encima de todo */
+    transition: all 0.3s ease;
+}
+
+.lightbox-close:hover {
+    background: rgba(220, 0, 0, 0.8);
+    transform: scale(1.1) rotate(90deg);
+    color: white;
+}
 
 /* ==================================================== */
 /*   ESTILOS Y EFECTOS PARA LA PORTADA DEL LIBRO      */
@@ -1179,71 +1207,6 @@ footer {
     margin: 0;
 }
 
-#comprar-libro {
-    background-color: var(--color-blanco);
-    text-align: center;
-}
-
-.opciones-compra {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-top: 3rem;
-    flex-wrap: wrap;
-}
-
-.opcion-card {
-    background-color: var(--color-secundario);
-    padding: 2.5rem;
-    border-radius: 8px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-    flex-basis: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid #e0e0e0;
-}
-
-.opcion-card h3 {
-    font-size: 1.8rem;
-}
-
-.opcion-card p {
-    margin: 1rem 0 2rem 0;
-    max-width: 300px;
-}
-
-.buy-button-image-bg {
-    display: block;
-    width: 100%;
-    padding: 1.2rem 1.5rem;
-    text-decoration: none;
-    font-weight: 500;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    margin-top: 0.5rem;
-    border: none;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    color: var(--color-blanco);
-    text-align: center;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
-}
-
-.buy-button-image-bg:hover {
-    transform: scale(1.03);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-}
-
-.buy-button-libro {
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/portada-libro.png');
-}
-
-.buy-button-once {
-    background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/logo-once.png');
-}
-
 /* =================================== */
 /*   ESTILOS NUEVA GALERÍA INTERACTIVA   */
 /* =================================== */
@@ -1318,13 +1281,13 @@ footer {
     flex-basis: 180px;
     flex-shrink: 0;
     overflow-y: auto;
-    padding-right: 1rem;
+    -ms-overflow-style: none;  /* IE y Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
-#galeria-lista-miniaturas::-webkit-scrollbar { width: 8px; }
-#galeria-lista-miniaturas::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
-#galeria-lista-miniaturas::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
-#galeria-lista-miniaturas::-webkit-scrollbar-thumb:hover { background: var(--color-acento); }
+#galeria-lista-miniaturas::-webkit-scrollbar {
+    display: none; /* Chrome, Safari y Opera */
+}
 
 .miniatura-item {
     cursor: pointer;
@@ -1545,6 +1508,18 @@ footer {
     border-bottom: 2px solid var(--color-acento);
     padding-bottom: 0.5rem;
     display: inline-block;
+    line-height: 1.3;
+}
+
+.comunicacion-section h3 .brand-name {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 400;
+    font-family: var(--fuente-texto);
+    color: #555;
+    margin-top: 0.25rem;
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
 .comunicacion-section p {
@@ -1590,6 +1565,126 @@ footer {
     display: none;
 }
 
+/* ======================================= */
+/* === NUEVO DISEÑO SECCIÓN DE COMPRA === */
+/* ======================================= */
+#comprar-libro {
+    background-color: var(--color-secundario);
+}
+
+.compra-container {
+    display: flex;
+    gap: 3rem;
+    background-color: var(--color-blanco);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    overflow: hidden;
+    margin-top: 3rem;
+    border: 1px solid #e8e8e8;
+}
+
+.compra-portada {
+    flex: 0 0 320px;
+    background-color: var(--color-magenta-libro); /* Color de fondo */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.compra-portada img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* CORRECCIÓN: Asegura que toda la imagen sea visible */
+    display: block;
+}
+
+.compra-info {
+    padding: 2.5rem;
+    flex-grow: 1;
+}
+
+.compra-info h3 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.compra-info > p {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 2rem;
+    max-width: 500px;
+}
+
+.formato-compra h4 {
+    font-size: 1.5rem;
+    color: var(--color-primario);
+    margin-bottom: 0.5rem;
+}
+
+.formato-compra p {
+    margin-bottom: 1.5rem;
+}
+
+.ediciones-info {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
+}
+
+.compra-divisor {
+    border: 0;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 2rem 0;
+}
+
+.btn-compra {
+    display: inline-block;
+    background-color: var(--color-magenta-libro);
+    color: var(--color-blanco);
+    padding: 0.9rem 2rem;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-align: center;
+    border: 2px solid transparent;
+}
+
+.btn-compra:hover {
+    background-color: #b3226c;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(212, 46, 132, 0.3);
+}
+
+.btn-compra.btn-once {
+    background-color: #006a4d; /* Color corporativo de la ONCE */
+    display: inline-flex; /* Para alinear logo y texto */
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem; /* Espacio entre logo y texto */
+}
+
+.btn-compra.btn-once:hover {
+    background-color: #00523a;
+    box-shadow: 0 6px 15px rgba(0, 106, 77, 0.3);
+}
+
+.btn-compra.btn-once img {
+    height: 24px; /* Ajustar altura del logo */
+    width: auto;
+}
+
+.locutora-img {
+    display: block;
+    max-width: 250px;
+    width: 100%;
+    margin: 0 auto 1.5rem auto; /* Centrada y con margen inferior */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
 /* ======================== */
 /*      RESPONSIVE DESIGN   */
 /* ======================== */
@@ -1625,6 +1720,19 @@ footer {
     .gallery-grid-item:nth-child(11) {
         grid-column: unset;
         grid-row: unset;
+    }
+
+    .compra-container {
+        flex-direction: column;
+        gap: 0;
+    }
+    .compra-portada {
+        flex-basis: auto;
+        height: 400px;
+        width: 100%;
+    }
+    .compra-info {
+        padding: 2.5rem;
     }
 }
 
@@ -1884,17 +1992,6 @@ footer {
         text-align: center;
     }
 
-    .opciones-compra {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .opcion-card {
-        width: 100%;
-        max-width: 400px;
-        padding: 2rem 1.5rem;
-    }
-
     .libro-hero-img {
         max-width: 280px;
         margin: 0 auto;
@@ -1978,5 +2075,81 @@ footer {
     .gallery-grid {
         grid-template-columns: 1fr;
         grid-auto-rows: 300px;
+    }
+
+    /* N UEVOS AJUSTES RESPONSIVE COMPRA */
+    .compra-portada {
+        height: 350px;
+    }
+    .compra-info {
+        padding: 2rem 1.5rem;
+    }
+    .compra-info h3 {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+    .compra-info > p {
+        text-align: center;
+    }
+    .formato-compra {
+        text-align: center;
+    }
+    .btn-compra {
+        display: block;
+        width: 100%;
+    }
+
+    /* NUEVOS AJUSTES PARA GALERÍA DE COMUNICACIÓN */
+    .comunicacion-gallery {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    .comunicacion-gallery img {
+        height: auto;
+        aspect-ratio: 4 / 3;
+    }
+    .comunicacion-gallery img:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        aspect-ratio: 16 / 9;
+    }
+    
+    @media (min-width: 769px) {
+        #habecu-gallery {
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 220px;
+        }
+        #habecu-gallery img:nth-child(1) {
+            grid-column: span 2;
+            grid-row: span 2;
+            height: 100%;
+        }
+        #habecu-gallery img:nth-child(4) {
+            grid-column: span 2;
+        }
+        #habecu-gallery img:nth-child(5) {
+            grid-column: 3;
+            grid-row: 2;
+        }
+    }
+    
+    /* Centrar títulos específicos en móvil */
+    .comunicacion-section h3.centered-mobile-title {
+        display: block;
+        text-align: center;
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .comunicacion-section h3.centered-mobile-title::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 2px;
+        background-color: var(--color-acento);
+        margin: 0.75rem auto 0 auto;
+    }
+
+    .comunicacion-section h3.centered-mobile-title .brand-name {
+        text-align: center;
     }
 }

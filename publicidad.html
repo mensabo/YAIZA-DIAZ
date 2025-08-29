@@ -7,6 +7,45 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Estilos específicos para los vídeos en esta página */
+        a.video-fallback { display: block; position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px; background-color: #000; text-decoration: none; }
+        
+        /* Reglas para las imágenes de miniatura y los videos de fondo */
+        .video-fallback video,
+        .video-fallback img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: transform 0.3s ease, opacity 0.3s ease; }
+        a.video-fallback:hover video,
+        a.video-fallback:hover img { transform: scale(1.05); opacity: 1; }
+        
+        .play-button-overlay { 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            width: 60px; 
+            height: 60px; 
+            font-size: 1.5rem;
+            background-color: rgba(0, 0, 0, 0.5); 
+            color: white; 
+            border-radius: 50%; 
+            transition: all 0.2s ease; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border: 2px solid white; 
+            backdrop-filter: blur(4px); 
+            z-index: 3; 
+        }
+        a:hover .play-button-overlay { 
+            background-color: rgba(220, 0, 0, 0.8); 
+            transform: translate(-50%, -50%) scale(1.1); 
+        }
+        
+        .phone-video-container { display: flex; justify-content: center; align-items: center; aspect-ratio: 16 / 9; background-color: var(--color-secundario); border-radius: 8px; padding: 2%; text-decoration: none; position: relative; }
+        .phone-mockup { position: relative; width: 42%; max-width: 280px; aspect-ratio: 9 / 19.5; background-color: #1c1c1c; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding: 10px; transition: transform 0.3s ease; }
+        a:hover .phone-mockup { transform: scale(1.05); }
+        .phone-mockup .video-screen { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; background-color: #000; }
+    </style>
 </head>
 <body class="libro-page">
     
@@ -42,14 +81,56 @@
     <!-- ========= CONTENIDO PRINCIPAL DE LA PÁGINA ========= -->
     <section id="publicidad-main">
         <div class="container comunicacion-content">
-            <h2>Publicidad</h2>
+            <h2>Publicidad y Campañas</h2>
             <div class="header-line"></div>
+            <p class="section-intro">Yaiza Díaz ha sido imagen para anuncios y promociones de importantes marcas y campañas de concienciación institucionales en Canarias.</p>
 
             <div class="comunicacion-section">
-                <h3>Próximamente</h3>
+                <h3>Campaña Digital <span class="brand-name">Toyota Canarias</span></h3>
                 <p>
-                    Aquí se mostrará una selección de los trabajos publicitarios y spots para televisión más destacados.
+                    Yaiza Díaz se pone al volante en la campaña digital para Toyota Canarias. Un spot que captura la esencia de la aventura y la libertad de recorrer los paisajes de las islas, demostrando que el destino es solo el comienzo del viaje.
                 </p>
+                <a href="https://www.instagram.com/reel/Ct9Nxg4I-Nm/?igsh=anlyNTkyNnlvbnFk" target="_blank" rel="noopener noreferrer" class="phone-video-container">
+                    <div class="phone-mockup">
+                        <video class="video-screen" autoplay loop muted playsinline>
+                            <source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FToyoya.mp4?alt=media&token=a5ae00bf-d665-4ab5-915d-61faabdf4059" type="video/mp4">
+                        </video>
+                    </div>
+                    <span class="play-button-overlay"><i class="fab fa-instagram"></i></span>
+                </a>
+            </div>
+
+            <div class="comunicacion-section">
+                <h3>Campaña de Televisión <span class="brand-name">Dormitorum</span></h3>
+                <p>
+                    Como prescriptora de marcas líderes, Yaiza Díaz ha sido la imagen de campañas publicitarias para Dormitorum, la empresa de descanso referente en Canarias. A continuación, uno de los spots televisivos de la campaña.
+                </p>
+                <a href="https://www.youtube.com/watch?v=anmvj5jgRfk" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <img src="https://img.youtube.com/vi/anmvj5jgRfk/hqdefault.jpg" alt="Miniatura spot Dormitorum">
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
+            </div>
+
+            <div class="comunicacion-section">
+                <h3>Spot de Televisión <span class="brand-name">BonosVip</span></h3>
+                <p>
+                    Protagonista de la campaña de la popular web de descuentos BonosVip. En este divertido spot, Yaiza da vida a una de las historias que buscan sorprender al espectador y revelar el secreto para disfrutar del mejor ocio en las islas a precios increíbles.
+                </p>
+                <a href="https://www.youtube.com/watch?v=cMviyq8rUFQ" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <img src="https://img.youtube.com/vi/cMviyq8rUFQ/hqdefault.jpg" alt="Miniatura spot BonosVip Taxi">
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
+            </div>
+            
+            <div class="comunicacion-section">
+                <h3>Campaña Digital <span class="brand-name">BonosVip (Strasse Park)</span></h3>
+                 <p>
+                    Como presentadora principal de la campaña publicitaria de BonosVip, Yaiza también se encargó de comunicar directamente a la audiencia las ventajas y ofertas destacadas de la plataforma, convirtiéndose en el rostro de la marca.
+                </p>
+                <a href="https://www.youtube.com/watch?v=KE86EZBjI9Y" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <img src="https://img.youtube.com/vi/KE86EZBjI9Y/hqdefault.jpg" alt="Miniatura campaña BonosVip">
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
             </div>
 
         </div>

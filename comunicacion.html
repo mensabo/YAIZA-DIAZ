@@ -45,15 +45,17 @@
             opacity: 1;
         }
 
-        /* --- INICIO: NUEVA SOLUCIÓN VISUAL - MAQUETA DE SMARTPHONE --- */
+        /* --- INICIO: MAQUETA DE SMARTPHONE --- */
         .phone-video-container {
             display: flex;
             justify-content: center;
             align-items: center;
             aspect-ratio: 16 / 9;
-            background-color: var(--color-secundario); /* CAMBIO: Color acorde a la página */
+            background-color: var(--color-secundario);
             border-radius: 8px;
             padding: 2%;
+            position: relative;
+            text-decoration: none;
         }
         .phone-mockup {
             position: relative;
@@ -76,29 +78,47 @@
             border-radius: 20px;
             background-color: #000;
         }
-        /* --- FIN: NUEVA SOLUCIÓN VISUAL --- */
-
+        
+        /* --- ICONO DE PLAY --- */
         .play-button-overlay {
             position: absolute;
-            bottom: 1rem;
-            right: 1rem;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(200, 0, 0, 0.7);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            background-color: rgba(0, 0, 0, 0.5);
             color: white;
             border-radius: 50%;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 2px solid white;
             backdrop-filter: blur(4px);
             z-index: 3;
         }
         a:hover .play-button-overlay {
-            background-color: rgba(220, 0, 0, 0.9);
-            transform: scale(1.1);
-            border-color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(220, 0, 0, 0.8);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* --- NUEVA GALERÍA DE FOTOS --- */
+        .comunicacion-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .comunicacion-gallery img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background-color: #e0e0e0; /* Color de fondo para los placeholders */
+            border: 1px solid #ddd;
         }
     </style>
 </head>
@@ -142,19 +162,34 @@
             <div class="comunicacion-section">
                 <h3>Jefa de Prensa y Dircom</h3>
                 <p>
-                    Yaiza Díaz también ha ejercido como jefa de prensa de gabinetes de comunicación, pero además lo ha hecho añadiendo a las labores propias de este departamento todos sus conocimientos audiovisuales y ha sido imagen y representante de las empresas a las que ha llevado su gabinete. Entre las más importantes están <strong>Dreamland</strong>, el mayor proyecto audiovisual y tecnológico de Europa que se construirá en la isla de Gran Canaria y <strong>EAVE</strong>, una empresa de renovables.
+                    Yaiza Díaz también ha ejercido como jefa de prensa de gabinetes de comunicación, pero además lo ha hecho añadiendo a las labores propias de este departamento todos sus conocimientos audiovisuales y ha sido imagen y representante de las empresas a las que ha llevado su gabinete. Entre las más importantes están <strong>Dreamland Studios</strong>, el mayor proyecto audiovisual y tecnológico de Europa; la editorial <strong>Kinnamon</strong>; y la empresa de renovables <strong>EAVE</strong>.
                 </p>
             </div>
 
             <div class="comunicacion-section">
-                <h3>Inmogold (Grupo Inmobiliario)</h3>
+                <h3 class="centered-mobile-title">Vicepresidenta de HABECU</h3>
+                <p>
+                    Yaiza Díaz es la Vicepresidenta de HABECU, la Hermandad de Amigos del Benemérito Cuerpo de la Guardia Civil en Santa Cruz de Tenerife. Un grupo de apoyo a los agentes y familias de los guardias civiles. Una red que existe a nivel nacional.
+                </p>
+                <div class="comunicacion-gallery" id="habecu-gallery">
+                    <img src="images/habecu.jpg" alt="Yaiza Díaz en evento de HABECU 1">
+                    <img src="images/habecu2.jpg" alt="Yaiza Díaz en evento de HABECU 2">
+                    <img src="images/habecu3.jpg" alt="Yaiza Díaz en evento de HABECU 3">
+                    <img src="images/habecu4.jpg" alt="Yaiza Díaz en evento de HABECU 4">
+                    <img src="images/habecu5.jpg" alt="Yaiza Díaz en evento de HABECU 5">
+                    <img src="images/habecu6.jpg" alt="Yaiza Díaz en evento de HABECU 6">
+                    <img src="images/habecu7.jpg" alt="Yaiza Díaz en evento de HABECU 7">
+                </div>
+            </div>
+
+            <div class="comunicacion-section">
+                <h3 class="centered-mobile-title">Inmogold <span class="brand-name">Grupo Inmobiliario</span></h3>
                 <p>
                     Como Directora de comunicación del grupo inmobiliario Inmogold-Piso Barato, Yaiza Díaz continúa su carrera asesorando en comunicación a empresas. No sólo ejecuta un plan de comunicación y medios, sino que con la particularidad de que ejerce de portavoz e imagen representando a las empresas.
                 </p>
                 <p>
                     Todos sus conocimientos en televisión los incorpora a los gabinetes de prensa que ha dirigido, creando un potente y efectivo cóctel para dar a conocer las acciones y las marcas de las que lidera la comunicación. A continuación, un ejemplo de su trabajo como imagen de marca:
                 </p>
-                <!-- INICIO: ESTRUCTURA FINAL CON MAQUETA DE SMARTPHONE -->
                 <a href="https://www.instagram.com/reel/C1r4EY8I8XN/?igsh=MTc1a2Uzb2p5Yzh0aw%3D%3D" target="_blank" rel="noopener noreferrer" class="phone-video-container">
                     <div class="phone-mockup">
                         <video class="video-screen" autoplay loop muted playsinline>
@@ -163,7 +198,6 @@
                     </div>
                     <span class="play-button-overlay"><i class="fab fa-instagram"></i></span>
                 </a>
-                <!-- FIN: ESTRUCTURA FINAL -->
             </div>
 
             <div class="comunicacion-section">
@@ -198,6 +232,17 @@
         </div>
     </section>
     
+    <!-- LIGHTBOX PARA VER LAS IMÁGENES EN GRANDE (AÑADIDO) -->
+    <div id="lightbox-modal" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <span class="lightbox-prev">&#10094;</span>
+        <span class="lightbox-next">&#10095;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-image" src="" alt="Visor de imágenes de comunicación">
+            <div id="lightbox-caption"></div>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <div class="footer-social-icons">
