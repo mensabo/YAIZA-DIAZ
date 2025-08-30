@@ -35,6 +35,11 @@
             border: 2px solid white; 
         }
         a.video-fallback:hover .play-button-overlay { background-color: rgba(204, 0, 0, 0.8); transform: translate(-50%, -50%) scale(1.1); }
+
+        /* === AJUSTE PARA LA MINIATURA DE NEOTRÓPICO === */
+        #neotropico-video img {
+            object-position: left; /* Desplaza la imagen para enfocar el lado izquierdo */
+        }
     </style>
 </head>
 <body class="libro-page">
@@ -74,11 +79,23 @@
             <h2>Televisión</h2>
             <div class="header-line"></div>
 
-            <div class="comunicacion-section">
-                <h3>Presentadora y Directora en RTVC</h3>
+            <div class="page-introduction">
                 <p>Como uno de los rostros principales de Televisión Canaria, Yaiza Díaz ha sido directora y presentadora del programa de investigación 'Nivel4' y ha estado al frente de informativos como Telenoticias Fin de Semana, Telenoticias 3, Canarias Express y el informativo insular de El Hierro, trasladando la actualidad del archipiélago.</p>
+                <p>Aquí veremos una pequeña muestra del recorrido por la trayectoria de Yaiza Díaz al frente de los informativos de Televisión Canaria, mostrando su profesionalidad y conexión con la audiencia.</p>
+            </div>
+
+            <div class="comunicacion-section">
+                <h3>Presentadora de Informativo Telenoticias 3</h3>
+                <a href="https://www.youtube.com/watch?v=D-TP-z328iM" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <img src="images/mini1.png" alt="Miniatura Reel Presentadora de Informativos">
+                    <div class="play-button-overlay"><i class="fas fa-play"></i></div>
+                </a>
+            </div>
+
+            <div class="comunicacion-section">
+                <h3>Presentadora Canarias Express</h3>
                 <a href="https://www.youtube.com/watch?v=6j0JrC1dYFg" target="_blank" rel="noopener noreferrer" class="video-fallback">
-                    <img src="https://img.youtube.com/vi/6j0JrC1dYFg/hqdefault.jpg" alt="Miniatura Telenoticias Fin de Semana">
+                    <img src="images/mini2.png" alt="Miniatura Telenoticias Fin de Semana">
                     <div class="play-button-overlay"><i class="fas fa-play"></i></div>
                 </a>
             </div>
@@ -86,8 +103,8 @@
             <div class="comunicacion-section">
                 <h3>Reportaje sobre la Fundación Neotrópico (RTVC)</h3>
                 <p>En un completo reportaje para los informativos de Televisión Canaria, Yaiza Díaz se adentra en la fundamental labor de la Fundación Neotrópico. A través de entrevistas con sus fundadores, el reportaje explora el desafío que suponen las especies exóticas invasoras para la biodiversidad de Canarias, mostrando el trabajo de rescate y concienciación que realiza la fundación.</p>
-                <a href="https://www.youtube.com/watch?v=iOY994IXcJ0" target="_blank" rel="noopener noreferrer" class="video-fallback">
-                    <img src="https://img.youtube.com/vi/iOY994IXcJ0/hqdefault.jpg" alt="Miniatura reportaje Fundación Neotrópico">
+                <a id="neotropico-video" href="https://www.youtube.com/watch?v=iOY994IXcJ0" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <img src="images/mini3.png" alt="Miniatura reportaje Fundación Neotrópico">
                     <div class="play-button-overlay"><i class="fas fa-play"></i></div>
                 </a>
             </div>
@@ -96,7 +113,7 @@
                 <h3>Reportaje 'Bueno, Bonito y Barato' (RTVC)</h3>
                 <p>Reportaje realizado para el programa "Canarias Hoy" de Televisión Canaria, donde Yaiza Díaz visita el mayor rastro de antigüedades de Canarias para descubrir objetos únicos y sus historias.</p>
                 <a href="https://www.youtube.com/watch?v=yVGlZAg_fgM" target="_blank" rel="noopener noreferrer" class="video-fallback">
-                    <img src="https://img.youtube.com/vi/yVGlZAg_fgM/hqdefault.jpg" alt="Miniatura del reportaje Bueno, Bonito y Barato">
+                    <img src="images/mini4.png" alt="Miniatura del reportaje Bueno, Bonito y Barato">
                     <div class="play-button-overlay"><i class="fas fa-play"></i></div>
                 </a>
             </div>
@@ -176,4 +193,4 @@
     </script>
     <script src="script.js" defer></script>
 </body>
-</html>
+</html
