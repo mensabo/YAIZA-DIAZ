@@ -42,6 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
             currentGalleryTitle.textContent = "Editando: Galería de Modelaje";
         } else if (galleryId === 'television_gallery') {
             currentGalleryTitle.textContent = "Editando: Galería de Televisión";
+        } else if (galleryId === 'radio_gallery') { // AÑADIDO
+            currentGalleryTitle.textContent = "Editando: Galería de Radio";
         }
     }
 

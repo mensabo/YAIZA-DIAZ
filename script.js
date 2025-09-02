@@ -42,14 +42,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         function updateMobileDisplay(index) {
             if (!mobileTabTitle) return;
-
             const mobileAnnotation = document.querySelector('.click-annotation-mobile');
-            
             mobileTabTitle.classList.remove('visible');
             setTimeout(() => {
                 const currentTab = heroTabs[index];
                 mobileTabTitle.textContent = currentTab.querySelector('h2').textContent;
-                
                 if (currentTab.id === 'escritora-tab') {
                     mobileBookLink.classList.add('visible');
                     if (mobileAnnotation) mobileAnnotation.classList.add('visible');
@@ -57,40 +54,31 @@ document.addEventListener('DOMContentLoaded', function() {
                     mobileBookLink.classList.remove('visible');
                     if (mobileAnnotation) mobileAnnotation.classList.remove('visible');
                 }
-                
                 mobileTabTitle.classList.add('visible');
             }, 200);
         }
         
         function showTab(index) {
             if (!heroTabs[index] || !backgroundContainer) return;
-
             const newBgImage = heroTabs[index].dataset.bgImage;
             const newBgPosition = heroTabs[index].dataset.bgPosition || 'center center';
-            
             document.body.classList.remove('slide-0', 'slide-1', 'slide-2');
             document.body.classList.add('slide-' + index);
-
             backgroundContainer.style.opacity = 0;
-
             setTimeout(() => {
                 backgroundContainer.style.backgroundImage = `url('${newBgImage}')`;
-
                 if (index === 0 && window.innerWidth <= 768) {
                     backgroundContainer.style.backgroundPosition = 'center 100%';
                 } else {
                     backgroundContainer.style.backgroundPosition = newBgPosition;
                 }
-
                 backgroundContainer.style.opacity = 1;
             }, 300);
-
             const currentActiveTab = document.querySelector('.hero-tab.active');
             if (currentActiveTab) {
                 currentActiveTab.classList.remove('active');
             }
             heroTabs[index].classList.add('active');
-            
             if (dotsNavContainer) {
                 const currentActiveDot = dotsNavContainer.querySelector('.hero-dot.active');
                 if (currentActiveDot) {
@@ -101,7 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     newActiveDot.classList.add('active');
                 }
             }
-
             currentIndex = index;
             updateMobileDisplay(index);
         }
@@ -123,9 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.querySelectorAll('.hero-tabs-desktop .hero-tab').forEach((tab, index) => {
             tab.addEventListener('click', function(event) {
-                if (event.target.closest('.book-link')) {
-                    return; 
-                }
+                if (event.target.closest('.book-link')) return;
                 event.preventDefault();
                 showTab(index);
                 startCarousel();
@@ -133,293 +118,162 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         createDots();
-
         const heroSection = document.querySelector('.hero-dynamic');
         let touchStartX = 0;
         let touchEndX = 0;
-
-        heroSection.addEventListener('touchstart', function(event) {
-            touchStartX = event.changedTouches[0].screenX;
-        }, false);
-
-        heroSection.addEventListener('touchend', function(event) {
+        heroSection.addEventListener('touchstart', (event) => touchStartX = event.changedTouches[0].screenX, false);
+        heroSection.addEventListener('touchend', (event) => {
             touchEndX = event.changedTouches[0].screenX;
-            handleSwipeGesture();
-        }, false); 
-
-        function handleSwipeGesture() {
             const swipeThreshold = 50;
-            if (touchStartX - touchEndX > swipeThreshold) {
-                nextTab();
-                startCarousel();
-            }
-            if (touchEndX - touchStartX > swipeThreshold) {
-                prevTab();
-                startCarousel();
-            }
-        }
+            if (touchStartX - touchEndX > swipeThreshold) nextTab();
+            if (touchEndX - touchStartX > swipeThreshold) prevTab();
+            startCarousel();
+        }, false);
         
         showTab(0);
         startCarousel();
     }
 
-    // --- LÓGICA DE LA GALERÍA DINÁMICA (SOLO EN LIBRO.HTML) ---
-    async function construirGaleriaPublica() {
-        const galeriaContainer = document.getElementById('galeria-interactiva');
-        if (!galeriaContainer) return;
+    // --- LÓGICA DE GALERÍA INTERACTIVA REUTILIZABLE ---
+    function initInteractiveGallery(containerId, firestoreCollection) {
+        const galleryContainer = document.getElementById(containerId);
+        if (!galleryContainer) return;
 
-        await new Promise(resolve => setTimeout(resolve, 100)); 
-
-        if (!window.firebaseServices) {
-            console.error("Firebase no está listo en esta página.");
-            return;
-        }
-        const { db, collection, getDocs, orderBy, query } = window.firebaseServices;
-
-        const imagenPrincipal = document.getElementById('imagen-principal');
-        const bgDesenfocado = document.getElementById('galeria-bg-desenfocado');
-        const descripcionContainer = document.getElementById('descripcion-principal');
-        const descripcionParrafo = descripcionContainer.querySelector('p');
-        const miniaturasContainer = document.getElementById('galeria-lista-miniaturas');
+        const mainImage = galleryContainer.querySelector('.imagen-principal');
+        const bgBlur = galleryContainer.querySelector('.galeria-bg-desenfocado');
+        const descriptionContainer = galleryContainer.querySelector('.descripcion-principal');
+        const descriptionParagraph = descriptionContainer.querySelector('p');
+        const thumbnailsContainer = galleryContainer.querySelector('.galeria-lista-miniaturas');
         let visibilityTimer;
 
-        try {
-            const q = query(collection(db, 'gallery'), orderBy('order'));
-            const snapshot = await getDocs(q);
-            const galeriaFotos = snapshot.docs.map(doc => doc.data());
+        const updateViewer = (activeThumbnail) => {
+            if (!activeThumbnail) return;
+            const imgSrc = activeThumbnail.dataset.imgSrc;
+            const description = activeThumbnail.dataset.description;
+            mainImage.style.opacity = '0';
+            setTimeout(() => {
+                mainImage.src = imgSrc;
+                bgBlur.style.backgroundImage = `url('${imgSrc}')`;
+                descriptionParagraph.textContent = description;
+                mainImage.style.opacity = '1';
+                clearTimeout(visibilityTimer);
+                descriptionContainer.classList.add('visible-temporarily');
+                visibilityTimer = setTimeout(() => {
+                    descriptionContainer.classList.remove('visible-temporarily');
+                }, 2500);
+            }, 300);
+            thumbnailsContainer.querySelectorAll('.miniatura-item').forEach(thumb => thumb.classList.remove('active'));
+            activeThumbnail.classList.add('active');
+        };
 
-            miniaturasContainer.innerHTML = '';
-            galeriaFotos.forEach(foto => {
-                const miniaturaItem = document.createElement('div');
-                miniaturaItem.className = 'miniatura-item';
-                miniaturaItem.dataset.imgSrc = foto.src;
-                miniaturaItem.dataset.description = foto.descripcion;
-                
-                miniaturaItem.innerHTML = `
-                    <img src="${foto.src}" alt="Miniatura de ${foto.descripcion}">
-                    <div class="miniatura-overlay">
-                        <p class="miniatura-descripcion">${foto.descripcion}</p>
-                    </div>
-                `;
-                miniaturasContainer.appendChild(miniaturaItem);
-            });
-
-            function actualizarVisor(miniaturaActiva) {
-                if (!miniaturaActiva) return;
-                const imgSrc = miniaturaActiva.dataset.imgSrc;
-                const description = miniaturaActiva.dataset.description;
-
-                imagenPrincipal.style.opacity = '0';
-                setTimeout(() => {
-                    imagenPrincipal.src = imgSrc;
-                    bgDesenfocado.style.backgroundImage = `url('${imgSrc}')`;
-                    descripcionParrafo.textContent = description;
-                    imagenPrincipal.style.opacity = '1';
-
-                    clearTimeout(visibilityTimer);
-                    descripcionContainer.classList.add('visible-temporarily');
-                    visibilityTimer = setTimeout(() => {
-                        descripcionContainer.classList.remove('visible-temporarily');
-                    }, 2500);
-
-                }, 300);
-
-                document.querySelectorAll('.miniatura-item').forEach(min => min.classList.remove('active'));
-                miniaturaActiva.classList.add('active');
+        const setupEventListeners = () => {
+            const thumbnails = thumbnailsContainer.querySelectorAll('.miniatura-item');
+            if (thumbnails.length > 0) {
+                thumbnails.forEach(thumb => thumb.addEventListener('click', () => updateViewer(thumb)));
+                updateViewer(thumbnails[0]);
+            } else if (!firestoreCollection) { // Solo muestra este mensaje para galerías estáticas vacías
+                descriptionParagraph.textContent = "La galería está vacía.";
+                if(mainImage) mainImage.style.display = 'none';
             }
+        };
 
-            const todasLasMiniaturas = document.querySelectorAll('.miniatura-item');
-            todasLasMiniaturas.forEach(miniatura => {
-                miniatura.addEventListener('click', function() {
-                    actualizarVisor(this);
-                });
-            });
-
-            if (todasLasMiniaturas.length > 0) {
-                actualizarVisor(todasLasMiniaturas[0]);
-            } else {
-                if(descripcionParrafo) descripcionParrafo.textContent = "La galería de momentos está vacía.";
-            }
-        } catch (error) {
-            console.error("Error al cargar la galería desde Firestore:", error);
-            if(descripcionParrafo) descripcionParrafo.textContent = "No se pudo cargar la galería.";
+        if (firestoreCollection) {
+            const loadFirebaseGallery = async () => {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                if (!window.firebaseServices) {
+                    console.error("Firebase no está listo.");
+                    descriptionParagraph.textContent = "Error de conexión.";
+                    return;
+                }
+                const { db, collection, getDocs, orderBy, query } = window.firebaseServices;
+                try {
+                    const q = query(collection(db, firestoreCollection), orderBy('order'));
+                    const snapshot = await getDocs(q);
+                    const photos = snapshot.docs.map(doc => doc.data());
+                    thumbnailsContainer.innerHTML = '';
+                    if (photos.length > 0) {
+                        photos.forEach(photo => {
+                            const thumb = document.createElement('div');
+                            thumb.className = 'miniatura-item';
+                            thumb.dataset.imgSrc = photo.src;
+                            thumb.dataset.description = photo.descripcion;
+                            thumb.innerHTML = `<img src="${photo.src}" alt="Miniatura de ${photo.descripcion}"><div class="miniatura-overlay"><p class="miniatura-descripcion">${photo.descripcion}</p></div>`;
+                            thumbnailsContainer.appendChild(thumb);
+                        });
+                    }
+                    setupEventListeners();
+                } catch (error) {
+                    console.error(`Error al cargar la galería ${firestoreCollection}:`, error);
+                    descriptionParagraph.textContent = "No se pudo cargar la galería.";
+                }
+            };
+            loadFirebaseGallery();
+        } else {
+            setupEventListeners();
         }
     }
     
-    // Declaraciones de variables para las galerías con lightbox
+    // --- LÓGICA PARA GALERÍAS ESTÁTICAS CON LIGHTBOX ---
     let activePhotos = [];
     let currentImageIndex = -1;
 
-    // --- LÓGICA DE LA GALERÍA DE MODELAJE (SOLO EN MODELAJE.HTML) ---
-    async function construirGaleriaModelo() {
-        const galleryGrid = document.getElementById('gallery-grid-modelo');
-        if (!galleryGrid) return;
-
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        if (!window.firebaseServices) {
-            console.error("Firebase no está listo.");
-            galleryGrid.innerHTML = "<p>Error al conectar con la base de datos.</p>";
-            return;
-        }
-        const { db, collection, getDocs, orderBy, query } = window.firebaseServices;
-
-        try {
-            const q = query(collection(db, 'modeling_gallery'), orderBy('order'));
-            const snapshot = await getDocs(q);
-            const modeloFotos = snapshot.docs.map(doc => doc.data());
-            
-            if (modeloFotos.length === 0) {
-                galleryGrid.innerHTML = "<p>La galería está vacía en este momento.</p>";
-                return;
-            }
-
-            galleryGrid.innerHTML = '';
-            modeloFotos.forEach((foto, index) => {
-                const item = document.createElement('div');
-                item.className = 'gallery-grid-item';
-                item.dataset.index = index;
-                
-                item.innerHTML = `
-                    <img src="${foto.src}" alt="${foto.descripcion || 'Foto de modelaje'}">
-                    <div class="gallery-item-overlay"><p>${foto.descripcion || ''}</p></div>
-                `;
-                galleryGrid.appendChild(item);
-            });
-        } catch (error) {
-            console.error("Error al cargar la galería de modelaje:", error);
-            galleryGrid.innerHTML = "<p>No se pudo cargar la galería.</p>";
-        }
-    }
-
-    // --- AÑADIDO: LÓGICA PARA LA GALERÍA DE TELEVISIÓN ---
-    async function construirGaleriaTelevision() {
-        const galleryGrid = document.getElementById('gallery-grid-television');
-        if (!galleryGrid) return; // Solo se ejecuta en television.html
-
-        await new Promise(resolve => setTimeout(resolve, 100));
-
-        if (!window.firebaseServices) {
-            console.error("Firebase no está listo.");
-            galleryGrid.innerHTML = "<p>Error al conectar con la base de datos.</p>";
-            return;
-        }
-        const { db, collection, getDocs, orderBy, query } = window.firebaseServices;
-
-        try {
-            const q = query(collection(db, 'television_gallery'), orderBy('order'));
-            const snapshot = await getDocs(q);
-            const televisionFotos = snapshot.docs.map(doc => doc.data());
-
-            if (televisionFotos.length === 0) {
-                galleryGrid.innerHTML = "<p>La galería está vacía en este momento.</p>";
-                return;
-            }
-
-            galleryGrid.innerHTML = '';
-            televisionFotos.forEach((foto, index) => {
-                const item = document.createElement('div');
-                item.className = 'gallery-grid-item';
-                item.dataset.index = index;
-                
-                item.innerHTML = `
-                    <img src="${foto.src}" alt="${foto.descripcion || 'Foto de televisión'}">
-                    <div class="gallery-item-overlay"><p>${foto.descripcion || ''}</p></div>
-                `;
-                galleryGrid.appendChild(item);
-            });
-        } catch (error) {
-            console.error("Error al cargar la galería de televisión:", error);
-            galleryGrid.innerHTML = "<p>No se pudo cargar la galería.</p>";
-        }
-    }
-
-    // --- NUEVO: Prepara galerías simples para el lightbox (HABECU, Calendario, etc.) ---
     function prepararGaleriasSimples() {
         const galleries = document.querySelectorAll('.comunicacion-gallery');
-        if (galleries.length === 0) return;
-
         galleries.forEach(gallery => {
-            const images = gallery.querySelectorAll('img');
-            images.forEach((img, index) => {
-                // Si ya está envuelto, no hacer nada para evitar duplicados
+            gallery.querySelectorAll('img').forEach((img, index) => {
                 if (img.parentElement.classList.contains('gallery-grid-item')) return;
-
                 const wrapper = document.createElement('div');
-                wrapper.className = 'gallery-grid-item'; // Usa la misma clase para ser compatible
+                wrapper.className = 'gallery-grid-item';
                 wrapper.dataset.index = index;
-                
                 img.parentNode.insertBefore(wrapper, img);
                 wrapper.appendChild(img);
             });
         });
     }
 
-    // --- LÓGICA DEL LIGHTBOX (AHORA GENÉRICA Y CON SWIPE) ---
     function initLightbox() {
         const modal = document.getElementById('lightbox-modal');
         if (!modal) return;
-
-        const closeBtn = document.querySelector('.lightbox-close');
-        const prevBtn = document.querySelector('.lightbox-prev');
-        const nextBtn = document.querySelector('.lightbox-next');
+        const closeBtn = modal.querySelector('.lightbox-close');
+        const prevBtn = modal.querySelector('.lightbox-prev');
+        const nextBtn = modal.querySelector('.lightbox-next');
         const lightboxImage = document.getElementById('lightbox-image');
         const lightboxCaption = document.getElementById('lightbox-caption');
-        const lightboxContent = document.querySelector('.lightbox-content');
         
-        let touchStartX = 0;
-        let touchEndX = 0;
-        let isDragging = false;
-        
-        function openModal(index) {
+        const openModal = (index) => {
             currentImageIndex = parseInt(index);
             updateLightboxImage();
             modal.classList.add('visible');
             document.body.style.overflow = 'hidden';
-        }
+        };
 
-        function closeModal() {
+        const closeModal = () => {
             modal.classList.remove('visible');
             document.body.style.overflow = 'auto';
-        }
+        };
 
-        function updateLightboxImage() {
+        const updateLightboxImage = () => {
             if (currentImageIndex < 0 || currentImageIndex >= activePhotos.length) return;
             const photo = activePhotos[currentImageIndex];
-            lightboxImage.style.opacity = 0;
-            setTimeout(() => {
-                lightboxImage.src = photo.src;
-                lightboxCaption.textContent = photo.descripcion || '';
-                lightboxImage.style.opacity = 1;
-            }, 150);
-        }
+            lightboxImage.src = photo.src;
+            lightboxCaption.textContent = photo.descripcion || '';
+        };
 
-        function showNext() {
+        const showNext = () => {
             currentImageIndex = (currentImageIndex + 1) % activePhotos.length;
             updateLightboxImage();
-        }
+        };
 
-        function showPrev() {
+        const showPrev = () => {
             currentImageIndex = (currentImageIndex - 1 + activePhotos.length) % activePhotos.length;
             updateLightboxImage();
-        }
+        };
 
         document.body.addEventListener('click', e => {
             const item = e.target.closest('.gallery-grid-item');
-            if (!item) return;
-
-            const gallery = item.parentElement;
-            
-            // Comprueba si el padre es un contenedor de galería reconocido
-            if (gallery.id === 'gallery-grid-modelo' || gallery.id === 'gallery-grid-television' || gallery.classList.contains('comunicacion-gallery')) {
-                const galleryItems = gallery.querySelectorAll('.gallery-grid-item img');
-                
-                // Rellena activePhotos al momento con las fotos de la galería correcta
-                activePhotos = Array.from(galleryItems).map(img => ({
-                    src: img.src,
-                    descripcion: img.alt
-                }));
-
+            if (item && item.parentElement.classList.contains('comunicacion-gallery')) {
+                const galleryItems = item.parentElement.querySelectorAll('.gallery-grid-item img');
+                activePhotos = Array.from(galleryItems).map(img => ({ src: img.src, descripcion: img.alt }));
                 openModal(item.dataset.index);
             }
         });
@@ -427,88 +281,33 @@ document.addEventListener('DOMContentLoaded', function() {
         closeBtn.addEventListener('click', closeModal);
         nextBtn.addEventListener('click', showNext);
         prevBtn.addEventListener('click', showPrev);
-        
         modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-
         document.addEventListener('keydown', e => {
             if (!modal.classList.contains('visible')) return;
             if (e.key === 'Escape') closeModal();
             if (e.key === 'ArrowRight') showNext();
             if (e.key === 'ArrowLeft') showPrev();
         });
-        
-        // --- INICIO: LÓGICA DE SWIPE ---
-        function handleSwipe() {
-            const swipeThreshold = 50; // Mínima distancia para considerar un swipe
-            if (touchEndX < touchStartX - swipeThreshold) {
-                showNext();
-            } else if (touchEndX > touchStartX + swipeThreshold) {
-                showPrev();
-            }
-        }
-
-        lightboxContent.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        lightboxContent.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-
-        lightboxContent.addEventListener('mousedown', e => {
-            e.preventDefault();
-            isDragging = true;
-            touchStartX = e.screenX;
-            lightboxContent.style.cursor = 'grabbing';
-        });
-
-        lightboxContent.addEventListener('mouseup', e => {
-            if (!isDragging) return;
-            isDragging = false;
-            touchEndX = e.screenX;
-            lightboxContent.style.cursor = 'default';
-            handleSwipe();
-        });
-        
-        lightboxContent.addEventListener('mouseleave', () => {
-             if (isDragging) {
-                isDragging = false;
-                lightboxContent.style.cursor = 'default';
-             }
-        });
-        // --- FIN: LÓGICA DE SWIPE ---
     }
 
-    // Llamadas a todas las funciones de construcción
-    prepararGaleriasSimples();
-    construirGaleriaPublica();
-    construirGaleriaModelo();
-    construirGaleriaTelevision();
-    initLightbox();
-
-    // === INICIO: LÓGICA DE MODALES (SOLO EN LIBRO.HTML) ===
+    // --- INICIO: LÓGICA DE MODALES (SOLO EN LIBRO.HTML) ---
     const videoTrigger = document.getElementById('alberto-leon-video-trigger');
     const videoModal = document.getElementById('video-modal');
-    const closeVideoModalBtn = document.getElementById('modal-close-btn');
-
-    const letterTrigger = document.getElementById('open-letter-modal');
-    const letterModal = document.getElementById('letter-modal');
-    const closeLetterModalBtn = document.getElementById('letter-modal-close-btn');
-
-    if (videoTrigger && videoModal && closeVideoModalBtn) {
+    if (videoTrigger && videoModal) {
+        const closeVideoModalBtn = document.getElementById('modal-close-btn');
         const openModal = () => videoModal.classList.add('visible');
         const closeModal = () => videoModal.classList.remove('visible');
-
         videoTrigger.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); openModal(); });
         closeVideoModalBtn.addEventListener('click', closeModal);
         videoModal.addEventListener('click', (e) => { if (e.target === videoModal) closeModal(); });
     }
 
-    if (letterTrigger && letterModal && closeLetterModalBtn) {
+    const letterTrigger = document.getElementById('open-letter-modal');
+    const letterModal = document.getElementById('letter-modal');
+    if (letterTrigger && letterModal) {
+        const closeLetterModalBtn = document.getElementById('letter-modal-close-btn');
         const openModal = () => letterModal.classList.add('visible');
         const closeModal = () => letterModal.classList.remove('visible');
-
         letterTrigger.addEventListener('click', (e) => { e.preventDefault(); openModal(); });
         closeLetterModalBtn.addEventListener('click', closeModal);
         letterModal.addEventListener('click', (e) => { if (e.target === letterModal) closeModal(); });
@@ -521,11 +320,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // ===============================================
-    //  LÓGICA PARA EL BOTÓN DE VOLVER ARRIBA
-    // ===============================================
+    // --- LÓGICA PARA EL BOTÓN DE VOLVER ARRIBA ---
     const backToTopButton = document.getElementById('volver-arriba-btn');
-
     if (backToTopButton) {
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) {
@@ -539,4 +335,13 @@ document.addEventListener('DOMContentLoaded', function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
+
+    // --- LLAMADAS FINALES A LAS FUNCIONES ---
+    prepararGaleriasSimples();
+    initLightbox();
+    initInteractiveGallery('galeria-interactiva', 'gallery');
+    initInteractiveGallery('galeria-interactiva-radio', 'radio_gallery');
+    initInteractiveGallery('galeria-interactiva-modelo', 'modeling_gallery');
+    initInteractiveGallery('galeria-interactiva-television', 'television_gallery');
+    initInteractiveGallery('galeria-interactiva-calendario', null); // Galería estática
 });
