@@ -42,8 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
             currentGalleryTitle.textContent = "Editando: Galería de Modelaje";
         } else if (galleryId === 'television_gallery') {
             currentGalleryTitle.textContent = "Editando: Galería de Televisión";
-        } else if (galleryId === 'radio_gallery') { // AÑADIDO
+        } else if (galleryId === 'radio_gallery') {
             currentGalleryTitle.textContent = "Editando: Galería de Radio";
+        } else if (galleryId === 'habecu_gallery') { // ¡BLOQUE AÑADIDO!
+            currentGalleryTitle.textContent = "Editando: Galería de HABECU";
         }
     }
 

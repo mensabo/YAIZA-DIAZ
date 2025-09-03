@@ -146,6 +146,44 @@ document.addEventListener('DOMContentLoaded', function() {
         const thumbnailsContainer = galleryContainer.querySelector('.galeria-lista-miniaturas');
         let visibilityTimer;
 
+        // --- INICIO: LÓGICA PARA AMPLIAR IMAGEN PRINCIPAL ---
+        const lightboxModal = document.getElementById('lightbox-modal');
+        const lightboxImage = document.getElementById('lightbox-image');
+        const lightboxCloseBtn = lightboxModal ? lightboxModal.querySelector('.lightbox-close') : null;
+        const lightboxPrevBtn = lightboxModal ? lightboxModal.querySelector('.lightbox-prev') : null;
+        const lightboxNextBtn = lightboxModal ? lightboxModal.querySelector('.lightbox-next') : null;
+
+        if (mainImage && lightboxModal) {
+            mainImage.style.cursor = 'zoom-in';
+
+            mainImage.addEventListener('click', () => {
+                if (!mainImage.src || mainImage.src.endsWith('#')) return; // No abrir si no hay imagen
+
+                lightboxImage.src = mainImage.src;
+                
+                if (lightboxPrevBtn) lightboxPrevBtn.style.display = 'none';
+                if (lightboxNextBtn) lightboxNextBtn.style.display = 'none';
+
+                lightboxModal.classList.add('visible');
+                document.body.style.overflow = 'hidden';
+            });
+
+            const closeModal = () => {
+                lightboxModal.classList.remove('visible');
+                document.body.style.overflow = 'auto';
+            };
+
+            if (lightboxCloseBtn) {
+                lightboxCloseBtn.addEventListener('click', closeModal);
+            }
+            lightboxModal.addEventListener('click', (e) => {
+                if (e.target === lightboxModal) {
+                    closeModal();
+                }
+            });
+        }
+        // --- FIN: LÓGICA PARA AMPLIAR IMAGEN PRINCIPAL ---
+
         const updateViewer = (activeThumbnail) => {
             if (!activeThumbnail) return;
             const imgSrc = activeThumbnail.dataset.imgSrc;
@@ -171,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (thumbnails.length > 0) {
                 thumbnails.forEach(thumb => thumb.addEventListener('click', () => updateViewer(thumb)));
                 updateViewer(thumbnails[0]);
-            } else if (!firestoreCollection) { // Solo muestra este mensaje para galerías estáticas vacías
+            } else if (!firestoreCollection) {
                 descriptionParagraph.textContent = "La galería está vacía.";
                 if(mainImage) mainImage.style.display = 'none';
             }
@@ -220,6 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function prepararGaleriasSimples() {
         const galleries = document.querySelectorAll('.comunicacion-gallery');
         galleries.forEach(gallery => {
+            if (gallery.id.startsWith('galeria-interactiva')) return;
             gallery.querySelectorAll('img').forEach((img, index) => {
                 if (img.parentElement.classList.contains('gallery-grid-item')) return;
                 const wrapper = document.createElement('div');
@@ -245,6 +284,8 @@ document.addEventListener('DOMContentLoaded', function() {
             updateLightboxImage();
             modal.classList.add('visible');
             document.body.style.overflow = 'hidden';
+            if (prevBtn) prevBtn.style.display = 'block';
+            if (nextBtn) nextBtn.style.display = 'block';
         };
 
         const closeModal = () => {
@@ -256,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentImageIndex < 0 || currentImageIndex >= activePhotos.length) return;
             const photo = activePhotos[currentImageIndex];
             lightboxImage.src = photo.src;
-            lightboxCaption.textContent = photo.descripcion || '';
+            if (lightboxCaption) lightboxCaption.textContent = photo.descripcion || '';
         };
 
         const showNext = () => {
@@ -278,15 +319,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        closeBtn.addEventListener('click', closeModal);
-        nextBtn.addEventListener('click', showNext);
-        prevBtn.addEventListener('click', showPrev);
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (nextBtn) nextBtn.addEventListener('click', showNext);
+        if (prevBtn) prevBtn.addEventListener('click', showPrev);
+        
         modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+        
         document.addEventListener('keydown', e => {
             if (!modal.classList.contains('visible')) return;
             if (e.key === 'Escape') closeModal();
-            if (e.key === 'ArrowRight') showNext();
-            if (e.key === 'ArrowLeft') showPrev();
+            if (e.key === 'ArrowRight' && nextBtn && nextBtn.style.display !== 'none') showNext();
+            if (e.key === 'ArrowLeft' && prevBtn && prevBtn.style.display !== 'none') showPrev();
         });
     }
 
@@ -344,4 +387,5 @@ document.addEventListener('DOMContentLoaded', function() {
     initInteractiveGallery('galeria-interactiva-modelo', 'modeling_gallery');
     initInteractiveGallery('galeria-interactiva-television', 'television_gallery');
     initInteractiveGallery('galeria-interactiva-calendario', null); // Galería estática
+    initInteractiveGallery('galeria-interactiva-habecu', 'habecu_gallery'); // ¡NUEVA LÍNEA AÑADIDA!
 });

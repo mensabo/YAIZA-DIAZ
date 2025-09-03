@@ -44,6 +44,48 @@
             transform: scale(1.1);
             border-color: rgba(255, 255, 255, 0.7);
         }
+
+        /* --- NUEVOS ESTILOS PARA EL ENLACE DE VIDEO --- */
+        a.video-link-container {
+            display: block;
+            position: relative;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #000;
+            text-decoration: none;
+        }
+        .video-link-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        a.video-link-container:hover img {
+            transform: scale(1.05);
+        }
+        .video-link-container .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            backdrop-filter: blur(4px);
+        }
+        a.video-link-container:hover .play-icon {
+            background-color: rgba(220, 0, 0, 0.8);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
     </style>
 </head>
 <body class="libro-page">
@@ -95,7 +137,7 @@
                         <p style="margin-top:1.5rem;"><strong>Puedes ver más sobre este momento en <a href="https://www.instagram.com/p/C6i3N0do8v_/" target="_blank" rel="noopener noreferrer" class="formula-rosa-link">este post de Instagram</a>.</strong></p>
                     </div>
                     <div class="sinopsis-img" style="flex-basis: 50%;">
-                        <img src="images/premio-isla.jpeg" alt="Yaiza Díaz recibiendo el Premio Isla Tenerife 2024" style="background-color: #e0e0e0;">
+                        <img src="images/premio-isla.jpg" alt="Yaiza Díaz recibiendo el Premio Isla Tenerife 2024" style="background-color: #e0e0e0;">
                         <p class="pie-de-foto">Yaiza Díaz en los Premios Isla Tenerife 2024.</p>
                     </div>
                 </div>
@@ -128,10 +170,26 @@
             <div class="comunicacion-section">
                 <h3>Premio Top Artistas Canarios 2020</h3>
                 <p>Díaz también se hizo con el premio Top Artistas Canarios 2020 a mejor periodista y presentadora, un reconocimiento a su labor en los medios de comunicación de las islas.</p>
+                
+                <!-- ***** INICIO DEL CÓDIGO ACTUALIZADO ***** -->
+                <a href="https://www.youtube.com/watch?v=A7YhOl14_9A" target="_blank" rel="noopener noreferrer" class="video-link-container" style="margin-top: 2rem; margin-bottom: 2rem;">
+                    <!-- Se usa tu imagen personalizada como miniatura -->
+                    <img src="images/topremios.png" alt="Presentación Premio Top Artistas Canarios">
+                    <!-- Icono de Play superpuesto -->
+                    <div class="play-icon"><i class="fab fa-youtube"></i></div>
+                </a>
+                <!-- ***** FIN DEL CÓDIGO ACTUALIZADO ***** -->
+
+                <div class="sinopsis-img" style="max-width: 500px; margin: 0 auto;">
+                    <img src="images/premiotop.jpg" alt="Yaiza Díaz con el premio Top Artistas Canarios 2020">
+                    <p class="pie-de-foto">Yaiza Díaz sosteniendo el diploma del premio.</p>
+                </div>
             </div>
 
         </div>
     </section>
+
+    <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
     
     <footer>
         <div class="container">
