@@ -46,7 +46,7 @@
         <div class="container">
             <h2>Modelo</h2>
             <div class="header-line"></div>
-            <p class="section-intro">Aquí puedes ver una selección de trabajos de modelaje y sesiones fotográficas realizadas con diferentes fotógrafos.</p>
+            <p class="section-intro">Aquí puedes ver una selección de trabajos de modelaje, sesiones fotográficas y videoclips.</p>
 
             <!-- Galería Interactiva Dinámica -->
             <div id="galeria-interactiva-modelo" class="galeria-interactiva-container">
@@ -64,14 +64,12 @@
         </div>
     </section>
     
-    <!-- ========= NUEVA SECCIÓN CALENDARIO SOLIDARIO ========= -->
     <section id="calendario-solidario" class="section-gray">
         <div class="container">
             <h2>Calendario Solidario 2024</h2>
             <div class="header-line"></div>
             <p class="section-intro">Imagen del calendario de la Fundación Carrera por la Vida de la que fue madrina en 2024.</p>
             
-            <!-- Galería Interactiva Estática -->
             <div id="galeria-interactiva-calendario" class="galeria-interactiva-container">
                 <div class="galeria-principal">
                     <div class="galeria-bg-desenfocado"></div>
@@ -81,7 +79,6 @@
                     </div>
                 </div>
                 <div class="galeria-lista-miniaturas">
-                    <!-- Miniaturas de la galería estática -->
                     <div class="miniatura-item" data-img-src="images/calendario.jpg" data-description="Calendario Solidario 2024 - Foto 1">
                         <img src="images/calendario.jpg" alt="Miniatura 1">
                         <div class="miniatura-overlay"><p class="miniatura-descripcion">Foto 1</p></div>
@@ -94,22 +91,33 @@
                         <img src="images/calendario3.jpg" alt="Miniatura 3">
                         <div class="miniatura-overlay"><p class="miniatura-descripcion">Foto 3</p></div>
                     </div>
-                    <div class="miniatura-item" data-img-src="images/calendario4.jpg" data-description="Calendario Solidario 2024 - Foto 4">
-                        <img src="images/calendario4.jpg" alt="Miniatura 4">
-                        <div class="miniatura-overlay"><p class="miniatura-descripcion">Foto 4</p></div>
-                    </div>
-                    <div class="miniatura-item" data-img-src="images/calendario5.jpg" data-description="Calendario Solidario 2024 - Foto 5">
-                        <img src="images/calendario5.jpg" alt="Miniatura 5">
-                        <div class="miniatura-overlay"><p class="miniatura-descripcion">Foto 5</p></div>
-                    </div>
-                    <div class="miniatura-item" data-img-src="images/calendario6.jpg" data-description="Calendario Solidario 2024 - Foto 6">
-                        <img src="images/calendario6.jpg" alt="Miniatura 6">
-                        <div class="miniatura-overlay"><p class="miniatura-descripcion">Foto 6</p></div>
-                    </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Modal para Lightbox de imágenes -->
+    <div id="lightbox-modal" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <span class="lightbox-prev">&#10094;</span>
+        <span class="lightbox-next">&#10095;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-image" src="" alt="Visor de imágenes">
+            <div id="lightbox-caption"></div>
+        </div>
+    </div>
+     
+    <!-- Modal para Vídeos -->
+    <div id="video-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="video-modal-close-btn" class="modal-close" aria-label="Cerrar">&times;</button>
+            <div class="video-container">
+                 <video id="modal-video-player" src="" controls playsinline style="border-radius: 0;"></video>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
     <footer>
         <div class="container">
@@ -122,7 +130,6 @@
         </div>
     </footer>
 
-    <!-- SDK de Firebase (necesario para cargar las fotos) -->
     <script src="config.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
@@ -134,7 +141,6 @@
         };
     </script>
 
-    <!-- Nuestro script principal con la lógica de la galería -->
     <script src="script.js" defer></script>
 </body>
 </html>

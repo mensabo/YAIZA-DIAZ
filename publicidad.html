@@ -8,16 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* --- INICIO: CÓDIGO AÑADIDO PARA CENTRAR TÍTULOS --- */
-        .comunicacion-section {
-            text-align: center; /* Centra los elementos de bloque en línea como el H3 */
-        }
-        .comunicacion-section p {
-            text-align: left; /* Mantiene los párrafos de texto alineados a la izquierda */
-        }
-        /* --- FIN: CÓDIGO AÑADIDO --- */
+        .comunicacion-section { text-align: center; }
+        .comunicacion-section p { text-align: left; }
 
-        /* Estilos específicos para los vídeos en esta página */
         a.video-fallback { display: block; position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px; background-color: #000; text-decoration: none; }
         
         .video-fallback video,
@@ -53,6 +46,9 @@
         .phone-mockup { position: relative; width: 42%; max-width: 280px; aspect-ratio: 9 / 19.5; background-color: #1c1c1c; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding: 10px; transition: transform 0.3s ease; }
         a:hover .phone-mockup { transform: scale(1.05); }
         .phone-mockup .video-screen { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; background-color: #000; }
+
+        .link-highlight { color: var(--color-acento); font-weight: bold; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; transition: color 0.3s ease; cursor: pointer; }
+        .link-highlight:hover { color: #a78d6b; }
     </style>
 </head>
 <body class="libro-page">
@@ -93,13 +89,18 @@
         <div class="container comunicacion-content">
             <h2>Publicidad y Campañas</h2>
             <div class="header-line"></div>
-            <p class="section-intro">Yaiza Díaz ha sido imagen para anuncios y promociones de importantes marcas y campañas de concienciación institucionales en Canarias.</p>
+            
+            <div class="section-intro" style="text-align: left; max-width: none;">
+                <p>
+                    Yaiza Díaz ha sido imagen para anuncios y promociones de importantes marcas y campañas institucionales, prestando su imagen y voz para spots de empresas como <strong>Toyota Canarias, Dormitorum, BonosVIP, IKEA, Montesano, Makro y el Gobierno de Canarias</strong>.
+                </p>
+                <p>
+                    La periodista ha puesto voz a numerosas cuñas publicitarias en radio e incluso a documentales como “La Gomera isla de la felicidad”, que se proyectó en la Feria de Turismo de Madrid. También realiza colaboraciones habituales para clínicas médico-estéticas como <a href="https://www.cidme.com/" target="_blank" rel="noopener noreferrer" class="link-highlight"><strong>CIDME</strong></a> o el <a href="https://cri-tenerife.com/" target="_blank" rel="noopener noreferrer" class="link-highlight"><strong>Centro de Rehabilitación Integral CRI</strong></a>.
+                </p>
+            </div>
 
             <div class="comunicacion-section">
                 <h3>Campaña Digital <span class="brand-name">Toyota Canarias</span></h3>
-                <p>
-                   Yaiza Díaz presentó la campaña de Toyota Canarias para el público digital sobre el lanzamiento de los nuevos modelos de coche de la marca que salieron al mercado.
-                </p>
                 <a href="https://www.instagram.com/reel/Ct9Nxg4I-Nm/?igsh=anlyNTkyNnlvbnFk" target="_blank" rel="noopener noreferrer" class="phone-video-container">
                     <div class="phone-mockup">
                         <video class="video-screen" autoplay loop muted playsinline>
@@ -112,9 +113,6 @@
 
             <div class="comunicacion-section">
                 <h3>Campaña de Televisión <span class="brand-name">Dormitorum</span></h3>
-                <p>
-                    Como prescriptora de marcas líderes, Yaiza Díaz ha sido la imagen de campañas publicitarias para Dormitorum, la empresa de descanso referente en Canarias. A continuación, uno de los spots televisivos de la campaña.
-                </p>
                 <a href="https://www.youtube.com/watch?v=anmvj5jgRfk" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <img src="https://img.youtube.com/vi/anmvj5jgRfk/hqdefault.jpg" alt="Miniatura spot Dormitorum">
                     <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
@@ -123,9 +121,6 @@
 
             <div class="comunicacion-section">
                 <h3>Spot de Televisión <span class="brand-name">BonosVip</span></h3>
-                <p>
-                    Protagonista de la campaña de la popular web de descuentos BonosVip. En este divertido spot, Yaiza da vida a una de las historias que buscan sorprender al espectador y revelar el secreto para disfrutar del mejor ocio en las islas a precios increíbles.
-                </p>
                 <a href="https://www.youtube.com/watch?v=cMviyq8rUFQ" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <img src="https://img.youtube.com/vi/cMviyq8rUFQ/hqdefault.jpg" alt="Miniatura spot BonosVip Taxi">
                     <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
@@ -134,17 +129,33 @@
             
             <div class="comunicacion-section">
                 <h3>Campaña Digital <span class="brand-name">BonosVip (Strasse Park)</span></h3>
-                 <p>
-                    Como presentadora principal de la campaña publicitaria de BonosVip, Yaiza también se encargó de comunicar directamente a la audiencia las ventajas y ofertas destacadas de la plataforma, convirtiéndose en el rostro de la marca.
-                </p>
                 <a href="https://www.youtube.com/watch?v=KE86EZBjI9Y" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <img src="https://img.youtube.com/vi/KE86EZBjI9Y/hqdefault.jpg" alt="Miniatura campaña BonosVip">
                     <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
                 </a>
             </div>
 
+            <!-- ***** INICIO: BLOQUE DE VÍDEO MOVÍDO Y CON NUEVO FORMATO ***** -->
+            <div class="comunicacion-section">
+                <h3>SPOT "La Gomera, isla de la felicidad"</h3>
+                <a href="#" class="video-fallback js-video-modal-trigger" data-video-src="https://www.youtube.com/embed/WTEUE1gqhjY">
+                    <img src="https://img.youtube.com/vi/WTEUE1gqhjY/hqdefault.jpg" alt="Miniatura del documental La Gomera, isla de la felicidad">
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
+            </div>
+            <!-- ***** FIN: BLOQUE DE VÍDEO MOVÍDO Y CON NUEVO FORMATO ***** -->
+
         </div>
     </section>
+
+    <div id="video-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Cerrar">&times;</button>
+            <div class="video-container">
+                 <iframe id="modal-video-iframe" src="" title="Documental" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
 
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
     

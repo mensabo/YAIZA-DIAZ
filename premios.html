@@ -9,62 +9,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .video-fallback {
+            display: block;
             position: relative;
             background-color: #000;
             border-radius: 8px;
             overflow: hidden;
             aspect-ratio: 16 / 9;
+            text-decoration: none;
+            cursor: pointer;
         }
-        .video-fallback video {
+        .video-fallback video,
+        .video-fallback img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             opacity: 0.9;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .video-fallback:hover video,
+        .video-fallback:hover img {
+            transform: scale(1.05);
+            opacity: 1;
         }
         .play-button-overlay {
-            position: absolute;
-            bottom: 1rem;
-            right: 1rem;
-            width: 40px;
-            height: 40px;
-            background-color: rgba(200, 0, 0, 0.7);
-            color: white;
-            border-radius: 50%;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-        }
-        .play-button-overlay:hover {
-            background-color: rgba(220, 0, 0, 0.9);
-            transform: scale(1.1);
-            border-color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* --- NUEVOS ESTILOS PARA EL ENLACE DE VIDEO --- */
-        a.video-link-container {
-            display: block;
-            position: relative;
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            border-radius: 8px;
-            background-color: #000;
-            text-decoration: none;
-        }
-        .video-link-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-        a.video-link-container:hover img {
-            transform: scale(1.05);
-        }
-        .video-link-container .play-icon {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -82,9 +49,22 @@
             border: 2px solid white;
             backdrop-filter: blur(4px);
         }
-        a.video-link-container:hover .play-icon {
+        .video-fallback:hover .play-button-overlay {
             background-color: rgba(220, 0, 0, 0.8);
             transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        /* --- ESTILOS PARA EL ENLACE DESTACADO --- */
+        .link-highlight {
+            color: var(--color-acento);
+            font-weight: bold;
+            text-decoration: underline;
+            text-decoration-thickness: 1.5px;
+            text-underline-offset: 4px;
+            transition: color 0.3s ease;
+        }
+        .link-highlight:hover {
+            color: #a78d6b;
         }
     </style>
 </head>
@@ -145,13 +125,15 @@
 
             <div class="comunicacion-section">
                 <h3>Madrina de la Fundación Carrera por la Vida (2024)</h3>
-                <p>En 2024, Yaiza fue nombrada madrina de la Fundación Carrera por la Vida, una organización dedicada a la lucha contra el cáncer de mama en Tenerife. Como parte de su implicación, fue la imagen del Calendario Solidario de la fundación para recaudar fondos y dar visibilidad a la causa.</p>
-                 <div class="sinopsis-content" style="gap: 2rem; align-items: flex-start;">
+                <div class="sinopsis-content" style="gap: 2rem; align-items: flex-start;">
                     <div class="sinopsis-img" style="flex-basis: 50%;">
                         <img src="images/calendario.jpg" alt="Yaiza Díaz en el calendario solidario de la Fundación Carrera por la Vida">
                     </div>
                     <div class="sinopsis-text">
-                        <p>Su compromiso con la fundación refleja su faceta más solidaria, utilizando su voz y su imagen para apoyar a las pacientes y promover la concienciación sobre la importancia de la investigación y el apoyo comunitario.</p>
+                        <p>En 2024, Yaiza fue nombrada madrina de la Fundación Carrera por la Vida, una organización dedicada a la lucha contra el cáncer de mama en Tenerife. Como parte de su implicación, fue la imagen del Calendario Solidario de la fundación para recaudar fondos y dar visibilidad a la causa.</p>
+                        <p>
+                            Fue fotografiada para su calendario solidario por el prestigioso fotógrafo de moda <a href="https://www.instagram.com/soyalfonsobravo/" target="_blank" rel="noopener noreferrer" class="link-highlight"><strong>Alfonso Bravo</strong></a> con un vestido de los reconocidos diseñadores internacionales <a href="https://marcoymaria.com/" target="_blank" rel="noopener noreferrer" class="link-highlight"><strong>Marco y María</strong></a>.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -159,35 +141,42 @@
             <div class="comunicacion-section">
                 <h3>Premio a la Comunicación por "Mujeres Gitanas"</h3>
                 <p>La Asociación Romí Camela Nakerar reconoció la trayectoria de la periodista concediéndole el premio a la comunicación por su reportaje "Mujeres Gitanas".</p>
-                <div class="video-fallback">
-                    <video autoplay loop muted playsinline>
-                        <source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FMujeres%20Gitanas.mp4?alt=media&token=760da2bf-9a4d-4eb8-830b-7704841d4e39" type="video/mp4">
-                    </video>
-                    <a href="https://www.youtube.com/watch?v=sAHeK631yqQ" target="_blank" rel="noopener noreferrer" class="play-button-overlay"><i class="fab fa-youtube"></i></a>
-                </div>
+                <a href="#" class="video-fallback js-video-modal-trigger" data-video-src="https://www.youtube.com/embed/sAHeK631yqQ">
+                    <img src="https://img.youtube.com/vi/sAHeK631yqQ/hqdefault.jpg" alt="Miniatura del reportaje Mujeres Gitanas">
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
             </div>
             
             <div class="comunicacion-section">
                 <h3>Premio Top Artistas Canarios 2020</h3>
                 <p>Díaz también se hizo con el premio Top Artistas Canarios 2020 a mejor periodista y presentadora, un reconocimiento a su labor en los medios de comunicación de las islas.</p>
                 
-                <!-- ***** INICIO DEL CÓDIGO ACTUALIZADO ***** -->
-                <a href="https://www.youtube.com/watch?v=A7YhOl14_9A" target="_blank" rel="noopener noreferrer" class="video-link-container" style="margin-top: 2rem; margin-bottom: 2rem;">
-                    <!-- Se usa tu imagen personalizada como miniatura -->
-                    <img src="images/topremios.png" alt="Presentación Premio Top Artistas Canarios">
-                    <!-- Icono de Play superpuesto -->
-                    <div class="play-icon"><i class="fab fa-youtube"></i></div>
+                <!-- ***** INICIO: VÍDEO CON CARÁTULA DE FIREBASE ***** -->
+                <a href="https://www.youtube.com/watch?v=A7YhOl14_9A" target="_blank" rel="noopener noreferrer" class="video-fallback" style="margin-top: 2rem; margin-bottom: 2rem;">
+                    <video autoplay loop muted playsinline>
+                        <source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fpremiostop.mp4?alt=media&token=3a89e299-9388-486d-aff6-7b1575a12113" type="video/mp4">
+                    </video>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
                 </a>
-                <!-- ***** FIN DEL CÓDIGO ACTUALIZADO ***** -->
+                <!-- ***** FIN: VÍDEO CON CARÁTULA DE FIREBASE ***** -->
 
-                <div class="sinopsis-img" style="max-width: 500px; margin: 0 auto;">
-                    <img src="images/premiotop.jpg" alt="Yaiza Díaz con el premio Top Artistas Canarios 2020">
+                <div style="max-width: 500px; margin: 2rem auto 0;">
+                    <img src="images/premiotop.jpg" alt="Yaiza Díaz con el premio Top Artistas Canarios 2020" style="width: 100%; height: auto; border-radius: 8px;">
                     <p class="pie-de-foto">Yaiza Díaz sosteniendo el diploma del premio.</p>
                 </div>
             </div>
-
         </div>
     </section>
+
+    <!-- Modal para vídeos de YouTube -->
+    <div id="video-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Cerrar">&times;</button>
+            <div class="video-container">
+                 <iframe id="modal-video-iframe" src="" title="Vídeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
 
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
     

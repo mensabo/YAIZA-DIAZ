@@ -103,6 +103,18 @@
             background-color: rgba(220, 0, 0, 0.8);
             transform: translate(-50%, -50%) scale(1.1);
         }
+
+        /* --- ESTILOS PARA EL ENLACE DESTACADO --- */
+        .link-highlight {
+            color: var(--color-acento);
+            text-decoration: underline;
+            text-decoration-thickness: 1.5px;
+            text-underline-offset: 4px;
+            transition: color 0.3s ease;
+        }
+        .link-highlight:hover {
+            color: #a78d6b; /* Un dorado ligeramente más oscuro al pasar el ratón */
+        }
     </style>
 </head>
 <body class="libro-page">
@@ -144,14 +156,29 @@
             <h2>Directora de Comunicación <span style="white-space: nowrap;">(2021-2024)</span></h2>
             <div class="header-line"></div>
 
-            <!-- INICIO DEL NUEVO ORDEN -->
             <div class="comunicacion-section">
                 <h3>Jefa de Prensa y Dircom</h3>
                 <p>
                     Yaiza Díaz también ha ejercido como jefa de prensa de gabinetes de comunicación, pero además lo ha hecho añadiendo a las labores propias de este departamento todos sus conocimientos audiovisuales y ha sido imagen y representante de las empresas a las que ha llevado su gabinete. Entre las más importantes están <strong>Dreamland Studios</strong>, el mayor proyecto audiovisual y tecnológico de Europa, la editorial <strong>Kinnamon</strong> y la empresa de renovables <strong>EAVE</strong>.
                 </p>
             </div>
-
+            
+            <!-- ***** INICIO SECCIÓN BPW CANARIAS ACTUALIZADA ***** -->
+            <div class="comunicacion-section">
+                <h3>Socia Ejecutiva de BPW Canarias</h3>
+                <div class="sinopsis-content" style="gap: 2rem; align-items: flex-start;">
+                    <div class="sinopsis-text">
+                        <p>
+                            Yaiza Díaz es socia ejecutiva de <a href="https://www.bpwcanarias.org/" target="_blank" rel="noopener noreferrer" class="link-highlight"><strong>BPW Canarias</strong></a>, una red de mujeres empresarias y profesionales de Canarias, donde forma parte del Comité de Comunicación y de Talento e Inclusión.
+                        </p>
+                    </div>
+                    <div class="sinopsis-img" style="flex-basis: 70%;">
+                        <img src="images/comunicadora-bg.jpeg" alt="Yaiza Díaz en un evento de BPW Canarias">
+                    </div>
+                </div>
+            </div>
+            <!-- ***** FIN SECCIÓN BPW CANARIAS ACTUALIZADA ***** -->
+            
             <div class="comunicacion-section">
                 <h3>Dreamland Studios</h3>
                 <p>Declaraciones a medios sobre Dreamland junto al Presidente del Cabildo de Gran Canaria.</p>

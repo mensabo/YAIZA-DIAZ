@@ -5,9 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const { auth, signInWithEmailAndPassword, onAuthStateChanged, signOut } = services;
-    const { db, collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc } = services;
-    const { storage, ref, uploadBytes, getDownloadURL, deleteObject } = services;
+    const { auth, db, storage, signInWithEmailAndPassword, onAuthStateChanged, signOut, collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc, getDoc, ref, uploadBytes, getDownloadURL, deleteObject } = services;
 
     const loginContainer = document.getElementById('login-container');
     const adminPanel = document.getElementById('admin-panel');
@@ -21,39 +19,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const fileInput = document.getElementById('file-input');
     const gallerySelector = document.getElementById('gallery-selector');
     const currentGalleryTitle = document.getElementById('current-gallery-title');
+    const videoUrlInput = document.getElementById('video-url-input');
+    const thumbnailUrlInput = document.getElementById('thumbnail-url-input');
+    const videoDescriptionInput = document.getElementById('video-description-input');
+    const addVideoButton = document.getElementById('add-video-button');
 
     let sortableInstance = null;
     let currentCollection = 'gallery';
     let currentStoragePath = 'gallery/';
 
+    const galleryTitles = {
+        gallery: "Galería del Libro",
+        modeling_gallery: "Galería de Modelaje",
+        television_gallery: "Galería de Televisión",
+        radio_gallery: "Galería de Radio",
+        habecu_gallery: "Galería de HABECU"
+    };
+
     gallerySelector.addEventListener('change', (e) => {
-        const selectedValue = e.target.value;
-        currentCollection = selectedValue;
-        currentStoragePath = `${selectedValue}/`; 
-        
-        updateAdminUI(selectedValue);
+        currentCollection = e.target.value;
+        currentStoragePath = `${currentCollection}/`;
+        updateAdminUI();
         loadGallery();
     });
 
-    function updateAdminUI(galleryId) {
-        if (galleryId === 'gallery') {
-            currentGalleryTitle.textContent = "Editando: Galería del Libro";
-        } else if (galleryId === 'modeling_gallery') {
-            currentGalleryTitle.textContent = "Editando: Galería de Modelaje";
-        } else if (galleryId === 'television_gallery') {
-            currentGalleryTitle.textContent = "Editando: Galería de Televisión";
-        } else if (galleryId === 'radio_gallery') {
-            currentGalleryTitle.textContent = "Editando: Galería de Radio";
-        } else if (galleryId === 'habecu_gallery') { // ¡BLOQUE AÑADIDO!
-            currentGalleryTitle.textContent = "Editando: Galería de HABECU";
-        }
+    function updateAdminUI() {
+        currentGalleryTitle.textContent = `Editando: ${galleryTitles[currentCollection]}`;
     }
 
     onAuthStateChanged(auth, user => {
         if (user) {
             loginContainer.style.display = 'none';
             adminPanel.style.display = 'block';
-            updateAdminUI(currentCollection);
+            updateAdminUI();
             loadGallery();
         } else {
             loginContainer.style.display = 'block';
@@ -69,28 +67,39 @@ document.addEventListener('DOMContentLoaded', () => {
     logoutButton.addEventListener('click', () => signOut(auth));
 
     async function loadGallery() {
-        galleryList.innerHTML = '<p>Cargando imágenes...</p>';
+        galleryList.innerHTML = '<p>Cargando...</p>';
         const q = query(collection(db, currentCollection), orderBy('order'));
         const snapshot = await getDocs(q);
-        const photos = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        renderGallery(photos);
+        const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        renderGallery(items);
     }
 
-    function renderGallery(photos) {
+    function renderGallery(items) {
         galleryList.innerHTML = '';
-        if (photos.length === 0) {
-            galleryList.innerHTML = '<p>No hay imágenes en esta galería. ¡Sube algunas!</p>';
+        if (items.length === 0) {
+            galleryList.innerHTML = '<p>No hay elementos. ¡Sube imágenes o añade vídeos!</p>';
         }
-        photos.forEach(photo => {
+        items.forEach(item => {
             const div = document.createElement('div');
             div.className = 'gallery-item';
-            div.dataset.id = photo.id;
-            
-            div.innerHTML = `
-                <img src="${photo.src}" alt="${photo.descripcion}">
-                <textarea class="description-input" placeholder="Descripción...">${photo.descripcion}</textarea>
-                <button class="delete-button">Eliminar</button>
-            `;
+            div.dataset.id = item.id;
+
+            if (item.type === 'video') {
+                div.innerHTML = `
+                    <div class="item-preview video-preview">
+                        <img src="${item.thumbnailSrc}" alt="Miniatura">
+                        <span>VÍDEO</span>
+                    </div>
+                    <textarea class="description-input" placeholder="Descripción...">${item.descripcion}</textarea>
+                    <button class="delete-button">Eliminar</button>`;
+            } else {
+                div.innerHTML = `
+                    <div class="item-preview">
+                        <img src="${item.src}" alt="${item.descripcion}">
+                    </div>
+                    <textarea class="description-input" placeholder="Descripción...">${item.descripcion}</textarea>
+                    <button class="delete-button">Eliminar</button>`;
+            }
             galleryList.appendChild(div);
         });
         
@@ -113,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const url = await getDownloadURL(storageRef);
             
             await addDoc(collection(db, currentCollection), {
+                type: 'image',
                 src: url,
                 descripcion: "Nueva imagen",
                 order: currentCount + i
@@ -121,11 +131,34 @@ document.addEventListener('DOMContentLoaded', () => {
         loadGallery();
     }
 
+    addVideoButton.addEventListener('click', async () => {
+        const videoSrc = videoUrlInput.value.trim();
+        const thumbnailSrc = thumbnailUrlInput.value.trim();
+        const descripcion = videoDescriptionInput.value.trim();
+
+        if (!videoSrc || !thumbnailSrc || !descripcion) {
+            return alert('Por favor, completa todos los campos para el vídeo.');
+        }
+        const currentCount = galleryList.querySelectorAll('.gallery-item').length;
+        
+        await addDoc(collection(db, currentCollection), {
+            type: 'video',
+            videoSrc,
+            thumbnailSrc,
+            descripcion,
+            order: currentCount
+        });
+        
+        videoUrlInput.value = '';
+        thumbnailUrlInput.value = '';
+        videoDescriptionInput.value = '';
+        loadGallery();
+        alert('¡Vídeo añadido!');
+    });
+
     saveButton.addEventListener('click', async () => {
         const batch = writeBatch(db);
-        const items = galleryList.querySelectorAll('.gallery-item');
-        
-        items.forEach((item, index) => {
+        galleryList.querySelectorAll('.gallery-item').forEach((item, index) => {
             const docRef = doc(db, currentCollection, item.dataset.id);
             batch.update(docRef, {
                 descripcion: item.querySelector('.description-input').value,
@@ -139,19 +172,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     galleryList.addEventListener('click', async e => {
         if (e.target.classList.contains('delete-button')) {
-            if (!confirm('¿Seguro que quieres eliminar esta imagen?')) return;
+            if (!confirm('¿Seguro que quieres eliminar este elemento?')) return;
             
-            const item = e.target.closest('.gallery-item');
-            const docId = item.dataset.id;
-            const imgSrc = item.querySelector('img').src;
+            const itemElement = e.target.closest('.gallery-item');
+            const docId = itemElement.dataset.id;
+            const docRef = doc(db, currentCollection, docId);
+            const docSnap = await getDoc(docRef);
             
-            await deleteDoc(doc(db, currentCollection, docId));
-            
-            const storageRef = ref(storage, imgSrc);
-            await deleteObject(storageRef);
+            if (docSnap.exists()) {
+                const itemData = docSnap.data();
+                // Si es una imagen (no un vídeo), intenta borrarla del Storage
+                if (itemData.type !== 'video' && itemData.src) {
+                    try {
+                        const storageRef = ref(storage, itemData.src);
+                        await deleteObject(storageRef);
+                    } catch (error) {
+                        console.warn("No se pudo eliminar el archivo de Storage (puede que sea un enlace externo o ya no exista):", error);
+                    }
+                }
+            }
 
-            item.remove();
-            alert('Imagen eliminada.');
+            await deleteDoc(docRef);
+            itemElement.remove();
+            alert('Elemento eliminado.');
         }
     });
 });
