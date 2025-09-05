@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrevistas y Artículos - Yaiza Díaz</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+.media-card img {
+transition: transform 0.3s ease, filter 0.3s ease;
+}
+.media-card:hover img {
+transform: scale(1.05);
+filter: brightness(1.1);
+}
+.video-overlay-icon {
+position: absolute;
+bottom: 10px; /* Movido de 'top' */
+right: 10px; /* Movido de 'left' */
+width: 40px; /* Tamaño ajustado */
+height: 40px; /* Tamaño ajustado */
+background-color: rgba(0, 0, 0, 0.5);
+color: white;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 1rem; /* Tamaño de icono ajustado */
+pointer-events: none;
+transition: transform 0.3s ease, background-color 0.3s ease;
+backdrop-filter: blur(3px);
+border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.media-card:hover .video-overlay-icon {
+transform: scale(1.1); /* Se elimina el 'translate' */
+background-color: rgba(204, 0, 0, 0.7);
+}
+.media-card .image-container {
+position: relative;
+overflow: hidden;
+line-height: 0;
+}
+</style>
+</head>
+<body class="libro-page">
+code
+Code
+<header>
+    <nav class="container">
+        <div class="nav-title">
+            <h1>YAIZA DÍAZ</h1>
+        </div>
+        <button id="mobile-menu-toggle" aria-label="Abrir menú de navegación">☰</button>
+        <ul id="nav-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="television.html">Televisión</a></li>
+            <li><a href="radio.html">Radio</a></li>
+            <li><a href="publicidad.html">Publicidad</a></li>
+            <li><a href="comunicacion.html">Comunicación</a></li>
+            <li><a href="investigacion.html">Documentales</a></li>
+            <li><a href="proyectos.html">Proyectos</a></li>
+            <li><a href="premios.html">Premios</a></li>
+            <li><a href="entrevistas.html">Entrevistas</a></li>
+            <li><a href="libro.html">Libro</a></li>
+            <li><a href="modelaje.html">Modelo</a></li>
+            <li><a href="index.html#prensa">Eventos</a></li>
+            <li><a href="index.html#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="return-bar">
+    <div class="container">
+        <a href="index.html" class="breadcrumb-return-link">
+            <i class="fas fa-arrow-left"></i> Volver a Inicio
+        </a>
+    </div>
+</div>
+
+<section id="entrevistas-main">
+    <div class="container">
+        <h2>Entrevistas y Artículos</h2>
+        <div class="header-line"></div>
+        <p class="section-intro">Una selección de entrevistas en prensa, radio y televisión donde Yaiza comparte su trayectoria profesional, sus proyectos personales y sus reflexiones sobre la vida y la comunicación.</p>
+        
+        <div class="media-grid" style="padding-top: 2rem;">
+
+            <a href="https://diariodeavisos.elespanol.com/2025/01/yaiza-diaz-debemos-naturalizarlo-una-de-cada-ocho-padecemos-cancer-de-mama/" target="_blank" rel="noopener noreferrer" class="media-card">
+                <div class="image-container">
+                    <img src="images/diario2.png" alt="Yaiza Díaz en su entrevista para Diario de Avisos" style="width: 100%; height: 200px; object-fit: cover; object-position: center;">
+                </div>
+                <div class="media-card-text">
+                    <h4>Diario de Avisos</h4>
+                    <p>“Debemos naturalizarlo; una de cada ocho padecemos cáncer de mama”</p>
+                </div>
+            </a>
+
+            <a href="https://www.youtube.com/watch?v=PJZLBC8O-6o" target="_blank" rel="noopener noreferrer" class="media-card">
+                <div class="image-container">
+                    <img src="images/mirame.png" alt="Yaiza Díaz en Mírame TV" style="width: 100%; height: 200px; object-fit: cover; object-position: center;">
+                    <div class="video-overlay-icon"><i class="fas fa-play"></i></div>
+                </div>
+                <div class="media-card-text">
+                    <h4>De Cerca (Mírame TV)</h4>
+                    <p>Entrevista sobre "La Hija del Ciego"</p>
+                </div>
+            </a>
+            
+            <a href="https://www.youtube.com/watch?v=MIk6SvN3i2c&t=2s" target="_blank" rel="noopener noreferrer" class="media-card">
+                <div class="image-container">
+                    <img src="images/noveleros.png" alt="Yaiza Díaz en Noveleros de RTVC" style="width: 100%; height: 200px; object-fit: cover; object-position: center;">
+                    <div class="video-overlay-icon"><i class="fas fa-play"></i></div>
+                </div>
+                <div class="media-card-text">
+                    <h4>Noveleros (RTVC)</h4>
+                    <p>Un canto a la vida y a la resiliencia</p>
+                </div>
+            </a>
+            
+            <a href="https://www.youtube.com/watch?v=LSkMKMnVreQ" target="_blank" rel="noopener noreferrer" class="media-card">
+                <div class="image-container">
+                    <img src="images/blogo.png" alt="Yaiza Díaz entrevistada por El Blogo Feroz" style="width: 100%; height: 200px; object-fit: cover; object-position: center;">
+                    <div class="video-overlay-icon"><i class="fas fa-play"></i></div>
+                </div>
+                <div class="media-card-text">
+                    <h4>El Blogo Feroz</h4>
+                    <p>Entrevista en vídeo</p>
+                </div>
+            </a>
+
+            
+            <a href="https://diariodeavisos.elespanol.com/2021/11/yaiza-diaz-periodista-siempre-me-han-querido-anillar-como-si-fuera-una-paloma-pero-vole/" target="_blank" rel="noopener noreferrer" class="media-card">
+                <div class="image-container">
+                    <img src="images/diario.jpg" alt="Yaiza Díaz en su entrevista para Diario de Avisos" style="width: 100%; height: 200px; object-fit: cover; object-position: center;">
+                </div>
+                <div class="media-card-text">
+                    <h4>Diario de Avisos</h4>
+                    <p>“Siempre me han querido anillar, pero volé”</p>
+                </div>
+            </a>
+
+            <a href="https://www.eldia.es/salud/2025/02/04/superwoman-queria-tratasen-enferma-113977959.html" target="_blank" rel="noopener noreferrer" class="media-card">
+                <div class="image-container">
+                    <img src="images/eldia.png" alt="Yaiza Díaz en su entrevista para El Día" style="width: 100%; height: 200px; object-fit: cover; object-position: center;">
+                </div>
+                <div class="media-card-text">
+                    <h4>El Día</h4>
+                    <p>"No soy 'Superwoman', pero no quería que me tratasen como a una enferma"</p>
+                </div>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+<a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
+
+<footer>
+    <div class="container">
+        <div class="footer-social-icons">
+             <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+            <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+            <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+        </div>
+        <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
+    </div>
+</footer>
+<script src="script.js" defer></script>
+</body>
+</html>

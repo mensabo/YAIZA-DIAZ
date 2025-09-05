@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // --- LÓGICA COMÚN PARA EL MENÚ (SE EJECUTA EN TODAS LAS PÁGINAS) ---
+    // --- LÓGICA COMÚN PARA EL MENÚ ---
     const menuToggle = document.getElementById('mobile-menu-toggle');
     const navLinks = document.getElementById('nav-links');
     if (menuToggle && navLinks) {
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 touchEndX = event.changedTouches[0].screenX;
                 const swipeThreshold = 50;
                 if (touchStartX - touchEndX > swipeThreshold) nextTab();
-                if (touchEndX - startStartX > swipeThreshold) prevTab();
+                if (touchEndX - touchStartX > swipeThreshold) prevTab();
                 startCarousel();
             }, false);
         }
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
         startCarousel();
     }
     
-    // --- INICIO: LÓGICA DE MODALES (VÍDEO Y LIGHTBOX) ---
+    // --- LÓGICA DE MODALES (VÍDEO Y LIGHTBOX) ---
     const videoModal = document.getElementById('video-modal');
     const videoPlayer = document.getElementById('modal-video-player');
     const videoModalCloseBtn = videoModal ? videoModal.querySelector('.modal-close') : null;
@@ -173,10 +173,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function openImageLightbox(items, startIndex) {
         if (!lightboxModal || !lightboxImage) return;
-        activeGalleryItems = items.filter(item => item.type === 'image'); // Solo mostramos imágenes en el lightbox
+        activeGalleryItems = items.filter(item => item.type === 'image');
         currentLightboxIndex = activeGalleryItems.findIndex(item => item.src === items[startIndex].src);
 
-        if (currentLightboxIndex === -1) return; // Si el item inicial no es una imagen
+        if (currentLightboxIndex === -1) return;
 
         updateLightboxContent();
         lightboxModal.classList.add('visible');
@@ -214,7 +214,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.style.overflow = 'auto';
         }});
     }
-    // --- FIN: LÓGICA DE MODALES ---
 
     // --- LÓGICA DE GALERÍA INTERACTIVA REUTILIZABLE (ACTUALIZADA) ---
     function initInteractiveGallery(containerId, firestoreCollection) {
@@ -225,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const bgBlur = galleryContainer.querySelector('.galeria-bg-desenfocado');
         const descriptionContainer = galleryContainer.querySelector('.descripcion-principal p');
         const thumbnailsContainer = galleryContainer.querySelector('.galeria-lista-miniaturas');
-        let allItems = []; // Almacenará tanto imágenes como vídeos
+        let allItems = []; 
 
         if (mainImage) {
             mainImage.addEventListener('click', () => {
@@ -322,7 +321,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             };
             loadFirebaseGallery();
-        } else { // Para galerías estáticas como la del calendario
+        } else { 
             const thumbnails = thumbnailsContainer.querySelectorAll('.miniatura-item');
             thumbnails.forEach((thumb, index) => {
                 thumb.dataset.index = index;
@@ -337,24 +336,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // --- LÓGICA DE MODALES DEL LIBRO (se mantiene igual) ---
-    const bookVideoTrigger = document.getElementById('alberto-leon-video-trigger');
-    const bookVideoModal = document.getElementById('video-modal'); // Reutiliza el ID, cuidado si hay conflictos
-    if (bookVideoTrigger && bookVideoModal) {
-        // ... (código del modal del libro)
-    }
-
-    const letterTrigger = document.getElementById('open-letter-modal');
-    const letterModal = document.getElementById('letter-modal');
-    if (letterTrigger && letterModal) {
-       // ... (código del modal de la carta)
-    }
-
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             if (videoModal && videoModal.classList.contains('visible')) closeVideoModal();
-            if (lightboxModal && lightboxModal.classList.contains('visible')) closeImageLightbox();
-            // ... (cierre de otros modales si es necesario)
+            if (lightboxModal && lightboxModal.classList.contains('visible')) {
+                lightboxModal.classList.remove('visible');
+                document.body.style.overflow = 'auto';
+            }
         }
     });
     
@@ -370,6 +358,91 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // --- LÓGICA PARA CARGAR EVENTOS DINÁMICOS EN LA PÁGINA PRINCIPAL ---
+    const loadEventsFrontend = () => {
+        const container = document.getElementById('dynamic-event-tags');
+        if (!container) return; 
+
+        const checkFirebase = setInterval(async () => {
+            if (window.firebaseServices) {
+                clearInterval(checkFirebase);
+                const { db, collection, getDocs, orderBy, query } = window.firebaseServices;
+                try {
+                    const q = query(collection(db, 'events'), orderBy('order'));
+                    const snapshot = await getDocs(q);
+                    
+                    container.innerHTML = '';
+                    if (snapshot.empty) {
+                        // Opcional: mostrar un mensaje si no hay eventos
+                    } else {
+                        snapshot.docs.forEach(doc => {
+                            const event = doc.data();
+                            const button = document.createElement('button');
+                            button.className = 'event-tag-button';
+                            button.textContent = event.mainButtonText;
+                            button.dataset.title = event.title;
+                            button.dataset.text = event.text;
+                            button.dataset.images = event.images.join(',');
+                            container.appendChild(button);
+                        });
+                    }
+                    
+                    initializeEventModal();
+
+                } catch (error) {
+                    console.error("Error al cargar eventos:", error);
+                    container.innerHTML = '<p>No se pudieron cargar los eventos en este momento.</p>';
+                }
+            }
+        }, 100);
+    };
+
+    // --- LÓGICA PARA EL MODAL DE EVENTOS ---
+    const initializeEventModal = () => {
+        const eventosModalOverlay = document.getElementById('eventos-modal-overlay');
+        const eventosModalCloseBtn = document.getElementById('eventos-modal-close');
+        const eventButtons = document.querySelectorAll('#dynamic-event-tags .event-tag-button');
+
+        if (eventosModalOverlay && eventButtons.length > 0) {
+            const modalTitle = document.getElementById('eventos-modal-title');
+            const modalText = document.getElementById('eventos-modal-text');
+            const modalGallery = document.getElementById('eventos-modal-gallery');
+
+            const openEventModal = (title, text, images) => {
+                modalTitle.textContent = title;
+                modalText.textContent = text;
+                modalGallery.innerHTML = '';
+                const imageArray = images.split(',').filter(img => img.trim() !== '');
+                if (imageArray.length > 0) {
+                    imageArray.forEach(imgSrc => {
+                        const img = document.createElement('img');
+                        img.src = imgSrc.trim();
+                        img.alt = `Imagen del evento ${title}`;
+                        modalGallery.appendChild(img);
+                    });
+                }
+                eventosModalOverlay.classList.add('visible');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeEventModal = () => {
+                eventosModalOverlay.classList.remove('visible');
+                document.body.style.overflow = 'auto';
+            };
+
+            eventButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    openEventModal(button.dataset.title, button.dataset.text, button.dataset.images);
+                });
+            });
+
+            if (eventosModalCloseBtn) eventosModalCloseBtn.addEventListener('click', closeEventModal);
+            eventosModalOverlay.addEventListener('click', e => {
+                if (e.target === eventosModalOverlay) closeEventModal();
+            });
+        }
+    };
+
     // --- LLAMADAS FINALES A LAS FUNCIONES ---
     initInteractiveGallery('galeria-interactiva', 'gallery');
     initInteractiveGallery('galeria-interactiva-radio', 'radio_gallery');
@@ -377,45 +450,6 @@ document.addEventListener('DOMContentLoaded', function() {
     initInteractiveGallery('galeria-interactiva-television', 'television_gallery');
     initInteractiveGallery('galeria-interactiva-calendario', null);
     initInteractiveGallery('galeria-interactiva-habecu', 'habecu_gallery');
+    loadEventsFrontend();
 
-    // --- LÓGICA MODAL PARA IFRAME (YOUTUBE) ---
-    const iframeModal = document.getElementById('video-modal');
-    const iframePlayer = iframeModal ? document.getElementById('modal-video-iframe') : null;
-    const iframeModalCloseBtn = iframeModal ? iframeModal.querySelector('.modal-close') : null;
-
-    function openIframeModal(videoSrc) {
-        if (!iframeModal || !iframePlayer) return;
-        // Añade autoplay para una mejor experiencia de usuario
-        const videoUrl = new URL(videoSrc);
-        videoUrl.searchParams.set('autoplay', '1');
-        iframePlayer.src = videoUrl.href;
-        iframeModal.classList.add('visible');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeIframeModal() {
-        if (!iframeModal || !iframePlayer) return;
-        iframeModal.classList.remove('visible');
-        document.body.style.overflow = 'auto';
-        iframePlayer.src = ""; // Detiene la reproducción del vídeo al cerrar
-    }
-
-    if (iframeModal && iframeModalCloseBtn) {
-        iframeModalCloseBtn.addEventListener('click', closeIframeModal);
-        iframeModal.addEventListener('click', (e) => {
-            if (e.target === iframeModal) closeIframeModal();
-        });
-    }
-
-    // Event listener genérico para todos los enlaces que deban abrir el modal de vídeo
-    document.body.addEventListener('click', function(e) {
-        const trigger = e.target.closest('.js-video-modal-trigger');
-        if (trigger) {
-            e.preventDefault();
-            const videoSrc = trigger.dataset.videoSrc;
-            if (videoSrc) {
-                openIframeModal(videoSrc);
-            }
-        }
-    });
 });
