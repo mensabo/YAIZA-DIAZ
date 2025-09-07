@@ -2032,16 +2032,7 @@ footer {
         overflow: hidden;
     }
 
-    .about-quote::before {
-        content: '“';
-        font-size: 2.5rem;
-        color: var(--color-acento);
-        position: absolute;
-        top: -5px;
-        left: 10px;
-        opacity: 0.4;
-    }
-
+    
     .portfolio-grid {
         gap: 1.2rem;
     }
