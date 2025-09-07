@@ -13,13 +13,16 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-        // --- CIERRE DEL MENÚ AL CLICAR FUERA (NUEVO) ---
-    document.addEventListener('click', function(event) {
-        const isClickInsideMenu = navLinks.contains(event.target);
-        const isClickOnToggle = menuToggle.contains(event.target);
 
-        if (!isClickInsideMenu && !isClickOnToggle && navLinks.classList.contains('nav-open')) {
-            navLinks.classList.remove('nav-open');
+    // --- CIERRE DEL MENÚ AL CLICAR FUERA ---
+    document.addEventListener('click', function(event) {
+        if (navLinks && menuToggle) { // Asegurarse de que los elementos existen
+            const isClickInsideMenu = navLinks.contains(event.target);
+            const isClickOnToggle = menuToggle.contains(event.target);
+
+            if (!isClickInsideMenu && !isClickOnToggle && navLinks.classList.contains('nav-open')) {
+                navLinks.classList.remove('nav-open');
+            }
         }
     });
 
@@ -254,14 +257,16 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const lightboxContent = lightboxModal.querySelector('.lightbox-content');
 
-        lightboxContent.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
+        if (lightboxContent) {
+            lightboxContent.addEventListener('touchstart', e => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
 
-        lightboxContent.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipeGesture();
-        });
+            lightboxContent.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipeGesture();
+            });
+        }
 
         function handleSwipeGesture() {
             const swipeThreshold = 50;
@@ -281,6 +286,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // --- LÓGICA PARA EL MODAL DE LA CARTA (NUEVO) ---
+    const openLetterBtn = document.getElementById('open-letter-modal');
+    const letterModal = document.getElementById('letter-modal');
+    const letterModalCloseBtn = document.getElementById('letter-modal-close-btn');
+
+    if (openLetterBtn && letterModal && letterModalCloseBtn) {
+        const closeLetterModal = () => {
+            letterModal.classList.remove('visible');
+            document.body.style.overflow = 'auto';
+        };
+
+        openLetterBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            letterModal.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+        });
+
+        letterModalCloseBtn.addEventListener('click', closeLetterModal);
+        letterModal.addEventListener('click', (e) => {
+            if (e.target === letterModal) {
+                closeLetterModal();
+            }
+        });
+    }
+    
     // --- LÓGICA DE GALERÍA INTERACTIVA REUTILIZABLE ---
     function initInteractiveGallery(containerId, firestoreCollection) {
         const galleryContainer = document.getElementById(containerId);
@@ -460,7 +490,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             button.textContent = event.mainButtonText;
                             button.dataset.title = event.title;
                             button.dataset.text = event.text;
-                            // Guardamos el array de objetos como un string JSON
                             button.dataset.galleryItems = JSON.stringify(event.galleryItems || []);
                             container.appendChild(button);
                         });
@@ -524,7 +553,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     thumbnailsContainer.appendChild(thumbItem);
                 });
 
-                updateEventMainViewer(0); // Cargar el primer item
+                updateEventMainViewer(0); 
 
                 thumbnailsContainer.querySelectorAll('.miniatura-item').forEach(thumb => {
                     thumb.addEventListener('click', (e) => {
@@ -549,14 +578,26 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const updateEventMainViewer = (index) => {
             const item = currentEventGalleryItems[index];
-            if (item.type !== 'image') return; // Solo actualiza si es imagen
+            if (!item || item.type !== 'image') {
+                 const firstImage = currentEventGalleryItems.find(i => i.type === 'image');
+                 if(firstImage) {
+                    mainImage.src = firstImage.src;
+                    mainImage.dataset.currentIndex = currentEventGalleryItems.indexOf(firstImage);
+                    document.getElementById('event-gallery-bg').style.backgroundImage = `url('${firstImage.src}')`;
+                 } else {
+                    mainImage.src = ''; // No hay imágenes
+                    document.getElementById('event-gallery-bg').style.backgroundImage = 'none';
+                 }
+                 return;
+            };
 
             mainImage.src = item.src;
             mainImage.dataset.currentIndex = index;
             document.getElementById('event-gallery-bg').style.backgroundImage = `url('${item.src}')`;
 
             thumbnailsContainer.querySelectorAll('.miniatura-item').forEach(t => t.classList.remove('active'));
-            thumbnailsContainer.querySelector(`[data-index="${index}"]`).classList.add('active');
+            const activeThumb = thumbnailsContainer.querySelector(`[data-index="${index}"]`);
+            if(activeThumb) activeThumb.classList.add('active');
         };
 
         mainImage.parentElement.addEventListener('click', () => {
@@ -594,7 +635,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadEventsFrontend();
 
     // Lógica para la imagen Sidenote
-    document.querySelectorAll('.image-sidenote-trigger').forEach(trigger => {
+    document.querySelectorAll('.sidenote-trigger').forEach(trigger => {
         trigger.addEventListener('click', () => {
             const container = trigger.closest('.sidenote-container');
             if (container) {
