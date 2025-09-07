@@ -13,6 +13,15 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+        // --- CIERRE DEL MENÚ AL CLICAR FUERA (NUEVO) ---
+    document.addEventListener('click', function(event) {
+        const isClickInsideMenu = navLinks.contains(event.target);
+        const isClickOnToggle = menuToggle.contains(event.target);
+
+        if (!isClickInsideMenu && !isClickOnToggle && navLinks.classList.contains('nav-open')) {
+            navLinks.classList.remove('nav-open');
+        }
+    });
 
     // --- LÓGICA DEL HERO DINÁMICO ---
     const heroTabs = document.querySelectorAll('.hero-tab');
@@ -170,14 +179,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const lightboxNextBtn = lightboxModal ? lightboxModal.querySelector('.lightbox-next') : null;
     let activeGalleryItems = [];
     let currentLightboxIndex = -1;
+    
+    let touchStartX = 0;
+    let touchEndX = 0;
 
     function openImageLightbox(items, startIndex) {
         if (!lightboxModal || !lightboxImage) return;
+
         activeGalleryItems = items.filter(item => item.type === 'image');
-        currentLightboxIndex = activeGalleryItems.findIndex(item => item.src === items[startIndex].src);
+        
+        if (activeGalleryItems.length === 0) return;
 
-        if (currentLightboxIndex === -1) return;
-
+        const startItem = items[startIndex];
+        if (startItem && startItem.type === 'image') {
+            currentLightboxIndex = activeGalleryItems.findIndex(imgItem => imgItem.src === startItem.src);
+        }
+        
+        if (currentLightboxIndex === -1) {
+            currentLightboxIndex = 0;
+        }
+        
         updateLightboxContent();
         lightboxModal.classList.add('visible');
         document.body.style.overflow = 'hidden';
@@ -188,34 +209,79 @@ document.addEventListener('DOMContentLoaded', function() {
         lightboxImage.src = item.src;
         if(lightboxCaption) lightboxCaption.textContent = item.description;
 
-        if (lightboxPrevBtn) lightboxPrevBtn.style.display = activeGalleryItems.length > 1 ? 'block' : 'none';
-        if (lightboxNextBtn) lightboxNextBtn.style.display = activeGalleryItems.length > 1 ? 'block' : 'none';
+        const showButtons = activeGalleryItems.length > 1;
+        if (lightboxPrevBtn) lightboxPrevBtn.style.display = showButtons ? 'block' : 'none';
+        if (lightboxNextBtn) lightboxNextBtn.style.display = showButtons ? 'block' : 'none';
     }
 
     function showNextLightboxImage() {
+        if (activeGalleryItems.length <= 1) return;
         currentLightboxIndex = (currentLightboxIndex + 1) % activeGalleryItems.length;
         updateLightboxContent();
     }
 
     function showPrevLightboxImage() {
+        if (activeGalleryItems.length <= 1) return;
         currentLightboxIndex = (currentLightboxIndex - 1 + activeGalleryItems.length) % activeGalleryItems.length;
         updateLightboxContent();
     }
 
     if (lightboxModal) {
-        if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', () => {
+        const closeLightbox = () => {
             lightboxModal.classList.remove('visible');
             document.body.style.overflow = 'auto';
+        };
+
+        if (lightboxCloseBtn) {
+            lightboxCloseBtn.addEventListener('click', closeLightbox);
+        }
+
+        if (lightboxNextBtn) {
+            lightboxNextBtn.addEventListener('click', showNextLightboxImage);
+            lightboxNextBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                showNextLightboxImage();
+            });
+        }
+
+        if (lightboxPrevBtn) {
+            lightboxPrevBtn.addEventListener('click', showPrevLightboxImage);
+            lightboxPrevBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                showPrevLightboxImage();
+            });
+        }
+        
+        const lightboxContent = lightboxModal.querySelector('.lightbox-content');
+
+        lightboxContent.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
         });
-        if (lightboxNextBtn) lightboxNextBtn.addEventListener('click', showNextLightboxImage);
-        if (lightboxPrevBtn) lightboxPrevBtn.addEventListener('click', showPrevLightboxImage);
-        lightboxModal.addEventListener('click', e => { if (e.target === lightboxModal) {
-            lightboxModal.classList.remove('visible');
-            document.body.style.overflow = 'auto';
-        }});
+
+        lightboxContent.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipeGesture();
+        });
+
+        function handleSwipeGesture() {
+            const swipeThreshold = 50;
+            const deltaX = touchEndX - touchStartX;
+            
+            if (deltaX < -swipeThreshold) {
+                showNextLightboxImage();
+            } else if (deltaX > swipeThreshold) {
+                showPrevLightboxImage();
+            }
+        }
+
+        lightboxModal.addEventListener('click', e => { 
+            if (e.target === lightboxModal) {
+                closeLightbox();
+            }
+        });
     }
 
-    // --- LÓGICA DE GALERÍA INTERACTIVA REUTILIZABLE (ACTUALIZADA) ---
+    // --- LÓGICA DE GALERÍA INTERACTIVA REUTILIZABLE ---
     function initInteractiveGallery(containerId, firestoreCollection) {
         const galleryContainer = document.getElementById(containerId);
         if (!galleryContainer) return;
@@ -227,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let allItems = []; 
 
         if (mainImage) {
-            mainImage.addEventListener('click', () => {
+            mainImage.parentElement.addEventListener('click', () => {
                 const type = mainImage.dataset.type || 'image';
                 const index = parseInt(mainImage.dataset.index, 10);
 
@@ -253,7 +319,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 mainImage.dataset.type = item.type;
                 mainImage.dataset.index = activeThumbnail.dataset.index;
                 mainImage.dataset.videoSrc = item.videoSrc || '';
-                mainImage.style.cursor = item.type === 'video' ? 'pointer' : 'zoom-in';
+                mainImage.parentElement.style.cursor = item.type === 'video' ? 'pointer' : 'zoom-in';
             }, 300);
 
             thumbnailsContainer.querySelectorAll('.miniatura-item').forEach(thumb => thumb.classList.remove('active'));
@@ -263,7 +329,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const setupEventListeners = () => {
             const thumbnails = thumbnailsContainer.querySelectorAll('.miniatura-item');
             if (thumbnails.length > 0) {
-                thumbnails.forEach(thumb => thumb.addEventListener('click', () => updateViewer(thumb)));
+                thumbnails.forEach(thumb => {
+                    thumb.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        updateViewer(thumb);
+                    });
+                });
                 updateViewer(thumbnails[0]);
             } else if (firestoreCollection && descriptionContainer) {
                 descriptionContainer.textContent = "La galería está vacía.";
@@ -344,6 +415,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.body.style.overflow = 'auto';
             }
         }
+        if (lightboxModal && lightboxModal.classList.contains('visible')) {
+            if (e.key === 'ArrowRight') {
+                showNextLightboxImage();
+            } else if (e.key === 'ArrowLeft') {
+                showPrevLightboxImage();
+            }
+        }
     });
     
     // --- LÓGICA PARA EL BOTÓN DE VOLVER ARRIBA ---
@@ -358,7 +436,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- LÓGICA PARA CARGAR EVENTOS DINÁMICOS EN LA PÁGINA PRINCIPAL ---
+    // --- INICIO: LÓGICA PARA CARGAR EVENTOS Y GESTIONAR EL MODAL ---
     const loadEventsFrontend = () => {
         const container = document.getElementById('dynamic-event-tags');
         if (!container) return; 
@@ -373,7 +451,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     container.innerHTML = '';
                     if (snapshot.empty) {
-                        // Opcional: mostrar un mensaje si no hay eventos
+                        container.innerHTML = '<p>Próximamente se anunciarán nuevos eventos.</p>';
                     } else {
                         snapshot.docs.forEach(doc => {
                             const event = doc.data();
@@ -382,13 +460,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             button.textContent = event.mainButtonText;
                             button.dataset.title = event.title;
                             button.dataset.text = event.text;
-                            button.dataset.images = event.images.join(',');
+                            // Guardamos el array de objetos como un string JSON
+                            button.dataset.galleryItems = JSON.stringify(event.galleryItems || []);
                             container.appendChild(button);
                         });
                     }
-                    
                     initializeEventModal();
-
                 } catch (error) {
                     console.error("Error al cargar eventos:", error);
                     container.innerHTML = '<p>No se pudieron cargar los eventos en este momento.</p>';
@@ -397,51 +474,114 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 100);
     };
 
-    // --- LÓGICA PARA EL MODAL DE EVENTOS ---
     const initializeEventModal = () => {
-        const eventosModalOverlay = document.getElementById('eventos-modal-overlay');
-        const eventosModalCloseBtn = document.getElementById('eventos-modal-close');
-        const eventButtons = document.querySelectorAll('#dynamic-event-tags .event-tag-button');
+        const modalOverlay = document.getElementById('eventos-modal-overlay');
+        const modalCloseBtn = document.getElementById('eventos-modal-close');
+        const eventButtons = document.querySelectorAll('.event-tag-button');
 
-        if (eventosModalOverlay && eventButtons.length > 0) {
-            const modalTitle = document.getElementById('eventos-modal-title');
-            const modalText = document.getElementById('eventos-modal-text');
-            const modalGallery = document.getElementById('eventos-modal-gallery');
+        if (!modalOverlay || !lightboxModal) return;
 
-            const openEventModal = (title, text, images) => {
-                modalTitle.textContent = title;
-                modalText.textContent = text;
-                modalGallery.innerHTML = '';
-                const imageArray = images.split(',').filter(img => img.trim() !== '');
-                if (imageArray.length > 0) {
-                    imageArray.forEach(imgSrc => {
-                        const img = document.createElement('img');
-                        img.src = imgSrc.trim();
-                        img.alt = `Imagen del evento ${title}`;
-                        modalGallery.appendChild(img);
-                    });
-                }
-                eventosModalOverlay.classList.add('visible');
-                document.body.style.overflow = 'hidden';
-            };
+        const modalTitle = document.getElementById('eventos-modal-title');
+        const modalText = document.getElementById('eventos-modal-text');
+        
+        const mainImage = document.getElementById('event-gallery-main-image');
+        const thumbnailsContainer = document.getElementById('event-gallery-thumbnails');
+        let currentEventGalleryItems = [];
 
-            const closeEventModal = () => {
-                eventosModalOverlay.classList.remove('visible');
-                document.body.style.overflow = 'auto';
-            };
+        const openEventModal = (title, text, galleryItemsJSON) => {
+            modalTitle.innerHTML = title;
+            modalText.textContent = text;
+            
+            try {
+                currentEventGalleryItems = JSON.parse(galleryItemsJSON);
+            } catch(e) {
+                currentEventGalleryItems = [];
+            }
+            
+            thumbnailsContainer.innerHTML = '';
+            mainImage.src = '';
+            
+            if (currentEventGalleryItems.length > 0) {
+                document.getElementById('event-gallery-interactive').style.display = 'flex';
+                
+                currentEventGalleryItems.forEach((item, index) => {
+                    const thumbItem = document.createElement('div');
+                    thumbItem.className = 'miniatura-item event-miniatura-item';
+                    thumbItem.dataset.index = index;
 
-            eventButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    openEventModal(button.dataset.title, button.dataset.text, button.dataset.images);
+                    const thumbImg = document.createElement('img');
+                    thumbImg.src = item.type === 'image' ? item.src : item.thumbnailSrc;
+                    thumbImg.alt = `Miniatura ${index + 1}`;
+                    thumbItem.appendChild(thumbImg);
+
+                    if (item.type === 'video') {
+                        const playIcon = document.createElement('div');
+                        playIcon.className = 'miniatura-overlay video-play-icon';
+                        playIcon.innerHTML = '<i class="fas fa-play"></i>';
+                        thumbItem.appendChild(playIcon);
+                    }
+                    
+                    thumbnailsContainer.appendChild(thumbItem);
                 });
-            });
 
-            if (eventosModalCloseBtn) eventosModalCloseBtn.addEventListener('click', closeEventModal);
-            eventosModalOverlay.addEventListener('click', e => {
-                if (e.target === eventosModalOverlay) closeEventModal();
+                updateEventMainViewer(0); // Cargar el primer item
+
+                thumbnailsContainer.querySelectorAll('.miniatura-item').forEach(thumb => {
+                    thumb.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const index = parseInt(thumb.dataset.index, 10);
+                        const item = currentEventGalleryItems[index];
+                        if (item.type === 'video') {
+                            openVideoModal(item.videoSrc);
+                        } else {
+                            updateEventMainViewer(index);
+                        }
+                    });
+                });
+
+            } else {
+                document.getElementById('event-gallery-interactive').style.display = 'none';
+            }
+
+            modalOverlay.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+        };
+        
+        const updateEventMainViewer = (index) => {
+            const item = currentEventGalleryItems[index];
+            if (item.type !== 'image') return; // Solo actualiza si es imagen
+
+            mainImage.src = item.src;
+            mainImage.dataset.currentIndex = index;
+            document.getElementById('event-gallery-bg').style.backgroundImage = `url('${item.src}')`;
+
+            thumbnailsContainer.querySelectorAll('.miniatura-item').forEach(t => t.classList.remove('active'));
+            thumbnailsContainer.querySelector(`[data-index="${index}"]`).classList.add('active');
+        };
+
+        mainImage.parentElement.addEventListener('click', () => {
+            if (!mainImage.src || mainImage.src.endsWith('#') || currentEventGalleryItems.length === 0) return;
+            const currentIndex = parseInt(mainImage.dataset.currentIndex || '0', 10);
+            openImageLightbox(currentEventGalleryItems, currentIndex);
+        });
+
+        const closeEventModal = () => {
+            modalOverlay.classList.remove('visible');
+            document.body.style.overflow = 'auto';
+        };
+
+        eventButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                openEventModal(button.dataset.title, button.dataset.text, button.dataset.galleryItems);
             });
-        }
+        });
+
+        if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeEventModal);
+        modalOverlay.addEventListener('click', e => {
+            if (e.target === modalOverlay) closeEventModal();
+        });
     };
+    // --- FIN: LÓGICA PARA EVENTOS ---
 
     // --- LLAMADAS FINALES A LAS FUNCIONES ---
     initInteractiveGallery('galeria-interactiva', 'gallery');
@@ -450,6 +590,26 @@ document.addEventListener('DOMContentLoaded', function() {
     initInteractiveGallery('galeria-interactiva-television', 'television_gallery');
     initInteractiveGallery('galeria-interactiva-calendario', null);
     initInteractiveGallery('galeria-interactiva-habecu', 'habecu_gallery');
+    
     loadEventsFrontend();
+
+    // Lógica para la imagen Sidenote
+    document.querySelectorAll('.image-sidenote-trigger').forEach(trigger => {
+        trigger.addEventListener('click', () => {
+            const container = trigger.closest('.sidenote-container');
+            if (container) {
+                container.classList.toggle('is-sidenote-visible');
+            }
+        });
+    });
+
+    document.querySelectorAll('.sidenote-close-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const container = button.closest('.sidenote-container');
+            if (container) {
+                container.classList.remove('is-sidenote-visible');
+            }
+        });
+    });
 
 });

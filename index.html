@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="script.js" defer></script>
 </head>
 <body>
     
@@ -103,7 +102,6 @@
         </div>
     </section>
 
-    <!-- ========= SECCIÓN DE HABILIDADES ========= -->
     <section id="habilidades" class="section-gray">
         <div class="container">
             <h2>Habilidades</h2>
@@ -174,29 +172,9 @@
             <div class="header-line"></div>
             <img src="images/eventos.jpeg" alt="Yaiza Díaz presentando en un evento" class="eventos-imagen">
             <p>A lo largo de 20 años, Yaiza Díaz ha presentado numerosos eventos,  ha sido imagen de importantes marcas y ha puesto voz a cuñas y spots publicitarios.</p>
-            <!-- ***** INICIO DE LA SECCIÓN ACTUALIZADA ***** -->
-            <div class="event-tags">
-                <span>Premios Cadena Dial</span>
-                <span>Caixa</span>
-                <span>50 Aniv. Toyota Canarias</span>
-                <span>Madrid Fusión</span>
-                <span>50 Aniv. PN Timanfaya</span>
-                <span>Premios Periódicos Digitales Tribuna</span>
-                <span>Premios Atlántico Hoy</span>
-                <span>Dormitorum</span>
-                <span>BonosVIP</span>
-                <span>IKEA</span>
-                <span>Montesano</span>
-                <span>Makro</span>
-                <span>Gobierno de España</span>
-                <span>Eventos de Ciberseguridad</span>
-                <span>Gobierno de Canarias</span>
-                <span>Cabildos Insulares</span>
-                <span>Ayuntamientos</span>
-                <span>Festividades Tradicionales</span>
-                <span>Eventos Privados</span>
+            <div id="dynamic-event-tags" class="event-tags">
+                <!-- Los botones de eventos se cargarán aquí... -->
             </div>
-            <!-- ***** FIN DE LA SECCIÓN ACTUALIZADA ***** -->
         </div>
     </section>
 
@@ -214,6 +192,47 @@
         </div>
     </section>
 
+    <div id="eventos-modal-overlay">
+        <div id="eventos-modal-content">
+            <button id="eventos-modal-close" aria-label="Cerrar">&times;</button>
+            <div class="event-modal-text-content">
+                <h3 id="eventos-modal-title"></h3>
+                <p id="eventos-modal-text"></p>
+            </div>
+            <div id="event-gallery-interactive" class="galeria-interactiva-container modal-gallery">
+                <div class="galeria-principal">
+                    <div id="event-gallery-bg" class="galeria-bg-desenfocado"></div>
+                    <img id="event-gallery-main-image" class="imagen-principal" src="" alt="Visor principal de la galería del evento">
+                    <!-- Contenedor para el vídeo, oculto por defecto -->
+                    <div id="event-gallery-main-video-container" class="video-container" style="display: none;">
+                         <video id="event-gallery-main-video" src="" controls playsinline></video>
+                    </div>
+                </div>
+                <div id="event-gallery-thumbnails" class="galeria-lista-miniaturas horizontal"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lightbox-modal" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <span class="lightbox-prev">&#10094;</span>
+        <span class="lightbox-next">&#10095;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-image" src="" alt="Visor de imágenes de eventos">
+            <div id="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <!-- Modal para vídeos (AÑADIDO) -->
+    <div id="video-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Cerrar">&times;</button>
+            <div class="video-container">
+                 <video id="modal-video-player" src="" controls playsinline style="border-radius: 0;"></video>
+            </div>
+        </div>
+    </div>
+
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
     <footer>
@@ -226,6 +245,17 @@
             <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
         </div>
     </footer>
-
+    
+    <script src="config.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+        import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        window.firebaseServices = {
+            db, collection, getDocs, orderBy, query
+        };
+    </script>
+    <script src="script.js" defer></script>
 </body>
 </html>

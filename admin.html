@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Administrar Galerías</title>
+    <title>Administrar Contenido</title>
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -15,61 +15,113 @@
 
     <div id="admin-panel" style="display:none;">
         <header>
-            <h1>Gestionar Galerías</h1>
+            <h1>Panel de Administración</h1>
             <button id="logout-button">Cerrar Sesión</button>
         </header>
 
-        <div class="gallery-selector-container">
-            <label for="gallery-selector">Selecciona la galería a editar:</label>
-            <select id="gallery-selector">
-                <option value="gallery">Galería del Libro</option>
-                <option value="modeling_gallery">Galería de Modelaje</option>
-                <option value="television_gallery">Galería de Televisión</option>
-                <option value="radio_gallery">Galería de Radio</option>
-                <option value="habecu_gallery">Galería de HABECU</option>
-            </select>
-        </div>
+        <nav class="admin-nav">
+            <button id="nav-galleries" class="active">Gestionar Galerías</button>
+            <button id="nav-events">Gestionar Eventos</button>
+        </nav>
 
-        <h2 id="current-gallery-title"></h2>
-
-        <div class="form-section">
-            <h3>Subir Nuevas Imágenes</h3>
-            <div id="drop-zone">
-                <p>Arrastra y suelta imágenes aquí o haz clic para seleccionarlas</p>
-                <input type="file" id="file-input" multiple accept="image/*" style="display:none;">
+        <!-- ========= PANEL DE GALERÍAS ========= -->
+        <div id="gallery-panel" class="panel active">
+            <div class="gallery-selector-container">
+                <label for="gallery-selector">Selecciona la galería a editar:</label>
+                <select id="gallery-selector">
+                    <option value="gallery">Galería del Libro</option>
+                    <option value="modeling_gallery">Galería de Modelaje</option>
+                    <option value="television_gallery">Galería de Televisión</option>
+                    <option value="radio_gallery">Galería de Radio</option>
+                    <option value="habecu_gallery">Galería de HABECU</option>
+                </select>
             </div>
+            <h2 id="current-gallery-title"></h2>
+            <div class="form-section">
+                <h3>Subir Nuevas Imágenes</h3>
+                <div id="drop-zone">
+                    <p>Arrastra y suelta imágenes aquí o haz clic para seleccionarlas</p>
+                    <input type="file" id="file-input" multiple accept="image/*" style="display:none;">
+                </div>
+            </div>
+            <div class="form-section">
+                <h3>Añadir Nuevo Vídeo</h3>
+                <input type="text" id="video-url-input" placeholder="URL del vídeo (.mp4, .webm...)">
+                <input type="text" id="thumbnail-url-input" placeholder="URL de la imagen miniatura (.jpg, .png...)">
+                <input type="text" id="video-description-input" placeholder="Descripción del vídeo">
+                <button id="add-video-button">Añadir Vídeo a la Galería</button>
+            </div>
+            <hr class="section-divider">
+            <h3>Editar Galería Actual</h3>
+            <p>Arrastra los elementos para reordenarlos. Edita la descripción y pulsa Guardar.</p>
+            <div id="gallery-list"></div>
+            <button id="save-button">Guardar Cambios de Galería</button>
         </div>
         
-        <div class="form-section">
-            <h3>Añadir Nuevo Vídeo</h3>
-            <input type="text" id="video-url-input" placeholder="URL del vídeo (.mp4, .webm...)">
-            <input type="text" id="thumbnail-url-input" placeholder="URL de la imagen miniatura (.jpg, .png...)">
-            <input type="text" id="video-description-input" placeholder="Descripción del vídeo">
-            <button id="add-video-button">Añadir Vídeo a la Galería</button>
+        <!-- ========= PANEL DE EVENTOS (MODIFICADO) ========= -->
+        <div id="events-panel" class="panel">
+            <h2>Gestionar Eventos y Publicidad</h2>
+            
+            <div class="form-section">
+                <h3 id="event-form-title">Crear Nuevo Evento</h3>
+                <input type="hidden" id="event-id-input">
+                <input type="text" id="event-button-text-input" placeholder="Texto del botón (ej: 'Premios Cadena Dial')">
+                <input type="text" id="event-title-input" placeholder="Título del evento (para el modal)">
+                <textarea id="event-text-input" placeholder="Texto introductorio del evento..." rows="4"></textarea>
+                
+                <!-- ***** INICIO DE LA MODIFICACIÓN ***** -->
+                <label class="input-label">Imágenes de la galería del evento:</label>
+                <div id="event-images-preview-container">
+                    <div id="event-images-preview-list">
+                        <!-- Las miniaturas de las imágenes se cargarán aquí -->
+                    </div>
+                    <div id="event-images-drop-zone" class="drop-zone-small">
+                        <p>Arrastra imágenes aquí o haz clic en el botón para subirlas</p>
+                    </div>
+                </div>
+                <div class="upload-container">
+                    <input type="file" id="event-image-uploader" multiple accept="image/*" style="display: none;">
+                    <button id="upload-event-images-button" type="button">Subir Imágenes</button>
+                    <div id="event-image-loader" class="loader" style="display: none;"></div>
+                </div>
+                 <!-- ***** FIN DE LA MODIFICACIÓN ***** -->
+                                  <!-- ***** INICIO: AÑADIR VÍDEO A EVENTO ***** -->
+                <label class="input-label" style="margin-top: 1.5rem;">Añadir vídeo a la galería del evento:</label>
+                <div class="form-section-inline">
+                    <input type="text" id="event-video-url-input" placeholder="URL del vídeo (.mp4, .webm...)">
+                    <input type="text" id="event-thumbnail-url-input" placeholder="URL de la miniatura para el vídeo (.jpg, .png...)">
+                    <button id="add-event-video-button" type="button">Añadir Vídeo</button>
+                </div>
+                <!-- ***** FIN: AÑADIR VÍDEO A EVENTO ***** -->
+
+                <input type="number" id="event-order-input" placeholder="Número de orden (ej: 0, 1, 2...)">
+                <div class="form-buttons">
+                    <button id="save-event-button">Guardar Evento</button>
+                    <button id="cancel-edit-event-button" style="display:none;">Cancelar Edición</button>
+                </div>
+            </div>
+            
+            <hr class="section-divider">
+            
+            <h3>Eventos Creados</h3>
+            <p>Arrastra los eventos para reordenarlos y luego pulsa "Guardar Orden".</p>
+            <div id="events-list"></div>
+            <button id="save-event-order-button">Guardar Orden de Eventos</button>
         </div>
-
-        <hr style="margin: 2rem 0;">
-
-        <h3>Editar Galería Actual</h3>
-        <p>Arrastra los elementos para reordenarlos. Edita la descripción y pulsa Guardar.</p>
-        <div id="gallery-list"></div>
-        <button id="save-button">Guardar Cambios</button>
     </div>
     
     <script src="config.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
-        import { getFirestore, collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-storage.js";
 
         const app = initializeApp(firebaseConfig);
         window.firebaseServices = {
-            auth: getAuth(app),
-            db: getFirestore(app),
-            storage: getStorage(app),
+            auth: getAuth(app), db: getFirestore(app), storage: getStorage(app),
             signInWithEmailAndPassword, onAuthStateChanged, signOut,
-            collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc, getDoc,
+            collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc, getDoc, setDoc, updateDoc,
             ref, uploadBytes, getDownloadURL, deleteObject
         };
     </script>
