@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- CIERRE DEL MENÚ AL CLICAR FUERA ---
     document.addEventListener('click', function(event) {
-        if (navLinks && menuToggle) { // Asegurarse de que los elementos existen
+        if (navLinks && menuToggle) {
             const isClickInsideMenu = navLinks.contains(event.target);
             const isClickOnToggle = menuToggle.contains(event.target);
 
@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- LÓGICA PARA EL MODAL DE LA CARTA (NUEVO) ---
+    // --- LÓGICA PARA EL MODAL DE LA CARTA ---
     const openLetterBtn = document.getElementById('open-letter-modal');
     const letterModal = document.getElementById('letter-modal');
     const letterModalCloseBtn = document.getElementById('letter-modal-close-btn');
@@ -579,13 +579,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const updateEventMainViewer = (index) => {
             const item = currentEventGalleryItems[index];
             if (!item || item.type !== 'image') {
-                 const firstImage = currentEventGalleryItems.find(i => i.type === 'image');
-                 if(firstImage) {
+                 const firstImageIndex = currentEventGalleryItems.findIndex(i => i.type === 'image');
+                 if(firstImageIndex > -1) {
+                    const firstImage = currentEventGalleryItems[firstImageIndex];
                     mainImage.src = firstImage.src;
-                    mainImage.dataset.currentIndex = currentEventGalleryItems.indexOf(firstImage);
+                    mainImage.dataset.currentIndex = firstImageIndex;
                     document.getElementById('event-gallery-bg').style.backgroundImage = `url('${firstImage.src}')`;
                  } else {
-                    mainImage.src = ''; // No hay imágenes
+                    mainImage.src = '';
                     document.getElementById('event-gallery-bg').style.backgroundImage = 'none';
                  }
                  return;
@@ -634,9 +635,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     loadEventsFrontend();
 
-    // Lógica para la imagen Sidenote
-    document.querySelectorAll('.sidenote-trigger').forEach(trigger => {
+    // ***** INICIO: CÓDIGO CORREGIDO PARA LA IMAGEN SIDENOTE *****
+    document.querySelectorAll('.image-sidenote-trigger').forEach(trigger => {
         trigger.addEventListener('click', () => {
+            // El nombre correcto del contenedor principal es '.sidenote-container'
             const container = trigger.closest('.sidenote-container');
             if (container) {
                 container.classList.toggle('is-sidenote-visible');
@@ -646,11 +648,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('.sidenote-close-btn').forEach(button => {
         button.addEventListener('click', () => {
+            // El nombre correcto del contenedor principal es '.sidenote-container'
             const container = button.closest('.sidenote-container');
             if (container) {
                 container.classList.remove('is-sidenote-visible');
             }
         });
     });
+    // ***** FIN: CÓDIGO CORREGIDO PARA LA IMAGEN SIDENOTE *****
 
 });
