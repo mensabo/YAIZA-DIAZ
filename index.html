@@ -68,11 +68,16 @@
             <div class="hero-tabs-mobile">
                 <div class="mobile-tab-display">
                     <h2 id="mobile-tab-title"></h2>
+                    
+                    <!-- ========= INICIO DEL BLOQUE MODIFICADO ========= -->
                     <a href="libro.html" class="book-link" id="mobile-book-link">
-                        <img class="tab-detail-image" src="images/portada-libro.png" alt="Portada del libro La Hija del Ciego">
-                        <!-- ANOTACIÓN MÓVIL AHORA DENTRO DEL ENLACE -->
-                        <div class="click-annotation click-annotation-mobile">
-                            <span class="annotation-text">Click aquí</span>
+                        <div class="mobile-book-image-wrapper">
+                            <img class="tab-detail-image" src="images/portada-libro.png" alt="Portada del libro La Hija del Ciego">
+                        </div>
+                    
+                        <!-- Texto y flecha ahora son elementos separados -->
+                        <span class="annotation-text-mobile">Click aquí</span>
+                        <div class="annotation-arrow-mobile">
                             <svg class="annotation-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                                  <path d="M 80,25 C 80,80 30,80 25,40" stroke="white" stroke-width="5" fill="none" stroke-linecap="round" marker-end="url(#arrowhead-mobile)" />
                                 <defs>
@@ -83,6 +88,8 @@
                             </svg>
                         </div>
                     </a>
+                    <!-- ========= FIN DEL BLOQUE MODIFICADO ========= -->
+
                 </div>
                 <div id="hero-dots-nav"></div>
             </div>

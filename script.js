@@ -160,10 +160,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                  mobileBookLink.classList.toggle('visible', activeTab.id === 'escritora-tab');
             }
             
+            // ==================================================
+            // === INICIO DE LA CORRECCIÓN ===
+            // ==================================================
             const mobileClickAnnotation = document.querySelector('.click-annotation-mobile');
             if (mobileClickAnnotation) {
                 mobileClickAnnotation.classList.toggle('visible', activeTab.id === 'escritora-tab');
             }
+            // ==================================================
+            // === FIN DE LA CORRECCIÓN ===
+            // ==================================================
             
             if (dots.length > 0) {
                 dots.forEach(d => d.classList.remove('active'));

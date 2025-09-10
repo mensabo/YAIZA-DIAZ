@@ -1968,9 +1968,7 @@ footer {
     
     #mobile-book-link {
         display: none;
-        line-height: 0; 
         position: relative;
-        overflow: hidden;
         border-radius: 3px;
     }
     
@@ -1978,8 +1976,15 @@ footer {
         display: block;
         pointer-events: auto;
     }
+
+    .mobile-book-image-wrapper {
+        line-height: 0;
+        overflow: hidden;
+        border-radius: 3px;
+        position: relative;
+    }
     
-    #mobile-book-link.visible::after {
+    .mobile-book-image-wrapper::after {
         content: '';
         position: absolute;
         top: 0;
@@ -2088,56 +2093,62 @@ footer {
     .click-annotation-desktop {
         display: none;
     }
+/* ================================================================= */
+/* === NUEVOS ESTILOS PARA TEXTO Y FLECHA SEPARADOS (MÓVIL) === */
+/* ================================================================= */
 
-    /* ESTILOS CORREGIDOS PARA LA ANOTACIÓN MÓVIL */
-    .click-annotation-mobile {
-        display: flex;
-        position: absolute;
-        top: 50%;
-        right: calc(100% + 5px); /* Se posiciona a la izquierda de la imagen del libro */
-        transform: translateY(-50%);
-        width: 90px;
-        opacity: 0;
-        transition: opacity 0.4s ease;
-        flex-direction: column;
-        align-items: center;
-    }
+/* --- Estilos para el texto "Click aquí" --- */
+.annotation-text-mobile {
+    position: absolute;
+    /* Posición: a la derecha del todo */
+    left: 115%;
+    /* Centrado verticalmente con el libro */
+    top: 50%;
+    transform: translateY(-50%);
 
-    .click-annotation-mobile.visible {
-        opacity: 1;
-    }
+    font-family: var(--fuente-manuscrita);
+    font-size: 1.5rem;
+    color: var(--color-blanco);
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+    white-space: nowrap;
     
-    .click-annotation-mobile .annotation-text {
-        font-size: 1.4rem;
-        margin-bottom: 0;
-    }
-    
-    .click-annotation-mobile .annotation-arrow {
-        width: 60px;
-        height: 60px;
-        margin-top: -30px; /* Ajuste para solapar */
-        margin-left: 20px; /* Ajuste para alinear */
-    }
-    
-    .card-content {
-        position: relative;
-        padding-bottom: 4rem; 
-    }
+    /* Animación de aparición */
+    opacity: 0;
+    transition: opacity 0.4s ease 0.2s;
+    pointer-events: none;
+}
 
-    .card-link-indicator {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        position: absolute;
-        bottom: 1.5rem;
-        right: 1.5rem;
-        background-color: var(--color-acento);
-        color: var(--color-blanco);
-        padding: 0.5rem 1rem;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 500;
-    }
+/* --- Estilos para el contenedor de la flecha --- */
+.annotation-arrow-mobile {
+    position: absolute;
+    /* Posición: entre el libro y el texto */
+    left: 45%;
+    top: 200%;
+    transform: translateY(-50%);
+
+    width: 50px;
+    height: 50px;
+    
+    /* Animación de aparición */
+    opacity: 0;
+    transition: opacity 0.4s ease 0.2s;
+    pointer-events: none;
+}
+
+/* Regla para que ambos elementos aparezcan cuando el libro esté visible */
+#mobile-book-link.visible .annotation-text-mobile,
+#mobile-book-link.visible .annotation-arrow-mobile {
+    opacity: 1;
+}
+
+/* Mantenemos la animación de la flecha */
+.annotation-arrow-mobile .annotation-arrow {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.7));
+    animation: bounce-arrow 2s infinite;
+    animation-delay: 1.5s;
+}
 
     /* Ajustes responsive para la carta */
     .letter-body { 
@@ -3122,99 +3133,6 @@ footer {
         transform: translateY(-1px);
     }
 }
-/* ======================================= */
-/* ===   BOTÓN DE DESCARGA DE CV (NUEVO) === */
-/* ======================================= */
-.btn-cv {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem; /* Espacio entre el icono y el texto */
-    margin-top: 2rem; /* Espacio por encima del botón */
-    padding: 0.8rem 1.8rem;
-    
-    background-color: transparent;
-    border: 2px solid var(--color-acento);
-    border-radius: 50px;
-    
-    color: var(--color-acento);
-    font-family: var(--fuente-texto);
-    font-weight: 500;
-    font-size: 1rem;
-    text-decoration: none;
-    
-    transition: all 0.3s ease;
-}
-
-.btn-cv:hover {
-    background-color: var(--color-acento);
-    color: var(--color-primario); /* El color de fondo oscuro de la sección */
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.btn-cv i {
-    font-size: 1.1rem;
-}
-
-/* Adaptación para móviles */
-@media (max-width: 768px) {
-    .btn-cv {
-        width: 100%;
-        padding: 1rem;
-    }
-}
-/* ================================================= */
-/* ===   ESTILOS CORREGIDOS MODAL DEL CV (NUEVO) === */
-/* ================================================= */
-.cv-modal-content {
-    position: relative; 
-    z-index: 2001;      
-    width: 90%;
-    height: 90vh; 
-    max-width: 1000px; 
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; 
-    background-color: #fff; 
-    border-radius: 8px; 
-}
-
-#cv-iframe {
-    flex-grow: 1; 
-    border: none;
-    width: 100%;
-    height: 100%;
-}
-
-/* ¡AQUÍ ESTÁ LA CORRECCIÓN DE LA 'X'! */
-.cv-modal-content .modal-close {
-    position: absolute;
-    top: 10px;    /* <-- CAMBIADO */
-    right: 10px;   /* <-- CAMBIADO */
-    width: 35px;
-    height: 35px;
-    background: #f0f0f0;
-    color: #888;
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    line-height: 1;
-    cursor: pointer;
-    z-index: 10;
-    box-shadow: none;
-    transition: all 0.2s ease;
-}
-
-.cv-modal-content .modal-close:hover {
-    background-color: var(--color-primario);
-    color: white;
-    transform: rotate(90deg);
-}
 /* =============================================== */
 /* ===   ALINEACIÓN BOTONES CONTACTO (NUEVO)   === */
 /* =============================================== */
@@ -3227,15 +3145,9 @@ footer {
     margin-top: 2.5rem;      /* Espacio sobre el grupo de botones */
 }
 
-/* Quitamos el margen superior individual para que lo controle el contenedor */
-.btn-cv {
-    margin-top: 0; 
-}
-
 /* Ajuste para móviles para que cada botón ocupe su espacio y se apilen */
 @media (max-width: 768px) {
-    .contact-buttons-container .email-link,
-    .contact-buttons-container .btn-cv {
+    .contact-buttons-container .email-link {
         width: 100%; 
         box-sizing: border-box;
     }
