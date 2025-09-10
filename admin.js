@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = docSnap.data();
                 textFieldsContainer.innerHTML = '';
                 Object.keys(data).sort().forEach(key => {
-                    const value = data[key];
+                    const value = data[key] || '';
                     const fieldWrapper = document.createElement('div');
                     fieldWrapper.className = 'form-section';
                     const label = document.createElement('label');
@@ -279,6 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 textFieldsContainer.innerHTML = `<p>No se encontró el documento '${pageId}'. Puedes crear uno guardando textos.</p>`;
             }
         } catch (error) {
+            console.error("Error al cargar textos:", error);
             textFieldsContainer.innerHTML = '<p>Error al cargar los textos.</p>';
         }
     }
@@ -515,7 +516,20 @@ document.addEventListener('DOMContentLoaded', () => {
     interviewImageUploader.addEventListener('change', e => handleInterviewImageUpload(e.target.files[0]));
     interviewImageDropZone.addEventListener('dragover', e => e.preventDefault());
     interviewImageDropZone.addEventListener('drop', e => { e.preventDefault(); handleInterviewImageUpload(e.dataTransfer.files[0]); });
-    interviewImagePreview.addEventListener('click', e => { if (e.target.classList.contains('delete-button')) resetInterviewForm(); });
+    
+    // =================================================================
+    // --- INICIO DE LA CORRECCIÓN ---
+    // Esta es la línea que hemos modificado.
+    interviewImagePreview.addEventListener('click', e => {
+        if (e.target.classList.contains('delete-button')) {
+            // En lugar de resetear todo el formulario, solo borramos la imagen.
+            interviewImagePreview.innerHTML = '';
+            interviewThumbnailUrl = '';
+        }
+    });
+    // --- FIN DE LA CORRECCIÓN ---
+    // =================================================================
+
     cancelEditInterviewButton.addEventListener('click', resetInterviewForm);
 
     saveInterviewButton.addEventListener('click', async () => {

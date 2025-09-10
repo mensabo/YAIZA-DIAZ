@@ -48,10 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const pdfPath = "CV-Yaiza-Diaz.pdf"; 
 
         openCvModalBtn.addEventListener('click', (e) => {
-            // Prevenimos la acción por defecto del enlace SIEMPRE
             e.preventDefault(); 
-            
-            // Abrimos el modal sin importar el tamaño de la pantalla
             cvModal.classList.add('visible');
             setTimeout(() => {
                 if (cvIframe) cvIframe.src = pdfPath;
@@ -75,10 +72,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- FUNCIÓN DE CARGA DE TEXTOS DINÁMICOS ---
     const pageId = document.body.id;
-    async function loadDynamicText(pageName) {
-        if (!pageName) return;
+    async function loadDynamicText(pageId) {
+        if (!pageId) return;
         try {
-            const docRef = doc(db, 'pages', pageName);
+            const docRef = doc(db, 'pages', pageId);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 const data = docSnap.data();
@@ -89,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 });
             } else {
-                console.warn(`No se encontró documento de textos para la página: ${pageName}`);
+                console.warn(`No se encontró documento de textos para la página: ${pageId}`);
             }
         } catch (error) {
             console.error("Error al cargar textos dinámicos:", error);
@@ -100,6 +97,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- EJECUCIÓN ORDENADA DE SCRIPTS ---
     // =======================================================
     await loadDynamicText(pageId);
+    
+    // Ahora que el texto está cargado, podemos inicializar los scripts que dependen de él
+    initializeSidenotes();
 
     if (pageId === 'homepage') {
         initializeHeroSlider();
@@ -125,6 +125,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (document.getElementById('galeria-interactiva-habecu')) {
         initializeInteractiveGallery('galeria-interactiva-habecu', 'habecu_gallery');
     }
+    
+    initializeStandaloneLightbox();
 
     // =======================================================
     // --- DEFINICIONES DE FUNCIONES ---
@@ -145,7 +147,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         let touchStartX = 0;
         let touchEndX = 0;
 
-        // Añadimos un escuchador de clics a cada pestaña de texto del escritorio
         tabs.forEach((tab, index) => {
             tab.addEventListener('click', (e) => {
                 if (e.target.closest('a')) {
@@ -216,17 +217,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             intervalId = setInterval(nextTab, 5000);
         }
 
-        // =======================================================
-        // --- INICIO: NUEVA LÓGICA PARA SWIPE MÓVIL ---
-        // =======================================================
         function handleSwipe() {
-            const swipeThreshold = 50; // Distancia mínima en píxeles para considerarse un swipe
-            // Swipe hacia la izquierda (pasar a la siguiente)
+            const swipeThreshold = 50; 
             if (touchStartX - touchEndX > swipeThreshold) {
                 nextTab();
                 resetInterval();
             }
-            // Swipe hacia la derecha (pasar a la anterior)
             else if (touchEndX - touchStartX > swipeThreshold) {
                 prevTab();
                 resetInterval();
@@ -241,9 +237,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             touchEndX = e.changedTouches[0].screenX;
             handleSwipe();
         });
-        // =======================================================
-        // --- FIN: NUEVA LÓGICA PARA SWIPE MÓVIL ---
-        // =======================================================
         
         switchTab(0);
         resetInterval();
@@ -432,6 +425,74 @@ document.addEventListener('DOMContentLoaded', async () => {
         closeModalButtons.forEach(button => button.addEventListener('click', closeModal));
         iframeModal.addEventListener('click', (e) => {
              if (e.target === iframeModal) closeModal();
+        });
+    }
+
+    function initializeStandaloneLightbox() {
+        const lightboxModal = document.getElementById('lightbox-modal');
+        if (!lightboxModal) return;
+
+        const lightboxImage = document.getElementById('lightbox-image');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const closeButton = lightboxModal.querySelector('.lightbox-close');
+        
+        const prevButton = lightboxModal.querySelector('.lightbox-prev');
+        const nextButton = lightboxModal.querySelector('.lightbox-next');
+
+        const expandableImages = document.querySelectorAll('.expandable-image');
+
+        expandableImages.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const img = link.querySelector('img');
+                const captionElement = link.nextElementSibling;
+                
+                lightboxImage.src = link.href;
+                if (captionElement && captionElement.tagName === 'FIGCAPTION') {
+                    lightboxCaption.textContent = captionElement.textContent;
+                } else {
+                    lightboxCaption.textContent = img.alt || '';
+                }
+
+                if(prevButton) prevButton.style.display = 'none';
+                if(nextButton) nextButton.style.display = 'none';
+
+                lightboxModal.classList.add('visible');
+            });
+        });
+
+        const closeModal = () => {
+            lightboxModal.classList.remove('visible');
+        };
+
+        closeButton.addEventListener('click', closeModal);
+        lightboxModal.addEventListener('click', (e) => {
+            if (e.target === lightboxModal) {
+                closeModal();
+            }
+        });
+    }
+
+    function initializeSidenotes() {
+        const triggers = document.querySelectorAll('.sidenote-trigger');
+        
+        triggers.forEach(trigger => {
+            const container = trigger.closest('.sidenote-container');
+            if (!container) return; 
+
+            const closeBtn = container.querySelector('.sidenote-close-btn');
+
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                container.classList.add('is-sidenote-visible');
+            });
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    container.classList.remove('is-sidenote-visible');
+                });
+            }
         });
     }
 });

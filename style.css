@@ -3240,3 +3240,80 @@ footer {
         box-sizing: border-box;
     }
 }
+
+/* ======================================= */
+/* ===   IMÁGENES INTERCALADAS EN TEXTO  === */
+/* ======================================= */
+
+.interstitial-image-container {
+    width: 45%; /* Ancho de la imagen en escritorio */
+    margin-bottom: 1rem;
+    background-color: #fff;
+    padding: 6px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.interstitial-image-container.left {
+    float: left;
+    margin-right: 1.5rem;
+    margin-left: -2rem; /* Saca la imagen un poco hacia el margen */
+}
+
+.interstitial-image-container.right {
+    float: right;
+    margin-left: 1.5rem;
+    margin-right: -2rem; /* Saca la imagen un poco hacia el margen */
+}
+
+.interstitial-image-container a.expandable-image {
+    display: block;
+    cursor: zoom-in;
+    line-height: 0; /* Elimina espacio extra debajo de la imagen */
+}
+
+.interstitial-image-container img {
+    width: 100%;
+    display: block;
+}
+
+.interstitial-image-container figcaption {
+    font-size: 0.8rem;
+    color: #777;
+    text-align: center;
+    padding: 0.5rem;
+    background-color: #f9f9f9;
+}
+
+/* --- Estilos para la versión móvil --- */
+@media (max-width: 768px) {
+    .interstitial-image-container {
+        float: none; /* Quitamos el flotado */
+        width: calc(100% + 2rem); /* Hacemos que ocupe todo el ancho, compensando el padding */
+        max-width: none;
+        margin: 2rem -1rem; /* Margen vertical y negativo horizontal para que llene el espacio */
+        border-left: none;
+        border-right: none;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    }
+}
+
+/* ======================================= */
+/* ===   IMAGEN DE INTRODUCCIÓN DE PÁGINA   === */
+/* ======================================= */
+.page-intro-image {
+    margin: 0 auto 3rem auto; /* Centrado y con margen inferior */
+    max-width: 700px; /* Ancho máximo para la imagen */
+    width: 100%;
+}
+.page-intro-image a.expandable-image {
+    display: block;
+    cursor: zoom-in;
+    line-height: 0;
+}
+.page-intro-image img {
+    width: 100%;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
