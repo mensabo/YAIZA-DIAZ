@@ -39,37 +39,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // --- LÓGICA DEL MODAL DEL CV (PARA ESCRITORIO Y MÓVIL) ---
-    const openCvModalBtn = document.getElementById('open-cv-modal');
-    const cvModal = document.getElementById('cv-modal');
-    if (openCvModalBtn && cvModal) {
-        const cvIframe = document.getElementById('cv-iframe');
-        const cvModalCloseBtn = cvModal.querySelector('.modal-close');
-        const pdfPath = "CV-Yaiza-Diaz.pdf"; 
-
-        openCvModalBtn.addEventListener('click', (e) => {
-            e.preventDefault(); 
-            cvModal.classList.add('visible');
-            setTimeout(() => {
-                if (cvIframe) cvIframe.src = pdfPath;
-            }, 50);
-        });
-
-        const closeCvModal = () => {
-            cvModal.classList.remove('visible');
-            if (cvIframe) {
-                cvIframe.src = '';
-            }
-        };
-
-        cvModalCloseBtn.addEventListener('click', closeCvModal);
-        cvModal.addEventListener('click', (e) => {
-            if (e.target === cvModal) {
-                closeCvModal();
-            }
-        });
-    }
-
     // --- FUNCIÓN DE CARGA DE TEXTOS DINÁMICOS ---
     const pageId = document.body.id;
     async function loadDynamicText(pageId) {
