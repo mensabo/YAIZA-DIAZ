@@ -22,6 +22,9 @@
         <nav class="admin-nav">
             <button id="nav-galleries" class="active">Gestionar Galerías</button>
             <button id="nav-events">Gestionar Eventos</button>
+            <button id="nav-interviews">Gestionar Entrevistas</button>
+            <button id="nav-awards">Gestionar Premios</button>
+            <button id="nav-texts">Gestionar Textos</button>
         </nav>
 
         <!-- ========= PANEL DE GALERÍAS ========= -->
@@ -58,10 +61,9 @@
             <button id="save-button">Guardar Cambios de Galería</button>
         </div>
         
-        <!-- ========= PANEL DE EVENTOS (MODIFICADO) ========= -->
+        <!-- ========= PANEL DE EVENTOS ========= -->
         <div id="events-panel" class="panel">
             <h2>Gestionar Eventos y Publicidad</h2>
-            
             <div class="form-section">
                 <h3 id="event-form-title">Crear Nuevo Evento</h3>
                 <input type="hidden" id="event-id-input">
@@ -69,30 +71,17 @@
                 <input type="text" id="event-title-input" placeholder="Título del evento (para el modal)">
                 <textarea id="event-text-input" placeholder="Texto introductorio del evento..." rows="4"></textarea>
                 
-                <!-- ***** INICIO DE LA MODIFICACIÓN ***** -->
                 <label class="input-label">Imágenes de la galería del evento:</label>
-                <div id="event-images-preview-container">
-                    <div id="event-images-preview-list">
-                        <!-- Las miniaturas de las imágenes se cargarán aquí -->
-                    </div>
-                    <div id="event-images-drop-zone" class="drop-zone-small">
-                        <p>Arrastra imágenes aquí o haz clic en el botón para subirlas</p>
-                    </div>
+                <div id="event-images-preview-list" class="gallery-list"></div>
+                <div id="event-images-drop-zone" class="drop-zone-small">
+                    <p>Arrastra imágenes aquí o haz clic para subirlas</p>
                 </div>
-                <div class="upload-container">
-                    <input type="file" id="event-image-uploader" multiple accept="image/*" style="display: none;">
-                    <button id="upload-event-images-button" type="button">Subir Imágenes</button>
-                    <div id="event-image-loader" class="loader" style="display: none;"></div>
-                </div>
-                 <!-- ***** FIN DE LA MODIFICACIÓN ***** -->
-                                  <!-- ***** INICIO: AÑADIR VÍDEO A EVENTO ***** -->
+                <input type="file" id="event-image-uploader" multiple accept="image/*" style="display: none;">
+                
                 <label class="input-label" style="margin-top: 1.5rem;">Añadir vídeo a la galería del evento:</label>
-                <div class="form-section-inline">
-                    <input type="text" id="event-video-url-input" placeholder="URL del vídeo (.mp4, .webm...)">
-                    <input type="text" id="event-thumbnail-url-input" placeholder="URL de la miniatura para el vídeo (.jpg, .png...)">
-                    <button id="add-event-video-button" type="button">Añadir Vídeo</button>
-                </div>
-                <!-- ***** FIN: AÑADIR VÍDEO A EVENTO ***** -->
+                <input type="text" id="event-video-url-input" placeholder="URL del vídeo (.mp4, .webm...)">
+                <input type="text" id="event-thumbnail-url-input" placeholder="URL de la miniatura para el vídeo (.jpg, .png...)">
+                <button id="add-event-video-button" type="button">Añadir Vídeo</button>
 
                 <input type="number" id="event-order-input" placeholder="Número de orden (ej: 0, 1, 2...)">
                 <div class="form-buttons">
@@ -100,32 +89,106 @@
                     <button id="cancel-edit-event-button" style="display:none;">Cancelar Edición</button>
                 </div>
             </div>
-            
             <hr class="section-divider">
-            
             <h3>Eventos Creados</h3>
             <p>Arrastra los eventos para reordenarlos y luego pulsa "Guardar Orden".</p>
             <div id="events-list"></div>
             <button id="save-event-order-button">Guardar Orden de Eventos</button>
         </div>
+
+        <!-- ========= PANEL DE ENTREVISTAS ========= -->
+        <div id="interviews-panel" class="panel">
+            <h2>Gestionar Entrevistas</h2>
+            <div class="form-section">
+                <h3 id="interview-form-title">Añadir Nueva Entrevista</h3>
+                <input type="hidden" id="interview-id-input">
+                <input type="text" id="interview-main-title-input" placeholder="Título principal (ej: 'El cáncer de mama en primera persona')">
+                <input type="text" id="interview-subtitle-input" placeholder="Subtítulo o medio (ej: 'Diario de Avisos')">
+                <input type="text" id="interview-url-input" placeholder="URL completa del artículo o vídeo">
+
+                <label class="input-label">Imagen de miniatura:</label>
+                <div id="interview-image-preview" class="gallery-list" style="grid-template-columns: minmax(180px, 220px);"></div>
+                <div id="interview-image-drop-zone" class="drop-zone-small">
+                    <p>Arrastra una imagen aquí o haz clic para subirla</p>
+                </div>
+                <input type="file" id="interview-image-uploader" accept="image/*" style="display: none;">
+                
+                <input type="number" id="interview-order-input" placeholder="Número de orden (ej: 0, 1, 2...)">
+                <div class="form-buttons">
+                    <button id="save-interview-button">Guardar Entrevista</button>
+                    <button id="cancel-edit-interview-button" style="display:none;">Cancelar Edición</button>
+                </div>
+            </div>
+            <hr class="section-divider">
+            <h3>Entrevistas Creadas</h3>
+            <p>Arrastra las entrevistas para reordenarlas y pulsa "Guardar Orden".</p>
+            <div id="interviews-list"></div>
+            <button id="save-interview-order-button">Guardar Orden de Entrevistas</button>
+        </div>
+
+        <!-- ========= PANEL DE PREMIOS ========= -->
+        <div id="awards-panel" class="panel">
+            <h2>Gestionar Premios</h2>
+            <div class="form-section">
+                <h3 id="award-form-title">Añadir Nuevo Premio</h3>
+                <input type="hidden" id="award-id-input">
+                <input type="text" id="award-title-input" placeholder="Nombre del premio (ej: 'Premio Isla Tenerife 2024')">
+                <textarea id="award-text-input" placeholder="Descripción detallada del premio..." rows="4"></textarea>
+                
+                <label class="input-label">Galería de imágenes/vídeos del premio:</label>
+                <div id="award-images-preview-list" class="gallery-list"></div>
+                <div id="award-images-drop-zone" class="drop-zone-small">
+                    <p>Arrastra imágenes aquí o haz clic para subirlas</p>
+                </div>
+                <input type="file" id="award-image-uploader" multiple accept="image/*" style="display: none;">
+                
+                <label class="input-label" style="margin-top: 1.5rem;">Añadir vídeo a la galería:</label>
+                <input type="text" id="award-video-url-input" placeholder="URL del vídeo (.mp4, .webm...)">
+                <input type="text" id="award-thumbnail-url-input" placeholder="URL de la miniatura para el vídeo (.jpg, .png...)">
+                <button id="add-award-video-button" type="button">Añadir Vídeo</button>
+
+                <input type="number" id="award-order-input" placeholder="Número de orden (ej: 0, 1, 2...)">
+                <div class="form-buttons">
+                    <button id="save-award-button">Guardar Premio</button>
+                    <button id="cancel-edit-award-button" style="display:none;">Cancelar Edición</button>
+                </div>
+            </div>
+            <hr class="section-divider">
+            <h3>Premios Creados</h3>
+            <p>Arrastra los premios para reordenarlos y pulsa "Guardar Orden".</p>
+            <div id="awards-list"></div>
+            <button id="save-award-order-button">Guardar Orden de Premios</button>
+        </div>
+
+        <!-- ========= PANEL DE TEXTOS ========= -->
+        <div id="texts-panel" class="panel">
+            <h2>Gestionar Textos de la Web</h2>
+            <div class="form-section">
+                <label for="page-selector" class="input-label">Selecciona la página a editar:</label>
+                <select id="page-selector">
+                    <option value="homepage">Página de Inicio</option>
+                    <option value="televisionPage">Página de Televisión</option>
+                    <option value="radioPage">Página de Radio</option>
+                    <option value="publicidadPage">Página de Publicidad</option>
+                    <option value="comunicacionPage">Página de Comunicación</option>
+                    <option value="investigacionPage">Página de Documentales</option>
+                    <option value="proyectosPage">Página de Proyectos</option>
+                    <option value="premiosPage">Página de Premios</option>
+                    <option value="entrevistasPage">Página de Entrevistas</option>
+                     <option value="libroPage">Página del Libro</option>
+                     <option value="modelajePage">Página de Modelo</option>
+                </select>
+            </div>
+            <hr class="section-divider">
+            <div id="text-fields-container"></div>
+            <button id="save-texts-button" style="margin-top: 1rem;">Guardar Cambios de Textos</button>
+        </div>
+
     </div>
     
     <script src="config.js"></script>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
-        import { getFirestore, collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-storage.js";
-
-        const app = initializeApp(firebaseConfig);
-        window.firebaseServices = {
-            auth: getAuth(app), db: getFirestore(app), storage: getStorage(app),
-            signInWithEmailAndPassword, onAuthStateChanged, signOut,
-            collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc, getDoc, setDoc, updateDoc,
-            ref, uploadBytes, getDownloadURL, deleteObject
-        };
-    </script>
+    <script type="module" src="admin.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-    <script src="admin.js" type="module"></script>
+
 </body>
 </html>

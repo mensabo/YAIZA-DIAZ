@@ -51,7 +51,7 @@
         .link-highlight:hover { color: #a78d6b; }
     </style>
 </head>
-<body class="libro-page">
+<body id="publicidadPage" class="libro-page">
     
     <header>
         <nav class="container">
@@ -88,20 +88,16 @@
     <!-- ========= CONTENIDO PRINCIPAL DE LA PÁGINA ========= -->
     <section id="publicidad-main">
         <div class="container comunicacion-content">
-            <h2>Publicidad y Campañas</h2>
+            <h2 data-content-id="mainTitle"></h2>
             <div class="header-line"></div>
             
             <div class="section-intro" style="text-align: left; max-width: none;">
-                <p>
-                    Yaiza Díaz ha sido imagen para anuncios y promociones de importantes marcas y campañas institucionales, prestando su imagen y voz para spots de empresas como <strong>Toyota Canarias, Dormitorum, BonosVIP, IKEA, Montesano, Makro y el Gobierno de Canarias</strong>.
-                </p>
-                <p>
-                    La periodista ha puesto voz a numerosas cuñas publicitarias en radio e incluso a documentales como “La Gomera isla de la felicidad”, que se proyectó en la Feria de Turismo de Madrid. También realiza colaboraciones habituales para clínicas médico-estéticas como <a href="https://www.cidme.com/" target="_blank" rel="noopener noreferrer" class="link-highlight"><strong>CIDME</strong></a> o el <a href="https://cri-tenerife.com/" target="_blank" rel="noopener noreferrer" class="link-highlight"><strong>Centro de Rehabilitación Integral CRI</strong></a>.
-                </p>
+                <p data-content-id="introParagraph1"></p>
+                <p data-content-id="introParagraph2"></p>
             </div>
 
             <div class="comunicacion-section">
-                <h3>Campaña Digital <span class="brand-name">Toyota Canarias</span></h3>
+                <h3 data-content-id="campaign1Title"></h3>
                 <a href="https://www.instagram.com/reel/Ct9Nxg4I-Nm/?igsh=anlyNTkyNnlvbnFk" target="_blank" rel="noopener noreferrer" class="phone-video-container">
                     <div class="phone-mockup">
                         <video class="video-screen" autoplay loop muted playsinline>
@@ -113,7 +109,7 @@
             </div>
 
             <div class="comunicacion-section">
-                <h3>Campaña de Televisión <span class="brand-name">Dormitorum</span></h3>
+                <h3 data-content-id="campaign2Title"></h3>
                 <a href="https://www.youtube.com/watch?v=anmvj5jgRfk" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <img src="https://img.youtube.com/vi/anmvj5jgRfk/hqdefault.jpg" alt="Miniatura spot Dormitorum">
                     <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
@@ -121,7 +117,7 @@
             </div>
 
             <div class="comunicacion-section">
-                <h3>Spot de Televisión <span class="brand-name">BonosVip</span></h3>
+                <h3 data-content-id="campaign3Title"></h3>
                 <a href="https://www.youtube.com/watch?v=cMviyq8rUFQ" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <img src="https://img.youtube.com/vi/cMviyq8rUFQ/hqdefault.jpg" alt="Miniatura spot BonosVip Taxi">
                     <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
@@ -129,31 +125,28 @@
             </div>
             
             <div class="comunicacion-section">
-                <h3>Campaña Digital <span class="brand-name">BonosVip (Strasse Park)</span></h3>
+                <h3 data-content-id="campaign4Title"></h3>
                 <a href="https://www.youtube.com/watch?v=KE86EZBjI9Y" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <img src="https://img.youtube.com/vi/KE86EZBjI9Y/hqdefault.jpg" alt="Miniatura campaña BonosVip">
                     <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
                 </a>
             </div>
 
-            <!-- ***** INICIO: BLOQUE DE VÍDEO MOVÍDO Y CON NUEVO FORMATO ***** -->
             <div class="comunicacion-section">
-                <h3>SPOT "La Gomera, isla de la felicidad"</h3>
-                <a href="#" class="video-fallback js-video-modal-trigger" data-video-src="https://www.youtube.com/embed/WTEUE1gqhjY">
+                <h3 data-content-id="campaign5Title"></h3>
+                <a href="#" class="video-fallback js-video-modal-trigger" data-video-src="https://www.youtube.com/embed/WTEUE1gqhjY?autoplay=1">
                     <img src="https://img.youtube.com/vi/WTEUE1gqhjY/hqdefault.jpg" alt="Miniatura del documental La Gomera, isla de la felicidad">
                     <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
                 </a>
             </div>
-            <!-- ***** FIN: BLOQUE DE VÍDEO MOVÍDO Y CON NUEVO FORMATO ***** -->
-
         </div>
     </section>
 
-    <div id="video-modal" class="modal-overlay">
+    <div id="iframe-modal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" aria-label="Cerrar">&times;</button>
             <div class="video-container">
-                 <iframe id="modal-video-iframe" src="" title="Documental" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                 <iframe id="modal-iframe-player" src="" title="Vídeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
         </div>
     </div>
@@ -171,6 +164,16 @@
         </div>
     </footer>
 
-    <script src="script.js" defer></script>
+    <script src="config.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        window.firebaseServices = {
+            db, collection, getDocs, orderBy, query, doc, getDoc
+        };
+    </script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>

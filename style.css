@@ -1314,8 +1314,8 @@ footer {
     transition: opacity 0.4s, transform 0.4s;
 }
 
-#galeria-principal:hover #descripcion-principal,
-#descripcion-principal.visible-temporarily {
+.galeria-principal:hover #descripcion-principal,
+.descripcion-principal.visible-temporarily {
     opacity: 1;
     transform: translateY(0);
 }
@@ -2465,7 +2465,7 @@ footer {
     opacity: 1;
     animation: shine-sweep 1.2s ease;
 }
-/* === Estilos para el Modal de Eventos (NUEVO) === */
+/* === Estilos para el Modal de Eventos (MODIFICADO) === */
 #eventos-modal-overlay {
     position: fixed;
     top: 0;
@@ -2547,7 +2547,20 @@ footer {
 #eventos-modal-text {
     font-size: 1.1rem;
     line-height: 1.7;
+    margin-bottom: 0;
+}
+
+.event-gallery-main-description {
+    font-size: 1rem;
+    color: #555;
+    background-color: #f7f8fc;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
     margin-bottom: 2rem;
+    border-left: 4px solid var(--color-acento);
+    line-height: 1.6;
+    min-height: 1.6em;
 }
 
 #eventos-modal-gallery {
@@ -2838,3 +2851,276 @@ footer {
         animation-delay: -2.5s;
     }
 }
+/* ======================================================= */
+/* ===   CORRECCIÓN PARA MODAL DE IFRAME (YOUTUBE)     === */
+/* ======================================================= */
+
+#iframe-modal .modal-content {
+    /* Ajustamos el padding para dar más espacio al vídeo */
+    padding: 1rem;
+    max-width: 900px; /* Un poco más grande para vídeos */
+    width: 90%;
+    background-color: #000; /* Fondo negro para una mejor experiencia de vídeo */
+    border-radius: 8px;
+}
+
+#iframe-modal .video-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* Proporción 16:9 para vídeos */
+    height: 0;
+    background-color: #000;
+}
+
+#iframe-modal iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+#iframe-modal .modal-close {
+    /* Aseguramos que el botón de cierre esté visible sobre el fondo negro */
+    z-index: 10;
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 35px;
+    height: 35px;
+    background: white;
+    color: black;
+    border-radius: 50%;
+    line-height: 35px;
+    text-align: center;
+}
+/* ======================================================= */
+/* ===  MEJORA DE ESTILO PARA PÁRRAFO DE EVENTOS (v2) === */
+/* ======================================================= */
+
+#prensa .events-list > p {
+    font-family: var(--fuente-titulos);
+    font-size: 1.3rem;
+    color: #555; /* <-- CORRECCIÓN: Un gris oscuro mucho más legible */
+    line-height: 1.7;
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3rem;
+    text-align: center; /* Aseguramos que esté centrado */
+}
+
+/* Ajuste para móviles para que no se vea tan grande */
+@media (max-width: 768px) {
+    #prensa .events-list > p {
+        font-size: 1.1rem;
+    }
+}
+/* ======================================================= */
+/* ===  MEJORA DE DISEÑO PARA SECCIÓN DE CONTACTO (v3) === */
+/* ======================================================= */
+
+#contacto {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+}
+
+#contacto p {
+    /* Usamos la fuente de títulos para un look elegante y profesional */
+    font-family: var(--fuente-titulos);
+    font-size: 1.3rem;
+    font-weight: normal; /* Quitamos la negrita para diferenciarlo del email */
+    font-style: italic; /* Añadimos cursiva para darle un toque refinado */
+    color: #cbd5e0; /* Un gris azulado muy suave y legible */
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    text-shadow: none; /* Ya no necesita sombra */
+}
+
+.email-link {
+    display: inline-block;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--color-acento);
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    /* Usamos la fuente de títulos para un email más elegante */
+    font-family: var(--fuente-titulos);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--color-blanco);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative; /* Necesario para el efecto de destello */
+    overflow: hidden;   /* Necesario para el efecto de destello */
+}
+
+.email-link:hover {
+    background-color: var(--color-acento);
+    color: var(--color-primario);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(188, 160, 125, 0.3);
+}
+
+.email-link:active {
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* Ajustes para móviles */
+@media (max-width: 768px) {
+    #contacto p {
+        font-size: 1.5rem;
+    }
+    .email-link {
+        font-size: 1.1rem;
+        padding: 0.8rem 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Efecto de destello continuo en el botón de email para móvil */
+    .email-link::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(
+            to right, 
+            rgba(255, 255, 255, 0) 0%, 
+            rgba(255, 255, 255, 0.25) 50%, 
+            rgba(255, 255, 255, 0) 100%
+        );
+        animation: shine-sweep 3.5s ease-in-out infinite;
+        animation-delay: 1s; /* Pequeño retraso inicial */
+    }
+}
+
+/* === ESTILOS CARRUSEL DE EVENTOS (MÓVIL - VERSIÓN DEFINITIVA CON PISTAS VISUALES) === */
+@media (max-width: 768px) {
+    .events-carousel-container {
+        /* Hacemos que el contenedor ocupe el ancho completo, rompiendo los límites del padding de .container */
+        margin-left: -1rem;
+        margin-right: -1rem;
+        position: relative; /* Necesario para los degradados */
+    }
+
+    /* Degradado en los bordes para indicar que hay más contenido */
+    .events-carousel-container::before,
+    .events-carousel-container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 40px; /* Ancho del degradado */
+        z-index: 2;
+        pointer-events: none; /* Permite hacer scroll "a través" del degradado */
+    }
+
+    .events-carousel-container::before {
+        left: 0;
+        background: linear-gradient(to right, var(--color-blanco) 20%, transparent);
+    }
+
+    .events-carousel-container::after {
+        right: 0;
+        background: linear-gradient(to left, var(--color-blanco) 20%, transparent);
+    }
+
+    #dynamic-event-tags {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        
+        /* Añadimos padding para que el primer y último elemento no se peguen a los bordes de la pantalla */
+        padding-inline: 40px; /* Este padding asegura que el primer elemento no empiece pegado al borde izquierdo */
+
+        /* Ocultamos la barra de scroll */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    #dynamic-event-tags::-webkit-scrollbar {
+        display: none;
+    }
+
+    .event-tags button.event-tag-button {
+        flex: 0 0 280px; /* Ancho fijo para cada botón */
+        width: 280px;
+        scroll-snap-align: center; /* Cada botón se alineará al centro */
+        margin: 0;
+        height: 80px;
+        white-space: normal;
+        line-height: 1.3;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-size: 1rem;
+    }
+    
+    /* Añadimos un espacio entre los botones */
+    #dynamic-event-tags > * + * {
+        margin-left: 15px;
+    }
+}
+/* === ESTILOS PARA LA NAVEGACIÓN DEL CARRUSEL DE EVENTOS (MÓVIL) === */
+
+.carousel-navigation {
+    display: none; /* Oculto por defecto en escritorio */
+    visibility: hidden;
+}
+
+@media (max-width: 768px) {
+    .carousel-navigation {
+        display: flex; /* Se muestra en móvil */
+        visibility: visible;
+        justify-content: center;
+        gap: 1.5rem; /* Espacio entre las flechas */
+        margin-top: 1.5rem; /* Espacio por encima de las flechas */
+    }
+
+    #carousel-nav-prev,
+    #carousel-nav-next {
+        /* Copiamos el estilo de los botones de evento */
+        background: linear-gradient(145deg, #e4d4bb, #bca07d 50%, #a78d6b);
+        color: var(--color-blanco);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+        
+        /* Hacemos los botones circulares y más pequeños */
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: none;
+        
+        /* Centramos el icono de la flecha */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    #carousel-nav-prev:hover,
+    #carousel-nav-next:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(188, 160, 125, 0.25);
+    }
+
+    #carousel-nav-prev:active,
+    #carousel-nav-next:active {
+        transform: translateY(-1px);
+    }
+}
+
+
+    

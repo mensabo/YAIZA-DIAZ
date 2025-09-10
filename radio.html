@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body class="libro-page">
+<body id="radioPage" class="libro-page">
     
     <header>
         <nav class="container">
@@ -45,10 +45,10 @@
     <!-- ========= CONTENIDO PRINCIPAL DE LA PÁGINA ========= -->
     <section id="radio-main">
         <div class="container comunicacion-content">
-            <h2>Radio</h2>
+            <h2 data-content-id="mainTitle"></h2>
             <div class="header-line"></div>
             <div class="page-introduction">
-                <p>La voz como herramienta de comunicación. Yaiza Díaz ha colaborado en programas de radio aportando su perspectiva única sobre la actualidad, la cultura y la sociedad.</p>
+                <p data-content-id="introParagraph"></p>
             </div>
 
             <div class="comunicacion-section">
@@ -57,9 +57,9 @@
                         <img src="images/portadaparis.jpeg" alt="Portada del programa Siempre nos quedará París">
                     </div>
                     <div class="sinopsis-text">
-                        <h3>Siempre nos quedará París</h3>
-                        <p>Yaiza ha colaborado en el magacín sobre inteligencia emocional de <strong>Canarias Radio</strong>, dirigido y presentado por <strong>Rosa Vidal</strong>. Un espacio para reflexionar sobre la vida, el amor y la mente.</p>
-                        <p>Escucha una de sus intervenciones:</p>
+                        <h3 data-content-id="programTitle"></h3>
+                        <p data-content-id="programParagraph1"></p>
+                        <p data-content-id="programParagraph2"></p>
                         <audio controls class="custom-audio-player">
                             <source src="audio/siempre-nos-quedara-paris.mp3" type="audio/mpeg">
                             Tu navegador no soporta el elemento de audio.
@@ -73,29 +73,25 @@
                 </div>
             </div>
 
-            <!-- ========= GALERÍA INTERACTIVA DINÁMICA ========= -->
             <section id="galeria-radio" class="section-gray" style="padding: 4rem 0;">
                 <div class="container">
-                    <h2>Momentos en el Estudio</h2>
+                    <h2 data-content-id="galleryTitle"></h2>
                     <div class="header-line"></div>
                     <div id="galeria-interactiva-radio" class="galeria-interactiva-container">
                         <div class="galeria-principal">
                             <div class="galeria-bg-desenfocado"></div>
-                            <img class="imagen-principal" src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/radio_gallery%2F1756848000224_ .jpeg?alt=media&token=4e9d9f8d-dff7-47b7-b528-4d0faaebe29a" alt="Visor principal de la galería de radio">
+                            <img class="imagen-principal" src="" alt="Visor principal de la galería de radio">
                             <div class="descripcion-principal">
                                 <p>Cargando galería...</p>
                             </div>
                         </div>
-                        <div class="galeria-lista-miniaturas">
-                            <!-- Las miniaturas se cargarán desde Firebase -->
-                        </div>
+                        <div class="galeria-lista-miniaturas"></div>
                     </div>
                 </div>
             </section>
         </div>
     </section>
     
-    <!-- ***** INICIO DE LA MODIFICACIÓN: CÓDIGO DEL LIGHTBOX AÑADIDO ***** -->
     <div id="lightbox-modal" class="lightbox">
         <span class="lightbox-close">&times;</span>
         <span class="lightbox-prev">&#10094;</span>
@@ -105,7 +101,6 @@
             <div id="lightbox-caption"></div>
         </div>
     </div>
-    <!-- ***** FIN DE LA MODIFICACIÓN ***** -->
 
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
@@ -120,17 +115,16 @@
         </div>
     </footer>
 
-    <!-- Scripts de Firebase y el principal -->
     <script src="config.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         window.firebaseServices = {
-            db, collection, getDocs, orderBy, query
+            db, collection, getDocs, orderBy, query, doc, getDoc
         };
     </script>
-    <script src="script.js" defer></script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>

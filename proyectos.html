@@ -3,84 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyectos - Yaiza Díaz</title>
+    <title>Modelo - Yaiza Díaz</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        .proyecto-cta-button {
-            display: inline-block;
-            background-color: var(--color-magenta-libro);
-            color: var(--color-blanco);
-            padding: 1rem 2.5rem;
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 1.1rem;
-        }
-        .proyecto-cta-button:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(233, 30, 99, 0.3);
-        }
-
-        /* --- INICIO: NUEVOS ESTILOS PARA EL BANNER Y REDES SOCIALES --- */
-        .proyecto-hero-banner {
-            width: 100%;
-            background-color: #F8BBD0; /* Color de fondo rosa pálido */
-            line-height: 0; /* Evita espacios extra debajo de la imagen */
-        }
-        .proyecto-hero-banner img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        #proyectos-main {
-            padding-top: 4rem; /* Reducido para acercarlo al banner */
-        }
-        .proyecto-social-links {
-            text-align: center;
-            margin-top: 2.5rem;
-            padding-top: 2rem;
-            border-top: 1px solid #ddd; /* Línea separadora */
-        }
-        .proyecto-social-links p {
-            margin-bottom: 1.5rem;
-            font-weight: 500;
-            color: #444;
-        }
-        .proyecto-social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem; /* Espacio entre iconos */
-        }
-        .proyecto-social-icons a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #fff;
-            border: 2px solid #e0e0e0;
-            color: var(--color-primario);
-            font-size: 1.5rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .proyecto-social-icons a:hover {
-            background-color: var(--color-acento);
-            border-color: var(--color-acento);
-            color: var(--color-blanco);
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        /* --- FIN: NUEVOS ESTILOS --- */
-    </style>
 </head>
-<body class="libro-page">
+<body id="modelajePage" class="libro-page">
     
     <header>
         <nav class="container">
@@ -106,60 +34,86 @@
         </nav>
     </header>
 
-    <!-- ========= BARRA DE RETORNO (CORREGIDA) ========= -->
     <div class="return-bar">
         <div class="container">
-            <a href="index.html" class="breadcrumb-return-link">
-                <i class="fas fa-arrow-left"></i> Volver a Inicio
+            <a href="index.html#portfolio" class="breadcrumb-return-link">
+                <i class="fas fa-arrow-left"></i> Volver a Trayectoria
             </a>
         </div>
     </div>
 
-    <!-- ========= NUEVO BANNER A PANTALLA COMPLETA ========= -->
-    <div class="proyecto-hero-banner">
-        <img src="images/ftr-banner.png" alt="Banner de Fórmula Triple Rosa por Yaiza Díaz">
-    </div>
-
-    <!-- ========= CONTENIDO PRINCIPAL DE LA PÁGINA ========= -->
-    <section id="proyectos-main" class="section-gray">
+    <section id="modelo-main">
         <div class="container">
-            <h2>Proyectos con Alma</h2>
+            <h2 data-content-id="mainTitle"></h2>
             <div class="header-line"></div>
-            
-            <div class="sinopsis-content" style="align-items: center; gap: 4rem;">
+            <p class="section-intro" data-content-id="introParagraph"></p>
 
-                <div class="sinopsis-img" style="flex-basis: 45%;">
-                    <img src="images/ftr-principal.png" alt="Yaiza Díaz - Proyecto Fórmula Triple Rosa" style="aspect-ratio: 4 / 5;">
-                </div>
-
-                <div class="sinopsis-text" style="flex-basis: 55%;">
-                    <h3>Fórmula Triple Rosa</h3>
-                    <p>Un espacio de divulgación, apoyo y visibilidad sobre el cáncer de mama triple negativo, contado desde la experiencia personal y con el rigor de una comunicadora.</p>
-                    <p>Fórmula Triple Rosa nace de la necesidad de transformar un diagnóstico en una misión: acompañar, informar y crear una comunidad para pacientes y familiares que transitan por este camino, ofreciendo información veraz y una perspectiva llena de esperanza y resiliencia.</p>
-                    
-                    <blockquote class="about-quote" style="font-size: 1.4rem; margin: 2rem 0;">
-                        "Convertir el diagnóstico en misión, la incertidumbre en divulgación y el miedo en comunidad."
-                    </blockquote>
-                    
-                    <a href="https://www.formulatriplerosa.es" class="proyecto-cta-button" target="_blank" rel="noopener noreferrer">
-                        Visita formulatriplerosa.es
-                    </a>
-
-                    <div class="proyecto-social-links">
-                        <p>Sigue el proyecto en sus redes:</p>
-                        <div class="proyecto-social-icons">
-                            <a href="https://www.tiktok.com/@formula.triple.rosa" target="_blank" rel="noopener noreferrer" aria-label="Visita nuestro TikTok"><i class="fab fa-tiktok"></i></a>
-                            <a href="https://www.instagram.com/formulatriplerosa/" target="_blank" rel="noopener noreferrer" aria-label="Visita nuestro Instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="https://www.youtube.com/@FormulaTripleRosa" target="_blank" rel="noopener noreferrer" aria-label="Visita nuestro canal de YouTube"><i class="fab fa-youtube"></i></a>
-                        </div>
+            <div id="galeria-interactiva-modelo" class="galeria-interactiva-container">
+                <div class="galeria-principal">
+                    <div class="galeria-bg-desenfocado"></div>
+                    <img class="imagen-principal" src="" alt="Visor principal de la galería de modelaje">
+                    <div class="descripcion-principal">
+                        <p>Cargando galería...</p>
                     </div>
                 </div>
-
+                <div class="galeria-lista-miniaturas"></div>
             </div>
-
         </div>
     </section>
     
+    <section id="calendario-solidario" class="section-gray">
+        <div class="container">
+            <h2 data-content-id="calendarTitle"></h2>
+            <div class="header-line"></div>
+            <p class="section-intro" data-content-id="calendarParagraph"></p>
+            
+            <div id="galeria-interactiva-calendario" class="galeria-interactiva-container">
+                <div class="galeria-principal">
+                    <div class="galeria-bg-desenfocado"></div>
+                    <img class="imagen-principal" src="" alt="Visor principal de la galería del calendario solidario">
+                    <div class="descripcion-principal">
+                        <p>Cargando galería...</p>
+                    </div>
+                </div>
+                <div class="galeria-lista-miniaturas">
+                    <div class="miniatura-item" data-img-src="images/calendario.jpg" data-description="Calendario Solidario 2024 - Foto 1">
+                        <img src="images/calendario.jpg" alt="Miniatura 1">
+                        <div class="miniatura-overlay"><p class="miniatura-descripcion">Foto 1</p></div>
+                    </div>
+                    <div class="miniatura-item" data-img-src="images/calendario2.jpg" data-description="Calendario Solidario 2024 - Foto 2">
+                        <img src="images/calendario2.jpg" alt="Miniatura 2">
+                        <div class="miniatura-overlay"><p class="miniatura-descripcion">Foto 2</p></div>
+                    </div>
+                    <div class="miniatura-item" data-img-src="images/calendario3.jpg" data-description="Calendario Solidario 2024 - Foto 3">
+                        <img src="images/calendario3.jpg" alt="Miniatura 3">
+                        <div class="miniatura-overlay"><p class="miniatura-descripcion">Foto 3</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="lightbox-modal" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <span class="lightbox-prev">&#10094;</span>
+        <span class="lightbox-next">&#10095;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-image" src="" alt="Visor de imágenes">
+            <div id="lightbox-caption"></div>
+        </div>
+    </div>
+     
+    <div id="video-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="video-modal-close-btn" class="modal-close" aria-label="Cerrar">&times;</button>
+            <div class="video-container">
+                 <video id="modal-video-player" src="" controls playsinline style="border-radius: 0;"></video>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
+
     <footer>
         <div class="container">
             <div class="footer-social-icons">
@@ -171,6 +125,16 @@
         </div>
     </footer>
 
-    <script src="script.js" defer></script>
+    <script src="config.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        window.firebaseServices = {
+            db, collection, getDocs, orderBy, query, doc, getDoc
+        };
+    </script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>

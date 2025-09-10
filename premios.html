@@ -53,8 +53,6 @@
             background-color: rgba(220, 0, 0, 0.8);
             transform: translate(-50%, -50%) scale(1.1);
         }
-
-        /* --- ESTILOS PARA EL ENLACE DESTACADO --- */
         .link-highlight {
             color: var(--color-acento);
             font-weight: bold;
@@ -68,7 +66,7 @@
         }
     </style>
 </head>
-<body class="libro-page">
+<body id="premiosPage" class="libro-page">
     
     <header>
         <nav class="container">
@@ -102,20 +100,19 @@
         </div>
     </div>
 
-    <!-- ========= CONTENIDO PRINCIPAL DE LA PÁGINA ========= -->
     <section id="premios-main">
         <div class="container comunicacion-content">
-            <h2>Premios y Reconocimientos</h2>
+            <h2 data-content-id="mainTitle">Premios y Reconocimientos</h2>
             <div class="header-line"></div>
 
             <div class="comunicacion-section">
-                <h3>Premios Isla Tenerife 2024</h3>
+                <h3 data-content-id="premio1Title">Premio Isla Tenerife 2024</h3>
                 <div class="sinopsis-content" style="gap: 2rem; align-items: flex-start;">
                     <div class="sinopsis-text">
-                        <p>Yaiza Díaz fue galardonada en los Premios Isla Tenerife por su trayectoria profesional como comunicadora. Estos Premios que reconocen a divulgadores, influencers y creadores de contenidos en las redes sociales se celebraron en el edificio de Presidencia del Gobierno, donde la periodista recibió el galardón en presencia de autoridades y amigos en 2024.</p>
-                        <p>Este reconocimiento llegó justo el año en que fue diagnosticada de cáncer de mama y donde comenzó también su proyecto de divulgación sobre la enfermedad llamado Fórmula Triple Rosa.</p>
-                        <p>Además, Yaiza ha participado en estos premios presentado la primera de las ediciones y cada año su voz en off desvela en cada gala quiénes son los seleccionados, y presenta en el photocall de bienvenida a las autoridades y personalidades destacadas. Sus compañeros quisieron reconocer en un año tan marcado personalmente para Yaiza, su trayectoria periodística, algo muy emocionante para ella.</p>
-                        <p style="margin-top:1.5rem;"><strong>Puedes ver más sobre este momento en <a href="https://www.instagram.com/p/C6i3N0do8v_/" target="_blank" rel="noopener noreferrer" class="formula-rosa-link">este post de Instagram</a>.</strong></p>
+                        <p data-content-id="premio1Paragraph1">Otorgado por el periódico El Día - La Opinión de Tenerife en reconocimiento a mi trayectoria profesional como periodista y escritora.</p>
+                        <p data-content-id="premio1Paragraph2">Este galardón ha sido un impulso fundamental en mi carrera, validando años de dedicación a la comunicación en diversas facetas, desde la televisión y la radio hasta la literatura y la dirección de comunicación.</p>
+                        <p data-content-id="premio1Paragraph3">Agradezco profundamente a la organización por este honor, que me motiva a seguir contando historias y conectando con el público.</p>
+                        <p style="margin-top:1.5rem;" data-content-id="premio1InstagramLink">Puedes ver más sobre el evento en este <a href="https://www.instagram.com/p/C69X-sRsqtN/?igsh=eHNja3d2b2N0eXhs" class="link-highlight" target="_blank" rel="noopener noreferrer">enlace de Instagram</a>.</p>
                     </div>
                     <div class="sinopsis-img" style="flex-basis: 50%;">
                         <img src="images/premio-isla.jpg" alt="Yaiza Díaz recibiendo el Premio Isla Tenerife 2024" style="background-color: #e0e0e0;">
@@ -125,23 +122,21 @@
             </div>
 
             <div class="comunicacion-section">
-                <h3>Madrina de la Fundación Carrera por la Vida (2024)</h3>
+                <h3 data-content-id="premio2Title">Embajadora del Calendario Solidario 2024</h3>
                 <div class="sinopsis-content" style="gap: 2rem; align-items: flex-start;">
                     <div class="sinopsis-img" style="flex-basis: 50%;">
                         <img src="images/calendario.jpg" alt="Yaiza Díaz en el calendario solidario de la Fundación Carrera por la Vida">
                     </div>
                     <div class="sinopsis-text">
-                        <p>En 2024, Yaiza fue nombrada madrina de la Fundación Carrera por la Vida, una organización dedicada a la lucha contra el cáncer de mama en Tenerife. Como parte de su implicación, fue la imagen del Calendario Solidario de la fundación para recaudar fondos y dar visibilidad a la causa.</p>
-                        <p>
-                            Fue fotografiada para su calendario solidario por el prestigioso fotógrafo de moda <a href="https://www.instagram.com/soyalfonsobravo/" target="_blank" rel="noopener noreferrer" class="link-highlight"><strong>Alfonso Bravo</strong></a> con un vestido de los reconocidos diseñadores internacionales <a href="https://marcoymaria.com/" target="_blank" rel="noopener noreferrer" class="link-highlight"><strong>Marco y María</strong></a>.
-                        </p>
+                        <p data-content-id="premio2Paragraph1">Seleccionada como embajadora para el calendario solidario de la Fundación Carrera por la Vida / Walk for Life, una organización dedicada a la lucha contra el cáncer de mama.</p>
+                        <p data-content-id="premio2Paragraph2">Ser parte de esta iniciativa ha sido una experiencia increíblemente emotiva y gratificante, permitiéndome usar mi voz para apoyar una causa tan vital y necesaria en nuestra comunidad.</p>
                     </div>
                 </div>
             </div>
 
             <div class="comunicacion-section">
-                <h3>Premio a la Comunicación por "Mujeres Gitanas"</h3>
-                <p>La Asociación Romí Camela Nakerar reconoció la trayectoria de la periodista concediéndole el premio a la comunicación por su reportaje "Mujeres Gitanas".</p>
+                <h3 data-content-id="premio3Title">Finalista Premios IRIS de la Academia de Televisión</h3>
+                <p data-content-id="premio3Paragraph">Mi reportaje "Mujeres Gitanas, la voz del prejuicio", emitido en Radio Televisión Canaria, fue seleccionado como finalista en los prestigiosos Premios IRIS. Un reconocimiento al periodismo social que busca dar voz a colectivos a menudo silenciados.</p>
                 <a href="#" class="video-fallback js-video-modal-trigger" data-video-src="https://www.youtube.com/embed/sAHeK631yqQ">
                     <img src="https://img.youtube.com/vi/sAHeK631yqQ/hqdefault.jpg" alt="Miniatura del reportaje Mujeres Gitanas">
                     <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
@@ -149,17 +144,15 @@
             </div>
             
             <div class="comunicacion-section">
-                <h3>Premio Top Artistas Canarios 2020</h3>
-                <p>Díaz también se hizo con el premio Top Artistas Canarios 2020 a mejor periodista y presentadora, un reconocimiento a su labor en los medios de comunicación de las islas.</p>
+                <h3 data-content-id="premio4Title">Premio Top Artistas Canarios 2020</h3>
+                <p data-content-id="premio4Paragraph">Galardonada como "Mejor Comunicadora" en los Premios Top Artistas Canarios 2020, un evento que celebra el talento del archipiélago en múltiples disciplinas. Este premio fue un reconocimiento al trabajo realizado en televisión durante un año especialmente complejo.</p>
                 
-                <!-- ***** INICIO: VÍDEO CON CARÁTULA DE FIREBASE ***** -->
                 <a href="https://www.youtube.com/watch?v=A7YhOl14_9A" target="_blank" rel="noopener noreferrer" class="video-fallback" style="margin-top: 2rem; margin-bottom: 2rem;">
                     <video autoplay loop muted playsinline>
                         <source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fpremiostop.mp4?alt=media&token=3a89e299-9388-486d-aff6-7b1575a12113" type="video/mp4">
                     </video>
                     <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
                 </a>
-                <!-- ***** FIN: VÍDEO CON CARÁTULA DE FIREBASE ***** -->
 
                 <div style="max-width: 500px; margin: 2rem auto 0;">
                     <img src="images/premiotop.jpg" alt="Yaiza Díaz con el premio Top Artistas Canarios 2020" style="width: 100%; height: auto; border-radius: 8px;">
@@ -169,12 +162,11 @@
         </div>
     </section>
 
-    <!-- Modal para vídeos de YouTube -->
-    <div id="video-modal" class="modal-overlay">
+    <div id="iframe-modal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" aria-label="Cerrar">&times;</button>
             <div class="video-container">
-                 <iframe id="modal-video-iframe" src="" title="Vídeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                 <iframe id="modal-iframe-player" src="" title="Vídeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
         </div>
     </div>
@@ -192,6 +184,15 @@
         </div>
     </footer>
 
-    <script src="script.js" defer></script>
-</body>
+    <script src="config.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, addDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        window.firebaseServices = {
+            db, collection, getDocs, orderBy, query, doc, getDoc, addDoc
+        };
+    </script>
+   </body>
 </html>

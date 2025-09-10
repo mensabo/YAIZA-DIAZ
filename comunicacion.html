@@ -113,11 +113,11 @@
             transition: color 0.3s ease;
         }
         .link-highlight:hover {
-            color: #a78d6b; /* Un dorado ligeramente más oscuro al pasar el ratón */
+            color: #a78d6b;
         }
     </style>
 </head>
-<body class="libro-page">
+<body id="comunicacionPage" class="libro-page">
     
     <header>
         <nav class="container">
@@ -151,46 +151,39 @@
         </div>
     </div>
 
-    <!-- ========= CONTENIDO PRINCIPAL DE LA PÁGINA ========= -->
     <section id="comunicacion-main">
         <div class="container comunicacion-content">
-            <h2>Directora de Comunicación <span style="white-space: nowrap;">(2021-2024)</span></h2>
+            <h2 data-content-id="mainTitle"></h2>
             <div class="header-line"></div>
 
             <div class="comunicacion-section">
-                <h3>Jefa de Prensa y Dircom</h3>
-                <p>
-                    Yaiza Díaz también ha ejercido como jefa de prensa de gabinetes de comunicación, pero además lo ha hecho añadiendo a las labores propias de este departamento todos sus conocimientos audiovisuales y ha sido imagen y representante de las empresas a las que ha llevado su gabinete. Entre las más importantes están <strong>Dreamland Studios</strong>, el mayor proyecto audiovisual y tecnológico de Europa, la editorial <strong>Kinnamon</strong> y la empresa de renovables <strong>EAVE</strong>.
-                </p>
+                <h3 data-content-id="jefaPrensaTitle"></h3>
+                <p data-content-id="jefaPrensaParagraph"></p>
             </div>
             
-            <!-- ***** INICIO SECCIÓN BPW CANARIAS ACTUALIZADA ***** -->
             <div class="comunicacion-section">
-                <h3>Socia Ejecutiva de BPW Canarias</h3>
+                <h3 data-content-id="bpwTitle"></h3>
                 <div class="sinopsis-content" style="gap: 2rem; align-items: flex-start;">
                     <div class="sinopsis-text">
-                        <p>
-                            Yaiza Díaz es socia ejecutiva de <a href="https://www.bpwcanarias.org/" target="_blank" rel="noopener noreferrer" class="link-highlight"><strong>BPW Canarias</strong></a>, una red de mujeres empresarias y profesionales de Canarias, donde forma parte del Comité de Comunicación y de Talento e Inclusión.
-                        </p>
+                        <p data-content-id="bpwParagraph"></p>
                     </div>
                     <div class="sinopsis-img" style="flex-basis: 70%;">
                         <img src="images/comunicadora-bg.jpeg" alt="Yaiza Díaz en un evento de BPW Canarias">
                     </div>
                 </div>
             </div>
-            <!-- ***** FIN SECCIÓN BPW CANARIAS ACTUALIZADA ***** -->
             
             <div class="comunicacion-section">
-                <h3>Dreamland Studios</h3>
-                <p>Declaraciones a medios sobre Dreamland junto al Presidente del Cabildo de Gran Canaria.</p>
+                <h3 data-content-id="dreamlandTitle"></h3>
+                <p data-content-id="dreamlandParagraph"></p>
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/XTjOwHf4-qE" title="Declaraciones sobre Dreamland" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
             </div>
 
             <div class="comunicacion-section">
-                <h3>Vídeos Corporativos</h3>
-                <p>A continuación, se muestra un vídeo corporativo sobre el proyecto de cine y tecnología Dreamland.</p>
+                <h3 data-content-id="videosCorpTitle"></h3>
+                <p data-content-id="videosCorpParagraph"></p>
                 <a href="https://www.youtube.com/watch?v=iJC_1N4o-U4" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline>
                         <source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FDreamland1.mp4?alt=media&token=0c03b605-0bea-49ee-a950-104f08f48da9" type="video/mp4">
@@ -200,42 +193,30 @@
             </div>
 
             <div class="comunicacion-section">
-                <h3>Conferencias (EAVE)</h3>
-                <p>
-                    En su etapa como Directora de comunicación de la empresa de energías renovables EAVE, expuso en Sensitur una conferencia sobre "La sostenibilidad turística y energía renovables como modelo de negocio rentable”, refiriéndose a los cargadores Wallbox y la aplicación de @Electromaps como clave en esta ponencia.
-                </p>
+                <h3 data-content-id="eaveTitle"></h3>
+                <p data-content-id="eaveParagraph"></p>
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/_0Sh7NvcNdw" title="Ponencia: “La sostenibilidad turística y energía renovables como modelo de negocio rentable”" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
             </div>
             
             <div class="comunicacion-section">
-                <h3 class="centered-mobile-title">Vicepresidenta de HABECU</h3>
-                <p>
-                    Yaiza Díaz es la Vicepresidenta de HABECU, la Hermandad de Amigos del Benemérito Cuerpo de la Guardia Civil en Santa Cruz de Tenerife. Un grupo de apoyo a los agentes y familias de los guardias civiles. Una red que existe a nivel nacional.
-                </p>
+                <h3 class="centered-mobile-title" data-content-id="habecuTitle"></h3>
+                <p data-content-id="habecuParagraph"></p>
                 <div id="galeria-interactiva-habecu" class="galeria-interactiva-container">
                     <div class="galeria-principal">
                         <div class="galeria-bg-desenfocado"></div>
                         <img class="imagen-principal" src="" alt="Visor principal de la galería de HABECU">
-                        <div class="descripcion-principal">
-                            <p>Cargando galería...</p>
-                        </div>
+                        <div class="descripcion-principal"><p>Cargando galería...</p></div>
                     </div>
-                    <div class="galeria-lista-miniaturas">
-                        <!-- Las miniaturas se cargarán desde Firebase -->
-                    </div>
+                    <div class="galeria-lista-miniaturas"></div>
                 </div>
             </div>
 
             <div class="comunicacion-section">
-                <h3 class="centered-mobile-title">Inmogold <span class="brand-name">Grupo Inmobiliario</span></h3>
-                <p>
-                    Como Directora de comunicación del grupo inmobiliario Inmogold-Piso Barato, Yaiza Díaz continúa su carrera asesorando en comunicación a empresas. No sólo ejecuta un plan de comunicación y medios, sino que con la particularidad de que ejerce de portavoz e imagen representando a las empresas.
-                </p>
-                <p>
-                    Todos sus conocimientos en televisión los incorpora a los gabinetes de prensa que ha dirigido, creando un potente y efectivo cóctel para dar a conocer las acciones y las marcas de las que lidera la comunicación. A continuación, un ejemplo de su trabajo como imagen de marca:
-                </p>
+                <h3 class="centered-mobile-title" data-content-id="inmogoldTitle"></h3>
+                <p data-content-id="inmogoldParagraph1"></p>
+                <p data-content-id="inmogoldParagraph2"></p>
                 <a href="https://www.instagram.com/reel/C1r4EY8I8XN/?igsh=MTc1a2Uzb2p5Yzh0aw%3D%DD" target="_blank" rel="noopener noreferrer" class="phone-video-container">
                     <div class="phone-mockup">
                         <video class="video-screen" autoplay loop muted playsinline>
@@ -245,7 +226,6 @@
                     <span class="play-button-overlay"><i class="fab fa-instagram"></i></span>
                 </a>
             </div>
-
         </div>
     </section>
     
@@ -275,13 +255,13 @@
     <script src="config.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         window.firebaseServices = {
-            db, collection, getDocs, orderBy, query
+            db, collection, getDocs, orderBy, query, doc, getDoc
         };
     </script>
-    <script src="script.js" defer></script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>

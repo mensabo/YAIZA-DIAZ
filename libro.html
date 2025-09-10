@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body class="libro-page">
+<body id="libroPage" class="libro-page">
     
     <header>
         <nav class="container">
@@ -42,51 +42,45 @@
         </div>
     </div>
 
-    <!-- ========= SECCIÓN PRINCIPAL DEL LIBRO ========= -->
     <section id="libro-hero">
         <div class="container libro-hero-content">
             <div class="libro-hero-img">
                 <img src="images/portada-libro.png" alt="Portada de La Hija del Ciego">
-                <p class="pie-de-foto-portada">
-                    Publicada en 2021<br>
-                    1ª y 2ª Edición: <strong>Kinnamon</strong> | 3ª Edición: <strong>Editorial Taoro</strong>
-                </p>
+                <p class="pie-de-foto-portada" data-content-id="heroCaption"></p>
             </div>
             <div class="libro-hero-text">
-                <h2>La Hija del Ciego</h2>
-                <p class="subtitulo-libro">"Un trabajo que nos hace reír, llorar y pensar… Nos tapa los ojos y nos suelta de la mano. Si hoy tuviera que definir la ceguera, les diría que lean y abracen a La hija del ciego. A partir de entonces todo tendrá sentido”.</p>
-                <p class="autor-cita">- Christian Santana Hernández, Prologuista</p>
+                <h2 data-content-id="heroTitle"></h2>
+                <p class="subtitulo-libro" data-content-id="heroSubtitle"></p>
+                <p class="autor-cita" data-content-id="heroQuoteAuthor"></p>
                 <a href="#" id="open-letter-modal" class="letter-button"><i class="fas fa-envelope-open-text"></i> Leer la carta de la autora</a>
                 <a href="#comprar-libro" class="buy-button">Comprar la novela</a>
             </div>
         </div>
     </section>
 
-    <!-- ========= EL CORAZÓN DE LA HISTORIA (PARTE 1) ========= -->
     <section id="sinopsis" class="section-gray">
         <div class="container">
              <div class="section-header">
-                <h2>La razón de ser de una periodista</h2>
+                <h2 data-content-id="synopsisSectionTitle"></h2>
                 <div class="header-line"></div>
-                <p>A sus treinta y ocho años y con una dilatada carrera profesional de catorce años en Televisión Canaria, Yaiza Díaz (1983) se anima a publicar su primera novela, un trabajo que llevaba gestando toda una vida.</p>
+                <p data-content-id="synopsisSectionIntro"></p>
             </div>
             <div class="sinopsis-content">
                 <div class="sinopsis-img">
                     <img src="images/yaiza-bn.jpg" alt="Foto de Yaiza Díaz">
                 </div>
                 <div class="sinopsis-text">
-                    <p>Díaz resume la esencia de este libro en la historia de una niña, Marina, que nace con la necesidad de comunicar y explicarle a su padre ciego cómo era el mundo para que no perdiera detalle.</p>
-                    <blockquote>"Esta es mi razón de ser como periodista, porque esa niña soy yo, y este libro es una muestra de amor hacia mi padre que ahora quiero compartir con todos ustedes con el fin de acercarles la ceguera de la manera más natural, como la vivimos en mi casa".</blockquote>
-                    <p>La periodista advierte que es un libro solo apto para las personas que leen con el corazón, pues lleva toda una vida almacenando situaciones en su mente porque <strong>“sabía que algún día tenía que contarlo”</strong>.</p>
+                    <p data-content-id="synopsisParagraph1"></p>
+                    <blockquote data-content-id="synopsisQuote"></blockquote>
+                    <p data-content-id="synopsisParagraph2"></p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ========= BOOK TRAILER (NUEVA POSICIÓN) ========= -->
     <section id="book-trailer">
         <div class="container">
-            <h2>Book Trailer</h2>
+            <h2 data-content-id="trailerTitle"></h2>
             <div class="header-line"></div>
             <div class="video-container">
                 <video src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fbooktrailer.mp4?alt=media&token=281311c1-7ee6-46ef-81a7-c45bc9061f9c" controls playsinline></video>
@@ -94,12 +88,11 @@
         </div>
     </section>
 
-    <!-- ========= CITA Y FOTO DEL TÍO (NUEVA SECCIÓN) ========= -->
     <section id="cita-tio" class="section-gray">
         <div class="container">
             <div class="sinopsis-content-reversed">
                  <div class="sinopsis-text">
-                    <p class="pie-de-foto" style="text-align: left; font-size: 1.1rem; font-style: italic;">"Si cierras los ojos y dejas que tu corazón lea, verás mucho más de lo que ves. Verás la vida de un ciego como nunca nadie te la contó. Te lo dice su hermano, que lo quiere con el alma”.<br><strong>- Jaime Díaz, tío de la autora.</strong></p>
+                    <p class="pie-de-foto" style="text-align: left; font-size: 1.1rem; font-style: italic;" data-content-id="uncleQuote"></p>
                 </div>
                 <div class="sinopsis-img">
                     <img src="images/foto-tio.jpg" alt="Tio Yaiza Díaz con su familia">
@@ -108,14 +101,13 @@
         </div>
     </section>
 
-    <!-- ========= UN VIAJE A LA LAGUNA ========= -->
     <section id="viaje-laguna">
         <div class="container">
             <div class="sinopsis-content">
                 <div class="sinopsis-text">
-                    <h3>Embajadora de la ciudad de La Laguna</h3>
-                    <p>La novela convierte a su autora en embajadora de su ciudad natal, <strong>La Laguna</strong>, lugar donde se crió vendiendo cupones con su padre cerca de La Catedral. Cualquiera que lea esta historia de complicidad paseará con ellos por las calles laguneras, reconocerá sus bares, pasará frío en los partidos de fútbol, se emocionará y reirá.</p>
-                     <p>La obra deja para la posteridad la historia de sus abuelos, quienes lucharon para sacar adelante a seis hijos, tres de ellos ciegos. Díaz nos traslada a los años sesenta, cuando sus abuelos tenían un despacho de pan en la <strong>Avenida de la Trinidad</strong> y su padre y hermanos jugaban en la <strong>calle del Juego</strong> con otros niños que veían.</p>
+                    <h3 data-content-id="lagunaTitle"></h3>
+                    <p data-content-id="lagunaParagraph1"></p>
+                     <p data-content-id="lagunaParagraph2"></p>
                 </div>
                 <div class="sinopsis-img">
                     <img src="images/casa-abuelos.jpg" alt="Antigua casa en la Avenida de la Trinidad">
@@ -125,13 +117,12 @@
         </div>
     </section>
 
-    <!-- ========= EL ARTE DE LA NOVELA ========= -->
     <section id="arte-libro" class="section-gray">
         <div class="container">
             <div class="section-header">
-                <h2>Un libro lleno de arte</h2>
+                <h2 data-content-id="artTitle"></h2>
                 <div class="header-line"></div>
-                <p>Una obra cuidada al detalle, desde el contenido hasta el continente.</p>
+                <p data-content-id="artIntro"></p>
             </div>
             <div class="arte-grid">
                 <div class="arte-item">
@@ -139,18 +130,17 @@
                     <p class="pie-de-foto">Rafael de Lorenzo y Yaiza Díaz con el lienzo de la portada.</p>
                 </div>
                 <div class="arte-text">
-                    <blockquote>"Cuando busques la verdad y no lo veas nada claro, asume que la oscuridad es la luz, vista desde el otro lado".<cite>- Rafael de Lorenzo, Secretario General del Consejo General de la ONCE, quien apadrina la obra.</cite></blockquote>
-                    <p>La novela destaca por su llamativa portada, una descriptiva imagen de los paseos compartidos entre Yaiza y su padre. Ha sido retratada por el artista, también lagunero, <strong><a href="https://albertoleon.es/" target="_blank" rel="noopener noreferrer">Alberto León</a></strong> <i class="fas fa-video video-icon-trigger" id="alberto-leon-video-trigger" aria-label="Ver vídeos"></i>, quien expone en la Graffik Gallery de Londres y cuenta con galería propia en Barcelona.</p>
-                    <p>La foto de la contraportada es obra de la paisana y fotógrafa internacional <strong><a href="https://yapciramos.com/" target="_blank" rel="noopener noreferrer">Yapci Ramos</a></strong>. Con todo esto, Díaz nos presenta un libro con papel reciclado, letra apta para gente con dificultades visuales y, lo más importante, de color <span class="text-magenta"><strong>magenta, el color de una auténtica princesa guerrera</strong></span>.</p>
+                    <blockquote data-content-id="artQuote"></blockquote>
+                    <p data-content-id="artParagraph1"></p>
+                    <p data-content-id="artParagraph2"></p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ========= GALERÍA DE FOTOS DINÁMICA DESDE FIREBASE ========= -->
     <section id="galeria-libro" class="section-gray">
         <div class="container">
-            <h2>Momentos</h2>
+            <h2 data-content-id="galleryTitle"></h2>
             <div class="header-line"></div>
             <div id="galeria-interactiva" class="galeria-interactiva-container">
                 <div class="galeria-principal">
@@ -160,104 +150,64 @@
                         <p>Cargando galería...</p>
                     </div>
                 </div>
-                <div class="galeria-lista-miniaturas">
-                    <!-- Las miniaturas de Firebase se cargarán aquí -->
-                </div>
+                <div class="galeria-lista-miniaturas"></div>
             </div>
         </div>
     </section>
 
     <section id="prensa-libro">
         <div class="container">
-            <h2>El libro en los medios</h2>
+            <h2 data-content-id="mediaTitle"></h2>
             <div class="header-line"></div>
             <div class="media-grid">
                 <a href="https://www.youtube.com/watch?v=LuvJTP897RA" target="_blank" rel="noopener noreferrer" class="media-card">
-                    <div class="media-card-logo-container">
-                        <img src="images/logo-rtvc.png" alt="Logo de Radio Televisión Canaria">
-                    </div>
-                    <div class="media-card-text">
-                        <h4>Buenos Días Canarias</h4>
-                        <p>RTVC</p>
-                    </div>
+                    <div class="media-card-logo-container"><img src="images/logo-rtvc.png" alt="Logo de Radio Televisión Canaria"></div>
+                    <div class="media-card-text"><h4>Buenos Días Canarias</h4><p>RTVC</p></div>
                 </a>
                 <a href="https://www.youtube.com/watch?v=9bI1Trj8IJg" target="_blank" rel="noopener noreferrer" class="media-card">
-                    <div class="media-card-logo-container">
-                        <img src="images/logo-rtvc.png" alt="Logo de Radio Televisión Canaria">
-                    </div>
-                    <div class="media-card-text">
-                        <h4>Informativos</h4>
-                        <p>RTVC</p>
-                    </div>
+                    <div class="media-card-logo-container"><img src="images/logo-rtvc.png" alt="Logo de Radio Televisión Canaria"></div>
+                    <div class="media-card-text"><h4>Informativos</h4><p>RTVC</p></div>
                 </a>
                 <a href="https://www.youtube.com/watch?v=VQBcAdBW7mc" target="_blank" rel="noopener noreferrer" class="media-card">
-                    <div class="media-card-logo-container">
-                        <img src="images/logo-diarioavisos.png" alt="Logo de Diario de Avisos">
-                    </div>
-                    <div class="media-card-text">
-                        <h4>Diario de Avisos</h4>
-                        <p>Entrevista</p>
-                    </div>
+                    <div class="media-card-logo-container"><img src="images/logo-diarioavisos.png" alt="Logo de Diario de Avisos"></div>
+                    <div class="media-card-text"><h4>Diario de Avisos</h4><p>Entrevista</p></div>
                 </a>
                 <a href= "https://www.youtube.com/watch?v=PJZLBC8O-6o" target="_blank" rel="noopener noreferrer" class="media-card">
-                    <div class="media-card-logo-container">
-                        <img src="images/logo-mirametv.png" alt="Logo de Mírame TV">
-                    </div>
-                    <div class="media-card-text">
-                        <h4>De Cerca</h4>
-                        <p>Mírame TV</p>
-                    </div>
+                    <div class="media-card-logo-container"><img src="images/logo-mirametv.png" alt="Logo de Mírame TV"></div>
+                    <div class="media-card-text"><h4>De Cerca</h4><p>Mírame TV</p></div>
                 </a>
                 <a href="https://www.youtube.com/watch?v=dGaHpgk3R8k" target="_blank" rel="noopener noreferrer" class="media-card">
-                    <div class="media-card-logo-container">
-                        <img src="images/logo-glaucoma.png" alt="Logo de Asociación de Glaucoma">
-                    </div>
-                    <div class="media-card-text">
-                        <h4>Charla sobre Glaucoma</h4>
-                        <p>Asociación de Afectados</p>
-                    </div>
+                    <div class="media-card-logo-container"><img src="images/logo-glaucoma.png" alt="Logo de Asociación de Glaucoma"></div>
+                    <div class="media-card-text"><h4>Charla sobre Glaucoma</h4><p>Asociación de Afectados</p></div>
                 </a>
                 <a href="https://www.youtube.com/watch?v=LSkMKMnVreQ&t=24s" target="_blank" rel="noopener noreferrer" class="media-card">
-                    <div class="media-card-logo-container">
-                        <img src="images/logo-blogoferoz.png" alt="Logo de El Blogo Feroz">
-                    </div>
-                    <div class="media-card-text">
-                        <h4>El Blogo Feroz</h4>
-                        <p>Entrevista</p>
-                    </div>
+                    <div class="media-card-logo-container"><img src="images/logo-blogoferoz.png" alt="Logo de El Blogo Feroz"></div>
+                    <div class="media-card-text"><h4>El Blogo Feroz</h4><p>Entrevista</p></div>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- ========= COMPRAR EL LIBRO (NUEVO DISEÑO) ========= -->
     <section id="comprar-libro" class="section-gray">
         <div class="container">
-            <h2>Comprar la novela</h2>
+            <h2 data-content-id="buyTitle"></h2>
             <div class="header-line"></div>
-            
             <div class="compra-container">
                 <div class="compra-portada">
                     <img src="images/portada-libro.png" alt="Portada de la novela La Hija del Ciego">
                 </div>
                 <div class="compra-info">
-                    <h3>Adquiere tu ejemplar</h3>
-                    <p>Elige tu formato preferido para adentrarte en esta historia única y conmovedora.</p>
-                    
+                    <h3 data-content-id="buySubtitle"></h3>
+                    <p data-content-id="buyParagraph"></p>
                     <div class="formato-compra">
-                        <h4>Libro Físico</h4>
-                        <p class="ediciones-info">
-                            (1ª y 2ª Edición - Editorial Kinnamon<br>
-                            3ª Edición - Editorial Taoro)
-                        </p>
+                        <h4 data-content-id="buyPhysicalTitle"></h4>
+                        <p class="ediciones-info" data-content-id="buyPhysicalInfo"></p>
                         <a href="https://www.google.com/search?q=comprar+libro+la+hija+del+ciego+yaiza+diaz" target="_blank" rel="noopener noreferrer" class="btn-compra">Buscar en librerías</a>
                     </div>
-    
                     <hr class="compra-divisor">
-    
                     <div class="formato-compra">
-                        <h4>Audiolibro (Exclusivo ONCE)</h4>
-                        <p>La novela ha sido locutada por la propia autora para el servicio de audiolibros para afiliados de la ONCE, haciendo la historia accesible para todos.</p>
+                        <h4 data-content-id="buyAudiobookTitle"></h4>
+                        <p data-content-id="buyAudiobookInfo"></p>
                         <img src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/gallery%2F1755307568181_Captura%202023-07-04%20a%20las%2012.08.59.jpg?alt=media&token=d444af93-d5e3-4d22-a00e-e2ba26151707" alt="Yaiza Díaz durante la grabación del audiolibro para la ONCE" class="locutora-img">
                         <a href="https://club.once.es/afiliados/login?came_from=/afiliados/servicios#content" class="btn-compra btn-once" target="_blank" rel="noopener noreferrer">
                             <img src="images/logo-once.png" alt="Logo ONCE">
@@ -269,7 +219,6 @@
         </div>
     </section>
     
-    <!-- ***** INICIO DE LA MODIFICACIÓN: CÓDIGO DEL LIGHTBOX AÑADIDO ***** -->
     <div id="lightbox-modal" class="lightbox">
         <span class="lightbox-close">&times;</span>
         <span class="lightbox-prev">&#10094;</span>
@@ -279,7 +228,6 @@
             <div id="lightbox-caption"></div>
         </div>
     </div>
-    <!-- ***** FIN DE LA MODIFICACIÓN ***** -->
     
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
     
@@ -295,18 +243,14 @@
         </div>
     </div>
 
-    <!-- === INICIO: ESTRUCTURA DEL MODAL DE LA CARTA (V4: EXPERIENCIA PREMIUM) === -->
     <div id="letter-modal" class="modal-overlay">
-        <!-- **** CAMBIO ESTRUCTURAL CLAVE: Botón de cierre movido aquí **** -->
         <button id="letter-modal-close-btn" class="modal-close" aria-label="Cerrar">&times;</button>
         <div class="modal-content letter-content">
             <div class="envelope-wrapper">
-                <!-- El Sobre (se quedará en el fondo) -->
                 <div class="envelope">
                     <div class="envelope-body"></div>
                     <div class="envelope-flap"></div>
                 </div>
-                <!-- La Carta (emergerá y vendrá al frente) -->
                 <div class="letter-body">
                     <p>Me crié regalando suerte, compartiendo cada día una sonrisa. Con la intención más consciente de mostrar agradecimiento, mi disciplina llegaba a tornarse frágil cuando mi cuerpo ya llevaba varias horas de pie junto a mi padre en su oficina (una mesa con mamparas de plástico y una silla plegable de madera...) El cariño de los clientes que le compraban el cupón nos hacía felices, no tanto lo prejuicios.</p>
                     <p>Mi libertad era un desafío, mi padre ciego mi cordón umbilical, mi misión describirle como era el mundo para que no perdiera detalle. La necesidad de comunicar con la que nací me llevó a escoger esta profesión, periodismo.</p>
@@ -320,7 +264,6 @@
             </div>
         </div>
     </div>
-    <!-- === FIN: ESTRUCTURA DEL MODAL DE LA CARTA === -->
 
     <footer>
         <div class="container">
@@ -333,26 +276,16 @@
         </div>
     </footer>
 
-    <!-- 1. Carga la configuración desde el archivo externo -->
     <script src="config.js"></script>
-
-    <!-- 2. SDK de Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
-
-        // La variable 'firebaseConfig' ahora viene del archivo config.js
-      
+        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
-        // Hacemos los servicios necesarios accesibles para nuestro script.js principal
         window.firebaseServices = {
-            db, collection, getDocs, orderBy, query
+            db, collection, getDocs, orderBy, query, doc, getDoc
         };
     </script>
-    
-    <!-- Nuestro script principal -->
-    <script src="script.js" defer></script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>
