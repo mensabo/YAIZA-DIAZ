@@ -1497,7 +1497,6 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    pointer-events: none;
 }
 
 #escritora-tab.active .click-annotation {
@@ -2090,32 +2089,34 @@ footer {
         display: none;
     }
 
+    /* ESTILOS CORREGIDOS PARA LA ANOTACIÓN MÓVIL */
     .click-annotation-mobile {
         display: flex;
         position: absolute;
-        top: -20px;
-        right: -70px;
-        transform: scale(0.8);
+        top: 50%;
+        right: calc(100% + 5px); /* Se posiciona a la izquierda de la imagen del libro */
+        transform: translateY(-50%);
+        width: 90px;
         opacity: 0;
         transition: opacity 0.4s ease;
-        pointer-events: none;
         flex-direction: column;
         align-items: center;
     }
+
     .click-annotation-mobile.visible {
         opacity: 1;
     }
+    
     .click-annotation-mobile .annotation-text {
-        font-size: 1.5rem;
-        margin-bottom: 10px;
+        font-size: 1.4rem;
+        margin-bottom: 0;
     }
+    
     .click-annotation-mobile .annotation-arrow {
-        position: absolute;
-        top: 85px;
-        left: -30px;
-        width: 40px;
-        height: 40px;
-        transform: rotate(90deg);
+        width: 60px;
+        height: 60px;
+        margin-top: -30px; /* Ajuste para solapar */
+        margin-left: 20px; /* Ajuste para alinear */
     }
     
     .card-content {

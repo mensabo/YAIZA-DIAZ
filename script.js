@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Asegurarse de que los servicios de Firebase estén disponibles
     if (!window.firebaseServices) {
         console.error("Firebase no está inicializado. Revisa la etiqueta <script> en tu HTML.");
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- LÓGICA INTELIGENTE DEL MODAL DEL CV ---
+    // --- LÓGICA DEL MODAL DEL CV (PARA ESCRITORIO Y MÓVIL) ---
     const openCvModalBtn = document.getElementById('open-cv-modal');
     const cvModal = document.getElementById('cv-modal');
     if (openCvModalBtn && cvModal) {
@@ -48,21 +48,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const pdfPath = "CV-Yaiza-Diaz.pdf"; 
 
         openCvModalBtn.addEventListener('click', (e) => {
-            // Si la pantalla es ancha (escritorio), abre el modal.
-            if (window.innerWidth > 768) {
-                e.preventDefault(); // Evita que el enlace se abra en una nueva pestaña
-                
-                cvModal.classList.add('visible');
-                setTimeout(() => {
-                    if (cvIframe) cvIframe.src = pdfPath;
-                }, 50);
-            }
-            // Si la pantalla es estrecha (móvil), no hace nada y deja que el enlace se abra en una nueva pestaña (gracias a target="_blank").
+            // Prevenimos la acción por defecto del enlace SIEMPRE
+            e.preventDefault(); 
+            
+            // Abrimos el modal sin importar el tamaño de la pantalla
+            cvModal.classList.add('visible');
+            setTimeout(() => {
+                if (cvIframe) cvIframe.src = pdfPath;
+            }, 50);
         });
 
         const closeCvModal = () => {
             cvModal.classList.remove('visible');
-            if (cvIframe) cvIframe.src = '';
+            if (cvIframe) {
+                cvIframe.src = '';
+            }
         };
 
         cvModalCloseBtn.addEventListener('click', closeCvModal);
@@ -73,13 +73,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- CARGA DE TEXTOS DINÁMICOS ---
+    // --- FUNCIÓN DE CARGA DE TEXTOS DINÁMICOS ---
     const pageId = document.body.id;
-    if (pageId) {
-        loadDynamicText(pageId);
-    }
-    
     async function loadDynamicText(pageName) {
+        if (!pageName) return;
         try {
             const docRef = doc(db, 'pages', pageName);
             const docSnap = await getDoc(docRef);
@@ -99,7 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- LÓGICA ESPECÍFICA POR PÁGINA ---
+    // =======================================================
+    // --- EJECUCIÓN ORDENADA DE SCRIPTS ---
+    // =======================================================
+    await loadDynamicText(pageId);
+
     if (pageId === 'homepage') {
         initializeHeroSlider();
         loadAndRenderEvents();
@@ -125,8 +126,12 @@ document.addEventListener('DOMContentLoaded', () => {
         initializeInteractiveGallery('galeria-interactiva-habecu', 'habecu_gallery');
     }
 
-    // --- HERO SLIDER (PÁGINA DE INICIO) ---
+    // =======================================================
+    // --- DEFINICIONES DE FUNCIONES ---
+    // =======================================================
+
     function initializeHeroSlider() {
+        const heroDynamicSection = document.querySelector('.hero-dynamic');
         const tabs = document.querySelectorAll('.hero-tab');
         const bgContainer = document.querySelector('.hero-background-container');
         const mobileTitle = document.getElementById('mobile-tab-title');
@@ -137,6 +142,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let currentIndex = 0;
         let intervalId = null;
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        // Añadimos un escuchador de clics a cada pestaña de texto del escritorio
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('click', (e) => {
+                if (e.target.closest('a')) {
+                    return;
+                }
+                if (!tab.classList.contains('active')) {
+                    switchTab(index);
+                    resetInterval();
+                }
+            });
+        });
 
         if (dotsContainer) {
             tabs.forEach((tab, index) => {
@@ -170,6 +190,11 @@ document.addEventListener('DOMContentLoaded', () => {
                  mobileBookLink.classList.toggle('visible', activeTab.id === 'escritora-tab');
             }
             
+            const mobileClickAnnotation = document.querySelector('.click-annotation-mobile');
+            if (mobileClickAnnotation) {
+                mobileClickAnnotation.classList.toggle('visible', activeTab.id === 'escritora-tab');
+            }
+            
             if (dots.length > 0) {
                 dots.forEach(d => d.classList.remove('active'));
                 dots[index].classList.add('active');
@@ -181,20 +206,52 @@ document.addEventListener('DOMContentLoaded', () => {
             switchTab(nextIndex);
         }
 
+        function prevTab() {
+            const prevIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+            switchTab(prevIndex);
+        }
+
         function resetInterval() {
             clearInterval(intervalId);
             intervalId = setInterval(nextTab, 5000);
         }
+
+        // =======================================================
+        // --- INICIO: NUEVA LÓGICA PARA SWIPE MÓVIL ---
+        // =======================================================
+        function handleSwipe() {
+            const swipeThreshold = 50; // Distancia mínima en píxeles para considerarse un swipe
+            // Swipe hacia la izquierda (pasar a la siguiente)
+            if (touchStartX - touchEndX > swipeThreshold) {
+                nextTab();
+                resetInterval();
+            }
+            // Swipe hacia la derecha (pasar a la anterior)
+            else if (touchEndX - touchStartX > swipeThreshold) {
+                prevTab();
+                resetInterval();
+            }
+        }
+
+        heroDynamicSection.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        heroDynamicSection.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        // =======================================================
+        // --- FIN: NUEVA LÓGICA PARA SWIPE MÓVIL ---
+        // =======================================================
         
         switchTab(0);
         resetInterval();
     }
 
-    // --- CARGA DE EVENTOS (PÁGINA DE INICIO) ---
     async function loadAndRenderEvents() {
         const container = document.getElementById('dynamic-event-tags');
         if (!container) return;
-        
         try {
             const q = query(collection(db, 'events'), orderBy('order'));
             const snapshot = await getDocs(q);
@@ -223,18 +280,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const mainVideoContainer = document.getElementById('event-gallery-main-video-container');
         const mainVideo = document.getElementById('event-gallery-main-video');
         const closeButton = document.getElementById('eventos-modal-close');
-
         if (!modalOverlay || !modalTitle || !modalText) return;
-
         modalTitle.textContent = eventData.title || '';
         modalText.textContent = eventData.text || '';
         if (galleryThumbnails) galleryThumbnails.innerHTML = '';
-
         const galleryItems = eventData.galleryItems || [];
-
         if (galleryItems.length > 0) {
             document.getElementById('event-gallery-interactive').style.display = 'flex';
-            
             const setActiveMedia = (item) => {
                 if (item.type === 'video') {
                     mainImage.style.display = 'none';
@@ -247,7 +299,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     mainImage.src = item.src;
                 }
             };
-
             galleryItems.forEach(item => {
                 const thumb = document.createElement('div');
                 thumb.className = 'miniatura-item';
@@ -255,21 +306,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 thumb.addEventListener('click', () => setActiveMedia(item));
                 galleryThumbnails.appendChild(thumb);
             });
-            
             setActiveMedia(galleryItems[0]);
-
         } else {
             document.getElementById('event-gallery-interactive').style.display = 'none';
         }
-
         modalOverlay.classList.add('visible');
-
         const closeModal = () => {
             modalOverlay.classList.remove('visible');
             mainVideo.pause();
             mainVideo.src = '';
         };
-
         closeButton.onclick = closeModal;
         modalOverlay.onclick = (e) => {
             if (e.target === modalOverlay) {
@@ -278,7 +324,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
     
-    // --- CARGA DE ENTREVISTAS (PÁGINA DE ENTREVISTAS) ---
     async function loadAndRenderInterviews() {
         const grid = document.getElementById('dynamic-interviews-grid');
         if (!grid) return;
@@ -292,7 +337,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 grid.innerHTML = '<p>No hay entrevistas disponibles.</p>';
                 return;
             }
-
             interviews.forEach(interview => {
                 const isVideo = interview.url.includes('youtube.com') || interview.url.includes('youtu.be');
                 const card = document.createElement('a');
@@ -317,7 +361,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- GALERÍA INTERACTIVA (REUTILIZABLE) ---
     async function initializeInteractiveGallery(containerId, collectionName) {
         const container = document.getElementById(containerId);
         if (!container) return;
@@ -368,7 +411,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // --- LÓGICA PARA ABRIR MODALES DE VIDEO/IFRAME ---
     const iframeModal = document.getElementById('iframe-modal');
     if (iframeModal) {
         const iframePlayer = document.getElementById('modal-iframe-player');
