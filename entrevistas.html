@@ -19,7 +19,9 @@
     
     <header>
         <nav class="container">
-            <div class="nav-title"> <h1>YAIZA DÍAZ</h1> </div>
+            <div class="nav-title">
+                <h1>YAIZA DÍAZ</h1>
+            </div>
             <button id="mobile-menu-toggle" aria-label="Abrir menú de navegación">☰</button>
             <ul id="nav-links">
                 <li><a href="index.html">Inicio</a></li>
@@ -41,48 +43,21 @@
 
     <div class="return-bar">
         <div class="container">
-            <a href="index.html" class="breadcrumb-return-link"> <i class="fas fa-arrow-left"></i> Volver a Inicio </a>
+            <a href="index.html" class="breadcrumb-return-link">
+                <i class="fas fa-arrow-left"></i> Volver a Inicio
+            </a>
         </div>
     </div>
 
     <section id="entrevistas-main">
         <div class="container">
-            <h2 data-content-id="mainTitle">Entrevistas y Apariciones en Medios</h2>
+            <h2 data-content-id="mainTitle"></h2>
             <div class="header-line"></div>
-            <p class="section-intro" data-content-id="introParagraph">Un recorrido por diversas entrevistas en prensa y televisión donde comparto mi trayectoria, la historia detrás de "La Hija del Ciego" y mi perspectiva sobre la comunicación y la vida.</p>
+            <p class="section-intro" data-content-id="introParagraph"></p>
             
-            <div class="media-grid" style="padding-top: 2rem;">
-
-                <a href="https://diariodeavisos.elespanol.com/2025/01/yaiza-diaz-debemos-naturalizarlo-una-de-cada-ocho-padecemos-cancer-de-mama/" target="_blank" rel="noopener noreferrer" class="media-card">
-                    <div class="image-container"> <img src="images/diario2.png" alt="Yaiza Díaz en su entrevista para Diario de Avisos" style="width: 100%; height: 200px; object-fit: cover; object-position: center;"> </div>
-                    <div class="media-card-text"> <h4>El cáncer de mama en primera persona</h4> <p>Diario de Avisos</p> </div>
-                </a>
-
-                <a href="https://www.youtube.com/watch?v=PJZLBC8O-6o" target="_blank" rel="noopener noreferrer" class="media-card">
-                    <div class="image-container"> <img src="images/mirame.png" alt="Yaiza Díaz en Mírame TV" style="width: 100%; height: 200px; object-fit: cover; object-position: center;"> <div class="video-overlay-icon"><i class="fas fa-play"></i></div> </div>
-                    <div class="media-card-text"> <h4>Presentación del libro 'La Hija del Ciego'</h4> <p>Mírame TV</p> </div>
-                </a>
-                
-                <a href="https://www.youtube.com/watch?v=MIk6SvN3i2c&t=2s" target="_blank" rel="noopener noreferrer" class="media-card">
-                    <div class="image-container"> <img src="images/noveleros.png" alt="Yaiza Díaz en Noveleros de RTVC" style="width: 100%; height: 200px; object-fit: cover; object-position: center;"> <div class="video-overlay-icon"><i class="fas fa-play"></i></div> </div>
-                    <div class="media-card-text"> <h4>Entrevista en 'Noveleros'</h4> <p>Radio Televisión Canaria (RTVC)</p> </div>
-                </a>
-                
-                <a href="https://www.youtube.com/watch?v=LSkMKMnVreQ" target="_blank" rel="noopener noreferrer" class="media-card">
-                    <div class="image-container"> <img src="images/blogo.png" alt="Yaiza Díaz entrevistada por El Blogo Feroz" style="width: 100%; height: 200px; object-fit: cover; object-position: center;"> <div class="video-overlay-icon"><i class="fas fa-play"></i></div> </div>
-                    <div class="media-card-text"> <h4>"Letras de Mujer" con Yaiza Díaz</h4> <p>El Blogo Feroz</p> </div>
-                </a>
-
-                <a href="https://diariodeavisos.elespanol.com/2021/11/yaiza-diaz-periodista-siempre-me-han-querido-anillar-como-si-fuera-una-paloma-pero-vole/" target="_blank" rel="noopener noreferrer" class="media-card">
-                    <div class="image-container"> <img src="images/diario.jpg" alt="Yaiza Díaz en su entrevista para Diario de Avisos" style="width: 100%; height: 200px; object-fit: cover; object-position: center;"> </div>
-                    <div class="media-card-text"> <h4>"Siempre me han querido anillar, pero volé"</h4> <p>Diario de Avisos</p> </div>
-                </a>
-
-                <a href="https://www.eldia.es/salud/2025/02/04/superwoman-queria-tratasen-enferma-113977959.html" target="_blank" rel="noopener noreferrer" class="media-card">
-                    <div class="image-container"> <img src="images/eldia.png" alt="Yaiza Díaz en su entrevista para El Día" style="width: 100%; height: 200px; object-fit: cover; object-position: center;"> </div>
-                    <div class="media-card-text"> <h4>"No quería que me tratasen como a una enferma"</h4> <p>El Día</p> </div>
-                </a>
-
+            <div id="dynamic-interviews-grid" class="media-grid" style="padding-top: 2rem;">
+                <!-- Las entrevistas se cargarán aquí dinámicamente -->
+                <p>Cargando entrevistas...</p>
             </div>
         </div>
     </section>
@@ -99,17 +74,17 @@
             <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
         </div>
     </footer>
-
+    
     <script src="config.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        // ¡¡AQUÍ ESTÁ LA CORRECCIÓN!! -> Se añadió , addDoc
-        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, addDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        window.firebaseServices = { db, collection, getDocs, orderBy, query, doc, getDoc, addDoc };
+        window.firebaseServices = {
+            db, collection, getDocs, orderBy, query, doc, getDoc
+        };
     </script>
-    <!-- Los scripts de abajo son para la migración -->
-     
+    <script src="script.js" type="module"></script>
 </body>
 </html>

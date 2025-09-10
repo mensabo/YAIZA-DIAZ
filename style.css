@@ -3121,6 +3121,121 @@ footer {
         transform: translateY(-1px);
     }
 }
-
-
+/* ======================================= */
+/* ===   BOTÓN DE DESCARGA DE CV (NUEVO) === */
+/* ======================================= */
+.btn-cv {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem; /* Espacio entre el icono y el texto */
+    margin-top: 2rem; /* Espacio por encima del botón */
+    padding: 0.8rem 1.8rem;
     
+    background-color: transparent;
+    border: 2px solid var(--color-acento);
+    border-radius: 50px;
+    
+    color: var(--color-acento);
+    font-family: var(--fuente-texto);
+    font-weight: 500;
+    font-size: 1rem;
+    text-decoration: none;
+    
+    transition: all 0.3s ease;
+}
+
+.btn-cv:hover {
+    background-color: var(--color-acento);
+    color: var(--color-primario); /* El color de fondo oscuro de la sección */
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.btn-cv i {
+    font-size: 1.1rem;
+}
+
+/* Adaptación para móviles */
+@media (max-width: 768px) {
+    .btn-cv {
+        width: 100%;
+        padding: 1rem;
+    }
+}
+/* ================================================= */
+/* ===   ESTILOS CORREGIDOS MODAL DEL CV (NUEVO) === */
+/* ================================================= */
+.cv-modal-content {
+    position: relative; 
+    z-index: 2001;      
+    width: 90%;
+    height: 90vh; 
+    max-width: 1000px; 
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; 
+    background-color: #fff; 
+    border-radius: 8px; 
+}
+
+#cv-iframe {
+    flex-grow: 1; 
+    border: none;
+    width: 100%;
+    height: 100%;
+}
+
+/* ¡AQUÍ ESTÁ LA CORRECCIÓN DE LA 'X'! */
+.cv-modal-content .modal-close {
+    position: absolute;
+    top: 10px;    /* <-- CAMBIADO */
+    right: 10px;   /* <-- CAMBIADO */
+    width: 35px;
+    height: 35px;
+    background: #f0f0f0;
+    color: #888;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: none;
+    transition: all 0.2s ease;
+}
+
+.cv-modal-content .modal-close:hover {
+    background-color: var(--color-primario);
+    color: white;
+    transform: rotate(90deg);
+}
+/* =============================================== */
+/* ===   ALINEACIÓN BOTONES CONTACTO (NUEVO)   === */
+/* =============================================== */
+.contact-buttons-container {
+    display: flex;
+    justify-content: center; /* Centra los botones horizontalmente */
+    align-items: center;     /* Alínea los botones verticalmente */
+    flex-wrap: wrap;         /* Permite que se apilen en pantallas pequeñas */
+    gap: 1.5rem;             /* Espacio entre los botones */
+    margin-top: 2.5rem;      /* Espacio sobre el grupo de botones */
+}
+
+/* Quitamos el margen superior individual para que lo controle el contenedor */
+.btn-cv {
+    margin-top: 0; 
+}
+
+/* Ajuste para móviles para que cada botón ocupe su espacio y se apilen */
+@media (max-width: 768px) {
+    .contact-buttons-container .email-link,
+    .contact-buttons-container .btn-cv {
+        width: 100%; 
+        box-sizing: border-box;
+    }
+}
