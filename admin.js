@@ -243,41 +243,67 @@ document.addEventListener('DOMContentLoaded', () => {
     // (Incluyo el código completo abajo)
 
     // ===========================================
-    // --- SECCIÓN DE GESTIÓN DE TEXTOS ---
+    // --- SECCIÓN DE GESTIÓN DE TEXTOS (CORREGIDA) ---
     // ===========================================
     const pageSelector = document.getElementById('page-selector');
     const textFieldsContainer = document.getElementById('text-fields-container');
     const saveTextsButton = document.getElementById('save-texts-button');
 
+    const pageContentMap = {
+        homepage: ['heroTitle1', 'heroSubtitle1', 'heroTitle2', 'heroSubtitle2', 'heroTitle3', 'heroSubtitle3', 'aboutMeTitle', 'aboutMeParagraph1', 'aboutMeQuote', 'aboutMeParagraph2', 'skillsTitle', 'trajectoryTitle', 'card1Category', 'card1Title', 'card1Subtitle', 'card1Paragraph', 'card2Category', 'card2Title', 'card2Subtitle', 'card2Paragraph', 'card3Category', 'card3Title', 'card3Subtitle', 'card3Paragraph', 'eventsTitle', 'eventsParagraph', 'contactTitle', 'contactParagraph'],
+        televisionPage: ['mainTitle', 'introParagraph1', 'introParagraph2', 'video1Title', 'video2Title', 'video3Title', 'video3Paragraph', 'video4Title', 'video4Paragraph', 'video5Title', 'video5Paragraph', 'video6Title', 'video6Paragraph', 'video7Title', 'video7Paragraph', 'video8Title', 'video8Paragraph', 'video9Title', 'video9Paragraph', 'galleryTitle'],
+        radioPage: ['mainTitle', 'introParagraph', 'programTitle', 'programParagraph1', 'programParagraph2', 'galleryTitle'],
+        publicidadPage: ['mainTitle', 'introParagraph1', 'introParagraph2', 'campaign1Title', 'campaign2Title', 'campaign3Title', 'campaign4Title', 'campaign5Title'],
+        comunicacionPage: ['mainTitle', 'jefaPrensaTitle', 'jefaPrensaParagraph', 'bpwTitle', 'bpwParagraph', 'dreamlandTitle', 'dreamlandParagraph', 'videosCorpTitle', 'videosCorpParagraph', 'eaveTitle', 'eaveParagraph', 'habecuTitle', 'habecuParagraph', 'inmogoldTitle', 'inmogoldParagraph1', 'inmogoldParagraph2'],
+        investigacionPage: ['mainTitle', 'trilogy1Title', 'trilogy1Paragraph', 'trilogy1Video1Title', 'trilogy1Video2Title', 'trilogy1Video3Title', 'nocheReporterosTitle', 'reportaje1Title', 'reportaje1Paragraph', 'reportaje2Title', 'reportaje2Paragraph', 'trilogy2Title', 'trilogy2Paragraph', 'trilogy2Video1Title', 'trilogy2Video2Title', 'trilogy2Video3Title', 'otrosReportajesTitle', 'reportaje3Title', 'reportaje3Paragraph', 'reportaje4Title', 'reportaje4Paragraph', 'reportaje5Title', 'reportaje5Paragraph'],
+        proyectosPage: ['mainTitle', 'projectTitle', 'projectParagraph1', 'projectParagraph2', 'projectQuote', 'socialsText'],
+        premiosPage: ['mainTitle', 'premio1Title', 'premio1Paragraph1', 'premio1Paragraph2', 'premio1Paragraph3', 'premio1InstagramLink', 'premio2Title', 'premio2Paragraph1', 'premio2Paragraph2', 'premio3Title', 'premio3Paragraph', 'premio4Title', 'premio4Paragraph'],
+        entrevistasPage: ['mainTitle', 'introParagraph'],
+        libroPage: ['heroCaption', 'heroTitle', 'heroSubtitle', 'heroQuoteAuthor', 'synopsisSectionTitle', 'synopsisSectionIntro', 'synopsisParagraph1', 'synopsisQuote', 'synopsisParagraph2', 'trailerTitle', 'uncleQuote', 'lagunaTitle', 'lagunaParagraph1', 'lagunaParagraph2', 'artTitle', 'artIntro', 'artQuote', 'artParagraph1', 'artParagraph2', 'galleryTitle', 'mediaTitle', 'buyTitle', 'buySubtitle', 'buyParagraph', 'buyPhysicalTitle', 'buyPhysicalInfo', 'buyAudiobookTitle', 'buyAudiobookInfo'],
+        modelajePage: ['mainTitle', 'introParagraph', 'calendarTitle', 'calendarParagraph']
+    };
+    
     async function loadPageTexts() {
         const pageId = pageSelector.value;
         if (!pageId) return;
         textFieldsContainer.innerHTML = '<p>Cargando textos...</p>';
+        
         try {
             const docRef = doc(db, 'pages', pageId);
             const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                const data = docSnap.data();
-                textFieldsContainer.innerHTML = '';
-                Object.keys(data).sort().forEach(key => {
-                    const value = data[key] || '';
-                    const fieldWrapper = document.createElement('div');
-                    fieldWrapper.className = 'form-section';
-                    const label = document.createElement('label');
-                    label.className = 'input-label';
-                    label.textContent = key;
-                    const isLongText = value.length > 100 || value.includes('<');
-                    const inputElement = isLongText ? document.createElement('textarea') : document.createElement('input');
-                    inputElement.dataset.key = key;
-                    inputElement.value = value;
-                    if (isLongText) inputElement.rows = 5;
-                    fieldWrapper.appendChild(label);
-                    fieldWrapper.appendChild(inputElement);
-                    textFieldsContainer.appendChild(fieldWrapper);
-                });
-            } else {
-                textFieldsContainer.innerHTML = `<p>No se encontró el documento '${pageId}'. Puedes crear uno guardando textos.</p>`;
+            const existingData = docSnap.exists() ? docSnap.data() : {};
+            
+            textFieldsContainer.innerHTML = '';
+            
+            const expectedKeys = pageContentMap[pageId] || Object.keys(existingData);
+            if (!pageContentMap[pageId]) {
+                 console.warn(`No hay un mapa de contenido definido para la página ${pageId}. Se usarán solo los campos existentes.`);
             }
+
+            expectedKeys.sort().forEach(key => {
+                const value = existingData[key] || '';
+                const fieldWrapper = document.createElement('div');
+                fieldWrapper.className = 'form-section';
+
+                const label = document.createElement('label');
+                label.className = 'input-label';
+                label.textContent = key;
+                if (!existingData[key]) {
+                    label.style.color = 'var(--color-error)';
+                    label.title = 'Este es un campo nuevo que se añadirá a la base de datos.';
+                }
+                
+                const isLongText = value.length > 100 || value.includes('<');
+                const inputElement = isLongText ? document.createElement('textarea') : document.createElement('input');
+                inputElement.dataset.key = key;
+                inputElement.value = value;
+                if (isLongText) inputElement.rows = 5;
+                
+                fieldWrapper.appendChild(label);
+                fieldWrapper.appendChild(inputElement);
+                textFieldsContainer.appendChild(fieldWrapper);
+            });
+
         } catch (error) {
             console.error("Error al cargar textos:", error);
             textFieldsContainer.innerHTML = '<p>Error al cargar los textos.</p>';
@@ -294,8 +320,10 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             await setDoc(doc(db, 'pages', pageId), dataToUpdate, { merge: true });
             alert('¡Textos guardados con éxito!');
+            loadPageTexts();
         } catch (error) {
             alert("Hubo un error al guardar los textos.");
+            console.error("Error al guardar textos:", error);
         }
     }
 
@@ -306,7 +334,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- IMPLEMENTACIÓN COMPLETA DE EVENTOS ---
     // ===========================================
     
-    // Funciones de ayuda para la galería de eventos
     function getItemsFromEventPreview() {
         const items = [];
         eventImagesPreviewList.querySelectorAll('.preview-item').forEach(el => {
@@ -360,7 +387,6 @@ document.addEventListener('DOMContentLoaded', () => {
         eventImageUploader.value = '';
     }
 
-    // Lógica principal de Eventos
     loadEvents = async () => {
         eventsListEl.innerHTML = '<p>Cargando eventos...</p>';
         const q = query(collection(db, 'events'), orderBy('order'));
@@ -517,18 +543,12 @@ document.addEventListener('DOMContentLoaded', () => {
     interviewImageDropZone.addEventListener('dragover', e => e.preventDefault());
     interviewImageDropZone.addEventListener('drop', e => { e.preventDefault(); handleInterviewImageUpload(e.dataTransfer.files[0]); });
     
-    // =================================================================
-    // --- INICIO DE LA CORRECCIÓN ---
-    // Esta es la línea que hemos modificado.
     interviewImagePreview.addEventListener('click', e => {
         if (e.target.classList.contains('delete-button')) {
-            // En lugar de resetear todo el formulario, solo borramos la imagen.
             interviewImagePreview.innerHTML = '';
             interviewThumbnailUrl = '';
         }
     });
-    // --- FIN DE LA CORRECCIÓN ---
-    // =================================================================
 
     cancelEditInterviewButton.addEventListener('click', resetInterviewForm);
 
