@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const pageContentMap = {
         homepage: ['heroTitle1', 'heroSubtitle1', 'heroTitle2', 'heroSubtitle2', 'heroTitle3', 'heroSubtitle3', 'aboutMeTitle', 'aboutMeParagraph1', 'aboutMeQuote', 'aboutMeParagraph2', 'skillsTitle', 'trajectoryTitle', 'card1Category', 'card1Title', 'card1Subtitle', 'card1Paragraph', 'card2Category', 'card2Title', 'card2Subtitle', 'card2Paragraph', 'card3Category', 'card3Title', 'card3Subtitle', 'card3Paragraph', 'eventsTitle', 'eventsParagraph', 'contactTitle', 'contactParagraph'],
-        televisionPage: ['mainTitle', 'introParagraph1', 'introParagraph2', 'video1Title', 'video2Title', 'video3Title', 'video3Paragraph', 'video4Title', 'video4Paragraph', 'video5Title', 'video5Paragraph', 'video6Title', 'video6Paragraph', 'video7Title', 'video7Paragraph', 'video8Title', 'video8Paragraph', 'video9Title', 'video9Paragraph', 'galleryTitle'],
+        televisionPage: ['mainTitle', 'introParagraph1', 'introParagraph2', 'video1Title', 'video2Title', 'video4Title', 'video4Paragraph', 'video5Title', 'video5Paragraph', 'video7Title', 'video7Paragraph', 'video8Title', 'video8Paragraph', 'video9Title', 'video9Paragraph', 'galleryTitle'],
         radioPage: ['mainTitle', 'introParagraph', 'programTitle', 'programParagraph1', 'programParagraph2', 'galleryTitle'],
         publicidadPage: ['mainTitle', 'introParagraph1', 'introParagraph2', 'campaign1Title', 'campaign2Title', 'campaign3Title', 'campaign4Title', 'campaign5Title'],
         comunicacionPage: ['mainTitle', 'jefaPrensaTitle', 'jefaPrensaParagraph', 'bpwTitle', 'bpwParagraph', 'dreamlandTitle', 'dreamlandParagraph', 'videosCorpTitle', 'videosCorpParagraph', 'eaveTitle', 'eaveParagraph', 'habecuTitle', 'habecuParagraph', 'inmogoldTitle', 'inmogoldParagraph1', 'inmogoldParagraph2'],
@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
         proyectosPage: ['mainTitle', 'projectTitle', 'projectParagraph1', 'projectParagraph2', 'projectQuote', 'socialsText'],
         premiosPage: ['mainTitle', 'premio1Title', 'premio1Paragraph1', 'premio1Paragraph2', 'premio1Paragraph3', 'premio1InstagramLink', 'premio2Title', 'premio2Paragraph1', 'premio2Paragraph2', 'premio3Title', 'premio3Paragraph', 'premio4Title', 'premio4Paragraph'],
         entrevistasPage: ['mainTitle', 'introParagraph'],
-        libroPage: ['heroCaption', 'heroTitle', 'heroSubtitle', 'heroQuoteAuthor', 'synopsisSectionTitle', 'synopsisSectionIntro', 'synopsisParagraph1', 'synopsisQuote', 'synopsisParagraph2', 'trailerTitle', 'uncleQuote', 'lagunaTitle', 'lagunaParagraph1', 'lagunaParagraph2', 'artTitle', 'artIntro', 'artQuote', 'artParagraph1', 'artParagraph2', 'galleryTitle', 'mediaTitle', 'buyTitle', 'buySubtitle', 'buyParagraph', 'buyPhysicalTitle', 'buyPhysicalInfo', 'buyAudiobookTitle', 'buyAudiobookInfo'],
+        libroPage: ['heroCaption', 'heroTitle', 'heroSubtitle', 'heroQuoteAuthor', 'synopsisSectionTitle', 'synopsisSectionIntro', 'synopsisParagraph1', 'synopsisQuote', 'synopsisParagraph2', 'trailerTitle', 'uncleQuote', 'lagunaTitle', 'lagunaParagraph1', 'lagunaParagraph2', 'artTitle', 'artIntro', 'artQuote', 'artParagraph1', 'artParagraph2', 'taoroSectionTitle', 'taoroSectionParagraph', 'galleryTitle', 'mediaTitle', 'buyTitle', 'buySubtitle', 'buyParagraph', 'buyPhysicalTitle', 'buyPhysicalInfo', 'buyAudiobookTitle', 'buyAudiobookInfo'],
         modelajePage: ['mainTitle', 'introParagraph', 'calendarTitle', 'calendarParagraph']
     };
     

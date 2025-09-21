@@ -39,8 +39,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // --- FUNCIÓN DE CARGA DE TEXTOS DINÁMICOS ---
+    // --- DEFINICIÓN DE LA VARIABLE pageId ---
     const pageId = document.body.id;
+
+    // --- FUNCIÓN DE CARGA DE TEXTOS DINÁMICOS ---
     async function loadDynamicText(pageId) {
         if (!pageId) return;
         try {
@@ -62,23 +64,45 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    // --- FUNCIÓN PARA INICIALIZAR POP-UPS DE LOGOS ---
+    function initializeLogoPopups() {
+        const linksWithPopups = document.querySelectorAll('.link-with-logo-popup');
+        linksWithPopups.forEach(linkContainer => {
+            const popup = linkContainer.querySelector('.logo-popup');
+            if (popup) {
+                linkContainer.addEventListener('mouseenter', () => {
+                    popup.classList.add('visible');
+                });
+                linkContainer.addEventListener('mouseleave', () => {
+                    popup.classList.remove('visible');
+                });
+            }
+        });
+    }
+
     // =======================================================
     // --- EJECUCIÓN ORDENADA DE SCRIPTS ---
     // =======================================================
-    await loadDynamicText(pageId);
-    
-    // Ahora que el texto está cargado, podemos inicializar los scripts que dependen de él
+    await loadDynamicText(pageId); 
+    initializeLogoPopups();      
     initializeSidenotes();
 
     if (pageId === 'homepage') {
         initializeHeroSlider();
         loadAndRenderEvents();
+        handleAnchorScroll(); // <-- SE AÑADE LA LLAMADA A LA NUEVA FUNCIÓN
     }
     if (pageId === 'entrevistasPage') {
         loadAndRenderInterviews();
     }
+    if (pageId === 'libroPage') {
+        initializeLetterModal();
+    }
+    if (pageId === 'modelajePage') {
+        initializeStaticGallery('galeria-interactiva-calendario');
+    }
 
-    // --- INICIALIZAR GALERÍAS ---
+    // --- INICIALIZAR GALERÍAS DINÁMICAS ---
     if (document.getElementById('galeria-interactiva')) {
         initializeInteractiveGallery('galeria-interactiva', 'gallery');
     }
@@ -96,6 +120,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     initializeStandaloneLightbox();
+    initializeVideoModals();
 
     // =======================================================
     // --- DEFINICIONES DE FUNCIONES ---
@@ -118,9 +143,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         tabs.forEach((tab, index) => {
             tab.addEventListener('click', (e) => {
-                if (e.target.closest('a')) {
-                    return;
-                }
+                if (e.target.closest('a')) { return; }
                 if (!tab.classList.contains('active')) {
                     switchTab(index);
                     resetInterval();
@@ -145,13 +168,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         function switchTab(index) {
             currentIndex = index;
             const activeTab = tabs[index];
-
             bgContainer.style.backgroundImage = `url(${activeTab.dataset.bgImage})`;
             bgContainer.style.backgroundPosition = activeTab.dataset.bgPosition || 'center center';
-
             tabs.forEach(t => t.classList.remove('active'));
             activeTab.classList.add('active');
-
             if (mobileTitle) {
                 const titleElement = activeTab.querySelector('h2[data-content-id]');
                 mobileTitle.innerHTML = titleElement ? titleElement.innerHTML : '';
@@ -159,18 +179,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (mobileBookLink) {
                  mobileBookLink.classList.toggle('visible', activeTab.id === 'escritora-tab');
             }
-            
-            // ==================================================
-            // === INICIO DE LA CORRECCIÓN ===
-            // ==================================================
             const mobileClickAnnotation = document.querySelector('.click-annotation-mobile');
             if (mobileClickAnnotation) {
                 mobileClickAnnotation.classList.toggle('visible', activeTab.id === 'escritora-tab');
             }
-            // ==================================================
-            // === FIN DE LA CORRECCIÓN ===
-            // ==================================================
-            
             if (dots.length > 0) {
                 dots.forEach(d => d.classList.remove('active'));
                 dots[index].classList.add('active');
@@ -197,21 +209,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (touchStartX - touchEndX > swipeThreshold) {
                 nextTab();
                 resetInterval();
-            }
-            else if (touchEndX - touchStartX > swipeThreshold) {
+            } else if (touchEndX - touchStartX > swipeThreshold) {
                 prevTab();
                 resetInterval();
             }
         }
 
-        heroDynamicSection.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        });
-
-        heroDynamicSection.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
+        heroDynamicSection.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+        heroDynamicSection.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].screenX; handleSwipe(); });
         
         switchTab(0);
         resetInterval();
@@ -230,66 +235,17 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const button = document.createElement('button');
                 button.className = 'event-tag-button';
                 button.textContent = event.mainButtonText;
-                button.addEventListener('click', () => openEventModal(event));
+                
+                button.addEventListener('click', () => {
+                    window.location.href = `evento-detalle.html?id=${event.id}`;
+                });
+                
                 container.appendChild(button);
             });
         } catch (error) {
             console.error("Error cargando eventos:", error);
             container.innerHTML = '<p>No se pudieron cargar los eventos.</p>';
         }
-    }
-
-    function openEventModal(eventData) {
-        const modalOverlay = document.getElementById('eventos-modal-overlay');
-        const modalTitle = document.getElementById('eventos-modal-title');
-        const modalText = document.getElementById('eventos-modal-text');
-        const galleryThumbnails = document.getElementById('event-gallery-thumbnails');
-        const mainImage = document.getElementById('event-gallery-main-image');
-        const mainVideoContainer = document.getElementById('event-gallery-main-video-container');
-        const mainVideo = document.getElementById('event-gallery-main-video');
-        const closeButton = document.getElementById('eventos-modal-close');
-        if (!modalOverlay || !modalTitle || !modalText) return;
-        modalTitle.textContent = eventData.title || '';
-        modalText.textContent = eventData.text || '';
-        if (galleryThumbnails) galleryThumbnails.innerHTML = '';
-        const galleryItems = eventData.galleryItems || [];
-        if (galleryItems.length > 0) {
-            document.getElementById('event-gallery-interactive').style.display = 'flex';
-            const setActiveMedia = (item) => {
-                if (item.type === 'video') {
-                    mainImage.style.display = 'none';
-                    mainVideoContainer.style.display = 'block';
-                    mainVideo.src = item.videoSrc;
-                } else {
-                    mainVideoContainer.style.display = 'none';
-                    mainVideo.src = '';
-                    mainImage.style.display = 'block';
-                    mainImage.src = item.src;
-                }
-            };
-            galleryItems.forEach(item => {
-                const thumb = document.createElement('div');
-                thumb.className = 'miniatura-item';
-                thumb.innerHTML = `<img src="${item.thumbnailSrc || item.src}" alt="miniatura">`;
-                thumb.addEventListener('click', () => setActiveMedia(item));
-                galleryThumbnails.appendChild(thumb);
-            });
-            setActiveMedia(galleryItems[0]);
-        } else {
-            document.getElementById('event-gallery-interactive').style.display = 'none';
-        }
-        modalOverlay.classList.add('visible');
-        const closeModal = () => {
-            modalOverlay.classList.remove('visible');
-            mainVideo.pause();
-            mainVideo.src = '';
-        };
-        closeButton.onclick = closeModal;
-        modalOverlay.onclick = (e) => {
-            if (e.target === modalOverlay) {
-                closeModal();
-            }
-        };
     }
     
     async function loadAndRenderInterviews() {
@@ -378,29 +334,67 @@ document.addEventListener('DOMContentLoaded', async () => {
             mainDesc.textContent = 'Error al cargar la galería.';
         }
     }
+
+    function initializeStaticGallery(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
     
-    const iframeModal = document.getElementById('iframe-modal');
-    if (iframeModal) {
-        const iframePlayer = document.getElementById('modal-iframe-player');
-        const closeModalButtons = iframeModal.querySelectorAll('.modal-close');
-        document.querySelectorAll('.js-video-modal-trigger').forEach(trigger => {
-            trigger.addEventListener('click', (e) => {
-                e.preventDefault();
-                const videoSrc = trigger.dataset.videoSrc;
-                if (videoSrc && iframePlayer) {
-                    iframePlayer.src = videoSrc;
-                    iframeModal.classList.add('visible');
-                }
+        const mainImage = container.querySelector('.imagen-principal');
+        const mainDesc = container.querySelector('.descripcion-principal p');
+        const bgImage = container.querySelector('.galeria-bg-desenfocado');
+        const thumbnails = container.querySelectorAll('.miniatura-item');
+    
+        if (!mainImage || !mainDesc || !bgImage || thumbnails.length === 0) return;
+    
+        function setActiveItem(thumbElement) {
+            const imgSrc = thumbElement.dataset.imgSrc;
+            const description = thumbElement.dataset.description;
+    
+            if (!imgSrc) return;
+    
+            mainImage.style.opacity = '0';
+            setTimeout(() => {
+                mainImage.src = imgSrc;
+                bgImage.style.backgroundImage = `url(${imgSrc})`;
+                mainDesc.textContent = description || '';
+                mainImage.style.opacity = '1';
+            }, 200);
+    
+            thumbnails.forEach(el => el.classList.remove('active'));
+            thumbElement.classList.add('active');
+        }
+    
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', () => setActiveItem(thumb));
+        });
+    
+        setActiveItem(thumbnails[0]);
+    }
+    
+    function initializeVideoModals() {
+        const iframeModal = document.getElementById('iframe-modal');
+        if (iframeModal) {
+            const iframePlayer = document.getElementById('modal-iframe-player');
+            const closeModalButtons = iframeModal.querySelectorAll('.modal-close');
+            document.querySelectorAll('.js-video-modal-trigger').forEach(trigger => {
+                trigger.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const videoSrc = trigger.dataset.videoSrc;
+                    if (videoSrc && iframePlayer) {
+                        iframePlayer.src = videoSrc;
+                        iframeModal.classList.add('visible');
+                    }
+                });
             });
-        });
-        const closeModal = () => {
-            if (iframePlayer) iframePlayer.src = '';
-            iframeModal.classList.remove('visible');
-        };
-        closeModalButtons.forEach(button => button.addEventListener('click', closeModal));
-        iframeModal.addEventListener('click', (e) => {
-             if (e.target === iframeModal) closeModal();
-        });
+            const closeModal = () => {
+                if (iframePlayer) iframePlayer.src = '';
+                iframeModal.classList.remove('visible');
+            };
+            closeModalButtons.forEach(button => button.addEventListener('click', closeModal));
+            iframeModal.addEventListener('click', (e) => {
+                 if (e.target === iframeModal) closeModal();
+            });
+        }
     }
 
     function initializeStandaloneLightbox() {
@@ -414,10 +408,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const prevButton = lightboxModal.querySelector('.lightbox-prev');
         const nextButton = lightboxModal.querySelector('.lightbox-next');
 
-        const expandableImages = document.querySelectorAll('.expandable-image');
-
-        expandableImages.forEach(link => {
-            link.addEventListener('click', (e) => {
+        document.body.addEventListener('click', (e) => {
+            const link = e.target.closest('.expandable-image');
+            if (link) {
                 e.preventDefault();
                 const img = link.querySelector('img');
                 const captionElement = link.nextElementSibling;
@@ -433,7 +426,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if(nextButton) nextButton.style.display = 'none';
 
                 lightboxModal.classList.add('visible');
-            });
+            }
         });
 
         const closeModal = () => {
@@ -442,9 +435,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         closeButton.addEventListener('click', closeModal);
         lightboxModal.addEventListener('click', (e) => {
-            if (e.target === lightboxModal) {
-                closeModal();
-            }
+            if (e.target === lightboxModal) { closeModal(); }
         });
     }
 
@@ -469,5 +460,48 @@ document.addEventListener('DOMContentLoaded', async () => {
                 });
             }
         });
+    }
+
+    function initializeLetterModal() {
+        const openLetterButton = document.getElementById('open-letter-modal');
+        const letterModal = document.getElementById('letter-modal');
+        const closeLetterButton = document.getElementById('letter-modal-close-btn');
+
+        if (openLetterButton && letterModal && closeLetterButton) {
+            const closeModal = () => {
+                letterModal.classList.remove('visible');
+            };
+
+            openLetterButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                letterModal.classList.add('visible');
+            });
+
+            closeLetterButton.addEventListener('click', closeModal);
+
+            letterModal.addEventListener('click', (e) => {
+                if (e.target === letterModal) { closeModal(); }
+            });
+        }
+    }
+
+    // --- NUEVA FUNCIÓN PARA EL SCROLL PRECISO ---
+    function handleAnchorScroll() {
+        // Usamos un pequeño retraso para asegurar que la página se haya renderizado completamente
+        setTimeout(() => {
+            if (window.location.hash === '#eventos-anchor') {
+                const anchorElement = document.getElementById('eventos-anchor');
+                if (anchorElement) {
+                    const headerOffset = document.querySelector('header')?.offsetHeight || 70;
+                    const elementPosition = anchorElement.getBoundingClientRect().top;
+                    const offsetPosition = window.pageYOffset + elementPosition - headerOffset - 20; // 20px de margen extra
+      
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        }, 100); // 100ms de retraso
     }
 });

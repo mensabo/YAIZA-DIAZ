@@ -176,6 +176,10 @@
             <div class="header-line"></div>
             <img src="images/eventos.jpeg" alt="Yaiza Díaz presentando en un evento" class="eventos-imagen">
             <p data-content-id="eventsParagraph"></p>
+            
+            <!-- NUEVO PUNTO DE ANCLAJE INVISIBLE -->
+            <div id="eventos-anchor"></div>
+
             <div class="events-carousel-container">
                 <div id="dynamic-event-tags" class="event-tags"></div>
             </div>
@@ -203,55 +207,6 @@
             </div>
         </div>
     </section>
-
-    <div id="eventos-modal-overlay">
-        <div id="eventos-modal-content">
-            <button id="eventos-modal-close" aria-label="Cerrar">&times;</button>
-            <div class="event-modal-text-content">
-                <h3 id="eventos-modal-title"></h3>
-                <p id="eventos-modal-text"></p>
-                <p id="event-gallery-description" class="event-gallery-main-description"></p>
-            </div>
-            <div id="event-gallery-interactive" class="galeria-interactiva-container modal-gallery">
-                <div class="galeria-principal">
-                    <div id="event-gallery-bg" class="galeria-bg-desenfocado"></div>
-                    <img id="event-gallery-main-image" class="imagen-principal" src="" alt="Visor principal de la galería del evento">
-                    <div id="event-gallery-main-video-container" class="video-container" style="display: none;">
-                         <video id="event-gallery-main-video" src="" controls playsinline></video>
-                    </div>
-                </div>
-                <div id="event-gallery-thumbnails" class="galeria-lista-miniaturas horizontal"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="lightbox-modal" class="lightbox">
-        <span class="lightbox-close">&times;</span>
-        <span class="lightbox-prev">&#10094;</span>
-        <span class="lightbox-next">&#10095;</span>
-        <div class="lightbox-content">
-            <img id="lightbox-image" src="" alt="Visor de imágenes de eventos">
-            <div id="lightbox-caption"></div>
-        </div>
-    </div>
-
-    <div id="video-modal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" aria-label="Cerrar">&times;</button>
-            <div class="video-container">
-                 <video id="modal-video-player" src="" controls playsinline style="border-radius: 0;"></video>
-            </div>
-        </div>
-    </div>
-    
-    <div id="iframe-modal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" aria-label="Cerrar">&times;</button>
-            <div class="video-container">
-                 <iframe id="modal-iframe-player" src="" title="Vídeo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            </div>
-        </div>
-    </div>
 
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 

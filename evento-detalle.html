@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelo - Yaiza Díaz</title>
+    <title>Detalle del Evento - Yaiza Díaz</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body id="modelajePage" class="libro-page">
+<body id="eventoDetallePage" class="libro-page">
     
     <header>
         <nav class="container">
@@ -36,56 +36,25 @@
 
     <div class="return-bar">
         <div class="container">
-            <a href="index.html#portfolio" class="breadcrumb-return-link">
-                <i class="fas fa-arrow-left"></i> Volver a Trayectoria
+            <!-- ENLACE CORREGIDO AQUÍ -->
+            <a href="index.html#eventos-anchor" class="breadcrumb-return-link">
+                <i class="fas fa-arrow-left"></i> Volver a Eventos
             </a>
         </div>
     </div>
 
-    <section id="modelo-main">
-        <div class="container">
-            <h2 data-content-id="mainTitle"></h2>
+    <section id="evento-main">
+        <div class="container comunicacion-content">
+            <!-- El título del evento se cargará aquí -->
+            <h2 id="event-title">Cargando evento...</h2>
             <div class="header-line"></div>
-            <p class="section-intro" data-content-id="introParagraph"></p>
-
-            <div id="galeria-interactiva-modelo" class="galeria-interactiva-container">
-                <div class="galeria-principal">
-                    <div class="galeria-bg-desenfocado"></div>
-                    <img class="imagen-principal" src="" alt="Visor principal de la galería de modelaje">
-                    <div class="descripcion-principal">
-                        <p>Cargando galería...</p>
-                    </div>
-                </div>
-                <div class="galeria-lista-miniaturas"></div>
-            </div>
-        </div>
-    </section>
-    
-    <section id="calendario-solidario" class="section-gray">
-        <div class="container">
-            <h2 data-content-id="calendarTitle"></h2>
-            <div class="header-line"></div>
-            <p class="section-intro" data-content-id="calendarParagraph"></p>
             
-            <div id="galeria-interactiva-calendario" class="galeria-interactiva-container">
-                <div class="galeria-principal">
-                    <div class="galeria-bg-desenfocado"></div>
-                    <img class="imagen-principal" src="" alt="Visor principal de la galería del calendario solidario">
-                    <div class="descripcion-principal">
-                        <p></p>
-                    </div>
-                </div>
-                <div class="galeria-lista-miniaturas">
-                    <div class="miniatura-item" data-img-src="images/calendario.jpg" data-description="Calendario Solidario 2024 - Foto 1">
-                        <img src="images/calendario.jpg" alt="Miniatura 1">
-                    </div>
-                    <div class="miniatura-item" data-img-src="images/calendario2.jpg" data-description="Calendario Solidario 2024 - Foto 2">
-                        <img src="images/calendario2.jpg" alt="Miniatura 2">
-                    </div>
-                    <div class="miniatura-item" data-img-src="images/calendario3.jpg" data-description="Calendario Solidario 2024 - Foto 3">
-                        <img src="images/calendario3.jpg" alt="Miniatura 3">
-                    </div>
-                </div>
+            <!-- El texto del evento se cargará aquí -->
+            <div id="event-text" class="page-introduction"></div>
+
+            <!-- La galería de imágenes y vídeos se cargará aquí -->
+            <div id="event-gallery" class="gallery-grid" style="grid-auto-rows: 320px;">
+                <!-- Las imágenes y vídeos se añadirán dinámicamente -->
             </div>
         </div>
     </section>
@@ -95,14 +64,14 @@
         <span class="lightbox-prev">&#10094;</span>
         <span class="lightbox-next">&#10095;</span>
         <div class="lightbox-content">
-            <img id="lightbox-image" src="" alt="Visor de imágenes">
+            <img id="lightbox-image" src="" alt="Visor de imágenes de eventos">
             <div id="lightbox-caption"></div>
         </div>
     </div>
-     
+
     <div id="video-modal" class="modal-overlay">
         <div class="modal-content">
-            <button id="video-modal-close-btn" class="modal-close" aria-label="Cerrar">&times;</button>
+            <button class="modal-close" aria-label="Cerrar">&times;</button>
             <div class="video-container">
                  <video id="modal-video-player" src="" controls playsinline style="border-radius: 0;"></video>
             </div>
@@ -110,7 +79,7 @@
     </div>
 
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
-
+    
     <footer>
         <div class="container">
             <div class="footer-social-icons">
@@ -121,17 +90,16 @@
             <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
         </div>
     </footer>
-
+    
     <script src="config.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        window.firebaseServices = {
-            db, collection, getDocs, orderBy, query, doc, getDoc
-        };
+        window.firebaseServices = { db, doc, getDoc };
     </script>
-    <script src="script.js" type="module"></script>
+    <script src="evento.js" type="module"></script>
+    <script src="script.js" type="module"></script> <!-- Para funcionalidades comunes como el menú -->
 </body>
 </html>
