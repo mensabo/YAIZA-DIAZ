@@ -8,113 +8,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* --- ESTILOS GENERALES PARA VÍDEOS EN ESTA PÁGINA --- */
-        .video-container {
-            position: relative;
-            padding-top: 56.25%;
-            height: 0;
-            background-color: #000;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-        a.video-fallback {
-            display: block;
-            position: relative;
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            border-radius: 8px;
-            background-color: #000;
-            text-decoration: none;
-        }
-        .video-fallback video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.9;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-        a.video-fallback:hover video {
-            transform: scale(1.05);
-            opacity: 1;
-        }
-
-        /* --- INICIO: MAQUETA DE SMARTPHONE --- */
-        .phone-video-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            aspect-ratio: 16 / 9;
-            background-color: var(--color-secundario);
-            border-radius: 8px;
-            padding: 2%;
-            position: relative;
-            text-decoration: none;
-        }
-        .phone-mockup {
-            position: relative;
-            width: 42%;
-            max-width: 280px;
-            aspect-ratio: 9 / 19.5;
-            background-color: #1c1c1c;
-            border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            padding: 10px;
-            transition: transform 0.3s ease;
-        }
-        a:hover .phone-mockup {
-            transform: scale(1.05);
-        }
-        .phone-mockup .video-screen {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 20px;
-            background-color: #000;
-        }
-        
-        /* --- ICONO DE PLAY --- */
-        .play-button-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border-radius: 50%;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid white;
-            backdrop-filter: blur(4px);
-            z-index: 3;
-        }
-        a:hover .play-button-overlay {
-            background-color: rgba(220, 0, 0, 0.8);
-            transform: translate(-50%, -50%) scale(1.1);
-        }
-
-        /* --- ESTILOS PARA EL ENLACE DESTACADO --- */
-        .link-highlight {
-            color: var(--color-acento);
-            text-decoration: underline;
-            text-decoration-thickness: 1.5px;
-            text-underline-offset: 4px;
-            transition: color 0.3s ease;
-        }
-        .link-highlight:hover {
-            color: #a78d6b;
-        }
+        /* Estilos específicos de la página... */
+        .video-container { position: relative; padding-top: 56.25%; height: 0; background-color: #000; border-radius: 8px; overflow: hidden; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        a.video-fallback { display: block; position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 8px; background-color: #000; text-decoration: none; }
+        .video-fallback video { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: transform 0.3s ease, opacity 0.3s ease; }
+        a.video-fallback:hover video { transform: scale(1.05); opacity: 1; }
+        .phone-video-container { display: flex; justify-content: center; align-items: center; aspect-ratio: 16 / 9; background-color: var(--color-secundario); border-radius: 8px; padding: 2%; position: relative; text-decoration: none; }
+        .phone-mockup { position: relative; width: 42%; max-width: 280px; aspect-ratio: 9 / 19.5; background-color: #1c1c1c; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding: 10px; transition: transform 0.3s ease; }
+        a:hover .phone-mockup { transform: scale(1.05); }
+        .phone-mockup .video-screen { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; background-color: #000; }
+        .play-button-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; font-size: 1.5rem; background-color: rgba(0, 0, 0, 0.5); color: white; border-radius: 50%; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; border: 2px solid white; backdrop-filter: blur(4px); z-index: 3; }
+        a:hover .play-button-overlay { background-color: rgba(220, 0, 0, 0.8); transform: translate(-50%, -50%) scale(1.1); }
+        .link-highlight { color: var(--color-acento); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; transition: color 0.3s ease; }
+        .link-highlight:hover { color: #a78d6b; }
     </style>
 </head>
 <body id="comunicacionPage" class="libro-page">
@@ -155,12 +62,9 @@
         <div class="container comunicacion-content">
             <h2 data-content-id="mainTitle"></h2>
             <div class="header-line"></div>
-
             <div class="comunicacion-section">
                 <h3 data-content-id="jefaPrensaTitle"></h3>
                 <p data-content-id="jefaPrensaParagraph"></p>
-
-                <!-- IMAGEN INTERCALADA AÑADIDA AQUÍ -->
                 <figure class="interstitial-image-container left">
                     <a href="images/comunicacion.png" class="expandable-image">
                         <img src="images/comunicacion.png" alt="Yaiza Díaz en un evento de comunicación">
@@ -168,7 +72,6 @@
                     <figcaption>Directora de Comunicación en un evento corporativo.</figcaption>
                 </figure>
             </div>
-            
             <div class="comunicacion-section">
                 <h3 data-content-id="bpwTitle"></h3>
                 <div class="sinopsis-content" style="gap: 2rem; align-items: flex-start;">
@@ -180,7 +83,6 @@
                     </div>
                 </div>
             </div>
-            
             <div class="comunicacion-section">
                 <h3 data-content-id="dreamlandTitle"></h3>
                 <p data-content-id="dreamlandParagraph"></p>
@@ -188,7 +90,6 @@
                     <iframe src="https://www.youtube.com/embed/XTjOwHf4-qE" title="Declaraciones sobre Dreamland" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
             </div>
-
             <div class="comunicacion-section">
                 <h3 data-content-id="videosCorpTitle"></h3>
                 <p data-content-id="videosCorpParagraph"></p>
@@ -199,7 +100,6 @@
                     <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
                 </a>
             </div>
-
             <div class="comunicacion-section">
                 <h3 data-content-id="eaveTitle"></h3>
                 <p data-content-id="eaveParagraph"></p>
@@ -207,7 +107,6 @@
                     <iframe src="https://www.youtube.com/embed/_0Sh7NvcNdw" title="Ponencia: “La sostenibilidad turística y energía renovables como modelo de negocio rentable”" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
             </div>
-            
             <div class="comunicacion-section">
                 <h3 class="centered-mobile-title" data-content-id="habecuTitle"></h3>
                 <p data-content-id="habecuParagraph"></p>
@@ -220,7 +119,6 @@
                     <div class="galeria-lista-miniaturas"></div>
                 </div>
             </div>
-
             <div class="comunicacion-section">
                 <h3 class="centered-mobile-title" data-content-id="inmogoldTitle"></h3>
                 <p data-content-id="inmogoldParagraph1"></p>
@@ -248,20 +146,16 @@
     </div>
 
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
-    <!-- ======================== -->
-    <!--     MODAL DE CONTACTO    -->
-    <!-- ======================== -->
+
     <div id="contact-modal" class="modal-overlay">
         <div class="modal-content contact-modal-content">
             <button id="contact-modal-close" class="modal-close">&times;</button>
             <h2 data-content-id="contactTitle">Contacto</h2>
             <div class="header-line"></div>
             <p data-content-id="contactParagraph">Si deseas contratar mis servicios como presentadora, comunicadora o escritora, o si tienes alguna consulta, no dudes en ponerte en contacto conmigo.</p>
-            
             <div class="contact-buttons-container">
                 <a href="mailto:yaizadiaztv@gmail.com" class="email-link">yaizadiaztv@gmail.com</a>
             </div>
-            
             <div class="social-icons">
                 <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                 <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
@@ -269,16 +163,17 @@
             </div>
         </div>
     </div>
-    < >
+    
+    <footer>
         <div class="container">
-            <div class=" -social-icons">
+            <div class="footer-social-icons">
                  <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                 <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
                 <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
             </div>
             <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
         </div>
-    </ >
+    </footer>
     
     <script src="config.js"></script>
     <script type="module">

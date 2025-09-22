@@ -75,6 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initializeContactModal();
     initializeSidenotes();
     initializeSmoothScroll();
+    initializeLogoPopups();
 
     if (pageId === 'homepage') {
         initializeHeroSlider();
@@ -147,6 +148,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Se cierra si se hace clic en el fondo oscuro
             if (e.target === modal) {
                 closeModal();
+            }
+        });
+    }
+
+    function initializeLogoPopups() {
+        const logoLinkWrappers = document.querySelectorAll('.link-with-logo-popup');
+        logoLinkWrappers.forEach(wrapper => {
+            const popup = wrapper.querySelector('.logo-popup');
+            if (popup) {
+                wrapper.addEventListener('mouseenter', () => popup.classList.add('visible'));
+                wrapper.addEventListener('mouseleave', () => popup.classList.remove('visible'));
             }
         });
     }
@@ -234,7 +246,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (touchStartX - touchEndX > swipeThreshold) {
                 nextTab();
                 resetInterval();
-            } else if (touchEndX - touchStartX > swipeThreshold) {
+            } else if (touchEndX - startX > swipeThreshold) {
                 prevTab();
                 resetInterval();
             }

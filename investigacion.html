@@ -3,34 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Directora de Comunicación - Yaiza Díaz</title>
+    <title>Documentales de Investigación - Yaiza Díaz</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        /* --- ESTILOS GENERALES PARA VÍDEOS EN ESTA PÁGINA --- */
-        .video-container {
-            position: relative;
-            padding-top: 56.25%;
-            height: 0;
-            background-color: #000;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
+        /* Modificado para que el contenedor del enlace sea el bloque principal */
         a.video-fallback {
             display: block;
             position: relative;
-            aspect-ratio: 16 / 9;
-            overflow: hidden;
-            border-radius: 8px;
             background-color: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
             text-decoration: none;
         }
         .video-fallback video {
@@ -38,86 +23,42 @@
             height: 100%;
             object-fit: cover;
             opacity: 0.9;
+            /* Añadida transición para el efecto hover */
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
+        /* Añadido efecto hover sobre el vídeo */
         a.video-fallback:hover video {
             transform: scale(1.05);
             opacity: 1;
         }
-
-        /* --- INICIO: MAQUETA DE SMARTPHONE --- */
-        .phone-video-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            aspect-ratio: 16 / 9;
-            background-color: var(--color-secundario);
-            border-radius: 8px;
-            padding: 2%;
-            position: relative;
-            text-decoration: none;
-        }
-        .phone-mockup {
-            position: relative;
-            width: 42%;
-            max-width: 280px;
-            aspect-ratio: 9 / 19.5;
-            background-color: #1c1c1c;
-            border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            padding: 10px;
-            transition: transform 0.3s ease;
-        }
-        a:hover .phone-mockup {
-            transform: scale(1.05);
-        }
-        .phone-mockup .video-screen {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 20px;
-            background-color: #000;
-        }
-        
-        /* --- ICONO DE PLAY --- */
         .play-button-overlay {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
-            background-color: rgba(0, 0, 0, 0.5);
+            bottom: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(200, 0, 0, 0.7);
             color: white;
             border-radius: 50%;
+            text-decoration: none;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px solid white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(4px);
-            z-index: 3;
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 2;
         }
-        a:hover .play-button-overlay {
-            background-color: rgba(220, 0, 0, 0.8);
-            transform: translate(-50%, -50%) scale(1.1);
-        }
-
-        /* --- ESTILOS PARA EL ENLACE DESTACADO --- */
-        .link-highlight {
-            color: var(--color-acento);
-            text-decoration: underline;
-            text-decoration-thickness: 1.5px;
-            text-underline-offset: 4px;
-            transition: color 0.3s ease;
-        }
-        .link-highlight:hover {
-            color: #a78d6b;
+        /* Modificado para que el hover se active en todo el contenedor */
+        a.video-fallback:hover .play-button-overlay {
+            background-color: rgba(220, 0, 0, 0.9);
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.7);
         }
     </style>
 </head>
-<body id="comunicacionPage" class="libro-page">
+<body id="investigacionPage" class="libro-page">
     
     <header>
         <nav class="container">
@@ -145,123 +86,131 @@
 
     <div class="return-bar">
         <div class="container">
-            <a href="index.html#portfolio" class="breadcrumb-return-link">
-                <i class="fas fa-arrow-left"></i> Volver a Trayectoria
+            <a href="index.html" class="breadcrumb-return-link">
+                <i class="fas fa-arrow-left"></i> Volver a Inicio
             </a>
         </div>
     </div>
 
-    <section id="comunicacion-main">
+    <section id="investigacion-main">
         <div class="container comunicacion-content">
             <h2 data-content-id="mainTitle"></h2>
             <div class="header-line"></div>
 
             <div class="comunicacion-section">
-                <h3 data-content-id="jefaPrensaTitle"></h3>
-                <p data-content-id="jefaPrensaParagraph"></p>
+                <h3 data-content-id="trilogy1Title"></h3>
+                <p data-content-id="trilogy1Paragraph"></p>
+                
+                <p style="margin-top: 2rem;"><strong data-content-id="trilogy1Video1Title"></strong></p>
+                <a href="https://www.youtube.com/watch?v=l-PcUnGlnOY" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FMar1.mp4?alt=media&token=79fd2545-b5e9-4d2d-a12a-4bdef4cf0c4f" type="video/mp4"></video>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
+                
+                <p style="margin-top: 2rem;"><strong data-content-id="trilogy1Video2Title"></strong></p>
+                <a href="https://www.youtube.com/watch?v=HDUG_mqDKLI" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FMar2.mp4?alt=media&token=a2921e13-a98f-42a1-b8ec-49a32a4d5efe" type="video/mp4"></video>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
 
-                <!-- IMAGEN INTERCALADA AÑADIDA AQUÍ -->
-                <figure class="interstitial-image-container left">
-                    <a href="images/comunicacion.png" class="expandable-image">
-                        <img src="images/comunicacion.png" alt="Yaiza Díaz en un evento de comunicación">
-                    </a>
-                    <figcaption>Directora de Comunicación en un evento corporativo.</figcaption>
-                </figure>
+                <p style="margin-top: 2rem;"><strong data-content-id="trilogy1Video3Title"></strong></p>
+                <a href="https://www.youtube.com/watch?v=4kDoxqf_fBE" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FMAR3.mp4?alt=media&token=e6f7d087-4157-4264-abef-c4db3340201a" type="video/mp4"></video>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
             </div>
             
             <div class="comunicacion-section">
-                <h3 data-content-id="bpwTitle"></h3>
-                <div class="sinopsis-content" style="gap: 2rem; align-items: flex-start;">
-                    <div class="sinopsis-text">
-                        <p data-content-id="bpwParagraph"></p>
-                    </div>
-                    <div class="sinopsis-img" style="flex-basis: 70%;">
-                        <img src="images/comunicadora-bg.jpeg" alt="Yaiza Díaz en un evento de BPW Canarias">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="comunicacion-section">
-                <h3 data-content-id="dreamlandTitle"></h3>
-                <p data-content-id="dreamlandParagraph"></p>
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/XTjOwHf4-qE" title="Declaraciones sobre Dreamland" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-            </div>
-
-            <div class="comunicacion-section">
-                <h3 data-content-id="videosCorpTitle"></h3>
-                <p data-content-id="videosCorpParagraph"></p>
-                <a href="https://www.youtube.com/watch?v=iJC_1N4o-U4" target="_blank" rel="noopener noreferrer" class="video-fallback">
-                    <video autoplay loop muted playsinline>
-                        <source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FDreamland1.mp4?alt=media&token=0c03b605-0bea-49ee-a950-104f08f48da9" type="video/mp4">
-                    </video>
+                <h3 data-content-id="nocheReporterosTitle"></h3>
+                <h4 style="margin-top: 2.5rem; font-size: 1.5rem;" data-content-id="reportaje1Title"></h4>
+                <p data-content-id="reportaje1Paragraph"></p>
+                <a href="https://www.youtube.com/watch?v=ETnrDmK69eY" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FMAR4.mp4?alt=media&token=5f9a49cf-40ee-4a20-808e-468ffc31f4bd" type="video/mp4"></video>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
+                
+                <h4 style="margin-top: 2.5rem; font-size: 1.5rem;" data-content-id="reportaje2Title"></h4>
+                <p data-content-id="reportaje2Paragraph"></p>
+                <a href="https://www.youtube.com/watch?v=ZQUjA8pN5p4" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FMedicina.mp4?alt=media&token=90ad512d-8369-43df-9c6d-4222013807bb" type="video/mp4"></video>
                     <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
                 </a>
             </div>
 
             <div class="comunicacion-section">
-                <h3 data-content-id="eaveTitle"></h3>
-                <p data-content-id="eaveParagraph"></p>
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/_0Sh7NvcNdw" title="Ponencia: “La sostenibilidad turística y energía renovables como modelo de negocio rentable”" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                </div>
-            </div>
-            
-            <div class="comunicacion-section">
-                <h3 class="centered-mobile-title" data-content-id="habecuTitle"></h3>
-                <p data-content-id="habecuParagraph"></p>
-                <div id="galeria-interactiva-habecu" class="galeria-interactiva-container">
-                    <div class="galeria-principal">
-                        <div class="galeria-bg-desenfocado"></div>
-                        <img class="imagen-principal" src="" alt="Visor principal de la galería de HABECU">
-                        <div class="descripcion-principal"><p>Cargando galería...</p></div>
-                    </div>
-                    <div class="galeria-lista-miniaturas"></div>
-                </div>
+                <h3 data-content-id="trilogy2Title"></h3>
+                <p data-content-id="trilogy2Paragraph"></p>
+                
+                <p style="margin-top: 2rem;"><strong data-content-id="trilogy2Video1Title"></strong></p>
+                <a href="https://www.youtube.com/watch?v=IsYrl9T5gq4" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fvirus1.mp4?alt=media&token=bbad93bf-ea8d-4c35-8b97-fc16e87f2dc9" type="video/mp4"></video>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
+                
+                <p style="margin-top: 2rem;"><strong data-content-id="trilogy2Video2Title"></strong></p>
+                <a href="https://www.youtube.com/watch?v=fWQ-G2cKVMs" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fvirus2.mp4?alt=media&token=9f70f4a3-947e-4fce-b7cd-002bd340b0c3" type="video/mp4"></video>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
+
+                <p style="margin-top: 2rem;"><strong data-content-id="trilogy2Video3Title"></strong></p>
+                <a href="https://www.youtube.com/watch?v=8H1c8Ap8CYU" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FVirus3.mp4?alt=media&token=ed72dd26-81d6-4300-bf0d-d83614582bc3" type="video/mp4"></video>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
             </div>
 
             <div class="comunicacion-section">
-                <h3 class="centered-mobile-title" data-content-id="inmogoldTitle"></h3>
-                <p data-content-id="inmogoldParagraph1"></p>
-                <p data-content-id="inmogoldParagraph2"></p>
-                <a href="https://www.instagram.com/reel/C1r4EY8I8XN/?igsh=MTc1a2Uzb2p5Yzh0aw%3D%DD" target="_blank" rel="noopener noreferrer" class="phone-video-container">
-                    <div class="phone-mockup">
-                        <video class="video-screen" autoplay loop muted playsinline>
-                            <source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Finmogo.mp4?alt=media&token=f22ad468-5d6a-4dd2-88fb-936d78ee7061" type="video/mp4">
-                        </video>
+                <h3 data-content-id="otrosReportajesTitle"></h3>
+                <h4 style="margin-top: 2.5rem; font-size: 1.5rem;" data-content-id="reportaje3Title"></h4>
+                
+                <div class="image-sidenote-section sidenote-container">
+                    <div class="sidenote-text-content">
+                        <p data-content-id="reportaje3Paragraph">Finalista en los Premios Arcoíris 2023 por la visibilidad del colectivo LGTBIQ+. <span class="sidenote-trigger image-sidenote-trigger">Puedes ver la imagen aquí <i class="fas fa-image"></i></span>.</p>
                     </div>
-                    <span class="play-button-overlay"><i class="fab fa-instagram"></i></span>
+                    <div class="image-sidenote-viewer">
+                        <button class="sidenote-close-btn">&times;</button>
+                        <img src="images/transdiversas.jpg" alt="Reconocimiento Premios Arcoíris">
+                        <p class="pie-de-foto">Finalista Premios Arcoíris 2023</p>
+                    </div>
+                </div>
+
+                <a href="https://www.facebook.com/watch/live/?ref=watch_permalink&v=1215255425661591" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <video autoplay loop muted playsinline>
+                        <source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Ftransd.mp4?alt=media&token=feac2605-7ae1-403b-a909-86f905ac66c1" type="video/mp4">
+                    </video>
+                    <span class="play-button-overlay"><i class="fab fa-facebook"></i></span>
+                </a>
+                 
+                <h4 style="margin-top: 2.5rem; font-size: 1.5rem;" data-content-id="reportaje4Title"></h4>
+                <p data-content-id="reportaje4Paragraph"></p>
+                <a href="https://www.youtube.com/watch?v=IVBfoJdEbTQ" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fbulimia.mp4?alt=media&token=26df4074-344e-4066-a8c7-5a9e68d2482e" type="video/mp4"></video>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
+                </a>
+        
+                <h4 style="margin-top: 2.5rem; font-size: 1.5rem;" data-content-id="reportaje5Title"></h4>
+                <p data-content-id="reportaje5Paragraph"></p>
+                <a href="https://www.youtube.com/watch?v=3Y0197XDIlE" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                    <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fpolitica.mp4?alt=media&token=56b1c286-f301-484a-8694-1cbc380f08cd" type="video/mp4"></video>
+                    <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
                 </a>
             </div>
+
         </div>
     </section>
     
-    <div id="lightbox-modal" class="lightbox">
-        <span class="lightbox-close">&times;</span>
-        <span class="lightbox-prev">&#10094;</span>
-        <span class="lightbox-next">&#10095;</span>
-        <div class="lightbox-content">
-            <img id="lightbox-image" src="" alt="Visor de imágenes de comunicación">
-            <div id="lightbox-caption"></div>
-        </div>
-    </div>
-
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
-    <!-- ======================== -->
-    <!--     MODAL DE CONTACTO    -->
-    <!-- ======================== -->
+
     <div id="contact-modal" class="modal-overlay">
         <div class="modal-content contact-modal-content">
             <button id="contact-modal-close" class="modal-close">&times;</button>
             <h2 data-content-id="contactTitle">Contacto</h2>
             <div class="header-line"></div>
             <p data-content-id="contactParagraph">Si deseas contratar mis servicios como presentadora, comunicadora o escritora, o si tienes alguna consulta, no dudes en ponerte en contacto conmigo.</p>
-            
             <div class="contact-buttons-container">
                 <a href="mailto:yaizadiaztv@gmail.com" class="email-link">yaizadiaztv@gmail.com</a>
             </div>
-            
             <div class="social-icons">
                 <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                 <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
@@ -269,16 +218,17 @@
             </div>
         </div>
     </div>
-    < >
+    
+    <footer>
         <div class="container">
-            <div class=" -social-icons">
+            <div class="footer-social-icons">
                  <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                 <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
                 <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
             </div>
             <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
         </div>
-    </ >
+    </footer>
     
     <script src="config.js"></script>
     <script type="module">

@@ -8,73 +8,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        .proyecto-cta-button {
-            display: inline-block;
-            background-color: var(--color-magenta-libro);
-            color: var(--color-blanco);
-            padding: 1rem 2.5rem;
-            text-decoration: none;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 1.1rem;
-        }
-        .proyecto-cta-button:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(233, 30, 99, 0.3);
-        }
-        .proyecto-hero-banner {
-            width: 100%;
-            background-color: #F8BBD0;
-            line-height: 0;
-        }
-        .proyecto-hero-banner img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        #proyectos-main {
-            padding-top: 4rem;
-        }
-        .proyecto-social-links {
-            text-align: center;
-            margin-top: 2.5rem;
-            padding-top: 2rem;
-            border-top: 1px solid #ddd;
-        }
-        .proyecto-social-links p {
-            margin-bottom: 1.5rem;
-            font-weight: 500;
-            color: #444;
-        }
-        .proyecto-social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-        }
-        .proyecto-social-icons a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #fff;
-            border: 2px solid #e0e0e0;
-            color: var(--color-primario);
-            font-size: 1.5rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .proyecto-social-icons a:hover {
-            background-color: var(--color-acento);
-            border-color: var(--color-acento);
-            color: var(--color-blanco);
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
+        .proyecto-cta-button { display: inline-block; background-color: var(--color-magenta-libro); color: var(--color-blanco); padding: 1rem 2.5rem; text-decoration: none; font-weight: 600; border-radius: 8px; transition: all 0.3s ease; margin-top: 2rem; text-align: center; font-size: 1.1rem; }
+        .proyecto-cta-button:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(233, 30, 99, 0.3); }
+        .proyecto-hero-banner { width: 100%; background-color: #F8BBD0; line-height: 0; }
+        .proyecto-hero-banner img { width: 100%; height: auto; display: block; }
+        #proyectos-main { padding-top: 4rem; }
+        .proyecto-social-links { text-align: center; margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid #ddd; }
+        .proyecto-social-links p { margin-bottom: 1.5rem; font-weight: 500; color: #444; }
+        .proyecto-social-icons { display: flex; justify-content: center; gap: 1.5rem; }
+        .proyecto-social-icons a { display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; border-radius: 50%; background-color: #fff; border: 2px solid #e0e0e0; color: var(--color-primario); font-size: 1.5rem; text-decoration: none; transition: all 0.3s ease; }
+        .proyecto-social-icons a:hover { background-color: var(--color-acento); border-color: var(--color-acento); color: var(--color-blanco); transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body id="proyectosPage" class="libro-page">
@@ -121,12 +64,68 @@
             <div class="header-line"></div>
             
             <div class="sinopsis-content" style="align-items: center; gap: 4rem;">
-
                 <div class="sinopsis-img" style="flex-basis: 45%;">
                     <img src="images/ftr-principal.png" alt="Yaiza Díaz - Proyecto Fórmula Triple Rosa" style="aspect-ratio: 4 / 5;">
                 </div>
-
                 <div class="sinopsis-text" style="flex-basis: 55%;">
                     <h3 data-content-id="projectTitle"></h3>
                     <p data-content-id="projectParagraph1"></p>
-                    <p data-c
+                    <p data-content-id="projectParagraph2"></p>
+                    <blockquote data-content-id="projectQuote"></blockquote>
+                    <a href="https://www.instagram.com/formulatriplerosa/" class="proyecto-cta-button" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram"></i> Sigue el proyecto
+                    </a>
+                </div>
+            </div>
+
+            <div class="proyecto-social-links">
+                <p data-content-id="socialsText"></p>
+                <div class="proyecto-social-icons">
+                    <a href="https://www.instagram.com/formulatriplerosa/" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Fórmula Triple Rosa"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@formulatriplerosa" target="_blank" rel="noopener noreferrer" aria-label="TikTok de Fórmula Triple Rosa"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
+
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content contact-modal-content">
+            <button id="contact-modal-close" class="modal-close">&times;</button>
+            <h2 data-content-id="contactTitle">Contacto</h2>
+            <div class="header-line"></div>
+            <p data-content-id="contactParagraph">Si deseas contratar mis servicios como presentadora, comunicadora o escritora, o si tienes alguna consulta, no dudes en ponerte en contacto conmigo.</p>
+            <div class="contact-buttons-container">
+                <a href="mailto:yaizadiaztv@gmail.com" class="email-link">yaizadiaztv@gmail.com</a>
+            </div>
+            <div class="social-icons">
+                <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-social-icons">
+                 <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="config.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        window.firebaseServices = { db, doc, getDoc };
+    </script>
+    <script src="script.js" type="module"></script>
+</body>
+</html>
