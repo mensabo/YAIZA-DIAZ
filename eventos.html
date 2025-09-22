@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelo - Yaiza Díaz</title>
+    <title>Eventos - Yaiza Díaz</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body id="modelajePage" class="libro-page">
+<body id="eventosPage" class="libro-page">
     
     <header>
         <nav class="container">
@@ -34,80 +34,31 @@
         </nav>
     </header>
 
-    <div class="return-bar">
-        <div class="container">
-            <a href="index.html#portfolio" class="breadcrumb-return-link">
-                <i class="fas fa-arrow-left"></i> Volver a Trayectoria
-            </a>
+    <!-- ========= INICIO: SECCIÓN DE CABECERA MODIFICADA ========= -->
+    <section id="eventos-header">
+        <div class="eventos-page-hero">
+            <img src="images/eventos.jpeg" alt="Yaiza Díaz presentando un evento">
         </div>
-    </div>
-
-    <section id="modelo-main">
         <div class="container">
-            <h2 data-content-id="mainTitle"></h2>
+            <h2 data-content-id="eventsTitle">Presentación de Eventos</h2>
             <div class="header-line"></div>
-            <p class="section-intro" data-content-id="introParagraph"></p>
+            <p data-content-id="eventsParagraph" class="section-intro">
+                Con más de 18 años de experiencia sobre los escenarios, ofrezco mis servicios como maestra de ceremonias para galas, premios, congresos y eventos corporativos. Mi objetivo es asegurar que cada acto se desarrolle con dinamismo, profesionalidad y una conexión genuina con el público.
+            </p>
+        </div>
+    </section>
+    <!-- ========= FIN: SECCIÓN DE CABECERA MODIFICADA ========= -->
 
-            <div id="galeria-interactiva-modelo" class="galeria-interactiva-container">
-                <div class="galeria-principal">
-                    <div class="galeria-bg-desenfocado"></div>
-                    <img class="imagen-principal" src="" alt="Visor principal de la galería de modelaje">
-                    <div class="descripcion-principal">
-                        <p>Cargando galería...</p>
-                    </div>
-                </div>
-                <div class="galeria-lista-miniaturas"></div>
+
+    <!-- ========= GALERÍA DE EVENTOS (Esta sección no cambia) ========= -->
+    <section id="events-gallery-section">
+        <div class="container">
+            <div id="dynamic-events-grid" class="events-grid">
+                <!-- Los eventos se cargarán aquí dinámicamente -->
+                <p>Cargando eventos...</p>
             </div>
         </div>
     </section>
-    
-    <section id="calendario-solidario" class="section-gray">
-        <div class="container">
-            <h2 data-content-id="calendarTitle"></h2>
-            <div class="header-line"></div>
-            <p class="section-intro" data-content-id="calendarParagraph"></p>
-            
-            <div id="galeria-interactiva-calendario" class="galeria-interactiva-container">
-                <div class="galeria-principal">
-                    <div class="galeria-bg-desenfocado"></div>
-                    <img class="imagen-principal" src="" alt="Visor principal de la galería del calendario solidario">
-                    <div class="descripcion-principal">
-                        <p></p>
-                    </div>
-                </div>
-                <div class="galeria-lista-miniaturas">
-                    <div class="miniatura-item" data-img-src="images/calendario.jpg" data-description="Calendario Solidario 2024 - Foto 1">
-                        <img src="images/calendario.jpg" alt="Miniatura 1">
-                    </div>
-                    <div class="miniatura-item" data-img-src="images/calendario2.jpg" data-description="Calendario Solidario 2024 - Foto 2">
-                        <img src="images/calendario2.jpg" alt="Miniatura 2">
-                    </div>
-                    <div class="miniatura-item" data-img-src="images/calendario3.jpg" data-description="Calendario Solidario 2024 - Foto 3">
-                        <img src="images/calendario3.jpg" alt="Miniatura 3">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div id="lightbox-modal" class="lightbox">
-        <span class="lightbox-close">&times;</span>
-        <span class="lightbox-prev">&#10094;</span>
-        <span class="lightbox-next">&#10095;</span>
-        <div class="lightbox-content">
-            <img id="lightbox-image" src="" alt="Visor de imágenes">
-            <div id="lightbox-caption"></div>
-        </div>
-    </div>
-     
-    <div id="video-modal" class="modal-overlay">
-        <div class="modal-content">
-            <button id="video-modal-close-btn" class="modal-close" aria-label="Cerrar">&times;</button>
-            <div class="video-container">
-                 <video id="modal-video-player" src="" controls playsinline style="border-radius: 0;"></video>
-            </div>
-        </div>
-    </div>
 
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
     <!-- ======================== -->
@@ -141,7 +92,7 @@
             <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
         </div>
     </ >
-
+    
     <script src="config.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";

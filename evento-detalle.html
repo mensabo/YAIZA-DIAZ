@@ -7,6 +7,44 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* Estilos específicos para la galería de detalles de evento */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+        .gallery-grid-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            aspect-ratio: 4 / 5;
+        }
+        .gallery-grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .gallery-grid-item:hover img {
+            transform: scale(1.05);
+        }
+        .video-overlay-icon {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px; height: 50px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; pointer-events: none;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        a.js-video-modal-trigger:hover .video-overlay-icon {
+             background-color: rgba(204, 0, 0, 0.7);
+        }
+    </style>
 </head>
 <body id="eventoDetallePage" class="libro-page">
     
@@ -19,6 +57,7 @@
             <ul id="nav-links">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="television.html">Televisión</a></li>
+                <li><a href="eventos.html">Eventos</a></li>
                 <li><a href="radio.html">Radio</a></li>
                 <li><a href="publicidad.html">Publicidad</a></li>
                 <li><a href="comunicacion.html">Comunicación</a></li>
@@ -28,16 +67,14 @@
                 <li><a href="entrevistas.html">Entrevistas</a></li>
                 <li><a href="libro.html">Libro</a></li>
                 <li><a href="modelaje.html">Modelo</a></li>
-                <li><a href="index.html#prensa">Eventos</a></li>
-                <li><a href="index.html#contacto">Contacto</a></li>
+                <li><a href="#" id="contact-modal-trigger">Contacto</a></li>
             </ul>
         </nav>
     </header>
 
     <div class="return-bar">
         <div class="container">
-            <!-- ENLACE CORREGIDO AQUÍ -->
-            <a href="index.html#eventos-anchor" class="breadcrumb-return-link">
+            <a href="eventos.html" class="breadcrumb-return-link">
                 <i class="fas fa-arrow-left"></i> Volver a Eventos
             </a>
         </div>
@@ -50,10 +87,10 @@
             <div class="header-line"></div>
             
             <!-- El texto del evento se cargará aquí -->
-            <div id="event-text" class="page-introduction"></div>
+            <div id="event-text" class="page-introduction" style="text-align: left;"></div>
 
             <!-- La galería de imágenes y vídeos se cargará aquí -->
-            <div id="event-gallery" class="gallery-grid" style="grid-auto-rows: 320px;">
+            <div id="event-gallery" class="gallery-grid">
                 <!-- Las imágenes y vídeos se añadirán dinámicamente -->
             </div>
         </div>
@@ -79,17 +116,37 @@
     </div>
 
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
-    
-    <footer>
+        <!-- ======================== -->
+    <!--     MODAL DE CONTACTO    -->
+    <!-- ======================== -->
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content contact-modal-content">
+            <button id="contact-modal-close" class="modal-close">&times;</button>
+            <h2 data-content-id="contactTitle">Contacto</h2>
+            <div class="header-line"></div>
+            <p data-content-id="contactParagraph">Si deseas contratar mis servicios como presentadora, comunicadora o escritora, o si tienes alguna consulta, no dudes en ponerte en contacto conmigo.</p>
+            
+            <div class="contact-buttons-container">
+                <a href="mailto:yaizadiaztv@gmail.com" class="email-link">yaizadiaztv@gmail.com</a>
+            </div>
+            
+            <div class="social-icons">
+                <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+    < >
         <div class="container">
-            <div class="footer-social-icons">
+            <div class=" -social-icons">
                  <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                 <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
                 <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
             </div>
             <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
         </div>
-    </footer>
+    </ >
     
     <script src="config.js"></script>
     <script type="module">
@@ -99,7 +156,7 @@
         const db = getFirestore(app);
         window.firebaseServices = { db, doc, getDoc };
     </script>
-    <script src="evento.js" type="module"></script>
-    <script src="script.js" type="module"></script> <!-- Para funcionalidades comunes como el menú -->
+    <script src="evento.js" type="module"></script> <!-- Carga la lógica específica de esta página -->
+    <script src="script.js" type="module"></script> <!-- Carga funcionalidades comunes como el menú y el lightbox -->
 </body>
 </html>

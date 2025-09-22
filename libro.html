@@ -19,6 +19,7 @@
             <ul id="nav-links">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="television.html">Televisión</a></li>
+                <li><a href="eventos.html">Eventos</a></li>
                 <li><a href="radio.html">Radio</a></li>
                 <li><a href="publicidad.html">Publicidad</a></li>
                 <li><a href="comunicacion.html">Comunicación</a></li>
@@ -28,8 +29,7 @@
                 <li><a href="entrevistas.html">Entrevistas</a></li>
                 <li><a href="libro.html">Libro</a></li>
                 <li><a href="modelaje.html">Modelo</a></li>
-                <li><a href="index.html#prensa">Eventos</a></li>
-                <li><a href="index.html#contacto">Contacto</a></li>
+                <li><a href="#" id="contact-modal-trigger">Contacto</a></li>
             </ul>
         </nav>
     </header>
@@ -37,7 +37,7 @@
     <div class="return-bar">
         <div class="container">
             <a href="index.html" class="breadcrumb-return-link">
-                <i class="fas fa-arrow-left"></i> Volver a la página principal
+                 <i class="fas fa-arrow-left"></i> Volver a la página principal
             </a>
         </div>
     </div>
@@ -138,16 +138,13 @@
         </div>
     </section>
 
-    <!-- ========= INICIO: SECCIÓN TERCERA EDICIÓN CORREGIDA ========= -->
     <section id="edicion-taoro">
         <div class="container">
             <h2 data-content-id="taoroSectionTitle">Tercera Edición ya disponible</h2>
             <div class="header-line"></div>
-            <!-- Este contenedor ahora está vacío y se rellenará completamente desde Firebase -->
             <div data-content-id="taoroSectionParagraph"></div>
         </div>
     </section>
-    <!-- ========= FIN: SECCIÓN TERCERA EDICIÓN CORREGIDA ========= -->
 
     <section id="galeria-libro" class="section-gray">
         <div class="container">
@@ -274,22 +271,42 @@
                     <p>Salí de Tenerife para llegar a Madrid, allí él llegó antes al cielo. Nos despedimos en la lejanía para que la ausencia no doliera tanto. En mis pasos: radio, prensa escrita, gabinete de prensa, televisión, presentaciones, dirección audiovisual... Sí, un extenso curriculum que discurre por el mismo sendero, contar algo.</p>
                     <p>Con La hija del ciego me abro en canal, volviendo a esos inicios en los que de nuevo me expongo a ser juzgada, pero si me lees con el corazón sentirás que te regalo una sonrisa que convertirá cualquier oscuridad en color, todos los de sus ojos, ¡los colores de la vida!</p>
                     <p>Deseo que puedas disfrutar de este homenaje al amor padre e hija.</p>
-                    <footer class="letter-signature">"La vida son palabras que generan sensaciones" <br><strong>Yaiza Díaz.</strong></footer>
+                    <  class="letter-signature">"La vida son palabras que generan sensaciones" <br><strong>Yaiza Díaz.</strong></ >
                 </div>
             </div>
         </div>
     </div>
-
-    <footer>
+    <!-- ======================== -->
+    <!--     MODAL DE CONTACTO    -->
+    <!-- ======================== -->
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content contact-modal-content">
+            <button id="contact-modal-close" class="modal-close">&times;</button>
+            <h2 data-content-id="contactTitle">Contacto</h2>
+            <div class="header-line"></div>
+            <p data-content-id="contactParagraph">Si deseas contratar mis servicios como presentadora, comunicadora o escritora, o si tienes alguna consulta, no dudes en ponerte en contacto conmigo.</p>
+            
+            <div class="contact-buttons-container">
+                <a href="mailto:yaizadiaztv@gmail.com" class="email-link">yaizadiaztv@gmail.com</a>
+            </div>
+            
+            <div class="social-icons">
+                <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+    < >
         <div class="container">
-            <div class="footer-social-icons">
+            <div class=" -social-icons">
                 <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                 <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
                 <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
             </div>
             <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
         </div>
-    </footer>
+    </ >
 
     <script src="config.js"></script>
     <script type="module">

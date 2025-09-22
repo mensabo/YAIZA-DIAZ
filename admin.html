@@ -67,7 +67,6 @@
             <div class="form-section">
                 <h3 id="event-form-title">Crear Nuevo Evento</h3>
                 <input type="hidden" id="event-id-input">
-                <input type="text" id="event-button-text-input" placeholder="Texto del botón (ej: 'Premios Cadena Dial')">
                 <input type="text" id="event-title-input" placeholder="Título del evento (para el modal)">
                 <textarea id="event-text-input" placeholder="Texto introductorio del evento..." rows="4"></textarea>
                 
@@ -78,10 +77,19 @@
                 </div>
                 <input type="file" id="event-image-uploader" multiple accept="image/*" style="display: none;">
                 
-                <label class="input-label" style="margin-top: 1.5rem;">Añadir vídeo a la galería del evento:</label>
-                <input type="text" id="event-video-url-input" placeholder="URL del vídeo (.mp4, .webm...)">
-                <input type="text" id="event-thumbnail-url-input" placeholder="URL de la miniatura para el vídeo (.jpg, .png...)">
-                <button id="add-event-video-button" type="button">Añadir Vídeo</button>
+                <!-- INICIO: SECCIÓN DE SUBIDA DE VÍDEO MODIFICADA -->
+                <div class="video-upload-section">
+                    <label class="input-label">Subir nuevo vídeo a la galería:</label>
+                    <div class="video-upload-inputs">
+                        <label for="event-video-uploader" class="input-label-small">Archivo de vídeo (.mp4, .webm):</label>
+                        <input type="file" id="event-video-uploader" accept="video/*">
+                        
+                        <label for="event-video-thumbnail-uploader" class="input-label-small">Imagen para la miniatura (.jpg, .png):</label>
+                        <input type="file" id="event-video-thumbnail-uploader" accept="image/*">
+                    </div>
+                    <button id="upload-event-video-button" type="button">Añadir Vídeo Subido</button>
+                </div>
+                <!-- FIN: SECCIÓN DE SUBIDA DE VÍDEO MODIFICADA -->
 
                 <input type="number" id="event-order-input" placeholder="Número de orden (ej: 0, 1, 2...)">
                 <div class="form-buttons">

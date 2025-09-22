@@ -28,6 +28,7 @@
             <ul id="nav-links">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="television.html">Televisión</a></li>
+                <li><a href="eventos.html">Eventos</a></li>
                 <li><a href="radio.html">Radio</a></li>
                 <li><a href="publicidad.html">Publicidad</a></li>
                 <li><a href="comunicacion.html">Comunicación</a></li>
@@ -37,8 +38,7 @@
                 <li><a href="entrevistas.html">Entrevistas</a></li>
                 <li><a href="libro.html">Libro</a></li>
                 <li><a href="modelaje.html">Modelo</a></li>
-                <li><a href="index.html#prensa">Eventos</a></li>
-                <li><a href="index.html#contacto">Contacto</a></li>
+                <li><a href="#" id="contact-modal-trigger">Contacto</a></li>
             </ul>
         </nav>
     </header>
@@ -70,17 +70,11 @@
                         <p data-content-id="premio1Paragraph2">Este galardón ha sido un impulso fundamental en mi carrera, validando años de dedicación a la comunicación en diversas facetas, desde la televisión y la radio hasta la literatura y la dirección de comunicación.</p>
                         <p data-content-id="premio1Paragraph3">Agradezco profundamente a la organización por este honor, que me motiva a seguir contando historias y conectando con el público.</p>
                         
-                        <!-- ============================================= -->
-                        <!-- === INICIO DEL BLOQUE DE ENLACES CORREGIDO === -->
-                        <!-- ============================================= -->
                         <p style="margin-top:1.5rem;" data-content-id="premio1InstagramLink">
                             Puedes ver más sobre el evento en estas galerías de Instagram: 
                             <a href="https://www.instagram.com/stories/highlights/17866205627812594/" class="link-highlight" target="_blank" rel="noopener noreferrer">Galería 1</a> y 
                             <a href="https://www.instagram.com/stories/highlights/18001063343292933/" class="link-highlight" target="_blank" rel="noopener noreferrer">Galería 2</a>.
                         </p>
-                        <!-- =========================================== -->
-                        <!-- === FIN DEL BLOQUE DE ENLACES CORREGIDO === -->
-                        <!-- =========================================== -->
 
                     </div>
                     <div class="sinopsis-img" style="flex-basis: 50%;">
@@ -141,17 +135,37 @@
     </div>
 
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
-    
-    <footer>
+        <!-- ======================== -->
+    <!--     MODAL DE CONTACTO    -->
+    <!-- ======================== -->
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content contact-modal-content">
+            <button id="contact-modal-close" class="modal-close">&times;</button>
+            <h2 data-content-id="contactTitle">Contacto</h2>
+            <div class="header-line"></div>
+            <p data-content-id="contactParagraph">Si deseas contratar mis servicios como presentadora, comunicadora o escritora, o si tienes alguna consulta, no dudes en ponerte en contacto conmigo.</p>
+            
+            <div class="contact-buttons-container">
+                <a href="mailto:yaizadiaztv@gmail.com" class="email-link">yaizadiaztv@gmail.com</a>
+            </div>
+            
+            <div class="social-icons">
+                <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+    < >
         <div class="container">
-            <div class="footer-social-icons">
+            <div class=" -social-icons">
                  <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                 <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
                 <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
             </div>
             <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
         </div>
-    </footer>
+    </ >
 
     <script src="config.js"></script>
     <script type="module">

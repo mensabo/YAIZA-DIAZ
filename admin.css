@@ -59,6 +59,8 @@ h3 { font-size: 1.1rem; font-weight: 600; color: var(--color-primario); margin: 
 
 /* === Formularios y Botones === */
 .input-label { font-weight: 500; margin-bottom: 0.5rem; display: block; }
+.input-label-small { font-weight: 500; font-size: 0.9rem; margin-bottom: 0.5rem; display: block; color: var(--color-secundario); }
+
 
 input, select, textarea {
     display: block; width: 100%;
@@ -96,6 +98,8 @@ button:hover {
     transform: translateY(-2px);
 }
 button:active { transform: translateY(0px) scale(0.98); }
+button:disabled { background-color: var(--color-secundario); cursor: not-allowed; transform: none; box-shadow: none; }
+
 
 #logout-button {
     background: none; color: var(--color-secundario);
@@ -107,7 +111,7 @@ button:active { transform: translateY(0px) scale(0.98); }
 /* === Navegación del Panel === */
 .admin-nav {
     display: flex;
-    flex-wrap: wrap; /* Permite que los botones pasen a la siguiente línea */
+    flex-wrap: wrap;
     gap: 0.5rem;
     margin-bottom: 2.5rem;
     background-color: var(--color-fondo);
@@ -153,6 +157,29 @@ button:active { transform: translateY(0px) scale(0.98); }
 }
 #drop-zone p, .drop-zone-small p { margin: 0; color: var(--color-secundario); font-weight: 500; }
 
+/* INICIO: Estilos para la nueva sección de subida de vídeo */
+.video-upload-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-borde);
+}
+.video-upload-inputs {
+    margin-bottom: 1rem;
+}
+.video-upload-inputs .input-label-small {
+    margin-top: 1rem;
+}
+.video-upload-inputs .input-label-small:first-child {
+    margin-top: 0;
+}
+.video-upload-section button {
+    width: 100%;
+}
+/* FIN: Estilos para la nueva sección de subida de vídeo */
+
+
 /* === Lista de Galerías, Entrevistas, Premios, etc. === */
 #gallery-list, #event-images-preview-list, #award-images-preview-list, #interview-image-preview {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -171,14 +198,25 @@ button:active { transform: translateY(0px) scale(0.98); }
 }
 .gallery-item:hover, .preview-item:hover { transform: translateY(-5px); box-shadow: var(--sombra-media); }
 .gallery-item img, .preview-item img {
-    width: 100%; height: 120px; object-fit: cover;
-    margin-bottom: 10px; border-radius: 6px; background-color: #eee;
+    width: 100%; height: 120px; 
+    object-fit: cover;
+    object-position: center 25%;
+    margin-bottom: 10px; 
+    border-radius: 6px; 
+    background-color: #eee;
 }
 .description-input {
     font-size: 0.85rem;
     padding: 8px;
     min-height: 60px;
     background-color: #fff;
+    margin-bottom: 0.5rem;
+}
+.position-input {
+    font-size: 0.8rem;
+    padding: 6px 8px;
+    text-align: center;
+    margin-bottom: 0.5rem;
 }
 .delete-button {
     background-color: var(--color-error);

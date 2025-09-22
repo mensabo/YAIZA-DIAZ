@@ -1,90 +1,123 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    // Asegurarse de que los servicios de Firebase estén disponibles
     if (!window.firebaseServices) {
-        console.error("Firebase no está inicializado.");
+        console.error("Firebase no está inicializado. Revisa la etiqueta <script> en tu HTML.");
         return;
     }
     const { db, doc, getDoc } = window.firebaseServices;
 
+    // Elementos del DOM donde se mostrará el contenido
     const eventTitleEl = document.getElementById('event-title');
     const eventTextEl = document.getElementById('event-text');
     const eventGalleryEl = document.getElementById('event-gallery');
-
-    // 1. Obtener el ID del evento desde la URL
+    
+    // Obtener el ID del evento desde la URL (ej: evento-detalle.html?id=DOCUMENTO_ID)
     const params = new URLSearchParams(window.location.search);
     const eventId = params.get('id');
 
     if (!eventId) {
-        eventTitleEl.textContent = "Evento no encontrado";
-        eventTextEl.innerHTML = "<p>No se ha especificado un evento para mostrar. Por favor, vuelve a la página de inicio y selecciona uno.</p>";
+        eventTitleEl.textContent = 'Evento no encontrado';
+        eventTextEl.textContent = 'No se ha especificado un ID de evento en la URL.';
         return;
     }
 
-    // 2. Buscar los datos de ese evento en Firebase
     try {
+        // Cargar los datos del documento del evento desde Firestore
         const docRef = doc(db, 'events', eventId);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
             const eventData = docSnap.data();
-            renderEventDetails(eventData);
+
+            // 1. Rellenar el título y el texto del evento
+            document.title = `${eventData.title} - Yaiza Díaz`; // Actualiza el título de la pestaña del navegador
+            eventTitleEl.textContent = eventData.title;
+            eventTextEl.innerHTML = eventData.text; // Usamos innerHTML para permitir párrafos guardados desde el admin
+
+            // 2. Renderizar la galería de imágenes y vídeos
+            eventGalleryEl.innerHTML = '';
+            if (eventData.galleryItems && eventData.galleryItems.length > 0) {
+                eventData.galleryItems.forEach(item => {
+                    const galleryItem = document.createElement('a');
+                    galleryItem.className = 'gallery-grid-item';
+
+                    if (item.type === 'video') {
+                        // Es un vídeo
+                        galleryItem.href = '#';
+                        galleryItem.classList.add('js-video-modal-trigger');
+                        galleryItem.dataset.videoSrc = item.videoSrc;
+                        galleryItem.innerHTML = `
+                            <img src="${item.thumbnailSrc}" alt="${item.description || eventData.title}">
+                            <div class="video-overlay-icon"><i class="fas fa-play"></i></div>
+                        `;
+                    } else {
+                        // Es una imagen
+                        galleryItem.href = item.src;
+                        galleryItem.classList.add('expandable-image');
+                        galleryItem.innerHTML = `<img src="${item.src}" alt="${item.description || eventData.title}">`;
+                    }
+                    
+                    // Aplicar el object-position si está definido
+                    if (item.position && galleryItem.querySelector('img')) {
+                         galleryItem.querySelector('img').style.objectPosition = `center ${item.position}`;
+                    }
+
+                    eventGalleryEl.appendChild(galleryItem);
+                });
+            } else {
+                eventGalleryEl.innerHTML = '<p>Este evento no tiene una galería de imágenes o vídeos.</p>';
+            }
+
         } else {
-            eventTitleEl.textContent = "Evento no encontrado";
-            eventTextEl.innerHTML = "<p>El evento que buscas no existe o ha sido eliminado.</p>";
+            eventTitleEl.textContent = 'Evento no encontrado';
+            eventTextEl.textContent = 'El ID del evento especificado no existe en la base de datos.';
         }
     } catch (error) {
-        console.error("Error al cargar el evento:", error);
-        eventTitleEl.textContent = "Error al cargar";
-        eventTextEl.innerHTML = "<p>Ocurrió un error al intentar cargar los detalles del evento.</p>";
+        console.error("Error al cargar los detalles del evento:", error);
+        eventTitleEl.textContent = 'Error al cargar';
+        eventTextEl.textContent = 'Ocurrió un error al intentar obtener los datos del evento. Revisa la consola para más detalles.';
     }
 
-    // 3. Rellenar la página con los datos (LÓGICA SIMPLIFICADA)
-    function renderEventDetails(data) {
-        document.title = `${data.title} - Yaiza Díaz`;
-        eventTitleEl.textContent = data.title;
-        eventTextEl.innerHTML = `<p>${data.text.replace(/\n/g, '</p><p>')}</p>`;
+    // Inicializar los modales de vídeo después de que la galería se haya renderizado
+    initializeVideoModalsForDetailsPage();
+});
 
-        eventGalleryEl.innerHTML = '';
-        if (data.galleryItems && data.galleryItems.length > 0) {
-            const galleryItems = data.galleryItems;
-
-            // --- ¡CAMBIO CLAVE AQUÍ! Se usa siempre la cuadrícula simple ---
-            eventGalleryEl.className = 'simple-photo-grid';
-
-            galleryItems.forEach(item => {
-                const galleryItem = document.createElement('div');
-                galleryItem.className = 'simple-photo-item';
-
-                if (item.type === 'video') {
-                    galleryItem.innerHTML = `
-                        <img src="${item.thumbnailSrc}" alt="${item.description || 'Miniatura de vídeo'}">
-                        <div class="gallery-item-overlay" style="opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);">
-                            <p>${item.description || 'Ver vídeo'}</p>
-                            <i class="fas fa-play" style="font-size: 2rem; margin-top: 1rem;"></i>
-                        </div>
-                    `;
-                    galleryItem.style.cursor = 'pointer';
-                    galleryItem.addEventListener('click', () => openVideoModal(item.videoSrc));
-                } else {
-                    galleryItem.innerHTML = `
-                        <a href="${item.src}" class="expandable-image">
-                            <img src="${item.src}" alt="${item.description || 'Imagen del evento'}">
-                        </a>
-                        <div class="gallery-item-overlay">
-                            <p>${item.description || ''}</p>
-                        </div>
-                    `;
-                }
-                eventGalleryEl.appendChild(galleryItem);
-            });
-        }
-    }
+// Función específica para los modales en esta página
+function initializeVideoModalsForDetailsPage() {
+    const videoModal = document.getElementById('video-modal');
+    if (!videoModal) return;
     
-    function openVideoModal(videoSrc) {
-        const videoModal = document.getElementById('video-modal');
-        const videoPlayer = document.getElementById('modal-video-player');
-        if (videoModal && videoPlayer) {
+    const videoPlayer = document.getElementById('modal-video-player');
+    const closeModalButtons = videoModal.querySelectorAll('.modal-close');
+
+    const openModal = (videoSrc) => {
+        if (videoPlayer) {
             videoPlayer.src = videoSrc;
             videoModal.classList.add('visible');
         }
-    }
-});
+    };
+
+    const closeModal = () => {
+        if (videoPlayer) {
+            videoPlayer.pause();
+            videoPlayer.src = '';
+        }
+        videoModal.classList.remove('visible');
+    };
+
+    document.getElementById('event-gallery').addEventListener('click', (e) => {
+        const trigger = e.target.closest('.js-video-modal-trigger');
+        if (trigger) {
+            e.preventDefault();
+            const videoSrc = trigger.dataset.videoSrc;
+            if (videoSrc) {
+                openModal(videoSrc);
+            }
+        }
+    });
+
+    closeModalButtons.forEach(button => button.addEventListener('click', closeModal));
+    videoModal.addEventListener('click', (e) => {
+        if (e.target === videoModal) closeModal();
+    });
+}

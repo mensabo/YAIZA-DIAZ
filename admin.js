@@ -171,7 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const eventsListEl = document.getElementById('events-list');
     const eventFormTitle = document.getElementById('event-form-title');
     const eventIdInput = document.getElementById('event-id-input');
-    const eventButtonTextInput = document.getElementById('event-button-text-input');
     const eventTitleInput = document.getElementById('event-title-input');
     const eventTextInput = document.getElementById('event-text-input');
     const eventOrderInput = document.getElementById('event-order-input');
@@ -181,16 +180,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const eventImagesPreviewList = document.getElementById('event-images-preview-list');
     const eventImagesDropZone = document.getElementById('event-images-drop-zone');
     const eventImageUploader = document.getElementById('event-image-uploader');
-    const addEventVideoButton = document.getElementById('add-event-video-button');
-    const eventVideoUrlInput = document.getElementById('event-video-url-input');
-    const eventThumbnailUrlInput = document.getElementById('event-thumbnail-url-input');
+    const eventVideoUploader = document.getElementById('event-video-uploader');
+    const eventVideoThumbnailUploader = document.getElementById('event-video-thumbnail-uploader');
+    const uploadEventVideoButton = document.getElementById('upload-event-video-button');
     let eventsSortable = null;
     let eventImagesSortable = null;
-
-    async function loadEvents() { /* ... Lógica de carga ... */ }
-    function renderEvents(events) { /* ... Lógica de renderizado ... */ }
-    function resetEventForm() { /* ... Lógica de reseteo ... */ }
-    // (Incluyo el código completo abajo)
 
     // ===========================================
     // --- SECCIÓN DE GESTIÓN DE ENTREVISTAS ---
@@ -210,11 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveInterviewOrderButton = document.getElementById('save-interview-order-button');
     let interviewsSortable = null;
     let interviewThumbnailUrl = '';
-
-    async function loadInterviews() { /* ... Lógica de carga ... */ }
-    function renderInterviews(interviews) { /* ... Lógica de renderizado ... */ }
-    function resetInterviewForm() { /* ... Lógica de reseteo ... */ }
-    // (Incluyo el código completo abajo)
 
     // ===========================================
     // --- SECCIÓN DE GESTIÓN DE PREMIOS ---
@@ -236,11 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const awardThumbnailUrlInput = document.getElementById('award-thumbnail-url-input');
     let awardsSortable = null;
     let awardImagesSortable = null;
-
-    async function loadAwards() { /* ... Lógica de carga ... */ }
-    function renderAwards(awards) { /* ... Lógica de renderizado ... */ }
-    function resetAwardForm() { /* ... Lógica de reseteo ... */ }
-    // (Incluyo el código completo abajo)
 
     // ===========================================
     // --- SECCIÓN DE GESTIÓN DE TEXTOS (CORREGIDA) ---
@@ -267,24 +251,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const pageId = pageSelector.value;
         if (!pageId) return;
         textFieldsContainer.innerHTML = '<p>Cargando textos...</p>';
-        
         try {
             const docRef = doc(db, 'pages', pageId);
             const docSnap = await getDoc(docRef);
             const existingData = docSnap.exists() ? docSnap.data() : {};
-            
             textFieldsContainer.innerHTML = '';
-            
             const expectedKeys = pageContentMap[pageId] || Object.keys(existingData);
             if (!pageContentMap[pageId]) {
                  console.warn(`No hay un mapa de contenido definido para la página ${pageId}. Se usarán solo los campos existentes.`);
             }
-
             expectedKeys.sort().forEach(key => {
                 const value = existingData[key] || '';
                 const fieldWrapper = document.createElement('div');
                 fieldWrapper.className = 'form-section';
-
                 const label = document.createElement('label');
                 label.className = 'input-label';
                 label.textContent = key;
@@ -292,18 +271,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     label.style.color = 'var(--color-error)';
                     label.title = 'Este es un campo nuevo que se añadirá a la base de datos.';
                 }
-                
                 const isLongText = value.length > 100 || value.includes('<');
                 const inputElement = isLongText ? document.createElement('textarea') : document.createElement('input');
                 inputElement.dataset.key = key;
                 inputElement.value = value;
                 if (isLongText) inputElement.rows = 5;
-                
                 fieldWrapper.appendChild(label);
                 fieldWrapper.appendChild(inputElement);
                 textFieldsContainer.appendChild(fieldWrapper);
             });
-
         } catch (error) {
             console.error("Error al cargar textos:", error);
             textFieldsContainer.innerHTML = '<p>Error al cargar los textos.</p>';
@@ -338,9 +314,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const items = [];
         eventImagesPreviewList.querySelectorAll('.preview-item').forEach(el => {
             const description = el.querySelector('.description-input').value;
-            const itemData = { type: el.dataset.type, description };
-            if (itemData.type === 'image') itemData.src = el.dataset.src;
-            else {
+            const position = el.querySelector('.position-input').value;
+            const itemData = { type: el.dataset.type, description, position };
+            if (itemData.type === 'image') {
+                itemData.src = el.dataset.src;
+            } else {
                 itemData.videoSrc = el.dataset.videoSrc;
                 itemData.thumbnailSrc = el.dataset.thumbnailSrc;
             }
@@ -356,15 +334,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.className = 'preview-item';
             div.dataset.type = item.type;
-            if (item.type === 'image') div.dataset.src = item.src;
-            else {
+            if (item.type === 'image') {
+                div.dataset.src = item.src;
+            } else {
                 div.dataset.videoSrc = item.videoSrc;
                 div.dataset.thumbnailSrc = item.thumbnailSrc;
             }
+            const currentPos = item.position || 'center';
             div.innerHTML = `
                 <img src="${item.thumbnailSrc || item.src}" alt="Previsualización">
                 <span class="item-type-badge">${item.type === 'video' ? 'VÍDEO' : 'IMAGEN'}</span>
                 <textarea class="description-input" placeholder="Descripción...">${item.description || ''}</textarea>
+                <select class="position-input">
+                    <option value="center" ${currentPos === 'center' ? 'selected' : ''}>Centro (defecto)</option>
+                    <option value="top" ${currentPos === 'top' ? 'selected' : ''}>Arriba</option>
+                    <option value="bottom" ${currentPos === 'bottom' ? 'selected' : ''}>Abajo</option>
+                </select>
                 <button type="button" class="delete-button">Eliminar</button>`;
             eventImagesPreviewList.appendChild(div);
         });
@@ -380,14 +365,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const storageRef = ref(storage, `events/${Date.now()}_${file.name}`);
             await uploadBytes(storageRef, file);
             const url = await getDownloadURL(storageRef);
-            newItems.push({ type: 'image', src: url, description: '' });
+            newItems.push({ type: 'image', src: url, description: '', position: 'center' }); 
         }
         renderEventGalleryPreview([...currentItems, ...newItems]);
         eventImagesDropZone.querySelector('p').textContent = 'Arrastra imágenes aquí o haz clic para subirlas';
         eventImageUploader.value = '';
     }
 
-    loadEvents = async () => {
+    async function loadEvents() {
         eventsListEl.innerHTML = '<p>Cargando eventos...</p>';
         const q = query(collection(db, 'events'), orderBy('order'));
         const snapshot = await getDocs(q);
@@ -395,30 +380,29 @@ document.addEventListener('DOMContentLoaded', () => {
         renderEvents(events);
     };
 
-    renderEvents = (events) => {
+    function renderEvents(events) {
         eventsListEl.innerHTML = '';
         if (events.length === 0) eventsListEl.innerHTML = '<p>No hay eventos creados.</p>';
         events.forEach(event => {
             const div = document.createElement('div');
             div.className = 'event-item';
             div.dataset.id = event.id;
-            div.innerHTML = `<h4>${event.mainButtonText} (Orden: ${event.order})</h4><div class="event-controls"><button class="event-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
+            div.innerHTML = `<h4>${event.title} (Orden: ${event.order})</h4><div class="event-controls"><button class="event-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
             eventsListEl.appendChild(div);
         });
         if (eventsSortable) eventsSortable.destroy();
         eventsSortable = new Sortable(eventsListEl, { animation: 150, ghostClass: 'sortable-ghost' });
     };
     
-    resetEventForm = () => {
+    function resetEventForm() {
         eventFormTitle.textContent = 'Crear Nuevo Evento';
         eventIdInput.value = '';
-        eventButtonTextInput.value = '';
         eventTitleInput.value = '';
         eventTextInput.value = '';
         eventOrderInput.value = '';
         renderEventGalleryPreview([]);
-        eventVideoUrlInput.value = '';
-        eventThumbnailUrlInput.value = '';
+        eventVideoUploader.value = '';
+        eventVideoThumbnailUploader.value = '';
         cancelEditEventButton.style.display = 'none';
     };
     
@@ -426,14 +410,50 @@ document.addEventListener('DOMContentLoaded', () => {
     eventImageUploader.addEventListener('change', e => handleEventImageUpload(e.target.files));
     eventImagesDropZone.addEventListener('dragover', e => e.preventDefault());
     eventImagesDropZone.addEventListener('drop', e => { e.preventDefault(); handleEventImageUpload(e.dataTransfer.files); });
-    addEventVideoButton.addEventListener('click', () => {
-        const videoUrl = eventVideoUrlInput.value.trim();
-        const thumbUrl = eventThumbnailUrlInput.value.trim();
-        if (!videoUrl || !thumbUrl) return alert("Introduce la URL del vídeo y de su miniatura.");
-        renderEventGalleryPreview([...getItemsFromEventPreview(), { type: 'video', videoSrc: videoUrl, thumbnailSrc: thumbUrl, description: '' }]);
-        eventVideoUrlInput.value = '';
-        eventThumbnailUrlInput.value = '';
+    
+    uploadEventVideoButton.addEventListener('click', async () => {
+        const videoFile = eventVideoUploader.files[0];
+        const thumbnailFile = eventVideoThumbnailUploader.files[0];
+
+        if (!videoFile || !thumbnailFile) {
+            return alert("Por favor, selecciona un archivo de vídeo y una imagen para la miniatura.");
+        }
+
+        uploadEventVideoButton.textContent = 'Subiendo...';
+        uploadEventVideoButton.disabled = true;
+
+        try {
+            const thumbStorageRef = ref(storage, `events/thumbnails/${Date.now()}_${thumbnailFile.name}`);
+            await uploadBytes(thumbStorageRef, thumbnailFile);
+            const thumbnailUrl = await getDownloadURL(thumbStorageRef);
+
+            const videoStorageRef = ref(storage, `events/videos/${Date.now()}_${videoFile.name}`);
+            await uploadBytes(videoStorageRef, videoFile);
+            const videoUrl = await getDownloadURL(videoStorageRef);
+
+            const newVideoItem = {
+                type: 'video',
+                videoSrc: videoUrl,
+                thumbnailSrc: thumbnailUrl,
+                description: '',
+                position: 'center'
+            };
+            
+            const currentItems = getItemsFromEventPreview();
+            renderEventGalleryPreview([...currentItems, newVideoItem]);
+
+            eventVideoUploader.value = '';
+            eventVideoThumbnailUploader.value = '';
+
+        } catch (error) {
+            console.error("Error al subir el vídeo:", error);
+            alert("Ocurrió un error al subir el vídeo. Por favor, inténtalo de nuevo.");
+        } finally {
+            uploadEventVideoButton.textContent = 'Añadir Vídeo Subido';
+            uploadEventVideoButton.disabled = false;
+        }
     });
+
     eventImagesPreviewList.addEventListener('click', e => { if (e.target.classList.contains('delete-button')) e.target.closest('.preview-item').remove(); });
     cancelEditEventButton.addEventListener('click', resetEventForm);
 
@@ -441,13 +461,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const eventId = eventIdInput.value;
         const order = parseInt(eventOrderInput.value) || 0;
         const eventData = {
-            mainButtonText: eventButtonTextInput.value,
             title: eventTitleInput.value,
             text: eventTextInput.value,
             galleryItems: getItemsFromEventPreview(),
             order
         };
-        if (!eventData.mainButtonText || !eventData.title) return alert('Completa al menos el texto del botón y el título.');
+        if (!eventData.title) return alert('El evento debe tener un título.');
         
         if (eventId) await updateDoc(doc(db, 'events', eventId), eventData);
         else await addDoc(collection(db, 'events'), eventData);
@@ -472,7 +491,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = docSnap.data();
             eventFormTitle.textContent = 'Editando Evento';
             eventIdInput.value = docId;
-            eventButtonTextInput.value = data.mainButtonText;
             eventTitleInput.value = data.title;
             eventTextInput.value = data.text;
             eventOrderInput.value = data.order;
@@ -495,14 +513,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===========================================
     // --- IMPLEMENTACIÓN COMPLETA DE ENTREVISTAS ---
     // ===========================================
-    loadInterviews = async () => {
+    async function loadInterviews() {
+        const interviewsListEl = document.getElementById('interviews-list');
         interviewsListEl.innerHTML = '<p>Cargando entrevistas...</p>';
         const q = query(collection(db, 'interviews'), orderBy('order'));
         const snapshot = await getDocs(q);
         renderInterviews(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
     };
 
-    renderInterviews = (interviews) => {
+    function renderInterviews(interviews) {
+        const interviewsListEl = document.getElementById('interviews-list');
         interviewsListEl.innerHTML = '';
         if (interviews.length === 0) interviewsListEl.innerHTML = '<p>No hay entrevistas creadas.</p>';
         interviews.forEach(interview => {
@@ -516,7 +536,8 @@ document.addEventListener('DOMContentLoaded', () => {
         interviewsSortable = new Sortable(interviewsListEl, { animation: 150, ghostClass: 'sortable-ghost' });
     };
     
-    resetInterviewForm = () => {
+    function resetInterviewForm() {
+        const interviewFormTitle = document.getElementById('interview-form-title');
         interviewFormTitle.textContent = 'Añadir Nueva Entrevista';
         interviewIdInput.value = '';
         interviewMainTitleInput.value = '';
@@ -576,7 +597,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const item = e.target.closest('.interview-item');
         if (!item) return;
         const docId = item.dataset.id;
-
         if (e.target.classList.contains('delete-button')) {
             if (confirm('¿Seguro que quieres eliminar esta entrevista?')) {
                 await deleteDoc(doc(db, 'interviews', docId));
@@ -585,6 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (e.target.classList.contains('interview-edit-button')) {
             const docSnap = await getDoc(doc(db, 'interviews', docId));
             const data = docSnap.data();
+            const interviewFormTitle = document.getElementById('interview-form-title');
             interviewFormTitle.textContent = 'Editando Entrevista';
             interviewIdInput.value = docId;
             interviewMainTitleInput.value = data.mainTitle;
@@ -668,14 +689,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return { getItemsFromPreview, renderPreview, handleImageUpload };
     })();
 
-    loadAwards = async () => {
+    async function loadAwards() {
         awardsListEl.innerHTML = '<p>Cargando premios...</p>';
         const q = query(collection(db, 'awards'), orderBy('order'));
         const snapshot = await getDocs(q);
         renderAwards(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
     };
 
-    renderAwards = (awards) => {
+    function renderAwards(awards) {
         awardsListEl.innerHTML = '';
         if (awards.length === 0) awardsListEl.innerHTML = '<p>No hay premios creados.</p>';
         awards.forEach(award => {
@@ -689,7 +710,7 @@ document.addEventListener('DOMContentLoaded', () => {
         awardsSortable = new Sortable(awardsListEl, { animation: 150, ghostClass: 'sortable-ghost' });
     };
 
-    resetAwardForm = () => {
+    function resetAwardForm() {
         awardFormTitle.textContent = 'Añadir Nuevo Premio';
         awardIdInput.value = '';
         awardTitleInput.value = '';

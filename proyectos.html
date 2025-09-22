@@ -88,6 +88,7 @@
             <ul id="nav-links">
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="television.html">Televisión</a></li>
+                <li><a href="eventos.html">Eventos</a></li>
                 <li><a href="radio.html">Radio</a></li>
                 <li><a href="publicidad.html">Publicidad</a></li>
                 <li><a href="comunicacion.html">Comunicación</a></li>
@@ -97,8 +98,7 @@
                 <li><a href="entrevistas.html">Entrevistas</a></li>
                 <li><a href="libro.html">Libro</a></li>
                 <li><a href="modelaje.html">Modelo</a></li>
-                <li><a href="index.html#prensa">Eventos</a></li>
-                <li><a href="index.html#contacto">Contacto</a></li>
+                <li><a href="#" id="contact-modal-trigger">Contacto</a></li>
             </ul>
         </nav>
     </header>
@@ -129,50 +129,4 @@
                 <div class="sinopsis-text" style="flex-basis: 55%;">
                     <h3 data-content-id="projectTitle"></h3>
                     <p data-content-id="projectParagraph1"></p>
-                    <p data-content-id="projectParagraph2"></p>
-                    
-                    <blockquote class="about-quote" style="font-size: 1.4rem; margin: 2rem 0;" data-content-id="projectQuote"></blockquote>
-                    
-                    <a href="https://www.formulatriplerosa.es" class="proyecto-cta-button" target="_blank" rel="noopener noreferrer">
-                        Visita formulatriplerosa.es
-                    </a>
-
-                    <div class="proyecto-social-links">
-                        <p data-content-id="socialsText"></p>
-                        <div class="proyecto-social-icons">
-                            <a href="https://www.tiktok.com/@formula.triple.rosa" target="_blank" rel="noopener noreferrer" aria-label="Visita nuestro TikTok"><i class="fab fa-tiktok"></i></a>
-                            <a href="https://www.instagram.com/formulatriplerosa/" target="_blank" rel="noopener noreferrer" aria-label="Visita nuestro Instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="https://www.youtube.com/@FormulaTripleRosa" target="_blank" rel="noopener noreferrer" aria-label="Visita nuestro canal de YouTube"><i class="fab fa-youtube"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
-    
-    <footer>
-        <div class="container">
-            <div class="footer-social-icons">
-                 <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
-                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-            </div>
-            <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
-        </div>
-    </footer>
-    
-    <script src="config.js"></script>
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        window.firebaseServices = {
-            db, collection, getDocs, orderBy, query, doc, getDoc
-        };
-    </script>
-    <script src="script.js" type="module"></script>
-</body>
-</html>
+                    <p data-c

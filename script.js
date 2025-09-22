@@ -63,40 +63,31 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.error("Error al cargar textos dinámicos:", error);
         }
     }
-
-    // --- FUNCIÓN PARA INICIALIZAR POP-UPS DE LOGOS ---
-    function initializeLogoPopups() {
-        const linksWithPopups = document.querySelectorAll('.link-with-logo-popup');
-        linksWithPopups.forEach(linkContainer => {
-            const popup = linkContainer.querySelector('.logo-popup');
-            if (popup) {
-                linkContainer.addEventListener('mouseenter', () => {
-                    popup.classList.add('visible');
-                });
-                linkContainer.addEventListener('mouseleave', () => {
-                    popup.classList.remove('visible');
-                });
-            }
-        });
-    }
-
+    
     // =======================================================
     // --- EJECUCIÓN ORDENADA DE SCRIPTS ---
     // =======================================================
-    await loadDynamicText(pageId); 
-    initializeLogoPopups();      
+    
+    if (pageId !== 'eventoDetallePage') {
+        await loadDynamicText(pageId);
+    }
+    
+    initializeContactModal();
     initializeSidenotes();
+    initializeSmoothScroll();
 
     if (pageId === 'homepage') {
         initializeHeroSlider();
-        loadAndRenderEvents();
-        handleAnchorScroll(); // <-- SE AÑADE LA LLAMADA A LA NUEVA FUNCIÓN
+    }
+    if (pageId === 'eventosPage') {
+        loadAndRenderEventsGridPage();
     }
     if (pageId === 'entrevistasPage') {
         loadAndRenderInterviews();
     }
     if (pageId === 'libroPage') {
         initializeLetterModal();
+        initializeAlbertoLeonModal();
     }
     if (pageId === 'modelajePage') {
         initializeStaticGallery('galeria-interactiva-calendario');
@@ -126,6 +117,40 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- DEFINICIONES DE FUNCIONES ---
     // =======================================================
 
+    function initializeContactModal() {
+        const modal = document.getElementById('contact-modal');
+        // El trigger ahora puede ser cualquier enlace con ese ID
+        const openTriggers = document.querySelectorAll('#contact-modal-trigger'); 
+        const closeButton = document.getElementById('contact-modal-close');
+
+        if (!modal || openTriggers.length === 0 || !closeButton) {
+            return;
+        }
+
+        const openModal = (e) => {
+            e.preventDefault();
+            // Si el menú móvil está abierto, cerrarlo
+            if (navLinks && navLinks.classList.contains('nav-open')) {
+                navLinks.classList.remove('nav-open');
+            }
+            modal.classList.add('visible');
+        };
+
+        const closeModal = () => modal.classList.remove('visible');
+
+        openTriggers.forEach(trigger => {
+            trigger.addEventListener('click', openModal);
+        });
+
+        closeButton.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            // Se cierra si se hace clic en el fondo oscuro
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    }
+    
     function initializeHeroSlider() {
         const heroDynamicSection = document.querySelector('.hero-dynamic');
         const tabs = document.querySelectorAll('.hero-tab');
@@ -215,36 +240,61 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
-        heroDynamicSection.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
-        heroDynamicSection.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].screenX; handleSwipe(); });
+        if (heroDynamicSection) {
+            heroDynamicSection.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+            heroDynamicSection.addEventListener('touchend', e => { touchEndX = e.changedTouches[0].screenX; handleSwipe(); });
+        }
         
         switchTab(0);
         resetInterval();
     }
 
-    async function loadAndRenderEvents() {
-        const container = document.getElementById('dynamic-event-tags');
-        if (!container) return;
+    async function loadAndRenderEventsGridPage() {
+        const grid = document.getElementById('dynamic-events-grid');
+        if (!grid) return;
         try {
             const q = query(collection(db, 'events'), orderBy('order'));
             const snapshot = await getDocs(q);
             const events = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            
-            container.innerHTML = '';
+
+            grid.innerHTML = '';
+            if (events.length === 0) {
+                grid.innerHTML = '<p>Próximamente se anunciarán nuevos eventos.</p>';
+                return;
+            }
+
             events.forEach(event => {
-                const button = document.createElement('button');
-                button.className = 'event-tag-button';
-                button.textContent = event.mainButtonText;
+                const firstItem = event.galleryItems && event.galleryItems.length > 0 
+                    ? event.galleryItems[0] 
+                    : { type: 'image', src: 'images/placeholder.png' }; 
+
+                let mediaElementHtml = '';
+                if (firstItem.type === 'video' && firstItem.videoSrc) {
+                    mediaElementHtml = `
+                        <video autoplay loop muted playsinline poster="${firstItem.thumbnailSrc || ''}">
+                            <source src="${firstItem.videoSrc}" type="video/mp4">
+                            Tu navegador no soporta vídeos.
+                        </video>
+                    `;
+                } else {
+                    mediaElementHtml = `<img src="${firstItem.thumbnailSrc || firstItem.src}" alt="${event.title}">`;
+                }
                 
-                button.addEventListener('click', () => {
-                    window.location.href = `evento-detalle.html?id=${event.id}`;
-                });
-                
-                container.appendChild(button);
+                const card = document.createElement('a');
+                card.href = `evento-detalle.html?id=${event.id}`;
+                card.className = 'event-card-link';
+                card.innerHTML = `
+                    <div class="event-card-image">
+                        ${mediaElementHtml}
+                    </div>
+                    <div class="event-card-content">
+                        <h4>${event.title}</h4>
+                    </div>`;
+                grid.appendChild(card);
             });
         } catch (error) {
-            console.error("Error cargando eventos:", error);
-            container.innerHTML = '<p>No se pudieron cargar los eventos.</p>';
+            console.error("Error cargando la galería de eventos:", error);
+            grid.innerHTML = '<p>Ocurrió un error al cargar los eventos.</p>';
         }
     }
     
@@ -485,23 +535,69 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    // --- NUEVA FUNCIÓN PARA EL SCROLL PRECISO ---
-    function handleAnchorScroll() {
-        // Usamos un pequeño retraso para asegurar que la página se haya renderizado completamente
-        setTimeout(() => {
-            if (window.location.hash === '#eventos-anchor') {
-                const anchorElement = document.getElementById('eventos-anchor');
-                if (anchorElement) {
-                    const headerOffset = document.querySelector('header')?.offsetHeight || 70;
-                    const elementPosition = anchorElement.getBoundingClientRect().top;
-                    const offsetPosition = window.pageYOffset + elementPosition - headerOffset - 20; // 20px de margen extra
-      
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: 'smooth'
-                    });
+    function initializeAlbertoLeonModal() {
+        document.body.addEventListener('click', (e) => {
+            if (e.target && e.target.id === 'alberto-leon-video-trigger') {
+                const videoModal = document.getElementById('video-modal');
+                if (videoModal) {
+                    videoModal.classList.add('visible');
                 }
             }
-        }, 100); // 100ms de retraso
+        });
+
+        const videoModal = document.getElementById('video-modal');
+        const closeModalButton = document.getElementById('modal-close-btn');
+
+        if (videoModal && closeModalButton) {
+            const closeModal = () => {
+                videoModal.classList.remove('visible');
+            };
+            closeModalButton.addEventListener('click', closeModal);
+            videoModal.addEventListener('click', (e) => {
+                if (e.target === videoModal) {
+                    closeModal();
+                }
+            });
+        }
+    }
+
+    function initializeSmoothScroll() {
+        const header = document.querySelector('header');
+        const headerOffset = header ? header.offsetHeight + 20 : 90;
+
+        const performScroll = (targetElement) => {
+            if (targetElement) {
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }
+        };
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            // Excluir el trigger del modal de contacto de esta lógica
+            if (anchor.id === 'contact-modal-trigger') return;
+
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href.length > 1 && document.querySelector(href)) {
+                    e.preventDefault();
+                    if (navLinks && navLinks.classList.contains('nav-open')) {
+                        navLinks.classList.remove('nav-open');
+                    }
+                    const targetElement = document.querySelector(href);
+                    setTimeout(() => performScroll(targetElement), 50);
+                }
+            });
+        });
+
+        window.addEventListener('load', () => {
+            if (window.location.hash) {
+                const targetElement = document.querySelector(window.location.hash);
+                performScroll(targetElement);
+            }
+        });
     }
 });

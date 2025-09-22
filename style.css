@@ -281,7 +281,8 @@ nav ul li a:hover::after {
 
 .project-card img {
     width: 100%;
-    height: 220px;
+    aspect-ratio: 4 / 3; /* <-- ESTA ES LA LÍNEA CLAVE AÑADIDA */
+    height: auto;
     object-fit: cover;
     object-position: center 25%;
     background-color: #e9e9e9;
@@ -352,6 +353,17 @@ nav ul li a:hover::after {
     color: var(--color-blanco);
     border-color: var(--color-acento);
 }
+
+/* Ocultamos las viejas flechas en TODAS las vistas */
+.carousel-navigation {
+    display: none;
+}
+
+/* Ocultamos el botón "Ver más" por defecto (en escritorio) */
+.toggle-events-button {
+    display: none;
+}
+
 
 /* ======================== */
 /*     SECCIÓN CONTACTO     */
@@ -459,8 +471,9 @@ footer {
 .simple-photo-item img {
     width: 100%;
     height: auto;
-    aspect-ratio: 4 / 3; /* Proporción estándar para consistencia visual */
-    object-fit: cover; /* Recorte suave para mantener la proporción */
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center center;
     display: block;
 }
 
@@ -1242,20 +1255,19 @@ footer {
 }
 
 /* =================================== */
-/*   ESTILOS NUEVA GALERÍA INTERACTIVA   */
+/*   ESTILOS NUEVA GALERÍA INTERACTIVA (CORREGIDO) */
 /* =================================== */
-#galeria-interactiva {
+#galeria-interactiva,
+.galeria-interactiva-container {
     display: flex;
     gap: 2rem;
-    height: 70vh;
-    max-height: 600px;
     background-color: var(--color-blanco);
     padding: 1.5rem;
     border-radius: 8px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-#galeria-principal {
+.galeria-principal {
     flex-grow: 1;
     position: relative;
     overflow: hidden;
@@ -1263,9 +1275,11 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+    max-height: 600px;
 }
 
-#galeria-bg-desenfocado {
+
+.galeria-bg-desenfocado {
     position: absolute;
     top: 0;
     left: 0;
@@ -1278,7 +1292,7 @@ footer {
     transition: background-image 0.6s ease-in-out;
 }
 
-#imagen-principal {
+.imagen-principal {
     position: relative;
     z-index: 2;
     max-width: 100%;
@@ -1289,7 +1303,7 @@ footer {
     transition: opacity 0.4s ease-in-out;
 }
 
-#descripcion-principal {
+.descripcion-principal {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -1305,21 +1319,23 @@ footer {
     transition: opacity 0.4s, transform 0.4s;
 }
 
-.galeria-principal:hover #descripcion-principal,
+.galeria-principal:hover .descripcion-principal,
 .descripcion-principal.visible-temporarily {
     opacity: 1;
     transform: translateY(0);
 }
 
-#galeria-lista-miniaturas {
+.galeria-lista-miniaturas {
     flex-basis: 180px;
     flex-shrink: 0;
     overflow-y: auto;
+    max-height: 600px;
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
 
-#galeria-lista-miniaturas::-webkit-scrollbar {
+
+.galeria-lista-miniaturas::-webkit-scrollbar {
     display: none;
 }
 
@@ -1631,7 +1647,7 @@ footer {
 
 .compra-portada {
     flex: 0 0 320px;
-    background-color: var(--color-magenta-libro); /* Color de fondo */
+    background-color: var(--color-magenta-libro);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1641,7 +1657,7 @@ footer {
 .compra-portada img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* CORRECCIÓN: Asegura que toda la imagen sea visible */
+    object-fit: contain;
     display: block;
 }
 
@@ -1705,11 +1721,11 @@ footer {
 }
 
 .btn-compra.btn-once {
-    background-color: #006a4d; /* Color corporativo de la ONCE */
-    display: inline-flex; /* Para alinear logo y texto */
+    background-color: #006a4d;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem; /* Espacio entre logo y texto */
+    gap: 0.75rem;
 }
 
 .btn-compra.btn-once:hover {
@@ -1718,7 +1734,7 @@ footer {
 }
 
 .btn-compra.btn-once img {
-    height: 24px; /* Ajustar altura del logo */
+    height: 24px;
     width: auto;
 }
 
@@ -1726,22 +1742,123 @@ footer {
     display: block;
     max-width: 250px;
     width: 100%;
-    margin: 0 auto 1.5rem auto; /* Centrada y con margen inferior */
+    margin: 0 auto 1.5rem auto;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* ======================================================= */
+/* ===   NUEVOS ESTILOS: PÁGINA DE EVENTOS (v2)        === */
+/* ======================================================= */
+#eventos-header {
+    padding-top: 0;
+    padding-bottom: 4rem;
+}
+
+.eventos-page-hero {
+    width: 100%;
+    height: 65vh;
+    max-height: 550px;
+    margin-bottom: 4rem;
+}
+
+/* INICIO: REGLA CORREGIDA */
+/* Aquí estaba el error. He vuelto a añadir "img" al selector. */
+.eventos-page-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 35% 22%; /* Ajustado horizontal y verticalmente */
+}
+/* FIN: REGLA CORREGIDA */
+
+#eventos-header .container h2 {
+    margin-bottom: 1.5rem;
+}
+
+#eventos-header .container .section-intro {
+    margin-top: 2.5rem;
+    margin-bottom: 0;
+}
+
+#events-gallery-section {
+    background-color: var(--color-secundario);
+    padding: 5rem 0;
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.event-card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    background-color: var(--color-blanco);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card-link:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+}
+
+.event-card-image {
+    position: relative;
+    width: 100%;
+    padding-top: 125%;
+    overflow: hidden;
+}
+
+.event-card-image img,
+.event-card-image video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.event-card-link:hover .event-card-image img,
+.event-card-link:hover .event-card-image video {
+    transform: scale(1.05);
+}
+
+.event-card-content {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.event-card-content h4 {
+    font-size: 1.4rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.event-card-content p {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
 }
 
 /* ======================== */
 /*      RESPONSIVE DESIGN   */
 /* ======================== */
 @media (max-width: 900px) {
-    #galeria-interactiva {
+    #galeria-interactiva,
+    .galeria-interactiva-container {
         flex-direction: column;
         height: auto;
         max-height: none;
     }
-    #galeria-principal { min-height: 50vh; }
-    #galeria-lista-miniaturas {
+    .galeria-principal { min-height: 50vh; }
+    .galeria-lista-miniaturas {
         flex-basis: auto;
         overflow-y: initial;
         overflow-x: auto;
@@ -1758,7 +1875,6 @@ footer {
         grid-template-columns: repeat(2, 1fr);
         grid-auto-rows: 250px;
     }
-    /* Reseteamos las reglas de expansión para tablet */
     .gallery-grid-item:nth-child(1),
     .gallery-grid-item:nth-child(4),
     .gallery-grid-item:nth-child(5),
@@ -1796,13 +1912,12 @@ footer {
     }
 
     nav {
-        /* En móvil, volvemos a space-between para el logo y el botón hamburguesa */
         justify-content: space-between;
         padding: 0 1rem;
     }
 
     .nav-title {
-        margin-right: 0; /* Reseteamos el margen en móvil */
+        margin-right: 0;
     }
 
     .nav-title h1 {
@@ -1831,8 +1946,10 @@ footer {
         background-color: rgba(20, 20, 20, 0.95);
         backdrop-filter: blur(8px);
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
+        overflow-y: auto;
+        padding-top: 80px;
         transition: left 0.3s ease-in-out;
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
     }
@@ -1841,18 +1958,17 @@ footer {
         left: 0;
     }
 
-    /* --- CORRECCIÓN MENÚ MÓVIL --- */
     #nav-links li {
-        margin: 0.2rem 0; /* Espaciado vertical reducido */
+        margin: 0.2rem 0;
         width: 100%;
         text-align: center;
     }
 
     #nav-links a, #nav-links a:visited {
         font-family: var(--fuente-titulos);
-        font-size: 1.1rem; /* Tamaño de fuente reducido */
+        font-size: 1.1rem;
         font-weight: 400;
-        padding: 0.6rem 1rem; /* Padding reducido */
+        padding: 0.6rem 1rem;
         border-radius: 5px;
         display: inline-block;
         width: 90%;
@@ -1861,11 +1977,10 @@ footer {
 
     #nav-links a:hover,
     #nav-links a:active {
-        background-color: rgba(188, 160, 125, 0.15); /* Efecto de fondo al tocar */
+        background-color: rgba(188, 160, 125, 0.15);
         color: var(--color-blanco);
     }
 
-    /* Anulamos efectos de escritorio en móvil */
     #nav-links a::after {
         display: none;
     }
@@ -2001,7 +2116,6 @@ footer {
         width: auto;
         border-radius: 3px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        transition: transform 0.2s ease;
         animation: mobile-book-pulse 3s ease-in-out infinite;
     }
     
@@ -2084,55 +2198,39 @@ footer {
     .click-annotation-desktop {
         display: none;
     }
-/* ================================================================= */
-/* === NUEVOS ESTILOS PARA TEXTO Y FLECHA SEPARADOS (MÓVIL) === */
-/* ================================================================= */
 
-/* --- Estilos para el texto "Click aquí" --- */
 .annotation-text-mobile {
     position: absolute;
-    /* Posición: a la derecha del todo */
     left: 115%;
-    /* Centrado verticalmente con el libro */
     top: 50%;
     transform: translateY(-50%);
-
     font-family: var(--fuente-manuscrita);
     font-size: 1.5rem;
     color: var(--color-blanco);
     text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
     white-space: nowrap;
-    
-    /* Animación de aparición */
     opacity: 0;
     transition: opacity 0.4s ease 0.2s;
     pointer-events: none;
 }
 
-/* --- Estilos para el contenedor de la flecha --- */
 .annotation-arrow-mobile {
     position: absolute;
-    /* Posición: entre el libro y el texto */
     left: 45%;
     top: 200%;
     transform: translateY(-50%);
-
     width: 50px;
     height: 50px;
-    
-    /* Animación de aparición */
     opacity: 0;
     transition: opacity 0.4s ease 0.2s;
     pointer-events: none;
 }
 
-/* Regla para que ambos elementos aparezcan cuando el libro esté visible */
 #mobile-book-link.visible .annotation-text-mobile,
 #mobile-book-link.visible .annotation-arrow-mobile {
     opacity: 1;
 }
 
-/* Mantenemos la animación de la flecha */
 .annotation-arrow-mobile .annotation-arrow {
     width: 100%;
     height: 100%;
@@ -2141,7 +2239,6 @@ footer {
     animation-delay: 1.5s;
 }
 
-    /* Ajustes responsive para la carta */
     .letter-body { 
         padding: 2.5rem 1.5rem;
     }
@@ -2178,7 +2275,6 @@ footer {
         width: 100%;
     }
 
-    /* NUEVOS AJUSTES PARA GALERÍA DE COMUNICACIÓN */
     .comunicacion-gallery {
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
@@ -2198,26 +2294,6 @@ footer {
         aspect-ratio: 16 / 9;
     }
     
-    @media (min-width: 769px) {
-        #habecu-gallery {
-            grid-template-columns: repeat(3, 1fr);
-            grid-auto-rows: 220px;
-        }
-        #habecu-gallery img:nth-child(1) {
-            grid-column: span 2;
-            grid-row: span 2;
-            height: 100%;
-        }
-        #habecu-gallery img:nth-child(4) {
-            grid-column: span 2;
-        }
-        #habecu-gallery img:nth-child(5) {
-            grid-column: 3;
-            grid-row: 2;
-        }
-    }
-    
-    /* Centrar títulos específicos en móvil */
     .comunicacion-section h3.centered-mobile-title {
         display: block;
         text-align: center;
@@ -2242,7 +2318,92 @@ footer {
         width: 100%;
         margin: 1.5rem auto 2.5rem auto;
     }
+    
+    #dynamic-event-tags {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+
+    .event-tags button.event-tag-button {
+        width: 100%;
+        height: auto;
+        min-height: 80px;
+        padding: 0.5rem;
+        font-size: 0.9rem;
+        line-height: 1.3;
+        white-space: normal;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .event-tags button.event-tag-button:nth-child(-n+6) {
+        display: flex;
+    }
+
+    #dynamic-event-tags.is-expanded .event-tag-button {
+        display: flex;
+    }
+
+    .toggle-events-button {
+        display: block;
+        grid-column: 1 / -1;
+        width: 100%;
+        margin-top: 1rem;
+        padding: 0.9rem 1rem;
+        font-family: var(--fuente-titulos);
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        border: 1px solid var(--color-acento);
+        background-color: transparent;
+        color: var(--color-acento);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .toggle-events-button:hover {
+        background-color: var(--color-acento);
+        color: var(--color-blanco);
+    }
+    
+    .eventos-page-hero {
+        height: 40vh;
+        margin-bottom: 3rem;
+    }
+    #eventos-header {
+        padding-bottom: 3rem;
+    }
+    .events-grid {
+        grid-template-columns: 1fr;
+    }
 }
+
+/* ======================================================= */
+/* ===   ESTILOS PARA ESCRITORIO Y TABLET (CORREGIDO)    === */
+/* ======================================================= */
+@media (min-width: 769px) {
+    #habecu-gallery {
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: 220px;
+    }
+    #habecu-gallery img:nth-child(1) {
+        grid-column: span 2;
+        grid-row: span 2;
+        height: 100%;
+    }
+    #habecu-gallery img:nth-child(4) {
+        grid-column: span 2;
+    }
+    #habecu-gallery img:nth-child(5) {
+        grid-column: 3;
+        grid-row: 2;
+    }
+}
+
 /* ======================================================= */
 /* --- ESTILOS PARA PÁGINA DE RADIO --- */
 /* ======================================================= */
@@ -2295,91 +2456,9 @@ footer {
     margin-left: 0.5rem;
 }
 
-/* AJUSTE ESPECIAL PARA LA PORTADA DE LA GALERÍA DE RADIO */
 #radio-main .comunicacion-gallery img:first-child {
     grid-column: 1 / -1;
     aspect-ratio: 16 / 9;
-}
-/* ======================================================= */
-/* --- ESTILOS PARA LA NUEVA GALERÍA DE RADIO --- */
-/* ======================================================= */
-.galeria-interactiva-container {
-    display: flex;
-    gap: 2rem;
-    height: 70vh;
-    max-height: 600px;
-    background-color: var(--color-blanco);
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-}
-
-.galeria-principal {
-    flex-grow: 1;
-    position: relative;
-    overflow: hidden;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.galeria-bg-desenfocado {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    filter: blur(25px) brightness(0.8);
-    transform: scale(1.2);
-    transition: background-image 0.6s ease-in-out;
-}
-
-.imagen-principal {
-    position: relative;
-    z-index: 2;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    border-radius: 4px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.3);
-    transition: opacity 0.4s ease-in-out;
-}
-
-.descripcion-principal {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-    color: var(--color-blanco);
-    padding: 3rem 1.5rem 1.5rem 1.5rem;
-    z-index: 3;
-    text-align: center;
-    font-size: 1rem;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.4s, transform 0.4s;
-}
-
-.galeria-principal:hover .descripcion-principal,
-.descripcion-principal.visible-temporarily {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-#galeria-lista-miniaturas {
-    flex-basis: 180px;
-    flex-shrink: 0;
-    overflow-y: auto;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-}
-
-#galeria-lista-miniaturas::-webkit-scrollbar {
-    display: none;
 }
 
 @media (max-width: 900px) {
@@ -2416,7 +2495,6 @@ footer {
     color: var(--color-blanco);
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     
-    /* El degradado dorado mejorado */
     background: linear-gradient(145deg, #e4d4bb, #bca07d 50%, #a78d6b);
     
     padding: 0.9rem 2rem;
@@ -2430,7 +2508,7 @@ footer {
     
     cursor: pointer;
     position: relative;
-    overflow: hidden; /* Clave para el efecto de destello */
+    overflow: hidden;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
@@ -2444,7 +2522,6 @@ footer {
     transform: translateY(-2px) scale(1.01);
 }
 
-/* Reutilizamos la animación de destello del libro */
 .event-tags button::after {
     content: '';
     position: absolute;
@@ -2466,7 +2543,7 @@ footer {
     opacity: 1;
     animation: shine-sweep 1.2s ease;
 }
-/* === Estilos para el Modal de Eventos (MODIFICADO) === */
+
 #eventos-modal-overlay {
     position: fixed;
     top: 0;
@@ -2543,7 +2620,7 @@ footer {
     width: 80px;
     height: 4px;
     background-color: var(--color-acento);
-    margin: 1rem auto 1.5rem auto; /* Ajustado el margen superior para más espacio */
+    margin: 1rem auto 1.5rem auto;
 }
 #eventos-modal-text {
     font-size: 1.1rem;
@@ -2589,9 +2666,6 @@ footer {
         font-size: 1rem;
     }
 }
-/* ======================================= */
-/* ===   NUEVO SISTEMA DE SIDENOTE CON IMAGEN   === */
-/* ======================================= */
 .image-sidenote-section {
     display: flex;
     align-items: flex-start;
@@ -2600,7 +2674,7 @@ footer {
 }
 
 .sidenote-text-content {
-    flex: 1 1 65%; /* Ocupa el 65% del espacio y puede encogerse */
+    flex: 1 1 65%;
     transition: flex-basis 0.5s ease;
 }
 
@@ -2624,7 +2698,7 @@ footer {
 }
 
 .image-sidenote-viewer {
-    flex: 1 0 0px; /* Base de 0px para que parta de cero */
+    flex: 1 0 0px;
     max-width: 0;
     opacity: 0;
     overflow: hidden;
@@ -2638,7 +2712,7 @@ footer {
 
 .image-sidenote-section.is-sidenote-visible .image-sidenote-viewer {
     flex-basis: 35%;
-    max-width: 300px; /* Límite de ancho para la imagen */
+    max-width: 300px;
     opacity: 1;
 }
 
@@ -2672,125 +2746,11 @@ footer {
     transform: rotate(90deg);
 }
 
-/* Versión móvil */
-@media (max-width: 768px) {
-    .image-sidenote-section {
-        flex-direction: column;
-    }
-    .image-sidenote-section.is-sidenote-visible .sidenote-text-content {
-        flex-basis: auto;
-    }
-    .image-sidenote-section.is-sidenote-visible .image-sidenote-viewer {
-        flex-basis: auto;
-        max-width: 100%;
-        margin-top: 2rem;
-    }
-}/* ======================================= */
-/* ===   NUEVO SISTEMA DE SIDENOTE CON IMAGEN   === */
-/* ======================================= */
-
-.sidenote-trigger {
-    color: var(--color-acento);
-    text-decoration: underline;
-    text-decoration-style: dashed;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 4px;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.sidenote-trigger:hover {
-    color: var(--color-primario);
-}
-
-.sidenote-trigger .fa-image {
-    font-size: 0.8em;
-    margin-left: 0.25rem;
-}
-
-.sidenote-image {
-    position: relative;
-    overflow: hidden;
-    transition: max-height 0.5s ease-out, margin-top 0.5s ease-out;
-    max-height: 0; /* Oculto por defecto */
-}
-
-.sidenote-container.is-sidenote-visible .sidenote-image {
-    max-height: 500px; /* Un valor suficientemente grande para mostrar la imagen */
-    margin-top: 1.5rem;
-}
-
-.sidenote-image img {
-    width: 100%;
-    border-radius: 8px;
-    border: 2px solid white;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-    display: block;
-}
-
-.sidenote-close-btn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.6);
-    color: white;
-    border: none;
-    font-size: 1.5rem;
-    line-height: 30px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    z-index: 5;
-}
-
-.sidenote-close-btn:hover {
-    background: var(--color-primario);
-    transform: rotate(90deg);
-}
-
-/* Comportamiento en ESCRITORIO */
-@media (min-width: 769px) {
-    .sidenote-container {
-        display: flex;
-        align-items: flex-start;
-        gap: 2rem;
-    }
-
-    .sidenote-text {
-        flex: 1 1 100%;
-        transition: flex-basis 0.5s ease-out;
-    }
-
-    .sidenote-image {
-        flex: 1 0 0px;
-        max-width: 0;
-        max-height: none; /* Reset para escritorio */
-        margin-top: 0;
-        opacity: 0;
-        transition: max-width 0.5s ease-out, opacity 0.4s ease-out, flex-basis 0.5s ease-out;
-    }
-
-    .sidenote-container.is-sidenote-visible .sidenote-text {
-        flex-basis: 60%;
-    }
-
-    .sidenote-container.is-sidenote-visible .sidenote-image {
-        flex-basis: 35%;
-        max-width: 300px;
-        opacity: 1;
-    }
-}
-
-/* Versión MÓVIL */
 @media (max-width: 768px) {
     .image-sidenote-section {
         flex-direction: column;
     }
     .image-sidenote-viewer {
-        /* En móvil, se oculta con max-height */
         max-height: 0;
     }
     .image-sidenote-section.is-sidenote-visible .sidenote-text-content {
@@ -2800,15 +2760,10 @@ footer {
         flex-basis: auto;
         max-width: 100%;
         margin-top: 2rem;
-        /* Y se muestra con max-height */
-        max-height: 500px; /* Un valor suficientemente grande */
+        max-height: 500px;
     }
 }
-/* ======================================================= */
-/* ===   Animación de Destello Persistente en Móvil      === */
-/* ======================================================= */
 
-/* 1. Definimos la animación de barrido de luz (si no existe ya) */
 @keyframes shine-sweep {
     0% {
         transform: translateX(-110%) skewX(-25deg);
@@ -2818,57 +2773,34 @@ footer {
     }
 }
 
-/* 2. Aplicamos la animación solo en dispositivos móviles */
 @media (max-width: 768px) {
     .event-tags button::after {
-        /* Hacemos visible el destello y lo animamos en un bucle infinito */
         opacity: 1;
         animation: shine-sweep 4s ease-in-out infinite;
     }
 
-    /* 3. (La Magia) Añadimos retrasos escalonados para que no brillen todos a la vez */
-    .event-tags button:nth-child(1)::after {
-        animation-delay: -0.2s;
-    }
-    .event-tags button:nth-child(2)::after {
-        animation-delay: -1.5s;
-    }
-    .event-tags button:nth-child(3)::after {
-        animation-delay: -0.8s;
-    }
-    .event-tags button:nth-child(4)::after {
-        animation-delay: -2.2s;
-    }
-    .event-tags button:nth-child(5)::after {
-        animation-delay: -0.5s;
-    }
-    .event-tags button:nth-child(6)::after {
-        animation-delay: -1.8s;
-    }
-    .event-tags button:nth-child(7)::after {
-        animation-delay: -1.1s;
-    }
-    .event-tags button:nth-child(8)::after {
-        animation-delay: -2.5s;
-    }
+    .event-tags button:nth-child(1)::after { animation-delay: -0.2s; }
+    .event-tags button:nth-child(2)::after { animation-delay: -1.5s; }
+    .event-tags button:nth-child(3)::after { animation-delay: -0.8s; }
+    .event-tags button:nth-child(4)::after { animation-delay: -2.2s; }
+    .event-tags button:nth-child(5)::after { animation-delay: -0.5s; }
+    .event-tags button:nth-child(6)::after { animation-delay: -1.8s; }
+    .event-tags button:nth-child(7)::after { animation-delay: -1.1s; }
+    .event-tags button:nth-child(8)::after { animation-delay: -2.5s; }
 }
-/* ======================================================= */
-/* ===   CORRECCIÓN PARA MODAL DE IFRAME (YOUTUBE)     === */
-/* ======================================================= */
 
 #iframe-modal .modal-content {
-    /* Ajustamos el padding para dar más espacio al vídeo */
     padding: 1rem;
-    max-width: 900px; /* Un poco más grande para vídeos */
+    max-width: 900px;
     width: 90%;
-    background-color: #000; /* Fondo negro para una mejor experiencia de vídeo */
+    background-color: #000;
     border-radius: 8px;
 }
 
 #iframe-modal .video-container {
     position: relative;
     width: 100%;
-    padding-top: 56.25%; /* Proporción 16:9 para vídeos */
+    padding-top: 56.25%;
     height: 0;
     background-color: #000;
 }
@@ -2883,7 +2815,6 @@ footer {
 }
 
 #iframe-modal .modal-close {
-    /* Aseguramos que el botón de cierre esté visible sobre el fondo negro */
     z-index: 10;
     position: absolute;
     top: -15px;
@@ -2896,31 +2827,24 @@ footer {
     line-height: 35px;
     text-align: center;
 }
-/* ======================================================= */
-/* ===  MEJORA DE ESTILO PARA PÁRRAFO DE EVENTOS (v2) === */
-/* ======================================================= */
 
 #prensa .events-list > p {
     font-family: var(--fuente-titulos);
     font-size: 1.3rem;
-    color: #555; /* <-- CORRECCIÓN: Un gris oscuro mucho más legible */
+    color: #555;
     line-height: 1.7;
     max-width: 750px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 3rem;
-    text-align: center; /* Aseguramos que esté centrado */
+    text-align: center;
 }
 
-/* Ajuste para móviles para que no se vea tan grande */
 @media (max-width: 768px) {
     #prensa .events-list > p {
         font-size: 1.1rem;
     }
 }
-/* ======================================================= */
-/* ===  MEJORA DE DISEÑO PARA SECCIÓN DE CONTACTO (v3) === */
-/* ======================================================= */
 
 #contacto {
     padding-top: 7rem;
@@ -2928,15 +2852,14 @@ footer {
 }
 
 #contacto p {
-    /* Usamos la fuente de títulos para un look elegante y profesional */
     font-family: var(--fuente-titulos);
     font-size: 1.3rem;
-    font-weight: normal; /* Quitamos la negrita para diferenciarlo del email */
-    font-style: italic; /* Añadimos cursiva para darle un toque refinado */
-    color: #cbd5e0; /* Un gris azulado muy suave y legible */
+    font-weight: normal;
+    font-style: italic;
+    color: #cbd5e0;
     line-height: 1.7;
     margin-bottom: 2.5rem;
-    text-shadow: none; /* Ya no necesita sombra */
+    text-shadow: none;
 }
 
 .email-link {
@@ -2945,7 +2868,6 @@ footer {
     border: 1px solid var(--color-acento);
     padding: 1rem 2.5rem;
     border-radius: 50px;
-    /* Usamos la fuente de títulos para un email más elegante */
     font-family: var(--fuente-titulos);
     font-size: 1.5rem;
     font-weight: 700;
@@ -2954,8 +2876,8 @@ footer {
     text-decoration: none;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    position: relative; /* Necesario para el efecto de destello */
-    overflow: hidden;   /* Necesario para el efecto de destello */
+    position: relative;
+    overflow: hidden;
 }
 
 .email-link:hover {
@@ -2969,7 +2891,6 @@ footer {
     transform: translateY(-2px) scale(1.02);
 }
 
-/* Ajustes para móviles */
 @media (max-width: 768px) {
     #contacto p {
         font-size: 1.5rem;
@@ -2981,7 +2902,6 @@ footer {
         box-sizing: border-box;
     }
 
-    /* Efecto de destello continuo en el botón de email para móvil */
     .email-link::after {
         content: '';
         position: absolute;
@@ -2989,152 +2909,21 @@ footer {
         left: 0;
         width: 50%;
         height: 100%;
-        background: linear-gradient(
-            to right, 
-            rgba(255, 255, 255, 0) 0%, 
-            rgba(255, 255, 255, 0.25) 50%, 
-            rgba(255, 255, 255, 0) 100%
-        );
+        background: linear-gradient( to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.25) 50%, rgba(255, 255, 255, 0) 100% );
         animation: shine-sweep 3.5s ease-in-out infinite;
-        animation-delay: 1s; /* Pequeño retraso inicial */
+        animation-delay: 1s;
     }
 }
 
-/* === ESTILOS CARRUSEL DE EVENTOS (MÓVIL - VERSIÓN DEFINITIVA CON PISTAS VISUALES) === */
-@media (max-width: 768px) {
-    .events-carousel-container {
-        /* Hacemos que el contenedor ocupe el ancho completo, rompiendo los límites del padding de .container */
-        margin-left: -1rem;
-        margin-right: -1rem;
-        position: relative; /* Necesario para los degradados */
-    }
-
-    /* Degradado en los bordes para indicar que hay más contenido */
-    .events-carousel-container::before,
-    .events-carousel-container::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 40px; /* Ancho del degradado */
-        z-index: 2;
-        pointer-events: none; /* Permite hacer scroll "a través" del degradado */
-    }
-
-    .events-carousel-container::before {
-        left: 0;
-        background: linear-gradient(to right, var(--color-blanco) 20%, transparent);
-    }
-
-    .events-carousel-container::after {
-        right: 0;
-        background: linear-gradient(to left, var(--color-blanco) 20%, transparent);
-    }
-
-    #dynamic-event-tags {
-        display: flex;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        
-        /* Añadimos padding para que el primer y último elemento no se peguen a los bordes de la pantalla */
-        padding-inline: 40px; /* Este padding asegura que el primer elemento no empiece pegado al borde izquierdo */
-
-        /* Ocultamos la barra de scroll */
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
-
-    #dynamic-event-tags::-webkit-scrollbar {
-        display: none;
-    }
-
-    .event-tags button.event-tag-button {
-        flex: 0 0 280px; /* Ancho fijo para cada botón */
-        width: 280px;
-        scroll-snap-align: center; /* Cada botón se alineará al centro */
-        margin: 0;
-        height: 80px;
-        white-space: normal;
-        line-height: 1.3;
-        padding: 0.5rem 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        font-size: 1rem;
-    }
-    
-    /* Añadimos un espacio entre los botones */
-    #dynamic-event-tags > * + * {
-        margin-left: 15px;
-    }
-}
-/* === ESTILOS PARA LA NAVEGACIÓN DEL CARRUSEL DE EVENTOS (MÓVIL) === */
-
-.carousel-navigation {
-    display: none; /* Oculto por defecto en escritorio */
-    visibility: hidden;
-}
-
-@media (max-width: 768px) {
-    .carousel-navigation {
-        display: flex; /* Se muestra en móvil */
-        visibility: visible;
-        justify-content: center;
-        gap: 1.5rem; /* Espacio entre las flechas */
-        margin-top: 1.5rem; /* Espacio por encima de las flechas */
-    }
-
-    #carousel-nav-prev,
-    #carousel-nav-next {
-        /* Copiamos el estilo de los botones de evento */
-        background: linear-gradient(145deg, #e4d4bb, #bca07d 50%, #a78d6b);
-        color: var(--color-blanco);
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-        
-        /* Hacemos los botones circulares y más pequeños */
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        border: none;
-        
-        /* Centramos el icono de la flecha */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1rem;
-        
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-
-    #carousel-nav-prev:hover,
-    #carousel-nav-next:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 20px rgba(188, 160, 125, 0.25);
-    }
-
-    #carousel-nav-prev:active,
-    #carousel-nav-next:active {
-        transform: translateY(-1px);
-    }
-}
-/* =============================================== */
-/* ===   ALINEACIÓN BOTONES CONTACTO (NUEVO)   === */
-/* =============================================== */
 .contact-buttons-container {
     display: flex;
-    justify-content: center; /* Centra los botones horizontalmente */
-    align-items: center;     /* Alínea los botones verticalmente */
-    flex-wrap: wrap;         /* Permite que se apilen en pantallas pequeñas */
-    gap: 1.5rem;             /* Espacio entre los botones */
-    margin-top: 2.5rem;      /* Espacio sobre el grupo de botones */
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
 }
 
-/* Ajuste para móviles para que cada botón ocupe su espacio y se apilen */
 @media (max-width: 768px) {
     .contact-buttons-container .email-link {
         width: 100%; 
@@ -3142,12 +2931,8 @@ footer {
     }
 }
 
-/* ======================================= */
-/* ===   IMÁGENES INTERCALADAS EN TEXTO  === */
-/* ======================================= */
-
 .interstitial-image-container {
-    width: 45%; /* Ancho de la imagen en escritorio */
+    width: 45%;
     margin-bottom: 1rem;
     background-color: #fff;
     padding: 6px;
@@ -3158,19 +2943,19 @@ footer {
 .interstitial-image-container.left {
     float: left;
     margin-right: 1.5rem;
-    margin-left: -2rem; /* Saca la imagen un poco hacia el margen */
+    margin-left: -2rem;
 }
 
 .interstitial-image-container.right {
     float: right;
     margin-left: 1.5rem;
-    margin-right: -2rem; /* Saca la imagen un poco hacia el margen */
+    margin-right: -2rem;
 }
 
 .interstitial-image-container a.expandable-image {
     display: block;
     cursor: zoom-in;
-    line-height: 0; /* Elimina espacio extra debajo de la imagen */
+    line-height: 0;
 }
 
 .interstitial-image-container img {
@@ -3186,25 +2971,21 @@ footer {
     background-color: #f9f9f9;
 }
 
-/* --- Estilos para la versión móvil --- */
 @media (max-width: 768px) {
     .interstitial-image-container {
-        float: none; /* Quitamos el flotado */
-        width: calc(100% + 2rem); /* Hacemos que ocupe todo el ancho, compensando el padding */
+        float: none;
+        width: calc(100% + 2rem);
         max-width: none;
-        margin: 2rem -1rem; /* Margen vertical y negativo horizontal para que llene el espacio */
+        margin: 2rem -1rem;
         border-left: none;
         border-right: none;
         box-shadow: 0 4px 10px rgba(0,0,0,0.06);
     }
 }
 
-/* ======================================= */
-/* ===   IMAGEN DE INTRODUCCIÓN DE PÁGINA   === */
-/* ======================================= */
 .page-intro-image {
-    margin: 0 auto 3rem auto; /* Centrado y con margen inferior */
-    max-width: 700px; /* Ancho máximo para la imagen */
+    margin: 0 auto 3rem auto;
+    max-width: 700px;
     width: 100%;
 }
 .page-intro-image a.expandable-image {
@@ -3218,10 +2999,6 @@ footer {
     border-radius: 8px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
-
-/* ======================================================= */
-/* ===   POP-UP DE LOGO AL PASAR EL RATÓN (v2)         === */
-/* ======================================================= */
 
 .link-with-logo-popup {
     position: relative;
@@ -3270,31 +3047,26 @@ footer {
     display: block;
 }
 
-/* ======================================================= */
-/* ===   LOGO MÓVIL PARA FUNDACIÓN (NUEVO)             === */
-/* ======================================================= */
-
-
 .logo-mobile-only {
-    display: none; /* Oculto en escritorio */
+    display: none;
 }
 
 @media (max-width: 768px) {
     .paragraph-with-side-logo {
         display: flex;
         align-items: center;
-        gap: 1.5rem; /* Espacio entre texto y logo */
+        gap: 1.5rem;
     }
 
     .paragraph-with-side-logo p {
-        margin-bottom: 0; /* Quitamos el margen del párrafo para alinear bien */
-        flex-grow: 1; /* El párrafo ocupa el espacio sobrante */
+        margin-bottom: 0;
+        flex-grow: 1;
     }
 
     .logo-mobile-only {
-        display: block; /* Lo mostramos en móvil */
-        width: 80px;    /* Ancho fijo para el logo */
-        flex-shrink: 0; /* Evitamos que el logo se encoja */
+        display: block;
+        width: 80px;
+        flex-shrink: 0;
     }
 
     .logo-mobile-only img {
@@ -3303,32 +3075,178 @@ footer {
         display: block;
     }
 
-    /* Ocultamos el pop-up en móvil ya que no funciona */
     .logo-popup {
         display: none !important;
     }
 }
 
-/* ======================================================= */
-/* ===   CORRECCIÓN ANCLAJE SCROLL PARA EVENTOS (v2) === */
-/* ======================================================= */
 #eventos-anchor {
-    scroll-margin-top: 100px; /* Aumentamos el margen para compensar el menú y dar espacio */
+    scroll-margin-top: 100px;
 }
 
-/* ======================================================= */
-/* ===   MEJORA DE CALIDAD DE IMAGEN   === */
-/* ======================================================= */
 .sinopsis-img img {
-    image-rendering: -webkit-optimize-contrast; /* Para navegadores basados en WebKit como Chrome */
-    image-rendering: crisp-edges; /* Para otros navegadores */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
 }
-/* ======================================================= */
-/* ===   LÍNEA SEPARADORA PARA TÍTULOS DE DOCUMENTAL   === */
-/* ======================================================= */
+
 #investigacionPage .comunicacion-section h3,
 #investigacionPage .comunicacion-section h4 {
-    padding-bottom: 0.75rem; /* Añade espacio entre el texto y la línea */
-    border-bottom: 1px solid var(--color-acento); /* Crea la línea con el color de acento de la web */
-    margin-bottom: 1.5rem; /* Añade espacio entre la línea y el párrafo de descripción */
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-acento);
+    margin-bottom: 1.5rem;
+}
+
+@keyframes simple-blink {
+    50% { opacity: 0.6; }
+}
+
+.disponible-destacado {
+    color: var(--color-acento);
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 1rem;
+    animation: simple-blink 1.8s ease-in-out infinite;
+    text-shadow: 0 0 10px rgba(188, 160, 125, 0.4);
+    padding: 0.5rem;
+    background-color: rgba(188, 160, 125, 0.1);
+    border-radius: 5px;
+}
+
+.link-highlight {
+    color: var(--color-acento);
+    font-weight: bold;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+    transition: color 0.3s ease;
+}
+.link-highlight:hover {
+    color: #a78d6b;
+}
+
+#iframe-modal .modal-content {
+    padding: 1rem;
+    max-width: 900px;
+    width: 90%;
+    background-color: #000;
+    border-radius: 8px;
+}
+
+#iframe-modal .video-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    height: 0;
+    background-color: #000;
+}
+
+#iframe-modal iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+#iframe-modal .modal-close {
+    z-index: 10;
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 35px;
+    height: 35px;
+    background: white;
+    color: black;
+    border-radius: 50%;
+    line-height: 35px;
+    text-align: center;
+}/* ======================== */
+/*   ESTILOS MODAL CONTACTO */
+/* ======================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(26, 26, 26, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content.contact-modal-content {
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    padding: 3rem;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    border: 1px solid rgba(188, 160, 125, 0.3);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.visible .modal-content.contact-modal-content {
+    transform: scale(1);
+}
+
+.contact-modal-content h2 {
+    color: var(--color-acento);
+    margin-bottom: 1.5rem;
+}
+
+.contact-modal-content p {
+    color: #e0e0e0;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.contact-modal-content .email-link {
+    font-size: 1.3rem;
+    padding: 0.8rem 2rem;
+}
+
+.contact-modal-content .social-icons a {
+    color: var(--color-blanco);
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2.5rem;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.modal-close:hover {
+    color: var(--color-blanco);
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .modal-content.contact-modal-content {
+        padding: 2.5rem 1.5rem;
+    }
 }
