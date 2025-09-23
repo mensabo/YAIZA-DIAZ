@@ -2856,6 +2856,7 @@ footer {
     width: 90%;
     background-color: #000;
     border-radius: 8px;
+    position: relative;
 }
 
 #iframe-modal .video-container {
@@ -2875,19 +2876,36 @@ footer {
     border: none;
 }
 
+/* INICIO: CORRECCIÓN DEL BOTÓN DE CIERRE DEL MODAL DE VÍDEO */
 #iframe-modal .modal-close {
-    z-index: 10;
-    position: absolute;
-    top: -15px;
-    right: -15px;
-    width: 35px;
-    height: 35px;
-    background: white;
-    color: black;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 44px;
+    height: 44px;
+    background: rgba(0,0,0,0.5);
+    color: white;
     border-radius: 50%;
-    line-height: 35px;
+    border: 2px solid rgba(255,255,255,0.7);
     text-align: center;
-}/* ======================== */
+    line-height: 40px;
+    font-size: 28px;
+    font-weight: normal;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    z-index: 2001; /* Debe ser mayor que el z-index del overlay (2000) */
+    transition: all 0.3s ease;
+}
+
+#iframe-modal .modal-close:hover {
+    background: rgba(220, 0, 0, 0.8);
+    transform: scale(1.1) rotate(90deg);
+    color: white;
+}
+/* FIN: CORRECCIÓN DEL BOTÓN DE CIERRE */
+
+/* ======================== */
 /*   ESTILOS MODAL CONTACTO */
 /* ======================== */
 .modal-overlay {
