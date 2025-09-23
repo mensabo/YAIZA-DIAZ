@@ -72,6 +72,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadDynamicText(pageId);
     }
     
+    // **INICIO: CORRECCIÓN INMEDIATA PARA ELIMINAR EL ICONO ANTIGUO**
+    if (pageId === 'investigacionPage') {
+        const reportajeParagraph = document.querySelector('[data-content-id="reportaje3Paragraph"]');
+        if (reportajeParagraph) {
+            const triggerSpan = reportajeParagraph.querySelector('.sidenote-trigger');
+            if (triggerSpan) {
+                triggerSpan.remove();
+            }
+        }
+    }
+    // **FIN: CORRECCIÓN INMEDIATA**
+
     initializeContactModal();
     initializeSidenotes();
     initializeSmoothScroll();
@@ -89,6 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (pageId === 'libroPage') {
         initializeLetterModal();
         initializeAlbertoLeonModal();
+        initializePurchaseModal();
     }
     if (pageId === 'modelajePage') {
         initializeStaticGallery('galeria-interactiva-calendario');
@@ -120,7 +133,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function initializeContactModal() {
         const modal = document.getElementById('contact-modal');
-        // El trigger ahora puede ser cualquier enlace con ese ID
         const openTriggers = document.querySelectorAll('#contact-modal-trigger'); 
         const closeButton = document.getElementById('contact-modal-close');
 
@@ -130,7 +142,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const openModal = (e) => {
             e.preventDefault();
-            // Si el menú móvil está abierto, cerrarlo
             if (navLinks && navLinks.classList.contains('nav-open')) {
                 navLinks.classList.remove('nav-open');
             }
@@ -145,7 +156,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         closeButton.addEventListener('click', closeModal);
         modal.addEventListener('click', (e) => {
-            // Se cierra si se hace clic en el fondo oscuro
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    }
+
+    function initializePurchaseModal() {
+        const modal = document.getElementById('purchase-modal');
+        const openTrigger = document.getElementById('open-purchase-modal');
+        const closeButton = document.getElementById('purchase-modal-close');
+    
+        if (!modal || !openTrigger || !closeButton) {
+            return;
+        }
+    
+        const openModal = (e) => {
+            e.preventDefault();
+            modal.classList.add('visible');
+        };
+    
+        const closeModal = () => modal.classList.remove('visible');
+    
+        openTrigger.addEventListener('click', openModal);
+        closeButton.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 closeModal();
             }

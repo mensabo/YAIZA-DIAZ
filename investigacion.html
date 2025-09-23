@@ -1,3 +1,4 @@
+--- START OF FILE investigacion.html ---
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -123,6 +124,7 @@
             <div class="comunicacion-section">
                 <h3 data-content-id="nocheReporterosTitle"></h3>
                 <h4 style="margin-top: 2.5rem; font-size: 1.5rem;" data-content-id="reportaje1Title"></h4>
+                <div class="subtitle-line"></div>
                 <p data-content-id="reportaje1Paragraph"></p>
                 <a href="https://www.youtube.com/watch?v=ETnrDmK69eY" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FMAR4.mp4?alt=media&token=5f9a49cf-40ee-4a20-808e-468ffc31f4bd" type="video/mp4"></video>
@@ -130,6 +132,7 @@
                 </a>
                 
                 <h4 style="margin-top: 2.5rem; font-size: 1.5rem;" data-content-id="reportaje2Title"></h4>
+                <div class="subtitle-line"></div>
                 <p data-content-id="reportaje2Paragraph"></p>
                 <a href="https://www.youtube.com/watch?v=ZQUjA8pN5p4" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FMedicina.mp4?alt=media&token=90ad512d-8369-43df-9c6d-4222013807bb" type="video/mp4"></video>
@@ -163,14 +166,19 @@
             <div class="comunicacion-section">
                 <h3 data-content-id="otrosReportajesTitle"></h3>
                 <h4 style="margin-top: 2.5rem; font-size: 1.5rem;" data-content-id="reportaje3Title"></h4>
-                
+                <div class="subtitle-line"></div>
                 <div class="image-sidenote-section sidenote-container">
                     <div class="sidenote-text-content">
-                        <p data-content-id="reportaje3Paragraph">Finalista en los Premios Arcoíris 2023 por la visibilidad del colectivo LGTBIQ+. <span class="sidenote-trigger image-sidenote-trigger">Puedes ver la imagen aquí <i class="fas fa-image"></i></span>.</p>
+                        <p data-content-id="reportaje3Paragraph">Finalista en los Premios Arcoíris 2023 por la visibilidad del colectivo LGTBIQ+. Un reconocimiento al periodismo social que busca dar voz a colectivos a menudo silenciados.</p>
+                        <button class="sidenote-trigger sidenote-trigger-button">
+                            <i class="fas fa-award"></i> Ver Reconocimiento
+                        </button>
                     </div>
                     <div class="image-sidenote-viewer">
                         <button class="sidenote-close-btn">&times;</button>
-                        <img src="images/transdiversas.jpg" alt="Reconocimiento Premios Arcoíris">
+                        <a href="images/transdiversas.jpg" class="expandable-image">
+                            <img src="images/transdiversas.jpg" alt="Reconocimiento Premios Arcoíris">
+                        </a>
                         <p class="pie-de-foto">Finalista Premios Arcoíris 2023</p>
                     </div>
                 </div>
@@ -183,6 +191,7 @@
                 </a>
                  
                 <h4 style="margin-top: 2.5rem; font-size: 1.5rem;" data-content-id="reportaje4Title"></h4>
+                <div class="subtitle-line"></div>
                 <p data-content-id="reportaje4Paragraph"></p>
                 <a href="https://www.youtube.com/watch?v=IVBfoJdEbTQ" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fbulimia.mp4?alt=media&token=26df4074-344e-4066-a8c7-5a9e68d2482e" type="video/mp4"></video>
@@ -190,6 +199,7 @@
                 </a>
         
                 <h4 style="margin-top: 2.5rem; font-size: 1.5rem;" data-content-id="reportaje5Title"></h4>
+                <div class="subtitle-line"></div>
                 <p data-content-id="reportaje5Paragraph"></p>
                 <a href="https://www.youtube.com/watch?v=3Y0197XDIlE" target="_blank" rel="noopener noreferrer" class="video-fallback">
                     <video autoplay loop muted playsinline><source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fpolitica.mp4?alt=media&token=56b1c286-f301-484a-8694-1cbc380f08cd" type="video/mp4"></video>
@@ -200,6 +210,16 @@
         </div>
     </section>
     
+    <div id="lightbox-modal" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <span class="lightbox-prev">&#10094;</span>
+        <span class="lightbox-next">&#10095;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-image" src="" alt="Visor de imágenes de documentales">
+            <div id="lightbox-caption"></div>
+        </div>
+    </div>
+
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
     <div id="contact-modal" class="modal-overlay">

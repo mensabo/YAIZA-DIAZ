@@ -1,3 +1,4 @@
+--- START OF FILE libro.html ---
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -214,7 +215,7 @@
                     <div class="formato-compra">
                         <h4 data-content-id="buyPhysicalTitle"></h4>
                         <p class="ediciones-info" data-content-id="buyPhysicalInfo"></p>
-                        <a href="https://www.google.com/search?q=comprar+libro+la+hija+del+ciego+yaiza+diaz" target="_blank" rel="noopener noreferrer" class="btn-compra">Buscar en librerías</a>
+                        <a href="#" id="open-purchase-modal" class="btn-compra">Puntos de venta</a>
                     </div>
                     <hr class="compra-divisor">
                     <div class="formato-compra">
@@ -251,6 +252,17 @@
             <div class="modal-links">
                 <a href="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FLe%C3%B3n1.mp4?alt=media&token=57603b2c-8794-4fb5-8723-e524d15142b8" target="_blank" rel="noopener noreferrer" class="modal-button">Proceso Creativo</a>
                 <a href="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2FLe%C3%B3n2.mp4?alt=media&token=fe3a7383-7a53-42b2-83c8-2a64a56c240e" target="_blank" rel="noopener noreferrer" class="modal-button">Ver Entrevista</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="purchase-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="purchase-modal-close" class="modal-close">&times;</button>
+            <h3>Puntos de Venta</h3>
+            <p>Haz clic en el siguiente enlace para ver todos los puntos de venta disponibles.</p>
+            <div class="modal-links">
+                <a href="https://share.google/NysrMoluwYvXkln3d" target="_blank" rel="noopener noreferrer" class="modal-button">Ver Puntos de Venta</a>
             </div>
         </div>
     </div>
