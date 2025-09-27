@@ -73,7 +73,7 @@ header {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* --- AJUSTE DE LA NAVEGACIÓN --- */
+/* --- AJUSTE DE LA NAVEGAČIĆN --- */
 nav {
     display: flex;
     justify-content: center; /* Centra el contenido */
@@ -82,7 +82,7 @@ nav {
 }
 
 .nav-title {
-    margin-right: 4rem; /* Añade espacio entre el título y el menú */
+    margin-right: 4rem; /* AÄąade espacio entre el tÄľtulo y el menÄľ */
 }
 
 .nav-title h1 {
@@ -102,7 +102,7 @@ nav ul {
     list-style: none;
 }
 
-/* --- ESTILOS DEL MENÚ MEJORADOS --- */
+/* --- ESTILOS DEL MENÄ MEJORADOS --- */
 nav ul li {
     padding: 0 0.5rem; /* Espaciado entre elementos */
 }
@@ -119,7 +119,7 @@ nav ul li a, nav ul li a:visited {
     display: inline-block;
 }
 
-/* Línea animada para el hover */
+/* LÄľnea animada para el hover */
 nav ul li a::after {
     content: '';
     position: absolute;
@@ -144,7 +144,7 @@ nav ul li a:hover::after {
 
 
 /* ================================================== */
-/*   HERO DINÁMICO   */
+/*   HERO DINÄ„MICO   */
 /* ================================================== */
 .hero-dynamic {
     position: relative;
@@ -217,7 +217,7 @@ nav ul li a:hover::after {
 }
 
 /* ======================== */
-/*  ESTILOS SOBRE MÍ  */
+/*  ESTILOS SOBRE MÄŞ  */
 /* ======================== */
 #sobre-mi {
     background-color: var(--color-secundario);
@@ -236,7 +236,7 @@ nav ul li a:hover::after {
     margin: 0 auto 2.5rem auto;
 }
 
-/* === NUEVO ESTILO: LÍNEA SEPARADORA PARA SUBTÍTULOS === */
+/* === NUEVO ESTILO: LÄŞNEA SEPARADORA PARA SUBTÄšTULOS === */
 .subtitle-line {
     display: block;
     width: 100px;
@@ -260,8 +260,83 @@ nav ul li a:hover::after {
     padding: 0;
 }
 
+/* ======================================================= */
+/* === ESTILOS PARA LOGO EMERGENTE (POPUP) - CORREGIDO === */
+/* ======================================================= */
+.link-with-logo-popup {
+    position: relative;
+    display: inline-block; 
+}
+
+.logo-popup {
+    position: absolute;
+    bottom: 120%; 
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    border: 1px solid #eee;
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    width: 160px; 
+    pointer-events: none; 
+}
+
+.logo-popup img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.logo-popup.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* === AJUSTE PARA MÄVILES: HACER EL LOGO VISIBLE Y PEQUEÄO === */
+@media (max-width: 768px) {
+    .link-with-logo-popup {
+        display: inline-flex; /* Usar flexbox para alinear texto y logo */
+        align-items: center; /* Centrar verticalmente */
+        gap: 0.5rem; /* Espacio entre texto y logo */
+    }
+
+    .logo-popup {
+        /* Hacemos el logo visible y lo devolvemos al flujo normal */
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+
+        /* Eliminamos los estilos de "caja" del popup */
+        background: none;
+        padding: 0;
+        box-shadow: none;
+        border: none;
+
+        /* Ajustamos el tamaÄąo para que sea pequeÄąo */
+        width: auto;
+        height: 24px; /* Altura ajustada para ser similar a la del texto */
+    }
+}
+
+/* === NUEVO ESTILO PARA EL ENLACE ROSA === */
+.link-carrera-rosa {
+    color: var(--color-magenta-libro) !important;
+    border-bottom-color: var(--color-magenta-libro) !important;
+}
+
+.link-carrera-rosa:hover {
+    color: #b3226c !important; /* Un rosa mÄs oscuro para el hover */
+}
+
+
 /* ======================== */
-/*    SECCIÓN PORTFOLIO     */
+/*    SECCIÄN PORTFOLIO     */
 /* ======================== */
 #portfolio {
     background-color: var(--color-blanco);
@@ -290,7 +365,7 @@ nav ul li a:hover::after {
 
 .project-card img {
     width: 100%;
-    aspect-ratio: 4 / 3; /* <-- ESTA ES LA LÍNEA CLAVE AÑADIDA */
+    aspect-ratio: 4 / 3; /* <-- ESTA ES LA LÄŞNEA CLAVE AÄADIDA */
     height: auto;
     object-fit: cover;
     object-position: center 25%;
@@ -317,7 +392,7 @@ nav ul li a:hover::after {
 }
 
 /* ======================== */
-/*      SECCIÓN EVENTOS      */
+/*      SECCIÄN EVENTOS      */
 /* ======================== */
 #prensa, #habilidades {
     background-color: var(--color-blanco);
@@ -368,14 +443,14 @@ nav ul li a:hover::after {
     display: none;
 }
 
-/* Ocultamos el botón "Ver más" por defecto (en escritorio) */
+/* Ocultamos el botÄn "Ver mÄs" por defecto (en escritorio) */
 .toggle-events-button {
     display: none;
 }
 
 
 /* ======================== */
-/*     SECCIÓN CONTACTO     */
+/*     SECCIÄN CONTACTO     */
 /* ======================== */
 #contacto {
     background-color: var(--color-primario);
@@ -447,7 +522,7 @@ footer {
 }
 
 /* ================================================== */
-/*   ESTILOS DE GALERÍA DE EVENTOS (SISTEMA ÚNICO)    */
+/*   ESTILOS DE GALERÄŞA DE EVENTOS (SISTEMA ÄNICO)    */
 /* ================================================== */
 .section-intro {
     text-align: center;
@@ -456,7 +531,7 @@ footer {
     font-size: 1.1rem;
 }
 
-/* Cuadrícula simple y adaptable para TODAS las galerías de eventos */
+/* CuadrÄľcula simple y adaptable para TODAS las galerÄľas de eventos */
 .simple-photo-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -663,7 +738,7 @@ footer {
 }
 
 /* =================================== */
-/*   ENLACE FÓRMULA TRIPLE ROSA         */
+/*   ENLACE FÄRMULA TRIPLE ROSA         */
 /* =================================== */
 .formula-rosa-link {
     color: var(--color-magenta-libro);
@@ -680,7 +755,7 @@ footer {
 }
 
 /* ======================== */
-/*   ESTILOS PÁGINA LIBRO   */
+/*   ESTILOS PÄ„GINA LIBRO   */
 /* ======================== */
 
 .section-gray {
@@ -1270,7 +1345,7 @@ footer {
 }
 
 /* =================================== */
-/*   ESTILOS NUEVA GALERÍA INTERACTIVA (CORREGIDO) */
+/*   ESTILOS NUEVA GALERÄŞA INTERACTIVA (CORREGIDO) */
 /* =================================== */
 #galeria-interactiva,
 .galeria-interactiva-container {
@@ -1457,7 +1532,7 @@ footer {
 }
 
 /* =================================== */
-/*   BOTÓN VOLVER ARRIBA       */
+/*   BOTÄN VOLVER ARRIBA       */
 /* =================================== */
 #volver-arriba-btn {
     position: fixed;
@@ -1494,7 +1569,7 @@ footer {
 }
 
 /* =================================== */
-/*   NUEVA ANIMACIÓN DE BARRIDO DE LUZ   */
+/*   NUEVA ANIMACIÄN DE BARRIDO DE LUZ   */
 /* =================================== */
 @keyframes shine-sweep {
     0% {
@@ -1506,7 +1581,7 @@ footer {
 }
 
 /* ==================================================== */
-/*   ESTILOS PARA LA ANOTACIÓN "CLICK AQUÍ" DEL LIBRO   */
+/*   ESTILOS PARA LA ANOTACIÄN "CLICK AQUÄŞ" DEL LIBRO   */
 /* ==================================================== */
 .click-annotation {
     position: absolute;
@@ -1555,7 +1630,7 @@ footer {
 }
 
 /* ======================================================= */
-/* --- ESTILOS PARA LA PÁGINA DE COMUNICACIÓN Y ENLACES --- */
+/* --- ESTILOS PARA LA PÄ„GINA DE COMUNICACIÄN Y ENLACES --- */
 /* ======================================================= */
 .comunicacion-content {
     max-width: 800px;
@@ -1630,7 +1705,7 @@ footer {
 }
 
 /* ======================================================= */
-/* --- ESTILOS PARA INTRODUCCIONES DE PÁGINA --- */
+/* --- ESTILOS PARA INTRODUCCIONES DE PÄ„GINA --- */
 /* ======================================================= */
 .page-introduction {
     max-width: 750px;
@@ -1643,7 +1718,7 @@ footer {
 
 
 /* ======================================= */
-/* === NUEVO DISEÑO SECCIÓN DE COMPRA === */
+/* === NUEVO DISEÄO SECCIÄN DE COMPRA === */
 /* ======================================= */
 #comprar-libro {
     background-color: var(--color-secundario);
@@ -1763,7 +1838,7 @@ footer {
 }
 
 /* ======================================================= */
-/* ===   NUEVOS ESTILOS: PÁGINA DE EVENTOS (v2)        === */
+/* ===   NUEVOS ESTILOS: PÄ„GINA DE EVENTOS (v2)        === */
 /* ======================================================= */
 #eventos-header {
     padding-top: 0;
@@ -1778,7 +1853,7 @@ footer {
 }
 
 /* INICIO: REGLA CORREGIDA */
-/* Aquí estaba el error. He vuelto a añadir "img" al selector. */
+/* AquÄľ estaba el error. He vuelto a aÄąadir "img" al selector. */
 .eventos-page-hero img {
     width: 100%;
     height: 100%;
@@ -2420,7 +2495,7 @@ footer {
 }
 
 /* ======================================================= */
-/* --- ESTILOS PARA PÁGINA DE RADIO --- */
+/* --- ESTILOS PARA PÄ„GINA DE RADIO --- */
 /* ======================================================= */
 .custom-audio-player {
     width: 100%;
@@ -2499,7 +2574,7 @@ footer {
 }
 
 /* ======================================================= */
-/* === Estilos para los botones de eventos dinámicos (DISEÑO PREMIUM v2) === */
+/* === Estilos para los botones de eventos dinÄmicos (DISEÄO PREMIUM v2) === */
 /* ======================================================= */
 
 .event-tags button {
@@ -2738,7 +2813,7 @@ footer {
     font-weight: 600;
 }
 
-/* EFECTO DE DESTELLO CONTINUO PARA EL BOTÓN */
+/* EFECTO DE DESTELLO CONTINUO PARA EL BOTÄN */
 .sidenote-trigger-button::after {
     content: '';
     position: absolute;
@@ -2876,7 +2951,7 @@ footer {
     border: none;
 }
 
-/* INICIO: CORRECCIÓN DEL BOTÓN DE CIERRE DEL MODAL DE VÍDEO */
+/* INICIO: CORRECCIÄN DEL BOTÄN DE CIERRE DEL MODAL DE VÄŞDEO */
 #iframe-modal .modal-close {
     position: fixed;
     top: 20px;
@@ -2903,7 +2978,7 @@ footer {
     transform: scale(1.1) rotate(90deg);
     color: white;
 }
-/* FIN: CORRECCIÓN DEL BOTÓN DE CIERRE */
+/* FIN: CORRECCIÄN DEL BOTÄN DE CIERRE */
 
 /* ======================== */
 /*   ESTILOS MODAL CONTACTO */
@@ -3001,7 +3076,7 @@ a.expandable-image img {
 }
 
 a.expandable-image::after {
-    content: '\f00e'; /* Código del icono de lupa de Font Awesome */
+    content: '\f00e'; /* CÄdigo del icono de lupa de Font Awesome */
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
     position: absolute;
