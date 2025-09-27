@@ -73,7 +73,7 @@ header {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* --- AJUSTE DE LA NAVEGAČIĆN --- */
+/* --- AJUSTE DE LA NAVEGACIÓN --- */
 nav {
     display: flex;
     justify-content: center; /* Centra el contenido */
@@ -82,7 +82,7 @@ nav {
 }
 
 .nav-title {
-    margin-right: 4rem; /* AÄąade espacio entre el tÄľtulo y el menÄľ */
+    margin-right: 4rem; /* Añade espacio entre el título y el menú */
 }
 
 .nav-title h1 {
@@ -102,7 +102,7 @@ nav ul {
     list-style: none;
 }
 
-/* --- ESTILOS DEL MENÄ MEJORADOS --- */
+/* --- ESTILOS DEL MENÚ MEJORADOS --- */
 nav ul li {
     padding: 0 0.5rem; /* Espaciado entre elementos */
 }
@@ -119,7 +119,7 @@ nav ul li a, nav ul li a:visited {
     display: inline-block;
 }
 
-/* LÄľnea animada para el hover */
+/* Línea animada para el hover */
 nav ul li a::after {
     content: '';
     position: absolute;
@@ -144,7 +144,7 @@ nav ul li a:hover::after {
 
 
 /* ================================================== */
-/*   HERO DINÄ„MICO   */
+/*   HERO DINÁMICO   */
 /* ================================================== */
 .hero-dynamic {
     position: relative;
@@ -217,7 +217,7 @@ nav ul li a:hover::after {
 }
 
 /* ======================== */
-/*  ESTILOS SOBRE MÄŞ  */
+/*  ESTILOS SOBRE MÍ  */
 /* ======================== */
 #sobre-mi {
     background-color: var(--color-secundario);
@@ -236,7 +236,7 @@ nav ul li a:hover::after {
     margin: 0 auto 2.5rem auto;
 }
 
-/* === NUEVO ESTILO: LÄŞNEA SEPARADORA PARA SUBTÄšTULOS === */
+/* === NUEVO ESTILO: LÍNEA SEPARADORA PARA SUBTÍTULOS === */
 .subtitle-line {
     display: block;
     width: 100px;
@@ -297,7 +297,7 @@ nav ul li a:hover::after {
     visibility: visible;
 }
 
-/* === AJUSTE PARA MÄVILES: HACER EL LOGO VISIBLE Y PEQUEÄO === */
+/* === AJUSTE PARA MÓVILES: HACER EL LOGO VISIBLE Y PEQUEÑO === */
 @media (max-width: 768px) {
     .link-with-logo-popup {
         display: inline-flex; /* Usar flexbox para alinear texto y logo */
@@ -318,25 +318,27 @@ nav ul li a:hover::after {
         box-shadow: none;
         border: none;
 
-        /* Ajustamos el tamaÄąo para que sea pequeÄąo */
+        /* Ajustamos el tamaño para que sea pequeño */
         width: auto;
         height: 24px; /* Altura ajustada para ser similar a la del texto */
     }
 }
 
-/* === NUEVO ESTILO PARA EL ENLACE ROSA === */
-.link-carrera-rosa {
+/* === NUEVO ESTILO PARA EL ENLACE ROSA (CARRERA Y FÓRMULA) === */
+.link-carrera-rosa,
+.link-formula-rosa {
     color: var(--color-magenta-libro) !important;
     border-bottom-color: var(--color-magenta-libro) !important;
 }
 
-.link-carrera-rosa:hover {
-    color: #b3226c !important; /* Un rosa mÄs oscuro para el hover */
+.link-carrera-rosa:hover,
+.link-formula-rosa:hover {
+    color: #b3226c !important; /* Un rosa más oscuro para el hover */
 }
 
 
 /* ======================== */
-/*    SECCIÄN PORTFOLIO     */
+/*    SECCIÓN PORTFOLIO     */
 /* ======================== */
 #portfolio {
     background-color: var(--color-blanco);
@@ -365,7 +367,7 @@ nav ul li a:hover::after {
 
 .project-card img {
     width: 100%;
-    aspect-ratio: 4 / 3; /* <-- ESTA ES LA LÄŞNEA CLAVE AÄADIDA */
+    aspect-ratio: 4 / 3;
     height: auto;
     object-fit: cover;
     object-position: center 25%;
@@ -392,7 +394,7 @@ nav ul li a:hover::after {
 }
 
 /* ======================== */
-/*      SECCIÄN EVENTOS      */
+/*      SECCIÓN EVENTOS      */
 /* ======================== */
 #prensa, #habilidades {
     background-color: var(--color-blanco);
@@ -443,14 +445,14 @@ nav ul li a:hover::after {
     display: none;
 }
 
-/* Ocultamos el botÄn "Ver mÄs" por defecto (en escritorio) */
+/* Ocultamos el botón "Ver más" por defecto (en escritorio) */
 .toggle-events-button {
     display: none;
 }
 
 
 /* ======================== */
-/*     SECCIÄN CONTACTO     */
+/*     SECCIÓN CONTACTO     */
 /* ======================== */
 #contacto {
     background-color: var(--color-primario);
@@ -522,7 +524,7 @@ footer {
 }
 
 /* ================================================== */
-/*   ESTILOS DE GALERÄŞA DE EVENTOS (SISTEMA ÄNICO)    */
+/*   ESTILOS DE GALERÍA DE EVENTOS (SISTEMA ÚNICO)    */
 /* ================================================== */
 .section-intro {
     text-align: center;
@@ -531,7 +533,7 @@ footer {
     font-size: 1.1rem;
 }
 
-/* CuadrÄľcula simple y adaptable para TODAS las galerÄľas de eventos */
+/* Cuadrícula simple y adaptable para TODAS las galerías de eventos */
 .simple-photo-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -738,7 +740,7 @@ footer {
 }
 
 /* =================================== */
-/*   ENLACE FÄRMULA TRIPLE ROSA         */
+/*   ENLACE FÓRMULA TRIPLE ROSA         */
 /* =================================== */
 .formula-rosa-link {
     color: var(--color-magenta-libro);
@@ -755,7 +757,7 @@ footer {
 }
 
 /* ======================== */
-/*   ESTILOS PÄ„GINA LIBRO   */
+/*   ESTILOS PÁGINA LIBRO   */
 /* ======================== */
 
 .section-gray {
@@ -1345,7 +1347,7 @@ footer {
 }
 
 /* =================================== */
-/*   ESTILOS NUEVA GALERÄŞA INTERACTIVA (CORREGIDO) */
+/*   ESTILOS NUEVA GALERÍA INTERACTIVA (CORREGIDO) */
 /* =================================== */
 #galeria-interactiva,
 .galeria-interactiva-container {
@@ -1532,7 +1534,7 @@ footer {
 }
 
 /* =================================== */
-/*   BOTÄN VOLVER ARRIBA       */
+/*   BOTÓN VOLVER ARRIBA       */
 /* =================================== */
 #volver-arriba-btn {
     position: fixed;
@@ -1569,7 +1571,7 @@ footer {
 }
 
 /* =================================== */
-/*   NUEVA ANIMACIÄN DE BARRIDO DE LUZ   */
+/*   NUEVA ANIMACIÓN DE BARRIDO DE LUZ   */
 /* =================================== */
 @keyframes shine-sweep {
     0% {
@@ -1581,7 +1583,7 @@ footer {
 }
 
 /* ==================================================== */
-/*   ESTILOS PARA LA ANOTACIÄN "CLICK AQUÄŞ" DEL LIBRO   */
+/*   ESTILOS PARA LA ANOTACIÓN "CLICK AQUÍ" DEL LIBRO   */
 /* ==================================================== */
 .click-annotation {
     position: absolute;
@@ -1630,7 +1632,7 @@ footer {
 }
 
 /* ======================================================= */
-/* --- ESTILOS PARA LA PÄ„GINA DE COMUNICACIÄN Y ENLACES --- */
+/* --- ESTILOS PARA LA PÁGINA DE COMUNICACIÓN Y ENLACES --- */
 /* ======================================================= */
 .comunicacion-content {
     max-width: 800px;
@@ -1705,7 +1707,7 @@ footer {
 }
 
 /* ======================================================= */
-/* --- ESTILOS PARA INTRODUCCIONES DE PÄ„GINA --- */
+/* --- ESTILOS PARA INTRODUCCIONES DE PÁGINA --- */
 /* ======================================================= */
 .page-introduction {
     max-width: 750px;
@@ -1716,9 +1718,48 @@ footer {
     color: #555;
 }
 
+/* INICIO: CORRECCIÓN DE ESTILOS PARA IMÁGENES INTERCALADAS */
+.interstitial-image-container {
+    max-width: 350px;
+    margin: 1rem auto; /* Centrado en móvil */
+    width: 100%;
+}
+
+.interstitial-image-container img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.interstitial-image-container figcaption {
+    font-size: 0.9rem;
+    text-align: center;
+    color: #666;
+    margin-top: 0.75rem;
+}
+
+@media (min-width: 768px) {
+    .interstitial-image-container.left {
+        float: left;
+        margin-right: 2rem;
+        margin-left: 0;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    .interstitial-image-container.right {
+        float: right;
+        margin-left: 2rem;
+        margin-right: 0;
+        margin-top: 0.5rem;
+        margin-bottom: 1rem;
+    }
+}
+/* FIN: CORRECCIÓN DE ESTILOS */
+
 
 /* ======================================= */
-/* === NUEVO DISEÄO SECCIÄN DE COMPRA === */
+/* === NUEVO DISEÑO SECCIÓN DE COMPRA === */
 /* ======================================= */
 #comprar-libro {
     background-color: var(--color-secundario);
@@ -1838,7 +1879,7 @@ footer {
 }
 
 /* ======================================================= */
-/* ===   NUEVOS ESTILOS: PÄ„GINA DE EVENTOS (v2)        === */
+/* ===   NUEVOS ESTILOS: PÁGINA DE EVENTOS (v2)        === */
 /* ======================================================= */
 #eventos-header {
     padding-top: 0;
@@ -1852,15 +1893,12 @@ footer {
     margin-bottom: 4rem;
 }
 
-/* INICIO: REGLA CORREGIDA */
-/* AquÄľ estaba el error. He vuelto a aÄąadir "img" al selector. */
 .eventos-page-hero img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: 35% 22%; /* Ajustado horizontal y verticalmente */
 }
-/* FIN: REGLA CORREGIDA */
 
 #eventos-header .container h2 {
     margin-bottom: 1.5rem;
@@ -2495,7 +2533,7 @@ footer {
 }
 
 /* ======================================================= */
-/* --- ESTILOS PARA PÄ„GINA DE RADIO --- */
+/* --- ESTILOS PARA PÁGINA DE RADIO --- */
 /* ======================================================= */
 .custom-audio-player {
     width: 100%;
@@ -2574,7 +2612,7 @@ footer {
 }
 
 /* ======================================================= */
-/* === Estilos para los botones de eventos dinÄmicos (DISEÄO PREMIUM v2) === */
+/* === Estilos para los botones de eventos dinámicos (DISEÑO PREMIUM v2) === */
 /* ======================================================= */
 
 .event-tags button {
@@ -2813,7 +2851,7 @@ footer {
     font-weight: 600;
 }
 
-/* EFECTO DE DESTELLO CONTINUO PARA EL BOTÄN */
+/* EFECTO DE DESTELLO CONTINUO PARA EL BOTÓN */
 .sidenote-trigger-button::after {
     content: '';
     position: absolute;
@@ -2951,7 +2989,7 @@ footer {
     border: none;
 }
 
-/* INICIO: CORRECCIÄN DEL BOTÄN DE CIERRE DEL MODAL DE VÄŞDEO */
+/* INICIO: CORRECCIÓN DEL BOTÓN DE CIERRE DEL MODAL DE VÍDEO */
 #iframe-modal .modal-close {
     position: fixed;
     top: 20px;
@@ -2978,7 +3016,7 @@ footer {
     transform: scale(1.1) rotate(90deg);
     color: white;
 }
-/* FIN: CORRECCIÄN DEL BOTÄN DE CIERRE */
+/* FIN: CORRECCIÓN DEL BOTÓN DE CIERRE */
 
 /* ======================== */
 /*   ESTILOS MODAL CONTACTO */
@@ -3076,7 +3114,7 @@ a.expandable-image img {
 }
 
 a.expandable-image::after {
-    content: '\f00e'; /* CÄdigo del icono de lupa de Font Awesome */
+    content: '\f00e'; /* Código del icono de lupa de Font Awesome */
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
     position: absolute;
