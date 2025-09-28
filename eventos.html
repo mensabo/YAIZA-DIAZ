@@ -17,6 +17,7 @@
             </div>
             <button id="mobile-menu-toggle" aria-label="Abrir menú de navegación">☰</button>
             <ul id="nav-links">
+                <li class="nav-logo-mobile"><a href="index.html"><img src="images/logo-personal.png" alt="Logo Yaiza Díaz"></a></li>
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="television.html">Televisión</a></li>
                 <li><a href="eventos.html">Eventos</a></li>
@@ -88,13 +89,14 @@
     <script src="config.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        // Se añade 'setDoc' para que el script de migración tenga acceso a él
+        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         window.firebaseServices = {
-            db, collection, getDocs, orderBy, query, doc, getDoc
+            db, collection, getDocs, orderBy, query, doc, getDoc, setDoc
         };
     </script>
-    <script src="script.js" type="module"></script>
+        <script src="script.js" type="module"></script>
 </body>
 </html>
