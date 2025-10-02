@@ -87,7 +87,7 @@ nav {
 }
 
 .nav-title {
-    margin-right: 4rem; /* Añade espacio entre el título y el menú */
+    margin-right: 2rem; /* Espacio reducido entre el título y el menú */
 }
 
 .nav-title h1 {
@@ -300,65 +300,6 @@ nav ul li a:hover::after {
 .logo-popup.visible {
     opacity: 1;
     visibility: visible;
-}
-
-/* === AJUSTE PARA MÓVILES: HACER EL LOGO VISIBLE Y PEQUEÑO === */
-@media (max-width: 768px) {
-    .link-with-logo-popup {
-        display: inline-flex; /* Usar flexbox para alinear texto y logo */
-        align-items: center; /* Centrar verticalmente */
-        gap: 0.5rem; /* Espacio entre texto y logo */
-    }
-       .nav-logo-mobile {
-        display: block; /* Hacemos visible el logo en móvil */
-        padding-bottom: 1rem;
-        margin: 0 auto 1rem auto;
-        border-bottom: 1px solid rgba(188, 160, 125, 0.2); /* Línea separadora sutil */
-        width: 90%;
-        text-align: center;
-    }
-
-    .nav-logo-mobile img {
-        max-width: 150px; /* Puedes ajustar este tamaño si lo ves muy grande o pequeño */
-        height: auto;
-    }
-
-    #nav-links {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: -100%;
-        width: 70%;
-        max-width: 300px;
-        height: 100vh;
-        background-color: rgba(20, 20, 20, 0.95);
-        backdrop-filter: blur(8px);
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        overflow-y: auto;
-        padding-top: 40px; /* Ajustamos el padding para dar espacio al logo */
-        transition: left 0.3s ease-in-out;
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .logo-popup {
-        /* Hacemos el logo visible y lo devolvemos al flujo normal */
-        position: static;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-
-        /* Eliminamos los estilos de "caja" del popup */
-        background: none;
-        padding: 0;
-        box-shadow: none;
-        border: none;
-
-        /* Ajustamos el tamaño para que sea pequeño */
-        width: auto;
-        height: 24px; /* Altura ajustada para ser similar a la del texto */
-    }
 }
 
 /* === NUEVO ESTILO PARA EL ENLACE ROSA (CARRERA Y FÓRMULA) === */
@@ -2087,7 +2028,7 @@ footer {
         z-index: 1001;
         padding: 0.5rem;
     }
-
+    
     #nav-links {
         display: block;
         position: fixed;
@@ -2102,10 +2043,51 @@ footer {
         justify-content: flex-start;
         align-items: center;
         overflow-y: auto;
-        padding-top: 80px;
+        padding-top: 0;
         transition: left 0.3s ease-in-out;
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
     }
+    
+    /* --- INICIO: AJUSTES FINALES LOGO MENÚ MÓVIL (CORREGIDO) --- */
+.nav-logo-mobile {
+    display: block; 
+    text-align: center;
+    width: 100%;
+    padding: 0.75rem 0 0.5rem 0; /* Menos padding superior */
+    margin-bottom: 0.25rem; /* Menos margen inferior */
+    border-bottom: 1px solid rgba(188, 160, 125, 0.2); 
+}
+
+.nav-logo-mobile img {
+    max-width: 220px; /* Logo más grande */
+    height: auto;
+}
+
+.nav-logo-mobile a {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    /* line-height: 0; no es necesario si la imagen es display:block por defecto */
+}
+
+.nav-logo-mobile a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: translateX(-150%) skewX(-25deg);
+    animation: shine-sweep 4s ease-in-out infinite;
+    animation-delay: 2.5s;
+}
+/* --- FIN: AJUSTES FINALES LOGO MENÚ MÓVIL --- */
 
     #nav-links.nav-open {
         left: 0;
@@ -2532,6 +2514,10 @@ footer {
     }
     .events-grid {
         grid-template-columns: 1fr;
+    }
+
+    .logo-popup {
+        display: none;
     }
 }
 
