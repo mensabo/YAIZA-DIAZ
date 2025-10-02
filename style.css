@@ -3192,9 +3192,9 @@ a.expandable-image:hover img {
         }
     }
 }
-/* ============================================== */
-/*   ANIMACIÓN DE DESTELLO PARA BOTONES SOCIALES  */
-/* ============================================== */
+/* ========================================================= */
+/*   ANIMACIÓN DE DESTELLO POTENCIADA PARA BOTONES SOCIALES  */
+/* ========================================================= */
 
 /* Preparamos el contenedor del botón para la animación */
 .proyecto-social-icons a {
@@ -3202,33 +3202,33 @@ a.expandable-image:hover img {
     overflow: hidden;   /* Oculta el destello cuando está fuera del botón */
 }
 
-/* Creamos el elemento que será el destello */
+/* Creamos el elemento que será el destello (AHORA MÁS ANCHO Y BRILLANTE) */
 .proyecto-social-icons a::after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 50%;
+    width: 70%; /* Hacemos el destello más ancho */
     height: 100%;
     background: linear-gradient(
         to right, 
         rgba(255, 255, 255, 0) 0%, 
-        rgba(255, 255, 255, 0.4) 50%, 
+        rgba(255, 255, 255, 0.7) 50%, /* Hacemos el destello mucho más brillante */
         rgba(255, 255, 255, 0) 100%
     );
     /* Inicia fuera de la vista y en ángulo */
     transform: translateX(-150%) skewX(-25deg);
 }
 
-/* Solo en pantallas móviles, activamos la animación */
+/* Solo en pantallas móviles, activamos la animación (AHORA MÁS RÁPIDA) */
 @media (max-width: 768px) {
     .proyecto-social-icons a::after {
-        /* Aplicamos la animación al destello */
-        animation: shine-sweep 3.5s ease-in-out infinite;
+        /* Hacemos la animación más rápida */
+        animation: shine-sweep 2.8s ease-in-out infinite;
     }
 
-    /* Añadimos un retraso al segundo botón (TikTok) para que no brillen a la vez */
+    /* Ajustamos el retraso del segundo botón para mantener la alternancia */
     .proyecto-social-icons a:last-child::after {
-        animation-delay: 1.75s;
+        animation-delay: 1.4s;
     }
 }
