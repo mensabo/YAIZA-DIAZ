@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initializeSidenotes();
     initializeSmoothScroll();
     initializeLogoPopups();
+    initializeScrollIndicator();
 
     if (pageId === 'homepage') {
         initializeHeroSlider();
@@ -645,6 +646,45 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const targetElement = document.querySelector(window.location.hash);
                 performScroll(targetElement);
             }
+        });
+    }
+        // =======================================================
+    // --- FUNCIÓN PARA EL INDICADOR DE SCROLL DEL MENÚ MÓVIL ---
+    // =======================================================
+    function initializeScrollIndicator() {
+        const navLinks = document.getElementById('nav-links');
+        const scrollIndicator = document.getElementById('scroll-indicator');
+
+        if (!navLinks || !scrollIndicator) {
+            return; // No hacer nada si los elementos no existen
+        }
+
+        const checkScroll = () => {
+            // Comprobamos si el menú es realmente más alto que su contenedor
+            const isScrollable = navLinks.scrollHeight > navLinks.clientHeight;
+            
+            if (!isScrollable) {
+                scrollIndicator.classList.add('is-hidden');
+                return; // Si no hay scroll, ocultamos la flecha y terminamos
+            }
+            
+            // Calculamos si hemos llegado al final del scroll (con un pequeño margen de 5px)
+            const isAtBottom = navLinks.scrollTop + navLinks.clientHeight >= navLinks.scrollHeight - 5;
+
+            if (isAtBottom) {
+                scrollIndicator.classList.add('is-hidden');
+            } else {
+                scrollIndicator.classList.remove('is-hidden');
+            }
+        };
+
+        // Escuchamos el evento de scroll en el menú
+        navLinks.addEventListener('scroll', checkScroll);
+        
+        // También lo comprobamos una vez al abrir el menú
+        mobileMenuToggle.addEventListener('click', () => {
+            // Pequeña espera para que el menú sea visible antes de comprobar
+            setTimeout(checkScroll, 50);
         });
     }
 });

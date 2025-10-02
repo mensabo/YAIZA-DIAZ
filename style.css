@@ -2048,54 +2048,41 @@ footer {
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
     }
     
-    /* --- INICIO: AJUSTES FINALES LOGO MENÚ MÓVIL (CORREGIDO) --- */
+/* --- INICIO: AJUSTES FINALES LOGO MENÚ MÓVIL (SOLUCIÓN DEFINITIVA) --- */
 .nav-logo-mobile {
-    display: block; 
+    display: block;
     text-align: center;
     width: 100%;
-    padding-top: 0; /* <--- MODIFICA ESTE VALOR PARA AJUSTAR LA ALTURA */
-    padding-bottom: 0.5rem;
-    margin-bottom: 0.25rem; 
-    border-bottom: 1px solid rgba(188, 160, 125, 0.2); 
-}
-
-.nav-logo-mobile img {
-    max-width: 220px; /* Logo más grande */
-    height: auto;
+    padding-top: 0.75rem; /* Mantenemos el espacio sobre el logo */
+    padding-bottom: 0.75rem; /* Este padding controla el espacio ENTRE el logo y la línea */
+    margin: 0;
+    border-bottom: 1px solid rgba(188, 160, 125, 0.2);
 }
 
 .nav-logo-mobile a {
-    position: relative;
     display: inline-block;
+    padding: 0 !important; /* ¡ESTA ES LA CLAVE! Anula el padding de otros enlaces */
+    line-height: 0; 
+    position: relative;
     overflow: hidden;
-    /* line-height: 0; no es necesario si la imagen es display:block por defecto */
 }
 
-.nav-logo-mobile a::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-        to right,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.3) 50%,
-        rgba(255, 255, 255, 0) 100%
-    );
-    transform: translateX(-150%) skewX(-25deg);
-    animation: shine-sweep 4s ease-in-out infinite;
-    animation-delay: 2.5s;
+.nav-logo-mobile a:hover {
+    background-color: transparent !important; /* Evita el fondo gris al pasar el ratón */
 }
-/* --- FIN: AJUSTES FINALES LOGO MENÚ MÓVIL --- */
+
+.nav-logo-mobile img {
+    max-width: 220px;
+    height: auto;
+    display: block; /* Correcto para eliminar espacio extra debajo de la imagen */
+}
 
     #nav-links.nav-open {
         left: 0;
     }
 
     #nav-links li {
-        margin: 0.2rem 0;
+        margin: 0;
         width: 100%;
         text-align: center;
     }
@@ -3160,5 +3147,88 @@ a.expandable-image:hover img {
 @media (max-width: 768px) {
     .modal-content.contact-modal-content {
         padding: 2.5rem 1.5rem;
+    }
+}
+/* =================================== */
+/*   INDICADOR DE SCROLL MENÚ MÓVIL    */
+/* =================================== */
+#scroll-indicator {
+    display: none; /* Oculto por defecto en escritorio */
+}
+
+@media (max-width: 768px) {
+    #scroll-indicator {
+        display: block; /* Visible solo en móvil */
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--color-acento);
+        font-size: 1.5rem;
+        /* Línea corregida para evitar el error de sintaxis */
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        pointer-events: none; /* Para que no se pueda hacer clic en ella */
+        opacity: 1;
+        transition: opacity 0.3s ease;
+        animation: bounce-down 2s infinite;
+    }
+
+    /* Clase para ocultar la flecha con JS */
+    #scroll-indicator.is-hidden {
+        opacity: 0;
+        animation: none; /* Detenemos la animación al ocultar */
+    }
+
+    /* Animación de rebote sutil */
+    @keyframes bounce-down {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateX(-50%) translateY(0);
+        }
+        40% {
+            transform: translateX(-50%) translateY(8px);
+        }
+        60% {
+            transform: translateX(-50%) translateY(4px);
+        }
+    }
+}
+/* ============================================== */
+/*   ANIMACIÓN DE DESTELLO PARA BOTONES SOCIALES  */
+/* ============================================== */
+
+/* Preparamos el contenedor del botón para la animación */
+.proyecto-social-icons a {
+    position: relative; /* Necesario para posicionar el destello */
+    overflow: hidden;   /* Oculta el destello cuando está fuera del botón */
+}
+
+/* Creamos el elemento que será el destello */
+.proyecto-social-icons a::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        to right, 
+        rgba(255, 255, 255, 0) 0%, 
+        rgba(255, 255, 255, 0.4) 50%, 
+        rgba(255, 255, 255, 0) 100%
+    );
+    /* Inicia fuera de la vista y en ángulo */
+    transform: translateX(-150%) skewX(-25deg);
+}
+
+/* Solo en pantallas móviles, activamos la animación */
+@media (max-width: 768px) {
+    .proyecto-social-icons a::after {
+        /* Aplicamos la animación al destello */
+        animation: shine-sweep 3.5s ease-in-out infinite;
+    }
+
+    /* Añadimos un retraso al segundo botón (TikTok) para que no brillen a la vez */
+    .proyecto-social-icons a:last-child::after {
+        animation-delay: 1.75s;
     }
 }
