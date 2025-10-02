@@ -3158,37 +3158,49 @@ a.expandable-image:hover img {
 
 @media (max-width: 768px) {
     #scroll-indicator {
-        display: block; /* Visible solo en móvil */
+        display: flex;
+        align-items: center;
+        justify-content: center;
         position: absolute;
         bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        color: var(--color-acento);
-        font-size: 1.5rem;
-        /* Línea corregida para evitar el error de sintaxis */
-        text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        pointer-events: none; /* Para que no se pueda hacer clic en ella */
+        
+        /* === CAMBIOS PARA POSICIONAR A LA IZQUIERDA === */
+        left: 20px; /* <-- CAMBIO: Posición fija a la izquierda */
+        /* Eliminamos el transform: translateX(-50%) que lo centraba */
+
+        width: 40px;
+        height: 40px;
+        background-color: rgba(188, 160, 125, 0.2);
+        border: 1px solid rgba(188, 160, 125, 0.5);
+        border-radius: 50%;
+        color: var(--color-blanco);
+        font-size: 1.2rem;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(3px);
+        
+        pointer-events: none;
         opacity: 1;
         transition: opacity 0.3s ease;
-        animation: bounce-down 2s infinite;
+        animation: bounce-down 2.5s infinite;
     }
 
     /* Clase para ocultar la flecha con JS */
     #scroll-indicator.is-hidden {
         opacity: 0;
-        animation: none; /* Detenemos la animación al ocultar */
+        animation: none;
     }
 
-    /* Animación de rebote sutil */
+    /* Animación de rebote (AHORA SIN EL translateX) */
     @keyframes bounce-down {
         0%, 20%, 50%, 80%, 100% {
-            transform: translateX(-50%) translateY(0);
+            /* <-- CAMBIO: Ya no necesita el centrado horizontal */
+            transform: translateY(0);
         }
         40% {
-            transform: translateX(-50%) translateY(8px);
+            transform: translateY(10px);
         }
         60% {
-            transform: translateX(-50%) translateY(4px);
+            transform: translateY(5px);
         }
     }
 }
