@@ -2053,8 +2053,9 @@ footer {
     display: block; 
     text-align: center;
     width: 100%;
-    padding: 0.75rem 0 0.5rem 0; /* Menos padding superior */
-    margin-bottom: 0.25rem; /* Menos margen inferior */
+    padding-top: 0; /* <--- MODIFICA ESTE VALOR PARA AJUSTAR LA ALTURA */
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.25rem; 
     border-bottom: 1px solid rgba(188, 160, 125, 0.2); 
 }
 
