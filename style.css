@@ -3161,14 +3161,19 @@ a.expandable-image:hover img {
 /* =================================== */
 @media (max-width: 768px) {
     #scroll-indicator {
-        position: absolute;
-        display: none; /* Oculto por defecto, JS lo gestionará */
+        /* INICIO: CORRECCIÓN DE POSICIONAMIENTO CON STICKY */
+        position: sticky;
+        align-self: flex-start; /* Pega el item a la izquierda del contenedor flex (el menú) */
+        bottom: 20px;
+        margin-left: 20px;
+        /* FIN: CORRECCIÓN DE POSICIONAMIENTO CON STICKY */
+        
+        display: none; /* JS se encargará de mostrarlo */
         align-items: center;
         justify-content: center;
-        bottom: 20px;
-        left: 20px;
         width: 40px;
         height: 40px;
+        z-index: 1; /* No necesita un z-index alto al estar dentro del flujo */
         background-color: rgba(188, 160, 125, 0.2);
         border: 1px solid rgba(188, 160, 125, 0.5);
         border-radius: 50%;
@@ -3181,12 +3186,10 @@ a.expandable-image:hover img {
         animation: bounce-down 2.5s infinite;
     }
 
-    /* Regla corregida: Muestra la flecha si el menú está abierto */
     #nav-links.nav-open #scroll-indicator {
         display: flex;
     }
 
-    /* La clase .is-hidden del JS se encargará de ocultarla cuando sea necesario */
     #scroll-indicator.is-hidden {
         display: none !important;
     }
