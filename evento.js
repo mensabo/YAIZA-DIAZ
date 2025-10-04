@@ -47,14 +47,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                         galleryItem.classList.add('js-video-modal-trigger');
                         galleryItem.dataset.videoSrc = item.videoSrc;
                         galleryItem.innerHTML = `
-                            <img src="${item.thumbnailSrc}" alt="${item.description || eventData.title}">
+                            <img src="${item.thumbnailSrc}" alt="${item.description || eventData.title}" loading="lazy">
                             <div class="video-overlay-icon"><i class="fas fa-play"></i></div>
                         `;
                     } else {
                         // Es una imagen
                         galleryItem.href = item.src;
                         galleryItem.classList.add('expandable-image');
-                        galleryItem.innerHTML = `<img src="${item.src}" alt="${item.description || eventData.title}">`;
+                        galleryItem.innerHTML = `<img src="${item.src}" alt="${item.description || eventData.title}" loading="lazy">`;
                     }
                     
                     // Aplicar el object-position si está definido

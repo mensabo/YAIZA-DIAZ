@@ -29,7 +29,7 @@ const runCollectionMigration = async () => {
     try {
         if (pageToMigrate === 'entrevistas') {
             // --- LÓGICA PARA MIGRAR ENTREVISTAS ---
-            console.log("Iniciando migración de Entrevistas...");
+           
             const interviewCards = document.querySelectorAll('#entrevistas-main .media-card');
             if (interviewCards.length === 0) {
                 throw new Error("No se encontraron tarjetas de entrevista para migrar en el HTML.");
@@ -45,15 +45,14 @@ const runCollectionMigration = async () => {
                     order: i
                 };
                 
-                console.log(`Migrando: ${interviewData.mainTitle}`);
+                
                 await addDoc(collection(db, 'interviews'), interviewData);
             }
             alert(`¡ÉXITO! Se han migrado ${interviewCards.length} entrevistas.\n\nAHORA ELIMINA LA ETIQUETA <script src="migrate_collections.js"> de entrevistas.html.`);
 
         } else if (pageToMigrate === 'premios') {
             // --- LÓGICA PARA MIGRAR PREMIOS ---
-            console.log("Iniciando migración de Premios...");
-            const awardSections = document.querySelectorAll('#premios-main .comunicacion-section');
+                        const awardSections = document.querySelectorAll('#premios-main .comunicacion-section');
             if (awardSections.length === 0) {
                 throw new Error("No se encontraron secciones de premios para migrar en el HTML.");
             }
@@ -74,8 +73,7 @@ const runCollectionMigration = async () => {
                     galleryItems: galleryItems,
                     order: i
                 };
-                console.log(`Migrando: ${awardData.title}`);
-                await addDoc(collection(db, 'awards'), awardData);
+                               await addDoc(collection(db, 'awards'), awardData);
             }
             alert(`¡ÉXITO! Se han migrado ${awardSections.length} premios.\n\nAHORA ELIMINA la etiqueta <script src="migrate_collections.js"> de premios.html.`);
         }

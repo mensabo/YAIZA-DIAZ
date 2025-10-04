@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const { db, collection, getDocs, orderBy, query, doc, getDoc } = window.firebaseServices;
 
     // =======================================================
-    // --- LÓGICA DEL MENÚ DE NAVEGACIÓN (MÓVIL) ---
+    // --- LÓGICA DEL MENÚ DE NAVEGACIÓN (MÓVIL) --- (CORREGIDO)
     // =======================================================
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
     const navLinks = document.getElementById('nav-links');
@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             event.stopPropagation();
             navLinks.classList.toggle('nav-open');
         });
+        
+        // CORRECCIÓN: Este listener ahora está DENTRO del 'if' para evitar errores
         document.addEventListener('click', (event) => {
             const isMenuOpen = navLinks.classList.contains('nav-open');
             const clickedInsideMenu = navLinks.contains(event.target);
@@ -57,8 +59,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 });
             } else {
-                console.warn(`No se encontró documento de textos para la página: ${pageId}`);
-            }
+                            }
         } catch (error) {
             console.error("Error al cargar textos dinámicos:", error);
         }
@@ -72,7 +73,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadDynamicText(pageId);
     }
     
-    // **INICIO: CORRECCIÓN INMEDIATA PARA ELIMINAR EL ICONO ANTIGUO**
     if (pageId === 'investigacionPage') {
         const reportajeParagraph = document.querySelector('[data-content-id="reportaje3Paragraph"]');
         if (reportajeParagraph) {
@@ -82,9 +82,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
     }
-    // **FIN: CORRECCIÓN INMEDIATA**
 
     initializeContactModal();
+    initializeEscapeKeyForModals(); // <-- FUNCIÓN AÑADIDA
     initializeSidenotes();
     initializeSmoothScroll();
     initializeLogoPopups();
@@ -325,7 +325,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         </video>
                     `;
                 } else {
-                    mediaElementHtml = `<img src="${firstItem.thumbnailSrc || firstItem.src}" alt="${event.title}">`;
+                    mediaElementHtml = `<img src="${firstItem.thumbnailSrc || firstItem.src}" alt="${event.title}" loading="lazy">`;
                 }
                 
                 const card = document.createElement('a');
@@ -368,7 +368,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 card.rel = 'noopener noreferrer';
                 card.innerHTML = `
                     <div class="image-container">
-                        <img src="${interview.thumbnailUrl}" alt="${interview.mainTitle}" style="width: 100%; height: 200px; object-fit: cover;">
+                        <img src="${interview.thumbnailUrl}" alt="${interview.mainTitle}" style="width: 100%; height: 200px; object-fit: cover;" loading="lazy">
                         ${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}
                     </div>
                     <div class="media-card-text">
@@ -427,7 +427,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 items.forEach((item) => {
                     const thumbDiv = document.createElement('div');
                     thumbDiv.className = 'miniatura-item';
-                    thumbDiv.innerHTML = `<img src="${item.thumbnailSrc || item.src}" alt="${item.descripcion || 'Miniatura'}">`;
+                    thumbDiv.innerHTML = `<img src="${item.thumbnailSrc || item.src}" alt="${item.descripcion || 'Miniatura'}" loading="lazy">`;
                     thumbDiv.addEventListener('click', () => setActiveItem(item, thumbDiv));
                     thumbnailsContainer.appendChild(thumbDiv);
                 });
@@ -468,12 +468,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         const thumbnails = container.querySelectorAll('.miniatura-item');
     
         if (!mainImage || !mainDesc || !bgImage || thumbnails.length === 0) return;
+        
+        mainImage.addEventListener('click', () => {
+            if (mainImage.src) { 
+                const lightboxModal = document.getElementById('lightbox-modal');
+                const lightboxImage = document.getElementById('lightbox-image');
+                const lightboxCaption = document.getElementById('lightbox-caption');
+    
+                if (lightboxModal && lightboxImage && lightboxCaption) {
+                    lightboxImage.src = mainImage.src;
+                    lightboxCaption.textContent = mainDesc.textContent || '';
+                    
+                    const prev = lightboxModal.querySelector('.lightbox-prev');
+                    const next = lightboxModal.querySelector('.lightbox-next');
+                    if (prev) prev.style.display = 'none';
+                    if (next) next.style.display = 'none';
+                    
+                    lightboxModal.classList.add('visible');
+                }
+            }
+        });
     
         function setActiveItem(thumbElement) {
             const imgSrc = thumbElement.dataset.imgSrc;
             const description = thumbElement.dataset.description;
     
             if (!imgSrc) return;
+            
+            mainImage.style.cursor = 'zoom-in';
     
             mainImage.style.opacity = '0';
             setTimeout(() => {
@@ -673,9 +695,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
-    // =======================================================
-    // --- FUNCIÓN PARA EL INDICADOR DE SCROLL DEL MENÚ MÓVIL (VERSIÓN FINAL) ---
-    // =======================================================
+
     function initializeScrollIndicator() {
         const navLinks = document.getElementById('nav-links');
         const scrollIndicator = document.getElementById('scroll-indicator');
@@ -696,22 +716,38 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         };
 
-        // Escuchar el scroll DENTRO del menú para actualizar la flecha
         navLinks.addEventListener('scroll', checkScroll);
         
-        // Escuchar el CLIC en el botón del menú
         mobileMenuToggle.addEventListener('click', () => {
-            // Usamos un pequeño timeout para dar tiempo al navegador a aplicar la clase 'nav-open'
-            // y calcular correctamente las dimensiones del menú ya visible.
             setTimeout(() => {
                 if (navLinks.classList.contains('nav-open')) {
-                    // Si el menú está abierto, hacemos la comprobación inicial.
                     checkScroll();
                 } else {
-                    // Si el menú se está cerrando, nos aseguramos de ocultar la flecha.
                     scrollIndicator.classList.add('is-hidden');
                 }
-            }, 50); // 50ms es un retraso seguro y casi imperceptible.
+            }, 50); 
         });
     }
+
+    // <-- INICIO DE LA NUEVA FUNCIÓN -->
+    function initializeEscapeKeyForModals() {
+        document.addEventListener('keydown', (event) => {
+            // Comprueba si la tecla presionada es 'Escape'
+            if (event.key === 'Escape') {
+                // Busca todos los modales o lightboxes que estén visibles
+                const visibleModals = document.querySelectorAll('.modal-overlay.visible, .lightbox.visible');
+                
+                // Si hay alguno visible, cierra el que esté por encima de los demás
+                if (visibleModals.length > 0) {
+                    const topModal = visibleModals[visibleModals.length - 1];
+                    const closeButton = topModal.querySelector('.modal-close, .lightbox-close');
+                    
+                    if (closeButton) {
+                        closeButton.click(); // Simula un clic en su botón de cierre
+                    }
+                }
+            }
+        });
+    }
+    // <-- FIN DE LA NUEVA FUNCIÓN -->
 });

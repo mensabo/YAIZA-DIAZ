@@ -22,6 +22,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const navButtons = document.querySelectorAll('.admin-nav button');
     const panels = document.querySelectorAll('.panel');
 
+    // --- FUNCIÓN HELPER PARA NOTIFICACIONES ---
+    const showToast = (text, type = 'success') => {
+        Toastify({
+            text: text,
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: type === 'success' ? "linear-gradient(to right, #00b09b, #96c93d)" : "linear-gradient(to right, #e53e3e, #c53030)",
+            },
+        }).showToast();
+    };
+
     // --- LÓGICA DE AUTENTICACIÓN ---
     onAuthStateChanged(auth, user => {
         if (user) {
@@ -40,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loginButton.addEventListener('click', () => {
         signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
-            .catch(error => alert('Error de acceso: ' + error.message));
+            .catch(error => showToast('Error de acceso: ' + error.message, 'error'));
     });
     
     logoutButton.addEventListener('click', () => signOut(auth));
@@ -87,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadGalleries() {
         currentGalleryTitle.textContent = `Editando: ${galleryTitles[currentCollection]}`;
-        galleryListEl.innerHTML = '<p>Cargando...</p>';
+        galleryListEl.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
         const q = query(collection(db, currentCollection), orderBy('order'));
         const snapshot = await getDocs(q);
         const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -135,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const videoUrl = videoUrlInput.value.trim();
         const thumbUrl = thumbnailUrlInput.value.trim();
         const desc = videoDescriptionInput.value.trim();
-        if (!videoUrl || !thumbUrl || !desc) return alert("Por favor, completa todos los campos del vídeo.");
+        if (!videoUrl || !thumbUrl || !desc) return showToast("Por favor, completa todos los campos del vídeo.", "error");
         const currentCount = galleryListEl.querySelectorAll('.gallery-item').length;
         await addDoc(collection(db, currentCollection), {
             type: 'video', videoSrc: videoUrl, thumbnailSrc: thumbUrl, descripcion: desc, order: currentCount
@@ -151,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             batch.update(docRef, { order: index, descripcion: item.querySelector('.description-input').value });
         });
         await batch.commit();
-        alert('¡Galería guardada con éxito!');
+        showToast('¡Galería guardada con éxito!');
         loadGalleries();
     });
 
@@ -251,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadPageTexts() {
         const pageId = pageSelector.value;
         if (!pageId) return;
-        textFieldsContainer.innerHTML = '<p>Cargando textos...</p>';
+        textFieldsContainer.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
         try {
             const docRef = doc(db, 'pages', pageId);
             const docSnap = await getDoc(docRef);
@@ -259,8 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
             textFieldsContainer.innerHTML = '';
             const expectedKeys = pageContentMap[pageId] || Object.keys(existingData);
             if (!pageContentMap[pageId]) {
-                 console.warn(`No hay un mapa de contenido definido para la página ${pageId}. Se usarán solo los campos existentes.`);
-            }
+                            }
             expectedKeys.sort().forEach(key => {
                 const value = existingData[key] || '';
                 const fieldWrapper = document.createElement('div');
@@ -296,10 +310,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         try {
             await setDoc(doc(db, 'pages', pageId), dataToUpdate, { merge: true });
-            alert('¡Textos guardados con éxito!');
+            showToast('¡Textos guardados con éxito!');
             loadPageTexts();
         } catch (error) {
-            alert("Hubo un error al guardar los textos.");
+            showToast("Hubo un error al guardar los textos.", "error");
             console.error("Error al guardar textos:", error);
         }
     }
@@ -374,7 +388,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function loadEvents() {
-        eventsListEl.innerHTML = '<p>Cargando eventos...</p>';
+        eventsListEl.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
         const q = query(collection(db, 'events'), orderBy('order'));
         const snapshot = await getDocs(q);
         const events = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -417,7 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const thumbnailFile = eventVideoThumbnailUploader.files[0];
 
         if (!videoFile || !thumbnailFile) {
-            return alert("Por favor, selecciona un archivo de vídeo y una imagen para la miniatura.");
+            return showToast("Por favor, selecciona un archivo de vídeo y una imagen para la miniatura.", "error");
         }
 
         uploadEventVideoButton.textContent = 'Subiendo...';
@@ -448,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error("Error al subir el vídeo:", error);
-            alert("Ocurrió un error al subir el vídeo. Por favor, inténtalo de nuevo.");
+            showToast("Ocurrió un error al subir el vídeo.", "error");
         } finally {
             uploadEventVideoButton.textContent = 'Añadir Vídeo Subido';
             uploadEventVideoButton.disabled = false;
@@ -467,12 +481,12 @@ document.addEventListener('DOMContentLoaded', () => {
             galleryItems: getItemsFromEventPreview(),
             order
         };
-        if (!eventData.title) return alert('El evento debe tener un título.');
+        if (!eventData.title) return showToast('El evento debe tener un título.', 'error');
         
         if (eventId) await updateDoc(doc(db, 'events', eventId), eventData);
         else await addDoc(collection(db, 'events'), eventData);
         
-        alert('¡Evento guardado!');
+        showToast('¡Evento guardado!');
         resetEventForm();
         loadEvents();
     });
@@ -507,7 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
             batch.update(doc(db, 'events', item.dataset.id), { order: index });
         });
         await batch.commit();
-        alert('¡Orden guardado!');
+        showToast('¡Orden guardado!');
         loadEvents();
     });
 
@@ -516,7 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===========================================
     async function loadInterviews() {
         const interviewsListEl = document.getElementById('interviews-list');
-        interviewsListEl.innerHTML = '<p>Cargando entrevistas...</p>';
+        interviewsListEl.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
         const q = query(collection(db, 'interviews'), orderBy('order'));
         const snapshot = await getDocs(q);
         renderInterviews(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
@@ -584,12 +598,12 @@ document.addEventListener('DOMContentLoaded', () => {
             thumbnailUrl: interviewThumbnailUrl,
             order
         };
-        if (!interviewData.mainTitle || !interviewData.url || !interviewData.thumbnailUrl) return alert('Completa todos los campos, incluida la imagen.');
+        if (!interviewData.mainTitle || !interviewData.url || !interviewData.thumbnailUrl) return showToast('Completa todos los campos, incluida la imagen.', 'error');
         
         if (interviewId) await updateDoc(doc(db, 'interviews', interviewId), interviewData);
         else await addDoc(collection(db, 'interviews'), interviewData);
 
-        alert('¡Entrevista guardada!');
+        showToast('¡Entrevista guardada!');
         resetInterviewForm();
         loadInterviews();
     });
@@ -626,7 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
             batch.update(doc(db, 'interviews', item.dataset.id), { order: index });
         });
         await batch.commit();
-        alert('¡Orden guardado!');
+        showToast('¡Orden guardado!');
         loadInterviews();
     });
 
@@ -691,7 +705,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })();
 
     async function loadAwards() {
-        awardsListEl.innerHTML = '<p>Cargando premios...</p>';
+        awardsListEl.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
         const q = query(collection(db, 'awards'), orderBy('order'));
         const snapshot = await getDocs(q);
         renderAwards(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
@@ -728,7 +742,7 @@ document.addEventListener('DOMContentLoaded', () => {
     addAwardVideoButton.addEventListener('click', () => {
         const videoUrl = awardVideoUrlInput.value.trim();
         const thumbUrl = awardThumbnailUrlInput.value.trim();
-        if (!videoUrl || !thumbUrl) return alert("Introduce la URL del vídeo y de su miniatura.");
+        if (!videoUrl || !thumbUrl) return showToast("Introduce la URL del vídeo y de su miniatura.", "error");
         awardLogic.renderPreview([...awardLogic.getItemsFromPreview(), { type: 'video', videoSrc: videoUrl, thumbnailSrc: thumbUrl, description: '' }]);
         awardVideoUrlInput.value = '';
         awardThumbnailUrlInput.value = '';
@@ -745,12 +759,12 @@ document.addEventListener('DOMContentLoaded', () => {
             galleryItems: awardLogic.getItemsFromPreview(),
             order
         };
-        if (!awardData.title) return alert('El premio debe tener un título.');
+        if (!awardData.title) return showToast('El premio debe tener un título.', 'error');
         
         if (awardId) await updateDoc(doc(db, 'awards', awardId), awardData);
         else await addDoc(collection(db, 'awards'), awardData);
 
-        alert('¡Premio guardado!');
+        showToast('¡Premio guardado!');
         resetAwardForm();
         loadAwards();
     });
@@ -785,7 +799,7 @@ document.addEventListener('DOMContentLoaded', () => {
             batch.update(doc(db, 'awards', item.dataset.id), { order: index });
         });
         await batch.commit();
-        alert('¡Orden guardado!');
+        showToast('¡Orden guardado!');
         loadAwards();
     });
 });
