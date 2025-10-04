@@ -649,26 +649,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
         // =======================================================
-    // --- FUNCIÓN PARA EL INDICADOR DE SCROLL DEL MENÚ MÓVIL ---
+    // --- FUNCIÓN PARA EL INDICADOR DE SCROLL DEL MENÚ MÓVIL (CORREGIDA) ---
     // =======================================================
     function initializeScrollIndicator() {
         const navLinks = document.getElementById('nav-links');
         const scrollIndicator = document.getElementById('scroll-indicator');
+        // INICIO CORRECCIÓN: Obtener la referencia al botón del menú aquí dentro
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        // FIN CORRECCIÓN
 
-        if (!navLinks || !scrollIndicator) {
-            return; // No hacer nada si los elementos no existen
+        if (!navLinks || !scrollIndicator || !mobileMenuToggle) { // CORRECCIÓN: Añadido chequeo para mobileMenuToggle
+            return; 
         }
 
         const checkScroll = () => {
-            // Comprobamos si el menú es realmente más alto que su contenedor
             const isScrollable = navLinks.scrollHeight > navLinks.clientHeight;
             
             if (!isScrollable) {
                 scrollIndicator.classList.add('is-hidden');
-                return; // Si no hay scroll, ocultamos la flecha y terminamos
+                return;
             }
             
-            // Calculamos si hemos llegado al final del scroll (con un pequeño margen de 5px)
             const isAtBottom = navLinks.scrollTop + navLinks.clientHeight >= navLinks.scrollHeight - 5;
 
             if (isAtBottom) {
@@ -678,12 +679,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         };
 
-        // Escuchamos el evento de scroll en el menú
         navLinks.addEventListener('scroll', checkScroll);
         
-        // También lo comprobamos una vez al abrir el menú
+        // CORRECCIÓN: Ahora el listener se añade correctamente porque mobileMenuToggle está definido
         mobileMenuToggle.addEventListener('click', () => {
-            // Pequeña espera para que el menú sea visible antes de comprobar
             setTimeout(checkScroll, 50);
         });
     }
