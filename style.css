@@ -1932,6 +1932,13 @@ footer {
     transition: transform 0.4s ease;
 }
 
+/* INICIO: Corrección para placeholder.png */
+.event-card-image img[src="images/placeholder.png"] {
+    object-fit: contain; /* Muestra la imagen completa sin recortar */
+    padding: 2rem;       /* Añade un espacio interior para que no toque los bordes */
+}
+/* FIN: Corrección para placeholder.png */
+
 .event-card-link:hover .event-card-image img,
 .event-card-link:hover .event-card-image video {
     transform: scale(1.05);

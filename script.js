@@ -386,12 +386,35 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function initializeInteractiveGallery(containerId, collectionName) {
         const container = document.getElementById(containerId);
         if (!container) return;
+
+        let activeItem = null; // Para guardar el item activo
         const mainImage = container.querySelector('.imagen-principal');
         const mainDesc = container.querySelector('.descripcion-principal p');
         const bgImage = container.querySelector('.galeria-bg-desenfocado');
         const thumbnailsContainer = container.querySelector('.galeria-lista-miniaturas');
         
         if (!mainImage || !mainDesc || !bgImage || !thumbnailsContainer) return;
+
+        // INICIO CORRECCIÓN: Añadir listener a la imagen principal
+        mainImage.addEventListener('click', () => {
+            if (activeItem && activeItem.type !== 'video') { // Solo para imágenes
+                const lightboxModal = document.getElementById('lightbox-modal');
+                const lightboxImage = document.getElementById('lightbox-image');
+                const lightboxCaption = document.getElementById('lightbox-caption');
+                if (lightboxModal && lightboxImage && lightboxCaption) {
+                    lightboxImage.src = activeItem.src;
+                    lightboxCaption.textContent = activeItem.descripcion || '';
+                    
+                    const prev = lightboxModal.querySelector('.lightbox-prev');
+                    const next = lightboxModal.querySelector('.lightbox-next');
+                    if (prev) prev.style.display = 'none';
+                    if (next) next.style.display = 'none';
+                    
+                    lightboxModal.classList.add('visible');
+                }
+            }
+        });
+        // FIN CORRECCIÓN
         
         mainImage.style.opacity = '0';
         mainDesc.textContent = 'Cargando galería...';
@@ -416,6 +439,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             function setActiveItem(item, thumbElement) {
+                activeItem = item; // Guardar el item actual
+                mainImage.style.cursor = item.type !== 'video' ? 'zoom-in' : 'default'; // Cambiar cursor
+
                 mainImage.style.opacity = '0';
                 setTimeout(() => {
                     mainImage.src = item.src || item.thumbnailSrc;
