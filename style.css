@@ -3162,7 +3162,7 @@ a.expandable-image:hover img {
 @media (max-width: 768px) {
     #scroll-indicator {
         position: fixed; /* <--- CAMBIO CLAVE */
-        bottom: 20px;
+        top: 230px;
         left: 20px;
         z-index: 1002; /* Por encima del menú */
         
@@ -3184,11 +3184,6 @@ a.expandable-image:hover img {
         opacity: 0; /* <--- Por defecto, está oculta */
         transition: opacity 0.3s ease;
         animation: bounce-down 2.5s infinite;
-    }
-
-    /* Regla para mostrar la flecha SOLO cuando el menú está abierto */
-    #nav-links.nav-open + header #scroll-indicator {
-        /* ESTA REGLA YA NO ES NECESARIA PORQUE EL ELEMENTO NO ESTÁ DENTRO */
     }
 
     #nav-links.nav-open #scroll-indicator {
