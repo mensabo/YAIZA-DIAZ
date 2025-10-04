@@ -395,7 +395,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         if (!mainImage || !mainDesc || !bgImage || !thumbnailsContainer) return;
 
-        // INICIO CORRECCIÓN: Añadir listener a la imagen principal
+        // Añadir listener a la imagen principal para el lightbox
         mainImage.addEventListener('click', () => {
             if (activeItem && activeItem.type !== 'video') { // Solo para imágenes
                 const lightboxModal = document.getElementById('lightbox-modal');
@@ -414,7 +414,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
         });
-        // FIN CORRECCIÓN
         
         mainImage.style.opacity = '0';
         mainDesc.textContent = 'Cargando galería...';
@@ -675,16 +674,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
         // =======================================================
-    // --- FUNCIÓN PARA EL INDICADOR DE SCROLL DEL MENÚ MÓVIL (CORREGIDA) ---
+    // --- FUNCIÓN PARA EL INDICADOR DE SCROLL DEL MENÚ MÓVIL (VERSIÓN DEFINITIVA) ---
     // =======================================================
     function initializeScrollIndicator() {
         const navLinks = document.getElementById('nav-links');
         const scrollIndicator = document.getElementById('scroll-indicator');
-        // INICIO CORRECCIÓN: Obtener la referencia al botón del menú aquí dentro
-        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-        // FIN CORRECCIÓN
 
-        if (!navLinks || !scrollIndicator || !mobileMenuToggle) { // CORRECCIÓN: Añadido chequeo para mobileMenuToggle
+        if (!navLinks || !scrollIndicator) {
             return; 
         }
 
@@ -696,6 +692,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
             
+            // Comprueba si el scroll está cerca del final (con un margen de 5px)
             const isAtBottom = navLinks.scrollTop + navLinks.clientHeight >= navLinks.scrollHeight - 5;
 
             if (isAtBottom) {
@@ -705,11 +702,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         };
 
+        // 1. Escuchar el evento de scroll DENTRO del menú
         navLinks.addEventListener('scroll', checkScroll);
         
-        // CORRECCIÓN: Ahora el listener se añade correctamente porque mobileMenuToggle está definido
-        mobileMenuToggle.addEventListener('click', () => {
-            setTimeout(checkScroll, 50);
+        // 2. Escuchar cuando la animación de abrir/cerrar del menú TERMINA
+        navLinks.addEventListener('transitionend', () => {
+            // Solo actuar si el menú está abierto
+            if (navLinks.classList.contains('nav-open')) {
+                // Una vez abierto, comprobar si necesita la flecha
+                checkScroll();
+            } else {
+                // Si se acaba de cerrar, asegurarse de que la flecha esté oculta
+                scrollIndicator.classList.add('is-hidden');
+            }
         });
     }
 });
