@@ -3157,24 +3157,16 @@ a.expandable-image:hover img {
     }
 }
 /* =================================== */
-/*   INDICADOR DE SCROLL MENÚ MÓVIL    */
+/*   INDICADOR DE SCROLL MENÚ MÓVIL (VERSIÓN FINAL)   */
 /* =================================== */
-#scroll-indicator {
-    display: none; /* Oculto por defecto en escritorio */
-}
-
 @media (max-width: 768px) {
     #scroll-indicator {
-        display: flex;
+        position: absolute;
+        display: none; /* Oculto por defecto, JS lo gestionará */
         align-items: center;
         justify-content: center;
-        position: absolute;
         bottom: 20px;
-        
-        /* === CAMBIOS PARA POSICIONAR A LA IZQUIERDA === */
-        left: 20px; /* <-- CAMBIO: Posición fija a la izquierda */
-        /* Eliminamos el transform: translateX(-50%) que lo centraba */
-
+        left: 20px;
         width: 40px;
         height: 40px;
         background-color: rgba(188, 160, 125, 0.2);
@@ -3184,23 +3176,23 @@ a.expandable-image:hover img {
         font-size: 1.2rem;
         text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(3px);
-        
         pointer-events: none;
-        opacity: 1;
         transition: opacity 0.3s ease;
         animation: bounce-down 2.5s infinite;
     }
 
-    /* Clase para ocultar la flecha con JS */
-    #scroll-indicator.is-hidden {
-        opacity: 0;
-        animation: none;
+    /* Regla corregida: Muestra la flecha si el menú está abierto */
+    #nav-links.nav-open #scroll-indicator {
+        display: flex;
     }
 
-    /* Animación de rebote (AHORA SIN EL translateX) */
+    /* La clase .is-hidden del JS se encargará de ocultarla cuando sea necesario */
+    #scroll-indicator.is-hidden {
+        display: none !important;
+    }
+
     @keyframes bounce-down {
         0%, 20%, 50%, 80%, 100% {
-            /* <-- CAMBIO: Ya no necesita el centrado horizontal */
             transform: translateY(0);
         }
         40% {
