@@ -3161,19 +3161,19 @@ a.expandable-image:hover img {
 /* =================================== */
 @media (max-width: 768px) {
     #scroll-indicator {
-        /* INICIO: CORRECCIÓN DE POSICIONAMIENTO CON STICKY */
+        /* INICIO: Corrección final con position: sticky */
         position: sticky;
-        align-self: flex-start; /* Pega el item a la izquierda del contenedor flex (el menú) */
         bottom: 20px;
+        align-self: flex-start; /* Se alinea a la izquierda dentro del menú flex */
         margin-left: 20px;
-        /* FIN: CORRECCIÓN DE POSICIONAMIENTO CON STICKY */
+        /* FIN: Corrección final con position: sticky */
         
-        display: none; /* JS se encargará de mostrarlo */
+        display: none; /* JS gestiona si se muestra o no */
         align-items: center;
         justify-content: center;
         width: 40px;
         height: 40px;
-        z-index: 1; /* No necesita un z-index alto al estar dentro del flujo */
+        flex-shrink: 0; /* Evita que la flecha se encoja */
         background-color: rgba(188, 160, 125, 0.2);
         border: 1px solid rgba(188, 160, 125, 0.5);
         border-radius: 50%;
@@ -3187,11 +3187,11 @@ a.expandable-image:hover img {
     }
 
     #nav-links.nav-open #scroll-indicator {
-        display: flex;
+        display: flex; /* Se muestra cuando el menú está abierto */
     }
 
     #scroll-indicator.is-hidden {
-        display: none !important;
+        display: none !important; /* El script tiene la última palabra para ocultarlo */
     }
 
     @keyframes bounce-down {
