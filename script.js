@@ -673,48 +673,45 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
-        // =======================================================
-    // --- FUNCIÓN PARA EL INDICADOR DE SCROLL DEL MENÚ MÓVIL (VERSIÓN DEFINITIVA) ---
+    // =======================================================
+    // --- FUNCIÓN PARA EL INDICADOR DE SCROLL DEL MENÚ MÓVIL (VERSIÓN FINAL) ---
     // =======================================================
     function initializeScrollIndicator() {
         const navLinks = document.getElementById('nav-links');
         const scrollIndicator = document.getElementById('scroll-indicator');
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
 
-        if (!navLinks || !scrollIndicator) {
+        if (!navLinks || !scrollIndicator || !mobileMenuToggle) {
             return; 
         }
 
         const checkScroll = () => {
             const isScrollable = navLinks.scrollHeight > navLinks.clientHeight;
-            
-            if (!isScrollable) {
-                scrollIndicator.classList.add('is-hidden');
-                return;
-            }
-            
-            // Comprueba si el scroll está cerca del final (con un margen de 5px)
             const isAtBottom = navLinks.scrollTop + navLinks.clientHeight >= navLinks.scrollHeight - 5;
 
-            if (isAtBottom) {
-                scrollIndicator.classList.add('is-hidden');
-            } else {
+            if (isScrollable && !isAtBottom) {
                 scrollIndicator.classList.remove('is-hidden');
+            } else {
+                scrollIndicator.classList.add('is-hidden');
             }
         };
 
-        // 1. Escuchar el evento de scroll DENTRO del menú
+        // Escuchar el scroll DENTRO del menú para actualizar la flecha
         navLinks.addEventListener('scroll', checkScroll);
         
-        // 2. Escuchar cuando la animación de abrir/cerrar del menú TERMINA
-        navLinks.addEventListener('transitionend', () => {
-            // Solo actuar si el menú está abierto
-            if (navLinks.classList.contains('nav-open')) {
-                // Una vez abierto, comprobar si necesita la flecha
-                checkScroll();
-            } else {
-                // Si se acaba de cerrar, asegurarse de que la flecha esté oculta
-                scrollIndicator.classList.add('is-hidden');
-            }
+        // Escuchar el CLIC en el botón del menú
+        mobileMenuToggle.addEventListener('click', () => {
+            // Usamos un pequeño timeout para dar tiempo al navegador a aplicar la clase 'nav-open'
+            // y calcular correctamente las dimensiones del menú ya visible.
+            setTimeout(() => {
+                if (navLinks.classList.contains('nav-open')) {
+                    // Si el menú está abierto, hacemos la comprobación inicial.
+                    checkScroll();
+                } else {
+                    // Si el menú se está cerrando, nos aseguramos de ocultar la flecha.
+                    scrollIndicator.classList.add('is-hidden');
+                }
+            }, 50); // 50ms es un retraso seguro y casi imperceptible.
         });
     }
 });
