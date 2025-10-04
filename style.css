@@ -3162,7 +3162,7 @@ a.expandable-image:hover img {
 @media (max-width: 768px) {
     #scroll-indicator {
         position: fixed; /* <--- CAMBIO CLAVE */
-        bottom: 50px;
+        bottom: 60px;
         left: 20px;
         z-index: 1002; /* Por encima del menú */
         
