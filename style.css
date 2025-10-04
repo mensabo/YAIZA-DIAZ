@@ -3161,19 +3161,17 @@ a.expandable-image:hover img {
 /* =================================== */
 @media (max-width: 768px) {
     #scroll-indicator {
-        /* INICIO: Corrección final con position: sticky */
-        position: sticky;
+        position: fixed; /* <--- CAMBIO CLAVE */
         bottom: 20px;
-        align-self: flex-start; /* Se alinea a la izquierda dentro del menú flex */
-        margin-left: 20px;
-        /* FIN: Corrección final con position: sticky */
+        left: 20px;
+        z-index: 1002; /* Por encima del menú */
         
-        display: none; /* JS gestiona si se muestra o no */
+        display: flex; /* Ahora siempre es flex, la opacidad lo controla */
         align-items: center;
         justify-content: center;
         width: 40px;
         height: 40px;
-        flex-shrink: 0; /* Evita que la flecha se encoja */
+        
         background-color: rgba(188, 160, 125, 0.2);
         border: 1px solid rgba(188, 160, 125, 0.5);
         border-radius: 50%;
@@ -3181,17 +3179,26 @@ a.expandable-image:hover img {
         font-size: 1.2rem;
         text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(3px);
+        
         pointer-events: none;
+        opacity: 0; /* <--- Por defecto, está oculta */
         transition: opacity 0.3s ease;
         animation: bounce-down 2.5s infinite;
     }
 
-    #nav-links.nav-open #scroll-indicator {
-        display: flex; /* Se muestra cuando el menú está abierto */
+    /* Regla para mostrar la flecha SOLO cuando el menú está abierto */
+    #nav-links.nav-open + header #scroll-indicator {
+        /* ESTA REGLA YA NO ES NECESARIA PORQUE EL ELEMENTO NO ESTÁ DENTRO */
     }
 
+    #nav-links.nav-open #scroll-indicator {
+        opacity: 1; /* <--- Se hace visible cuando el menú se abre */
+    }
+
+    /* El script la ocultará con esta clase si no hay scroll o se llega al final */
     #scroll-indicator.is-hidden {
-        display: none !important; /* El script tiene la última palabra para ocultarlo */
+        opacity: 0 !important;
+        animation: none;
     }
 
     @keyframes bounce-down {
