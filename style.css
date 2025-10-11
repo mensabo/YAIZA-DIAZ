@@ -33,6 +33,14 @@ body {
 body.libro-page {
     padding-top: 70px;
 }
+/* ================================================= */
+/* === SOLUCIÓN PRINCIPAL: BLOQUEAR SCROLL DE PÁGINA === */
+/* ================================================= */
+/* Esta clase se añade al <body> con JavaScript cuando el menú está abierto */
+.scroll-locked {
+    overflow: hidden;
+    height: 100vh; /* Asegura que no haya scroll ni rebote en iOS */
+}
 
 .container {
     max-width: 1100px;
@@ -1512,7 +1520,7 @@ footer {
 }
 
 /* =================================== */
-/*   BOTÓN VOLVER ARRIBA       */
+/*   BOTÓN VOLVER ARRIBA (NUEVO ESTILO) */
 /* =================================== */
 #volver-arriba-btn {
     position: fixed;
@@ -1521,9 +1529,12 @@ footer {
     z-index: 999;
     width: 40px;
     height: 40px;
-    background-color: var(--color-magenta-libro);
-    color: var(--color-blanco);
-    border: none;
+    
+    /* ===== CAMBIO: Color dorado y sin borde ===== */
+    background-color: var(--color-acento);
+    color: var(--color-primario);
+    border: 1px solid rgba(0, 0, 0, 0.2); 
+    
     border-radius: 50%;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     display: flex;
@@ -1531,23 +1542,27 @@ footer {
     align-items: center;
     font-size: 1rem;
     text-decoration: none;
+    
+    /* Estado inicial: oculto */
     opacity: 0;
     visibility: hidden;
     transform: translateY(15px);
     transition: all 0.3s ease;
 }
 
-#volver-arriba-btn:hover {
-    background-color: #b3226c; 
-    transform: translateY(-2px);
-}
-
+/* Cuando es visible, le aplicamos la translucidez */
 #volver-arriba-btn.visible {
-    opacity: 1;
+    opacity: 0.7; /* <-- MISMA TRANSLUCIDEZ QUE EL WIDGET */
     visibility: visible;
     transform: translateY(0);
 }
 
+/* Efecto al pasar el ratón: se vuelve sólido y un poco más grande */
+#volver-arriba-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    background-color: var(--color-acento); /* Aseguramos que el color no cambie */
+}
 /* =================================== */
 /*   NUEVA ANIMACIÓN DE BARRIDO DE LUZ   */
 /* =================================== */
@@ -2054,6 +2069,21 @@ footer {
         transition: left 0.3s ease-in-out;
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
     }
+    /* ================================================= */
+/* === MEJORA DE FLUIDEZ Y ELIMINACIÓN DE SCROLLBAR FEA === */
+/* ================================================= */
+
+/* Hace que el scroll sea fluido y oculta la barra de desplazamiento fea en WebKit (Chrome, Safari) */
+#nav-links {
+    /* Oculta la barra de scroll en navegadores WebKit */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;     /* Firefox */
+    
+    /* Asegura que el scroll del menú sea nativo y suave (si el navegador lo permite) */
+    overflow-y: scroll; 
+    -webkit-overflow-scrolling: touch; /* Mejora la inercia en iOS/Safari */
+}
+
     
 /* --- INICIO: AJUSTES FINALES LOGO MENÚ MÓVIL (SOLUCIÓN DEFINITIVA) --- */
 .nav-logo-mobile {
@@ -3161,31 +3191,32 @@ a.expandable-image:hover img {
 /* =================================== */
 @media (max-width: 768px) {
     #scroll-indicator {
-        position: fixed; /* <--- CAMBIO CLAVE */
-        bottom: 60px;
-        left: 20px;
-        z-index: 1002; /* Por encima del menú */
-        
-        display: flex; /* Ahora siempre es flex, la opacidad lo controla */
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        
-        background-color: rgba(188, 160, 125, 0.2);
-        border: 1px solid rgba(188, 160, 125, 0.5);
-        border-radius: 50%;
-        color: var(--color-blanco);
-        font-size: 1.2rem;
-        text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(3px);
-        
-        pointer-events: none;
-        opacity: 0; /* <--- Por defecto, está oculta */
-        transition: opacity 0.3s ease;
-        animation: bounce-down 2.5s infinite;
-    }
-
+    position: fixed; /* <--- CAMBIO CLAVE */
+    bottom: 60px;
+    left: 20px;
+    z-index: 1002; /* Por encima del menú */
+    
+    display: flex; /* Ahora siempre es flex, la opacidad lo controla */
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    
+    background-color: rgba(188, 160, 125, 0.2);
+    border: 1px solid rgba(188, 160, 125, 0.5);
+    border-radius: 50%;
+    color: var(--color-blanco);
+    font-size: 1.2rem;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(3px);
+    
+    cursor: pointer; /* <-- LÍNEA AÑADIDA */
+    /* Se ha eliminado la línea "pointer-events: none;" */
+    
+    opacity: 0; /* <--- Por defecto, está oculta */
+    transition: opacity 0.3s ease;
+    animation: bounce-down 2.5s infinite;
+}
     #nav-links.nav-open #scroll-indicator {
         opacity: 1; /* <--- Se hace visible cuando el menú se abre */
     }
@@ -3515,4 +3546,49 @@ a.expandable-image:hover img {
 .developer-logo-link:hover img {
     transform: scale(1.1);
     opacity: 0.9;
+}
+/* ======================================================= */
+/*   PERSONALIZACIÓN DEL WIDGET DE COOKIEYES (V5 - FINAL)  */
+/* ======================================================= */
+
+/* 1. Apuntamos al contenedor DIV y le cambiamos el fondo azul */
+div.cky-btn-revisit-wrapper {
+    background-color: #bca07d !important; /* Tu color acento dorado */
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* 2. Apuntamos al icono IMG de adentro para cambiar su color */
+div.cky-btn-revisit-wrapper img {
+    filter: invert(1) brightness(0) !important;
+}
+/* ======================================================= */
+/*   PERSONALIZACIÓN DEL WIDGET DE COOKIEYES (V6.1 - MÁS TRANSLÚCIDO)  */
+/* ======================================================= */
+
+/* 1. Apuntamos al contenedor DIV para cambiar fondo, tamaño Y OPACIDAD */
+div.cky-btn-revisit-wrapper {
+    background-color: #bca07d !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+    width: 38px !important;
+    height: 38px !important;
+
+    /* ===== CAMBIO: AHORA ES MÁS TRANSLÚCIDO (70%) ===== */
+    opacity: 0.7 !important; 
+    transform: scale(1);
+    transition: opacity 0.3s ease, transform 0.3s ease !important;
+}
+
+/* Efecto al pasar el ratón por encima: se vuelve sólido y un poco más grande */
+div.cky-btn-revisit-wrapper:hover {
+    opacity: 1 !important;
+    transform: scale(1.1) !important;
+}
+
+/* 2. Mantenemos el estilo del icono IMG de adentro */
+div.cky-btn-revisit-wrapper img {
+    filter: invert(1) brightness(0) !important;
+    width: 22px !important;
+    height: 22px !important;
 }

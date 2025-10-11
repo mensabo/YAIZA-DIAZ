@@ -9,15 +9,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- DEFINICIÓN DE LA VARIABLE pageId ---
     const pageId = document.body.id;
 
-    // =======================================================
-    // --- LÓGICA DEL MENÚ DE NAVEGACIÓN (MÓVIL) ---
-    // =======================================================
+   // --- LÓGICA DEL MENÚ DE NAVEGACIÓN (MÓVIL) ---
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
     const navLinks = document.getElementById('nav-links');
+    const body = document.body; // Referencia al body
+
     if (mobileMenuToggle && navLinks) {
+        const toggleMenu = (open) => {
+            if (open === undefined) {
+                open = !navLinks.classList.contains('nav-open');
+            }
+            
+            navLinks.classList.toggle('nav-open', open);
+            body.classList.toggle('scroll-locked', open); // <-- CÓDIGO CLAVE AÑADIDO
+        };
+
         mobileMenuToggle.addEventListener('click', (event) => {
             event.stopPropagation();
-            navLinks.classList.toggle('nav-open');
+            toggleMenu();
         });
         
         document.addEventListener('click', (event) => {
@@ -26,11 +35,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             const clickedOnToggleButton = mobileMenuToggle.contains(event.target);
 
             if (isMenuOpen && !clickedInsideMenu && !clickedOnToggleButton) {
-                navLinks.classList.remove('nav-open');
+                toggleMenu(false);
             }
         });
-    }
 
+        // Asegurarse de que el scroll se desbloquea si el usuario redimensiona la ventana
+        window.addEventListener('resize', () => {
+             if (window.innerWidth > 768 && navLinks.classList.contains('nav-open')) {
+                 toggleMenu(false);
+             }
+        });
+    }
     // --- BOTÓN "VOLVER ARRIBA" ---
     const backToTopButton = document.getElementById('volver-arriba-btn');
     if (backToTopButton) {
@@ -73,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     // Inicializar funciones comunes
-    initializeContactModal(); // Se mueve aquí para que funcione en todas las páginas
+    initializeContactModal();
     initializeEscapeKeyForModals();
     initializeSidenotes();
     initializeSmoothScroll();
@@ -214,7 +229,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
     // =======================================================
-    // --- OTRAS DEFINICIONES DE FUNCIONES (SIN CAMBIOS) ---
+    // --- OTRAS DEFINICIONES DE FUNCIONES ---
     // =======================================================
 
     function initializeContactModal() {
@@ -367,7 +382,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (touchStartX - touchEndX > swipeThreshold) {
                 nextTab();
                 resetInterval();
-            } else if (touchEndX - startX > swipeThreshold) {
+            } else if (touchEndX - touchStartX > swipeThreshold) {
                 prevTab();
                 resetInterval();
             }
@@ -650,10 +665,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (captionElement && captionElement.tagName === 'FIGCAPTION') {
                     lightboxCaption.textContent = captionElement.textContent;
                 } else {
-                    // ===== INICIO DE LA MODIFICACIÓN =====
-                    // Se cambia la línea para que el pie de foto quede vacío.
                     lightboxCaption.textContent = ''; 
-                    // ===== FIN DE LA MODIFICACIÓN =====
                 }
 
                 if(prevButton) prevButton.style.display = 'none';
@@ -795,7 +807,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const checkScroll = () => {
             const isScrollable = navLinks.scrollHeight > navLinks.clientHeight;
-            const isAtBottom = navLinks.scrollTop + navLinks.clientHeight >= navLinks.scrollHeight - 5;
+            const isAtBottom = navLinks.scrollTop + navLinks.clientHeight >= navLinks.scrollHeight - 10;
 
             if (isScrollable && !isAtBottom) {
                 scrollIndicator.classList.remove('is-hidden');
@@ -815,8 +827,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }, 50); 
         });
-    }
 
+        scrollIndicator.addEventListener('click', () => {
+            navLinks.scrollTo({
+                top: navLinks.scrollHeight,
+                behavior: 'smooth'
+            });
+        });
+    }
+    
     function initializeEscapeKeyForModals() {
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
