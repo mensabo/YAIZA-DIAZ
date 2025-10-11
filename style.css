@@ -5,9 +5,9 @@
 
 :root {
     --color-primario: #1a1a1a;
-    --color-secundario: #f4f4f4;
+    --color-secundario: #F0EEEB; /* <-- CAMBIO A GRIS CÁLIDO */
     --color-acento: #bca07d;
-    --color-blanco: #ffffff;
+    --color-blanco: #FDFBF6;   /* <-- CAMBIO A BLANCO ROTO */
     --color-magenta-libro: #D42E84; 
     --fuente-titulos: 'Playfair Display', serif;
     --fuente-texto: 'Montserrat', sans-serif;
@@ -3247,4 +3247,272 @@ a.expandable-image:hover img {
     .proyecto-social-icons a:last-child::after {
         animation-delay: 1.4s;
     }
+}
+/* =================================== */
+/*   ESTILOS PÁGINAS LEGALES Y FOOTER  */
+/* =================================== */
+.legal-text-wrapper {
+    max-width: 800px;
+    margin: 2rem auto 0 auto;
+    text-align: left;
+    line-height: 1.8;
+    font-size: 1.05rem;
+}
+
+.legal-text-wrapper h3 {
+    font-size: 1.6rem;
+    color: var(--color-primario);
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--color-acento);
+    padding-bottom: 0.5rem;
+}
+
+.legal-text-wrapper h4 {
+    font-size: 1.3rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.legal-text-wrapper p {
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.legal-text-wrapper ul {
+    margin-left: 20px;
+    margin-bottom: 1.5rem;
+}
+
+.legal-text-wrapper a {
+    color: var(--color-acento);
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.legal-text-wrapper a:hover {
+    color: var(--color-primario);
+}
+
+.footer-legal-links {
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.footer-legal-links a {
+    color: #aaa;
+    text-decoration: none;
+    transition: color 0.3s, text-decoration 0.3s;
+}
+
+.footer-legal-links a:hover {
+    color: var(--color-blanco);
+    text-decoration: underline;
+}
+/* =================================== */
+/*   ESTILOS FORMULARIO DE CONTACTO    */
+/* =================================== */
+.contact-page-form {
+    max-width: 700px;
+    margin: 2rem auto 0 auto;
+    text-align: left;
+}
+
+.form-row {
+    display: flex;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: var(--fuente-texto);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-acento);
+    box-shadow: 0 0 0 3px rgba(188, 160, 125, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 1rem;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+    color: #555;
+}
+
+.file-label:hover {
+    border-color: var(--color-acento);
+    color: var(--color-primario);
+}
+
+#file-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.form-group-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.form-group-checkbox label {
+    font-size: 0.9rem;
+    color: #444;
+}
+.form-group-checkbox a {
+    color: var(--color-acento);
+    text-decoration: underline;
+}
+
+.form-submit-area {
+    text-align: center;
+}
+
+.form-submit-area button {
+    background-color: var(--color-acento);
+    color: var(--color-blanco);
+    border: none;
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: var(--fuente-titulos);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.form-submit-area button:hover {
+    background-color: #a78d6b;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+.form-submit-area button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+#form-status {
+    margin-top: 1rem;
+    font-weight: 500;
+    min-height: 1.5em;
+}
+
+#form-status.success {
+    color: #28a745;
+}
+
+#form-status.error {
+    color: #dc3545;
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+/* =================================== */
+/*   ESTILOS CRÉDITO DESARROLLADOR (CON LOGO)   */
+/* =================================== */
+.developer-credit {
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    color: #888;
+    letter-spacing: 0.5px;
+    /* Usamos Flexbox para alinear el texto y el logo verticalmente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem; /* Espacio entre "Developed by" y el logo */
+}
+
+.developer-logo-link {
+    display: inline-block; /* Importante para que el enlace se comporte bien */
+    line-height: 0; /* Elimina cualquier espacio extra debajo de la imagen */
+    cursor: default; /* Hacemos que el cursor no parezca un enlace */
+}
+
+.developer-logo-link img {
+    height: 30px; /* <-- Puedes ajustar la altura del logo aquí */
+    width: auto;  /* Mantiene la proporción del logo */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.developer-logo-link:hover img {
+    transform: scale(1.05); /* Mantenemos el efecto visual */
+    opacity: 0.9;
+}
+/* ================================================= */
+/*   ESTILOS CRÉDITO DESARROLLADOR (VERSIÓN FINAL)   */
+/* ================================================= */
+.developer-credit {
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    color: #888;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.developer-logo-link {
+    display: inline-block;
+    line-height: 0;
+    cursor: zoom-in; /* Esto hace que aparezca la lupa */
+}
+
+.developer-logo-link img {
+    height: 35px;
+    width: auto;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.developer-logo-link:hover img {
+    transform: scale(1.1);
+    opacity: 0.9;
 }

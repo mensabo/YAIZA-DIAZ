@@ -259,6 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
         proyectosPage: ['mainTitle', 'projectTitle', 'projectParagraph1', 'projectParagraph2', 'projectQuote', 'socialsText'],
         premiosPage: ['mainTitle', 'premio1Title', 'premio1Paragraph1', 'premio1Paragraph2', 'premio1Paragraph3', 'premio1InstagramLink', 'premio2Title', 'premio2Paragraph1', 'premio2Paragraph2', 'premio3Title', 'premio3Paragraph', 'premio4Title', 'premio4Paragraph'],
         entrevistasPage: ['mainTitle', 'introParagraph'],
+         contactPage: ['contactTitle', 'contactParagraph'],
         libroPage: ['heroCaption', 'heroTitle', 'heroSubtitle', 'heroQuoteAuthor', 'synopsisSectionTitle', 'synopsisSectionIntro', 'synopsisParagraph1', 'synopsisQuote', 'synopsisParagraph2', 'trailerTitle', 'uncleQuote', 'lagunaTitle', 'lagunaParagraph1', 'lagunaParagraph2', 'artTitle', 'artIntro', 'artQuote', 'artParagraph1', 'artParagraph2', 'taoroSectionTitle', 'taoroSectionParagraph', 'galleryTitle', 'mediaTitle', 'buyTitle', 'buySubtitle', 'buyParagraph', 'buyPhysicalTitle', 'buyPhysicalInfo', 'buyAudiobookTitle', 'buyAudiobookInfo'],
         modelajePage: ['mainTitle', 'introParagraph', 'calendarTitle', 'calendarParagraph']
     };

@@ -6,8 +6,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     const { db, collection, getDocs, orderBy, query, doc, getDoc } = window.firebaseServices;
 
+    // --- DEFINICIÓN DE LA VARIABLE pageId ---
+    const pageId = document.body.id;
+
     // =======================================================
-    // --- LÓGICA DEL MENÚ DE NAVEGACIÓN (MÓVIL) --- (CORREGIDO)
+    // --- LÓGICA DEL MENÚ DE NAVEGACIÓN (MÓVIL) ---
     // =======================================================
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
     const navLinks = document.getElementById('nav-links');
@@ -17,7 +20,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             navLinks.classList.toggle('nav-open');
         });
         
-        // CORRECCIÓN: Este listener ahora está DENTRO del 'if' para evitar errores
         document.addEventListener('click', (event) => {
             const isMenuOpen = navLinks.classList.contains('nav-open');
             const clickedInsideMenu = navLinks.contains(event.target);
@@ -41,12 +43,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // --- DEFINICIÓN DE LA VARIABLE pageId ---
-    const pageId = document.body.id;
-
     // --- FUNCIÓN DE CARGA DE TEXTOS DINÁMICOS ---
-    async function loadDynamicText(pageId) {
-        if (!pageId) return;
+    async function loadDynamicText() {
+        if (!pageId || !doc) return; // Se asegura que pageId y doc existan
         try {
             const docRef = doc(db, 'pages', pageId);
             const docSnap = await getDoc(docRef);
@@ -58,8 +57,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         element.innerHTML = data[contentId];
                     }
                 });
-            } else {
-                            }
+            }
         } catch (error) {
             console.error("Error al cargar textos dinámicos:", error);
         }
@@ -69,27 +67,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- EJECUCIÓN ORDENADA DE SCRIPTS ---
     // =======================================================
     
-    if (pageId !== 'eventoDetallePage') {
-        await loadDynamicText(pageId);
+    // Siempre cargar textos si la página tiene un ID
+    if (pageId) {
+        await loadDynamicText();
     }
     
-    if (pageId === 'investigacionPage') {
-        const reportajeParagraph = document.querySelector('[data-content-id="reportaje3Paragraph"]');
-        if (reportajeParagraph) {
-            const triggerSpan = reportajeParagraph.querySelector('.sidenote-trigger');
-            if (triggerSpan) {
-                triggerSpan.remove();
-            }
-        }
-    }
-
-    initializeContactModal();
-    initializeEscapeKeyForModals(); // <-- FUNCIÓN AÑADIDA
+    // Inicializar funciones comunes
+    initializeContactModal(); // Se mueve aquí para que funcione en todas las páginas
+    initializeEscapeKeyForModals();
     initializeSidenotes();
     initializeSmoothScroll();
     initializeLogoPopups();
     initializeScrollIndicator();
 
+    // Inicializar funciones específicas de cada página
     if (pageId === 'homepage') {
         initializeHeroSlider();
     }
@@ -106,6 +97,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     if (pageId === 'modelajePage') {
         initializeStaticGallery('galeria-interactiva-calendario');
+    }
+    if (pageId === 'contactPage') {
+        initializeContactForm();
     }
 
     // --- INICIALIZAR GALERÍAS DINÁMICAS ---
@@ -129,12 +123,103 @@ document.addEventListener('DOMContentLoaded', async () => {
     initializeVideoModals();
 
     // =======================================================
-    // --- DEFINICIONES DE FUNCIONES ---
+    // --- LÓGICA DEL FORMULARIO DE CONTACTO ---
+    // =======================================================
+    function initializeContactForm() {
+        const form = document.getElementById('contact-form');
+        if (!form) return;
+
+        const submitButton = document.getElementById('submit-button');
+        const statusMessage = document.getElementById('form-status');
+        const fileInput = document.getElementById('attachment');
+        const fileNameSpan = document.getElementById('file-name');
+
+        if (fileInput && fileNameSpan) {
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) {
+                    fileNameSpan.textContent = fileInput.files[0].name;
+                } else {
+                    fileNameSpan.textContent = 'Adjuntar un archivo (opcional)';
+                }
+            });
+        }
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = form.name.value.trim();
+            const email = form.email.value.trim();
+            const subject = form.subject.value.trim();
+            const message = form.message.value.trim();
+            const privacy = form.privacy.checked;
+
+            if (!name || !email || !subject || !message) {
+                showStatus('Por favor, completa todos los campos requeridos.', 'error');
+                return;
+            }
+            if (!privacy) {
+                showStatus('Debes aceptar la política de privacidad.', 'error');
+                return;
+            }
+
+            submitButton.disabled = true;
+            showStatus('Enviando...', 'pending');
+
+            try {
+                const { 
+                    db, collection, addDoc, serverTimestamp,
+                    storage, ref, uploadBytes, getDownloadURL 
+                } = window.firebaseServices;
+
+                let fileUrl = null;
+                let fileName = null;
+                const file = fileInput.files[0];
+
+                if (file) {
+                    const storageRef = ref(storage, `contact-attachments/${Date.now()}_${file.name}`);
+                    const snapshot = await uploadBytes(storageRef, file);
+                    fileUrl = await getDownloadURL(snapshot.ref);
+                    fileName = file.name;
+                }
+
+                const docData = {
+                    name,
+                    email,
+                    subject,
+                    message,
+                    createdAt: serverTimestamp(),
+                    attachment: fileUrl,
+                    attachmentName: fileName
+                };
+
+                await addDoc(collection(db, 'contactMessages'), docData);
+
+                showStatus('¡Mensaje enviado con éxito! Gracias.', 'success');
+                form.reset();
+                if (fileNameSpan) fileNameSpan.textContent = 'Adjuntar un archivo (opcional)';
+
+            } catch (error) {
+                console.error("Error al enviar el formulario:", error);
+                showStatus('Hubo un error al enviar el mensaje. Inténtalo de nuevo.', 'error');
+            } finally {
+                submitButton.disabled = false;
+            }
+        });
+
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = type;
+        }
+    }
+
+
+    // =======================================================
+    // --- OTRAS DEFINICIONES DE FUNCIONES (SIN CAMBIOS) ---
     // =======================================================
 
     function initializeContactModal() {
         const modal = document.getElementById('contact-modal');
-        const openTriggers = document.querySelectorAll('#contact-modal-trigger'); 
+        const openTriggers = document.querySelectorAll('#contact-modal-trigger');
         const closeButton = document.getElementById('contact-modal-close');
 
         if (!modal || openTriggers.length === 0 || !closeButton) {
@@ -387,7 +472,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const container = document.getElementById(containerId);
         if (!container) return;
 
-        let activeItem = null; // Para guardar el item activo
+        let activeItem = null;
         const mainImage = container.querySelector('.imagen-principal');
         const mainDesc = container.querySelector('.descripcion-principal p');
         const bgImage = container.querySelector('.galeria-bg-desenfocado');
@@ -395,9 +480,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         if (!mainImage || !mainDesc || !bgImage || !thumbnailsContainer) return;
 
-        // Añadir listener a la imagen principal para el lightbox
         mainImage.addEventListener('click', () => {
-            if (activeItem && activeItem.type !== 'video') { // Solo para imágenes
+            if (activeItem && activeItem.type !== 'video') {
                 const lightboxModal = document.getElementById('lightbox-modal');
                 const lightboxImage = document.getElementById('lightbox-image');
                 const lightboxCaption = document.getElementById('lightbox-caption');
@@ -438,8 +522,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             function setActiveItem(item, thumbElement) {
-                activeItem = item; // Guardar el item actual
-                mainImage.style.cursor = item.type !== 'video' ? 'zoom-in' : 'default'; // Cambiar cursor
+                activeItem = item;
+                mainImage.style.cursor = item.type !== 'video' ? 'zoom-in' : 'default';
 
                 mainImage.style.opacity = '0';
                 setTimeout(() => {
@@ -555,7 +639,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         document.body.addEventListener('click', (e) => {
             const link = e.target.closest('.expandable-image');
-            if (link) {
+            const isInsideInteractiveGallery = link && link.closest('.galeria-interactiva-container');
+
+            if (link && !isInsideInteractiveGallery) {
                 e.preventDefault();
                 const img = link.querySelector('img');
                 const captionElement = link.nextElementSibling;
@@ -564,7 +650,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (captionElement && captionElement.tagName === 'FIGCAPTION') {
                     lightboxCaption.textContent = captionElement.textContent;
                 } else {
-                    lightboxCaption.textContent = img.alt || '';
+                    // ===== INICIO DE LA MODIFICACIÓN =====
+                    // Se cambia la línea para que el pie de foto quede vacío.
+                    lightboxCaption.textContent = ''; 
+                    // ===== FIN DE LA MODIFICACIÓN =====
                 }
 
                 if(prevButton) prevButton.style.display = 'none';
@@ -672,7 +761,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
 
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            // Excluir el trigger del modal de contacto de esta lógica
             if (anchor.id === 'contact-modal-trigger') return;
 
             anchor.addEventListener('click', function (e) {
@@ -729,25 +817,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    // <-- INICIO DE LA NUEVA FUNCIÓN -->
     function initializeEscapeKeyForModals() {
         document.addEventListener('keydown', (event) => {
-            // Comprueba si la tecla presionada es 'Escape'
             if (event.key === 'Escape') {
-                // Busca todos los modales o lightboxes que estén visibles
                 const visibleModals = document.querySelectorAll('.modal-overlay.visible, .lightbox.visible');
                 
-                // Si hay alguno visible, cierra el que esté por encima de los demás
                 if (visibleModals.length > 0) {
                     const topModal = visibleModals[visibleModals.length - 1];
                     const closeButton = topModal.querySelector('.modal-close, .lightbox-close');
                     
                     if (closeButton) {
-                        closeButton.click(); // Simula un clic en su botón de cierre
+                        closeButton.click();
                     }
                 }
             }
         });
     }
-    // <-- FIN DE LA NUEVA FUNCIÓN -->
 });
