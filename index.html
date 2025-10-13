@@ -26,7 +26,7 @@
     <meta name="twitter:description" content="Web oficial de Yaiza Díaz. Descubre mi trayectoria, mi novela 'La hija del ciego' y mis proyectos.">
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/comunicadora-bg.jpeg">
 
-    <link rel="stylesheet" href="style.css?v=1759448455296">
+    <link rel="stylesheet" href="style.css?v=1760382869250">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- Start cookieyes banner --> <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/a79fad2eb1803d3e1747ed5d/script.js"></script> <!-- End cookieyes banner -->
@@ -122,6 +122,9 @@
         <div class="container about-content">
             <h2 data-content-id="aboutMeTitle"></h2>
             <div class="header-line"></div>
+            <figure class="interstitial-image-container right">
+                <img src="images/comunicacion.jpg" alt="Yaiza Díaz en un evento de comunicación">
+            </figure>
             <p data-content-id="aboutMeParagraph1"></p>
             <blockquote class="about-quote" data-content-id="aboutMeQuote"></blockquote>
             <p data-content-id="aboutMeParagraph2"></p>
@@ -144,6 +147,7 @@
                 <span>Gabinete de prensa</span>
                 <span>Prensa escrita</span>
             </div>
+            <img src="images/presentadora-bg.jpg" alt="Yaiza Díaz presentando en un escenario" class="section-image">
         </div>
     </section>
 
@@ -155,7 +159,6 @@
                 
                 <a href="television.html" class="project-card-link">
                     <div class="project-card">
-                        <!-- ATRIBUTO AÑADIDO -->
                         <img src="images/portfolio-1.png" alt="Presentadora de Informativos" loading="lazy">
                         <div class="card-content">
                             <span class="project-category" data-content-id="card1Category"></span>
@@ -169,7 +172,6 @@
                 
                 <a href="comunicacion.html" class="project-card-link">
                     <div class="project-card">
-                        <!-- ATRIBUTO AÑADIDO -->
                         <img src="images/portfolio-2.jpeg" alt="Directora de Comunicación" loading="lazy">
                         <div class="card-content">
                             <span class="project-category" data-content-id="card2Category"></span>
@@ -182,7 +184,6 @@
                 </a>
                 
                 <div class="project-card">
-                    <!-- ATRIBUTO AÑADIDO -->
                     <img src="images/portfolio-3.jpeg" alt="Escritora y Creadora" loading="lazy">
                     <div class="card-content">
                         <span class="project-category" data-content-id="card3Category"></span>
@@ -195,28 +196,39 @@
         </div>
     </section>
 
-    <!-- ESTA SECCIÓN DE CONTACTO SE MANTIENE EN LA PÁGINA DE INICIO -->
+    <section id="home-events">
+        <div class="container">
+            <h2 data-content-id="eventsTitle">Eventos y Publicidad</h2>
+            <div class="header-line"></div>
+            <p data-content-id="eventsParagraph" class="section-intro">
+                A lo largo de 20 años, Yaiza Díaz ha presentado numerosos eventos, ha sido imagen de importantes marcas y ha puesto voz a cuñas y spots publicitarios.
+            </p>
+            <img src="images/eventos.jpeg" alt="Yaiza Díaz en los premios Atlántico Hoy" class="section-image">
+            <div class="event-tags">
+                <span>MADRID FUSIÓN</span>
+                <span>PREMIOS CADENA DIAL</span>
+                <span>GOBIERNO DE ESPAÑA</span>
+                <span>CIBERSEGURIDAD Y TECNOLOGÍA</span>
+                <span>TOYOTA CANARIAS</span>
+                <span>CONVENCIONES CAIXABANK</span>
+                <a href="eventos.html" class="event-tag-link">VER MÁS</a>
+            </div>
+        </div>
+    </section>
+
     <section id="contacto">
         <div class="container">
             <h2 data-content-id="contactTitle"></h2>
             <div class="header-line"></div>
             <p data-content-id="contactParagraph"></p>
-
             <div class="contact-buttons-container">
                 <a href="contacto.html" class="email-link">Formulario de Contacto</a>
-            </div>
-            
-            <div class="social-icons">
-                <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
-                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
             </div>
         </div>
     </section>
 
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
 
-    <!-- INICIO: MODAL DE CONTACTO AÑADIDO -->
     <div id="contact-modal" class="modal-overlay">
         <div class="modal-content contact-modal-content">
             <button id="contact-modal-close" class="modal-close">&times;</button>
@@ -235,7 +247,6 @@
             </div>
         </div>
     </div>
-    <!-- FIN: MODAL DE CONTACTO -->
     <div id="lightbox-modal" class="lightbox">
         <span class="lightbox-close">&times;</span>
         <span class="lightbox-prev">&#10094;</span>
@@ -277,6 +288,6 @@
             db, collection, getDocs, orderBy, query, doc, getDoc
         };
     </script>
-    <script src="script.js?v=1759448455296" type="module"></script>
+    <script src="script.js?v=1760382869250" type="module"></script>
 </body>
 </html>

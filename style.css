@@ -379,11 +379,10 @@ nav ul li a:hover::after {
     margin-bottom: 0.5rem;
 }
 
-/* ======================== */
-/*      SECCIÓN EVENTOS      */
-/* ======================== */
-#prensa, #habilidades {
-    background-color: var(--color-blanco);
+/* ============================================================ */
+/*   SECCIÓN EVENTOS & HABILIDADES (CON BOTONES MEJORADOS)      */
+/* ============================================================ */
+#habilidades, #home-events {
     text-align: center;
 }
 
@@ -393,11 +392,11 @@ nav ul li a:hover::after {
     margin: 0 auto 2rem auto;
 }
 
-.eventos-imagen {
+.section-image {
     display: block;
     max-width: 100%;
     width: 700px;
-    margin: 0rem auto 3rem auto;
+    margin: 2rem auto 3rem auto;
     border-radius: 8px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
@@ -411,27 +410,65 @@ nav ul li a:hover::after {
     margin-top: 2rem;
 }
 
-.event-tags span {
-    background-color: var(--color-secundario);
+/*
+NUEVO DISEÑO ARTÍSTICO PARA BOTONES/ETIQUETAS:
+- Fondo blanco roto para sutil separación del fondo de la sección.
+- Texto oscuro para máximo contraste y legibilidad.
+- Fuente de títulos para un toque elegante.
+- Borde y sombra sutil para un efecto "letterpress" o de relieve.
+*/
+.event-tags span,
+.event-tag-link {
+    background-color: var(--color-blanco); /* Blanco roto #FDFBF6 */
+    color: var(--color-primario);
+    font-family: var(--fuente-titulos);
+    font-weight: 700;
+    letter-spacing: 0.5px;
     padding: 0.6rem 1.2rem;
     border-radius: 5px;
-    font-weight: 500;
-    border: 1px solid #eee;
+    border: 1px solid #dcdada;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.7), 0 2px 4px rgba(0,0,0,0.06);
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
 }
 
-.event-tags span:hover {
+/* Hover mejorado con levantamiento y sombra más pronunciada */
+.event-tags span:hover,
+.event-tag-link:hover {
     background-color: var(--color-acento);
-    color: var(--color-blanco);
+    color: var(--color-blanco); /* Aseguramos texto blanco sobre fondo dorado */
     border-color: var(--color-acento);
+    transform: translateY(-3px);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.2), 0 6px 12px rgba(0,0,0,0.15);
 }
 
-/* Ocultamos las viejas flechas en TODAS las vistas */
-.carousel-navigation {
-    display: none;
+
+/* El destello ahora es dorado para mejor contraste en móvil */
+.event-tags span::after,
+.event-tag-link::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 235, 205, 0) 0%, rgba(255, 235, 205, 0.4) 50%, rgba(255, 235, 205, 0) 100%);
+    transform: translateX(-150%) skewX(-25deg);
 }
 
-/* Ocultamos el botón "Ver más" por defecto (en escritorio) */
+.event-tags span:hover::after,
+.event-tag-link:hover::after {
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
+    animation: shine-sweep 1s ease;
+}
+
+#home-events {
+    background-color: var(--color-secundario);
+}
+
+.carousel-navigation,
 .toggle-events-button {
     display: none;
 }
@@ -455,15 +492,22 @@ nav ul li a:hover::after {
     margin: 0 auto 2rem auto;
 }
 
-.email-link {
-    font-size: 1.5rem;
-    color: var(--color-acento);
+#contacto .email-link {
+    display: inline-block;
+    background-color: var(--color-acento);
+    color: var(--color-blanco);
+    padding: 0.8rem 2.5rem;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: 500;
     text-decoration: none;
-    transition: opacity 0.3s;
+    transition: all 0.3s ease;
 }
 
-.email-link:hover {
-    opacity: 0.8;
+#contacto .email-link:hover {
+    opacity: 1;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 .social-icons {
@@ -1747,6 +1791,9 @@ footer {
         margin-top: 0.5rem;
         margin-bottom: 1rem;
     }
+    .about-content {
+        text-align: left;
+    }
 }
 /* FIN: CORRECCIÓN DE ESTILOS */
 
@@ -2314,16 +2361,6 @@ footer {
         gap: 1.2rem;
     }
 
-    .email-link {
-        display: inline-block;
-        background-color: var(--color-acento);
-        color: var(--color-blanco);
-        padding: 0.7rem 1.4rem;
-        border-radius: 6px;
-        font-size: 1.1rem;
-        text-decoration: none;
-    }
-
     .libro-hero-content,
     .sinopsis-content,
     .sinopsis-content-reversed,
@@ -2482,11 +2519,16 @@ footer {
         text-align: center;
     }
     
-    .eventos-imagen {
+    .section-image {
         width: 100%;
         margin: 1.5rem auto 2.5rem auto;
     }
     
+    #habilidades .event-tags {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
     #dynamic-event-tags {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -2551,6 +2593,21 @@ footer {
 
     .logo-popup {
         display: none;
+    }
+
+    /* --- ANIMACIÓN DE BRILLO CONTINUO PARA BOTONES EN MÓVIL --- */
+    #habilidades .event-tags span::after,
+    #home-events .event-tags span::after,
+    #home-events .event-tags .event-tag-link::after {
+        animation: shine-sweep 3.5s ease-in-out infinite;
+    }
+    
+    #habilidades .event-tags span:nth-child(odd)::after,
+    #home-events .event-tags span:nth-child(odd)::after {
+        animation-delay: -1.8s;
+    }
+    #home-events .event-tags .event-tag-link::after {
+        animation-delay: -2.5s;
     }
 }
 
@@ -2979,15 +3036,6 @@ footer {
         max-width: 100%;
         margin-top: 2rem;
         max-height: 500px;
-    }
-}
-
-@keyframes shine-sweep {
-    0% {
-        transform: translateX(-110%) skewX(-25deg);
-    }
-    100% {
-        transform: translateX(110%) skewX(-25deg);
     }
 }
 
