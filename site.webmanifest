@@ -1,25 +1,20 @@
 {
-    "name": "Yaiza Díaz - Periodista y Escritora",
+    "name": "Yaiza Díaz",
     "short_name": "Yaiza Díaz",
-    "start_url": "/YAIZA-DIAZ/index.html",
-    "display": "standalone",
-    "background_color": "#F0EEEB",
-    "theme_color": "#bca07d",
     "icons": [
         {
-            "src": "/YAIZA-DIAZ/favicon-16x16.png",
-            "sizes": "16x16",
+            "src": "images/android-chrome-192x192.png",
+            "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/YAIZA-DIAZ/favicon-32x32.png",
-            "sizes": "32x32",
-            "type": "image/png"
-        },
-        {
-            "src": "/YAIZA-DIAZ/apple-touch-icon.png",
-            "sizes": "180x180",
+            "src": "images/android-chrome-512x512.png",
+            "sizes": "512x512",
             "type": "image/png"
         }
-    ]
+    ],
+    "theme_color": "#bca07d",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "start_url": "."
 }

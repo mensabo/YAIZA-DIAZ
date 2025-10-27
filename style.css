@@ -3648,3 +3648,84 @@ div.cky-btn-revisit-wrapper img {
     width: 22px !important;
     height: 22px !important;
 }
+/* =================================== */
+/*   ESTILOS HERRAMIENTAS ADICIONALES  */
+/* =================================== */
+#page-tools {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+.page-tools-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.tool-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.tool-icon {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    background-color: #333; /* Un gris oscuro, puedes cambiarlo */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid #555;
+}
+
+.tool-icon:hover {
+    background-color: var(--color-acento); /* Color dorado al pasar el ratón */
+    border-color: var(--color-acento);
+    transform: scale(1.1);
+}
+
+.tool-content {
+    min-width: 250px;
+}
+
+/* Estilos específicos para el Buscador de Google */
+.gcse-search {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease-out, opacity 0.3s ease-out;
+}
+
+.gcse-search.visible {
+    max-height: 100px; /* Altura suficiente para que quepa el buscador */
+    opacity: 1;
+}
+
+/* Estilos para el Traductor de Google */
+#google_translate_element .goog-te-gadget-simple {
+    background-color: transparent !important;
+    border: 1px solid #ccc !important;
+    border-radius: 5px;
+    padding: 8px !important;
+}
+
+#google_translate_element .goog-te-gadget-simple span {
+    color: #333 !important;
+}
+
+/* Oculta el banner "Powered by Google" */
+.goog-te-banner-frame.skiptranslate {
+    display: none !important;
+} 
+body {
+    top: 0px !important; 
+}
