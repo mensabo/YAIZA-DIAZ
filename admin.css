@@ -314,3 +314,22 @@ button:disabled { background-color: var(--color-secundario); cursor: not-allowed
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* ======================================= */
+/* === ESTILOS PARA EL ENLACE DE RESET === */
+/* ======================================= */
+#forgot-password-link {
+    display: block;
+    text-align: right;
+    margin-top: -0.5rem; /* Lo acerca un poco al campo de contraseña */
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--color-secundario);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+#forgot-password-link:hover {
+    color: var(--color-acento);
+    text-decoration: underline;
+}

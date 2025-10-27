@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
+// 1. IMPORTA LA NUEVA FUNCIÓN
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 import { getFirestore, collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-storage.js";
 
@@ -17,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordInput = document.getElementById('password');
     const loginButton = document.getElementById('login-button');
     const logoutButton = document.getElementById('logout-button');
+    // 2. OBTÉN LA REFERENCIA AL NUEVO ENLACE
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
     
     // --- NAVEGACIÓN Y PANELES ---
     const navButtons = document.querySelectorAll('.admin-nav button');
@@ -59,6 +62,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     logoutButton.addEventListener('click', () => signOut(auth));
+
+    // 3. AÑADE EL EVENTO PARA RESTABLECER LA CONTRASEÑA
+    forgotPasswordLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const email = emailInput.value;
+        if (!email) {
+            showToast('Por favor, introduce tu email en el campo correspondiente.', 'error');
+            return;
+        }
+
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                showToast('Se ha enviado un correo para restablecer tu contraseña. Revisa tu bandeja de entrada.', 'success');
+            })
+            .catch((error) => {
+                showToast('Error: ' + error.message, 'error');
+            });
+    });
     
     // --- LÓGICA DE NAVEGACIÓN DE PANELES ---
     navButtons.forEach(button => {
