@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <title>Administrar Contenido</title>
     <!-- Favicon -->
-<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
-     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <link rel="stylesheet" href="admin.css">
 </head>
@@ -18,7 +18,6 @@
         <h2>Acceso al Panel</h2>
         <input type="email" id="email" placeholder="Email">
         <input type="password" id="password" placeholder="Contraseña">
-        <!-- AÑADE ESTE ENLACE AQUÍ -->
         <a href="#" id="forgot-password-link" style="display: block; text-align: right; margin-bottom: 1rem; font-size: 0.9rem; color: var(--color-secundario); text-decoration: none;">¿Has olvidado tu contraseña?</a>
         <button id="login-button">Entrar</button>
     </div>
@@ -30,15 +29,53 @@
         </header>
 
         <nav class="admin-nav">
-            <button id="nav-galleries" class="active">Gestionar Galerías</button>
+            <button id="nav-homepage" class="active">Página de Inicio</button>
+            <button id="nav-galleries">Gestionar Galerías</button>
             <button id="nav-events">Gestionar Eventos</button>
             <button id="nav-interviews">Gestionar Entrevistas</button>
             <button id="nav-awards">Gestionar Premios</button>
             <button id="nav-texts">Gestionar Textos</button>
         </nav>
 
+        <!-- ========= PANEL DE PÁGINA DE INICIO ========= -->
+        <div id="homepage-panel" class="panel active">
+            <h2>Gestionar Slider de Inicio</h2>
+            <p>Arrastra y suelta imágenes en cada sección del slider. Puedes reordenarlas arrastrándolas. Guarda los cambios al final.</p>
+
+            <div class="hero-slider-admin-section">
+                <h3>Slide 1: Presentadora y TV</h3>
+                <div id="hero1-preview-list" class="gallery-list"></div>
+                <div id="hero1-drop-zone" class="drop-zone-small">
+                    <p>Arrastra imágenes aquí o haz clic para subirlas</p>
+                </div>
+                <input type="file" id="hero1-uploader" multiple accept="image/*" style="display: none;">
+            </div>
+
+            <div class="hero-slider-admin-section">
+                <h3>Slide 2: Eventos y Publicidad</h3>
+                <div id="hero2-preview-list" class="gallery-list"></div>
+                <div id="hero2-drop-zone" class="drop-zone-small">
+                    <p>Arrastra imágenes aquí o haz clic para subirlas</p>
+                </div>
+                <input type="file" id="hero2-uploader" multiple accept="image/*" style="display: none;">
+            </div>
+
+            <div class="hero-slider-admin-section">
+                <h3>Slide 3: Escritora</h3>
+                <div id="hero3-preview-list" class="gallery-list"></div>
+                <div id="hero3-drop-zone" class="drop-zone-small">
+                    <p>Arrastra imágenes aquí o haz clic para subirlas</p>
+                </div>
+                <input type="file" id="hero3-uploader" multiple accept="image/*" style="display: none;">
+            </div>
+            
+            <hr class="section-divider" style="margin-top: 2.5rem;">
+            <button id="save-homepage-button">Guardar Cambios de Inicio</button>
+        </div>
+
         <!-- ========= PANEL DE GALERÍAS ========= -->
-        <div id="gallery-panel" class="panel active">
+        <div id="galleries-panel" class="panel">
+            
             <div class="gallery-selector-container">
                 <label for="gallery-selector">Selecciona la galería a editar:</label>
                 <select id="gallery-selector">
@@ -49,6 +86,7 @@
                     <option value="habecu_gallery">Galería de HABECU</option>
                 </select>
             </div>
+
             <h2 id="current-gallery-title"></h2>
             <div class="form-section">
                 <h3>Subir Nuevas Imágenes</h3>
@@ -71,7 +109,7 @@
             <button id="save-button">Guardar Cambios de Galería</button>
         </div>
         
-        <!-- ========= PANEL DE EVENTOS ========= -->
+        <!-- ========= RESTO DE PANELES SIN CAMBIOS ========= -->
         <div id="events-panel" class="panel">
             <h2>Gestionar Eventos y Publicidad</h2>
             <div class="form-section">
@@ -87,7 +125,6 @@
                 </div>
                 <input type="file" id="event-image-uploader" multiple accept="image/*" style="display: none;">
                 
-                <!-- INICIO: SECCIÓN DE SUBIDA DE VÍDEO MODIFICADA -->
                 <div class="video-upload-section">
                     <label class="input-label">Subir nuevo vídeo a la galería:</label>
                     <div class="video-upload-inputs">
@@ -99,7 +136,6 @@
                     </div>
                     <button id="upload-event-video-button" type="button">Añadir Vídeo Subido</button>
                 </div>
-                <!-- FIN: SECCIÓN DE SUBIDA DE VÍDEO MODIFICADA -->
 
                 <input type="number" id="event-order-input" placeholder="Número de orden (ej: 0, 1, 2...)">
                 <div class="form-buttons">
@@ -114,7 +150,6 @@
             <button id="save-event-order-button">Guardar Orden de Eventos</button>
         </div>
 
-        <!-- ========= PANEL DE ENTREVISTAS ========= -->
         <div id="interviews-panel" class="panel">
             <h2>Gestionar Entrevistas</h2>
             <div class="form-section">
@@ -144,7 +179,6 @@
             <button id="save-interview-order-button">Guardar Orden de Entrevistas</button>
         </div>
 
-        <!-- ========= PANEL DE PREMIOS ========= -->
         <div id="awards-panel" class="panel">
             <h2>Gestionar Premios</h2>
             <div class="form-section">
@@ -178,15 +212,14 @@
             <button id="save-award-order-button">Guardar Orden de Premios</button>
         </div>
 
-        <!-- ========= PANEL DE TEXTOS ========= -->
         <div id="texts-panel" class="panel">
             <h2>Gestionar Textos de la Web</h2>
             <div class="form-section">
                 <label for="page-selector" class="input-label">Selecciona la página a editar:</label>
                 <select id="page-selector">
-                    <option value="homepage">Página de Inicio</option>
+                    <option value="homepage">Página de Inicio (Textos)</option>
                     <option value="televisionPage">Página de Televisión</option>
-                    <option value="eventosPage">Página de Eventos</option> <!-- LÍNEA AÑADIDA EN LA UBICACIÓN CORRECTA -->
+                    <option value="eventosPage">Página de Eventos</option>
                     <option value="radioPage">Página de Radio</option>
                     <option value="publicidadPage">Página de Publicidad</option>
                     <option value="comunicacionPage">Página de Comunicación</option>
@@ -194,8 +227,8 @@
                     <option value="proyectosPage">Página de Proyectos</option>
                     <option value="premiosPage">Página de Premios</option>
                     <option value="entrevistasPage">Página de Entrevistas</option>
-                     <option value="libroPage">Página del Libro</option>
-                     <option value="modelajePage">Página de Modelo</option>
+                    <option value="libroPage">Página del Libro</option>
+                    <option value="modelajePage">Página de Modelo</option>
                 </select>
             </div>
             <hr class="section-divider">

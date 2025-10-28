@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yaiza Díaz - Presentadora, Escritora y Comunicadora</title>
     <!-- Favicon -->
-<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <meta name="description" content="Web oficial de Yaiza Díaz. Periodista, presentadora, escritora y comunicadora. Descubre mi trayectoria, mi novela 'La hija del ciego' y mis proyectos.">
     
     <!-- Open Graph / Social Media -->
@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="style.css?v=1760385513400">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<!-- Start cookieyes banner --> <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/a79fad2eb1803d3e1747ed5d/script.js"></script> <!-- End cookieyes banner -->
+    <!-- Start cookieyes banner --> <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/a79fad2eb1803d3e1747ed5d/script.js"></script> <!-- End cookieyes banner -->
 </head>
 <body id="homepage">
     
@@ -63,15 +63,15 @@
         <div class="hero-background-container"></div>
         <div class="hero-tabs-container">
             <div class="hero-tabs-desktop">
-                <div class="hero-tab" data-bg-image="images/presentadora-bg.jpg" data-bg-position="right 10%">
+                <div class="hero-tab" data-hero-id="1" data-bg-position="right 10%">
                     <h2 data-content-id="heroTitle1"></h2>
                     <p data-content-id="heroSubtitle1"></p>
                 </div>
-                <div class="hero-tab" data-bg-image="images/comunicadora-bg.jpeg" data-bg-position="center 20%">
+                <div class="hero-tab" data-hero-id="2" data-bg-position="center 20%">
                     <h2 data-content-id="heroTitle2"></h2>
                     <p data-content-id="heroSubtitle2"></p>
                 </div>
-                <div class="hero-tab" id="escritora-tab" data-bg-image="images/escritora-bg.jpg" data-bg-position="center 20%">
+                <div class="hero-tab" id="escritora-tab" data-hero-id="3" data-bg-position="center 20%">
                     <h2 data-content-id="heroTitle3"></h2>
                     <p data-content-id="heroSubtitle3"></p>
                     <a href="libro.html" class="book-link">
@@ -93,12 +93,10 @@
             <div class="hero-tabs-mobile">
                 <div class="mobile-tab-display">
                     <h2 id="mobile-tab-title"></h2>
-                    
                     <a href="libro.html" class="book-link" id="mobile-book-link">
                         <div class="mobile-book-image-wrapper">
                             <img class="tab-detail-image" src="images/portada-libro.png" alt="Portada del libro La Hija del Ciego">
                         </div>
-                    
                         <span class="annotation-text-mobile">Click aquí</span>
                         <div class="annotation-arrow-mobile">
                             <svg class="annotation-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
@@ -111,12 +109,13 @@
                             </svg>
                         </div>
                     </a>
-
                 </div>
                 <div id="hero-dots-nav"></div>
             </div>
         </div>
     </section>
+
+    <!-- ... (resto del contenido de la página sin cambios) ... -->
 
     <section id="sobre-mi">
         <div class="container about-content">
@@ -130,7 +129,6 @@
             <p data-content-id="aboutMeParagraph2"></p>
         </div>
     </section>
-
     <section id="habilidades" class="section-gray">
         <div class="container">
             <h2 data-content-id="skillsTitle"></h2>
@@ -150,7 +148,6 @@
             <img src="images/tele7.jpg" alt="Yaiza Díaz presentando en un escenario" class="section-image">
         </div>
     </section>
-
     <section id="portfolio">
         <div class="container">
             <h2 data-content-id="trajectoryTitle"></h2>
@@ -195,7 +192,6 @@
             </div>
         </div>
     </section>
-
     <section id="home-events">
         <div class="container">
             <h2 data-content-id="eventsTitle">Eventos y Publicidad</h2>
@@ -215,7 +211,6 @@
             </div>
         </div>
     </section>
-
     <section id="contacto">
         <div class="container">
             <h2 data-content-id="contactTitle"></h2>
@@ -226,20 +221,16 @@
             </div>
         </div>
     </section>
-
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
-
     <div id="contact-modal" class="modal-overlay">
         <div class="modal-content contact-modal-content">
             <button id="contact-modal-close" class="modal-close">&times;</button>
             <h2 data-content-id="contactTitle">Contacto</h2>
             <div class="header-line"></div>
             <p data-content-id="contactParagraph">Si deseas contratar mis servicios como presentadora, comunicadora o escritora, o si tienes alguna consulta, no dudes en ponerte en contacto conmigo.</p>
-            
             <div class="contact-buttons-container">
                 <a href="mailto:yaizadiaztv@gmail.com" class="email-link">yaizadiaztv@gmail.com</a>
             </div>
-            
             <div class="social-icons">
                 <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                 <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
@@ -256,37 +247,39 @@
             <div id="lightbox-caption"></div>
         </div>
     </div>
-  <footer>
-    <div class="container">
-        <div class="footer-social-icons">
-             <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Yaiza Díaz"><i class="fab fa-instagram"></i></a>
-            <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Yaiza Díaz"><i class="fab fa-linkedin"></i></a>
-            <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer" aria-label="Twitter de Yaiza Díaz"><i class="fab fa-twitter"></i></a>
+    <footer>
+        <div class="container">
+            <div class="footer-social-icons">
+                 <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Yaiza Díaz"><i class="fab fa-instagram"></i></a>
+                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Yaiza Díaz"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer" aria-label="Twitter de Yaiza Díaz"><i class="fab fa-twitter"></i></a>
+            </div>
+            <p class="footer-legal-links">
+                <a href="aviso-legal.html">Aviso legal</a> • 
+                <a href="politica-privacidad.html">Política de privacidad</a> • 
+                <a href="politica-cookies.html">Política de cookies</a>
+            </p>
+            <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
+           <p class="developer-credit">
+              Developed by 
+              <a href="images/chacho-creations-logo.png" class="developer-logo-link expandable-image">
+                <img src="images/chacho-creations-logo.png" alt="ChachoCreations Logo">
+              </a>
+            </p>
         </div>
-        <p class="footer-legal-links">
-            <a href="aviso-legal.html">Aviso legal</a> • 
-            <a href="politica-privacidad.html">Política de privacidad</a> • 
-            <a href="politica-cookies.html">Política de cookies</a>
-        </p>
-        <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
-       <p class="developer-credit">
-          Developed by 
-          <a href="images/chacho-creations-logo.png" class="developer-logo-link expandable-image">
-            <img src="images/chacho-creations-logo.png" alt="ChachoCreations Logo">
-          </a>
-        </p>
-    </div>
-</footer>
+    </footer>
     
     <script src="config.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        // ***** INICIO DE LA CORRECCIÓN *****
+        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         window.firebaseServices = {
-            db, collection, getDocs, orderBy, query, doc, getDoc
+            db, collection, getDocs, orderBy, query, doc, getDoc, setDoc // <-- Añadimos setDoc aquí
         };
+        // ***** FIN DE LA CORRECCIÓN *****
     </script>
     <script src="script.js?v=1760385513400" type="module"></script>
 </body>

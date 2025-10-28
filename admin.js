@@ -1,5 +1,4 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-// 1. IMPORTA LA NUEVA FUNCIÓN
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 import { getFirestore, collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-storage.js";
@@ -18,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordInput = document.getElementById('password');
     const loginButton = document.getElementById('login-button');
     const logoutButton = document.getElementById('logout-button');
-    // 2. OBTÉN LA REFERENCIA AL NUEVO ENLACE
     const forgotPasswordLink = document.getElementById('forgot-password-link');
     
     // --- NAVEGACIÓN Y PANELES ---
@@ -45,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (user) {
             loginContainer.style.display = 'none';
             adminPanel.style.display = 'block';
+            loadHomepageSliderData();
             loadGalleries();
             loadEvents();
             loadInterviews();
@@ -63,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     logoutButton.addEventListener('click', () => signOut(auth));
 
-    // 3. AÑADE EL EVENTO PARA RESTABLECER LA CONTRASEÑA
     forgotPasswordLink.addEventListener('click', (e) => {
         e.preventDefault();
         const email = emailInput.value;
@@ -71,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast('Por favor, introduce tu email en el campo correspondiente.', 'error');
             return;
         }
-
         sendPasswordResetEmail(auth, email)
             .then(() => {
                 showToast('Se ha enviado un correo para restablecer tu contraseña. Revisa tu bandeja de entrada.', 'success');
@@ -92,6 +89,152 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
+
+    // ===========================================
+    // --- SECCIÓN DE GESTIÓN PÁGINA DE INICIO ---
+    // ===========================================
+    const hero1PreviewList = document.getElementById('hero1-preview-list');
+    const hero2PreviewList = document.getElementById('hero2-preview-list');
+    const hero3PreviewList = document.getElementById('hero3-preview-list');
+    const hero1DropZone = document.getElementById('hero1-drop-zone');
+    const hero2DropZone = document.getElementById('hero2-drop-zone');
+    const hero3DropZone = document.getElementById('hero3-drop-zone');
+    const hero1Uploader = document.getElementById('hero1-uploader');
+    const hero2Uploader = document.getElementById('hero2-uploader');
+    const hero3Uploader = document.getElementById('hero3-uploader');
+    const saveHomepageButton = document.getElementById('save-homepage-button');
+
+    let heroSortables = {};
+
+    function renderHeroPreviewList(listElement, items = []) {
+        if (heroSortables[listElement.id]) {
+            heroSortables[listElement.id].destroy();
+        }
+        listElement.innerHTML = '';
+        items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'preview-item';
+            div.dataset.src = item.src;
+            const posYDesktop = item.posYDesktop || 50;
+            const posYMobile = item.posYMobile || 50;
+
+            div.innerHTML = `
+                <img src="${item.src}" alt="Previsualización">
+                <div class="position-controls-slider">
+                    <div>
+                        <label class="input-label-small">Foco PC: <span class="range-value">${posYDesktop}%</span></label>
+                        <input type="range" class="position-input-desktop" min="0" max="100" value="${posYDesktop}">
+                    </div>
+                    <div>
+                        <label class="input-label-small">Foco Móvil: <span class="range-value">${posYMobile}%</span></label>
+                        <input type="range" class="position-input-mobile" min="0" max="100" value="${posYMobile}">
+                    </div>
+                </div>
+                <button type="button" class="delete-button">Eliminar</button>
+            `;
+            listElement.appendChild(div);
+        });
+        
+        listElement.querySelectorAll('input[type="range"]').forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                const rangeValueSpan = e.target.previousElementSibling.querySelector('.range-value');
+                if (rangeValueSpan) {
+                    rangeValueSpan.textContent = `${e.target.value}%`;
+                }
+            });
+        });
+
+        heroSortables[listElement.id] = new Sortable(listElement, { animation: 150, ghostClass: 'sortable-ghost' });
+    }
+
+    async function handleHeroImageUpload(files, listElement) {
+        const dropZone = listElement.nextElementSibling;
+        dropZone.querySelector('p').textContent = 'Subiendo...';
+        
+        const getItemsFromList = (element) => Array.from(element.querySelectorAll('.preview-item')).map(el => ({ 
+            src: el.dataset.src, 
+            posYDesktop: el.querySelector('.position-input-desktop').value,
+            posYMobile: el.querySelector('.position-input-mobile').value
+        }));
+
+        const currentItems = getItemsFromList(listElement);
+        const newItems = [];
+
+        for (const file of files) {
+            if (!file.type.startsWith('image/')) continue;
+            const storageRef = ref(storage, `hero-slider/${Date.now()}_${file.name}`);
+            await uploadBytes(storageRef, file);
+            const url = await getDownloadURL(storageRef);
+            newItems.push({ src: url, posYDesktop: 50, posYMobile: 50 });
+        }
+
+        renderHeroPreviewList(listElement, [...currentItems, ...newItems]);
+        dropZone.querySelector('p').textContent = 'Arrastra imágenes aquí o haz clic para subirlas';
+    }
+
+    async function loadHomepageSliderData() {
+        const docRef = doc(db, 'pages', 'homepage');
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            renderHeroPreviewList(hero1PreviewList, data.heroSlider1 || []);
+            renderHeroPreviewList(hero2PreviewList, data.heroSlider2 || []);
+            renderHeroPreviewList(hero3PreviewList, data.heroSlider3 || []);
+        } else {
+            renderHeroPreviewList(hero1PreviewList, []);
+            renderHeroPreviewList(hero2PreviewList, []);
+            renderHeroPreviewList(hero3PreviewList, []);
+        }
+    }
+
+    async function saveHomepageData() {
+        const getItemsFromList = (listElement) => {
+            return Array.from(listElement.querySelectorAll('.preview-item')).map(el => ({
+                src: el.dataset.src,
+                posYDesktop: el.querySelector('.position-input-desktop').value,
+                posYMobile: el.querySelector('.position-input-mobile').value
+            }));
+        };
+
+        const dataToUpdate = {
+            heroSlider1: getItemsFromList(hero1PreviewList),
+            heroSlider2: getItemsFromList(hero2PreviewList),
+            heroSlider3: getItemsFromList(hero3PreviewList)
+        };
+
+        try {
+            await setDoc(doc(db, 'pages', 'homepage'), dataToUpdate, { merge: true });
+            showToast('¡Slider de inicio guardado con éxito!');
+        } catch (error) {
+            showToast("Hubo un error al guardar los cambios.", "error");
+            console.error("Error al guardar datos de inicio:", error);
+        }
+    }
+    
+    [hero1DropZone, hero2DropZone, hero3DropZone].forEach(zone => {
+        zone.addEventListener('click', () => zone.nextElementSibling.click());
+        zone.addEventListener('dragover', e => e.preventDefault());
+        zone.addEventListener('drop', e => {
+            e.preventDefault();
+            handleHeroImageUpload(e.dataTransfer.files, zone.previousElementSibling);
+        });
+    });
+
+    [hero1Uploader, hero2Uploader, hero3Uploader].forEach(uploader => {
+        uploader.addEventListener('change', e => {
+            handleHeroImageUpload(e.target.files, uploader.previousElementSibling.previousElementSibling);
+        });
+    });
+    
+    [hero1PreviewList, hero2PreviewList, hero3PreviewList].forEach(list => {
+        list.addEventListener('click', e => {
+            if (e.target.classList.contains('delete-button')) {
+                e.target.closest('.preview-item').remove();
+            }
+        });
+    });
+
+    saveHomepageButton.addEventListener('click', saveHomepageData);
 
     // ===========================================
     // --- SECCIÓN DE GESTIÓN DE GALERÍAS ---
@@ -263,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let awardImagesSortable = null;
 
     // ===========================================
-    // --- SECCIÓN DE GESTIÓN DE TEXTOS (CORREGIDA) ---
+    // --- SECCIÓN DE GESTIÓN DE TEXTOS ---
     // ===========================================
     const pageSelector = document.getElementById('page-selector');
     const textFieldsContainer = document.getElementById('text-fields-container');
@@ -271,7 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const pageContentMap = {
         homepage: ['heroTitle1', 'heroSubtitle1', 'heroTitle2', 'heroSubtitle2', 'heroTitle3', 'heroSubtitle3', 'aboutMeTitle', 'aboutMeParagraph1', 'aboutMeQuote', 'aboutMeParagraph2', 'skillsTitle', 'trajectoryTitle', 'card1Category', 'card1Title', 'card1Subtitle', 'card1Paragraph', 'card2Category', 'card2Title', 'card2Subtitle', 'card2Paragraph', 'card3Category', 'card3Title', 'card3Subtitle', 'card3Paragraph', 'eventsTitle', 'eventsParagraph', 'contactTitle', 'contactParagraph'],
-        eventosPage: ['eventsTitle', 'eventsParagraph'], // LÍNEA CORREGIDA Y EN SU LUGAR
+        eventosPage: ['eventsTitle', 'eventsParagraph'],
         televisionPage: ['mainTitle', 'introParagraph1', 'introParagraph2', 'video1Title', 'video2Title', 'video4Title', 'video4Paragraph', 'video5Title', 'video5Paragraph', 'video7Title', 'video7Paragraph', 'video8Title', 'video8Paragraph', 'video9Title', 'video9Paragraph', 'galleryTitle'],
         radioPage: ['mainTitle', 'introParagraph', 'programTitle', 'programParagraph1', 'programParagraph2', 'galleryTitle'],
         publicidadPage: ['mainTitle', 'introParagraph1', 'introParagraph2', 'campaign1Title', 'campaign2Title', 'campaign3Title', 'campaign4Title', 'campaign5Title'],
@@ -286,7 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     async function loadPageTexts() {
-        const pageId = pageSelector.value;
+        const pageId = pageSelector.value.replace(' (Textos)', '');
         if (!pageId) return;
         textFieldsContainer.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
         try {
@@ -295,20 +438,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const existingData = docSnap.exists() ? docSnap.data() : {};
             textFieldsContainer.innerHTML = '';
             const expectedKeys = pageContentMap[pageId] || Object.keys(existingData);
-            if (!pageContentMap[pageId]) {
-                            }
+            
             expectedKeys.sort().forEach(key => {
+                if (key.startsWith('heroSlider')) return;
                 const value = existingData[key] || '';
                 const fieldWrapper = document.createElement('div');
                 fieldWrapper.className = 'form-section';
                 const label = document.createElement('label');
                 label.className = 'input-label';
                 label.textContent = key;
-                if (!existingData[key]) {
-                    label.style.color = 'var(--color-error)';
-                    label.title = 'Este es un campo nuevo que se añadirá a la base de datos.';
-                }
-                const isLongText = value.length > 100 || value.includes('<');
+                const isLongText = typeof value === 'string' && (value.length > 100 || value.includes('<'));
                 const inputElement = isLongText ? document.createElement('textarea') : document.createElement('input');
                 inputElement.dataset.key = key;
                 inputElement.value = value;
@@ -324,7 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function savePageTexts() {
-        const pageId = pageSelector.value;
+        const pageId = pageSelector.value.replace(' (Textos)', '');
         if (!pageId) return;
         const dataToUpdate = {};
         textFieldsContainer.querySelectorAll('input, textarea').forEach(input => {

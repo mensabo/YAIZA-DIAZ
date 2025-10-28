@@ -58,8 +58,22 @@ h2 { font-size: 1.25rem; font-weight: 600; color: var(--color-acento); margin-bo
 h3 { font-size: 1.1rem; font-weight: 600; color: var(--color-primario); margin: 2rem 0 1rem 0; }
 
 /* === Formularios y Botones === */
+
+/* === Contenedor del selector de galerías === */
+.gallery-selector-container {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-borde);
+}
+.gallery-selector-container label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--color-primario);
+}
+
 .input-label { font-weight: 500; margin-bottom: 0.5rem; display: block; }
-.input-label-small { font-weight: 500; font-size: 0.9rem; margin-bottom: 0.5rem; display: block; color: var(--color-secundario); }
+.input-label-small { font-weight: 500; font-size: 0.8rem; margin-bottom: 0.3rem; display: block; color: var(--color-secundario); text-align: left;}
 
 
 input, select, textarea {
@@ -179,9 +193,24 @@ button:disabled { background-color: var(--color-secundario); cursor: not-allowed
 }
 /* FIN: Estilos para la nueva sección de subida de vídeo */
 
+/* === Estilos para la nueva gestión del Slider de Inicio === */
+.hero-slider-admin-section {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-borde);
+}
+
+.hero-slider-admin-section h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-borde);
+}
 
 /* === Lista de Galerías, Entrevistas, Premios, etc. === */
-#gallery-list, #event-images-preview-list, #award-images-preview-list, #interview-image-preview {
+#gallery-list, #event-images-preview-list, #award-images-preview-list, #interview-image-preview, #hero1-preview-list, #hero2-preview-list, #hero3-preview-list {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 1.5rem; margin-bottom: 2rem;
 }
@@ -212,12 +241,19 @@ button:disabled { background-color: var(--color-secundario); cursor: not-allowed
     background-color: #fff;
     margin-bottom: 0.5rem;
 }
-.position-input {
+.position-input, .position-input-desktop, .position-input-mobile {
     font-size: 0.8rem;
-    padding: 6px 8px;
+    padding: 6px 8px !important;
     text-align: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem !important;
 }
+
+/* --- INICIO: NUEVOS ESTILOS PARA LOS CONTROLES DE POSICIÓN --- */
+.position-controls-slider { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
+.position-controls-slider .range-value { color: var(--color-primario); font-weight: 600; }
+.position-controls-slider input[type="range"] { width: 100%; margin: 0; padding: 0; accent-color: var(--color-acento); }
+/* --- FIN: NUEVOS ESTILOS --- */
+
 .delete-button {
     background-color: var(--color-error);
     font-size: 0.8rem; padding: 6px 12px; margin-top: 10px;
@@ -321,7 +357,7 @@ button:disabled { background-color: var(--color-secundario); cursor: not-allowed
 #forgot-password-link {
     display: block;
     text-align: right;
-    margin-top: -0.5rem; /* Lo acerca un poco al campo de contraseña */
+    margin-top: -0.5rem;
     margin-bottom: 1.5rem;
     font-size: 0.85rem;
     color: var(--color-secundario);
