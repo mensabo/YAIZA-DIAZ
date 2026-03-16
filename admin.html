@@ -2,7 +2,15 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Administrar Galería</title>
+    <title>Administrar Contenido</title>
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -10,55 +18,229 @@
         <h2>Acceso al Panel</h2>
         <input type="email" id="email" placeholder="Email">
         <input type="password" id="password" placeholder="Contraseña">
+        <a href="#" id="forgot-password-link" style="display: block; text-align: right; margin-bottom: 1rem; font-size: 0.9rem; color: var(--color-secundario); text-decoration: none;">¿Has olvidado tu contraseña?</a>
         <button id="login-button">Entrar</button>
     </div>
 
     <div id="admin-panel" style="display:none;">
         <header>
-            <h1>Gestionar Galería del Libro</h1>
+            <h1>Panel de Administración</h1>
             <button id="logout-button">Cerrar Sesión</button>
         </header>
 
-        <div id="drop-zone">
-            <p>Arrastra y suelta las fotos aquí o haz clic para seleccionarlas</p>
-            <input type="file" id="file-input" multiple accept="image/*" style="display:none;">
+        <nav class="admin-nav">
+            <button id="nav-homepage" class="active">Página de Inicio</button>
+            <button id="nav-galleries">Gestionar Galerías</button>
+            <button id="nav-events">Gestionar Eventos</button>
+            <button id="nav-interviews">Gestionar Entrevistas</button>
+            <button id="nav-awards">Gestionar Premios</button>
+            <button id="nav-texts">Gestionar Textos</button>
+        </nav>
+
+        <!-- ========= PANEL DE PÁGINA DE INICIO ========= -->
+        <div id="homepage-panel" class="panel active">
+            <h2>Gestionar Slider de Inicio</h2>
+            <p>Arrastra y suelta imágenes en cada sección del slider. Puedes reordenarlas arrastrándolas. Guarda los cambios al final.</p>
+
+            <div class="hero-slider-admin-section">
+                <h3>Slide 1: Presentadora y TV</h3>
+                <div id="hero1-preview-list" class="gallery-list"></div>
+                <div id="hero1-drop-zone" class="drop-zone-small">
+                    <p>Arrastra imágenes aquí o haz clic para subirlas</p>
+                </div>
+                <input type="file" id="hero1-uploader" multiple accept="image/*" style="display: none;">
+            </div>
+
+            <div class="hero-slider-admin-section">
+                <h3>Slide 2: Eventos y Publicidad</h3>
+                <div id="hero2-preview-list" class="gallery-list"></div>
+                <div id="hero2-drop-zone" class="drop-zone-small">
+                    <p>Arrastra imágenes aquí o haz clic para subirlas</p>
+                </div>
+                <input type="file" id="hero2-uploader" multiple accept="image/*" style="display: none;">
+            </div>
+
+            <div class="hero-slider-admin-section">
+                <h3>Slide 3: Escritora</h3>
+                <div id="hero3-preview-list" class="gallery-list"></div>
+                <div id="hero3-drop-zone" class="drop-zone-small">
+                    <p>Arrastra imágenes aquí o haz clic para subirlas</p>
+                </div>
+                <input type="file" id="hero3-uploader" multiple accept="image/*" style="display: none;">
+            </div>
+            
+            <hr class="section-divider" style="margin-top: 2.5rem;">
+            <button id="save-homepage-button">Guardar Cambios de Inicio</button>
+        </div>
+
+        <!-- ========= PANEL DE GALERÍAS ========= -->
+        <div id="galleries-panel" class="panel">
+            
+            <div class="gallery-selector-container">
+                <label for="gallery-selector">Selecciona la galería a editar:</label>
+                <select id="gallery-selector">
+                    <option value="gallery">Galería del Libro</option>
+                    <option value="modeling_gallery">Galería de Modelaje</option>
+                    <option value="television_gallery">Galería de Televisión</option>
+                    <option value="radio_gallery">Galería de Radio</option>
+                    <option value="habecu_gallery">Galería de HABECU</option>
+                </select>
+            </div>
+
+            <h2 id="current-gallery-title"></h2>
+            <div class="form-section">
+                <h3>Subir Nuevas Imágenes</h3>
+                <div id="drop-zone">
+                    <p>Arrastra y suelta imágenes aquí o haz clic para seleccionarlas</p>
+                    <input type="file" id="file-input" multiple accept="image/*" style="display:none;">
+                </div>
+            </div>
+            <div class="form-section">
+                <h3>Añadir Nuevo Vídeo</h3>
+                <input type="text" id="video-url-input" placeholder="URL del vídeo (.mp4, .webm...)">
+                <input type="text" id="thumbnail-url-input" placeholder="URL de la imagen miniatura (.jpg, .png...)">
+                <input type="text" id="video-description-input" placeholder="Descripción del vídeo">
+                <button id="add-video-button">Añadir Vídeo a la Galería</button>
+            </div>
+            <hr class="section-divider">
+            <h3>Editar Galería Actual</h3>
+            <p>Arrastra los elementos para reordenarlos. Edita la descripción y pulsa Guardar.</p>
+            <div id="gallery-list"></div>
+            <button id="save-button">Guardar Cambios de Galería</button>
         </div>
         
-        <p>Arrastra las imágenes para reordenarlas. Edita la descripción y pulsa Guardar.</p>
-        <div id="gallery-list"></div>
-        <button id="save-button">Guardar Cambios</button>
+        <!-- ========= RESTO DE PANELES SIN CAMBIOS ========= -->
+        <div id="events-panel" class="panel">
+            <h2>Gestionar Eventos y Publicidad</h2>
+            <div class="form-section">
+                <h3 id="event-form-title">Crear Nuevo Evento</h3>
+                <input type="hidden" id="event-id-input">
+                <input type="text" id="event-title-input" placeholder="Título del evento (para el modal)">
+                <textarea id="event-text-input" placeholder="Texto introductorio del evento..." rows="4"></textarea>
+                
+                <label class="input-label">Imágenes de la galería del evento:</label>
+                <div id="event-images-preview-list" class="gallery-list"></div>
+                <div id="event-images-drop-zone" class="drop-zone-small">
+                    <p>Arrastra imágenes aquí o haz clic para subirlas</p>
+                </div>
+                <input type="file" id="event-image-uploader" multiple accept="image/*" style="display: none;">
+                
+                <div class="video-upload-section">
+                    <label class="input-label">Subir nuevo vídeo a la galería:</label>
+                    <div class="video-upload-inputs">
+                        <label for="event-video-uploader" class="input-label-small">Archivo de vídeo (.mp4, .webm):</label>
+                        <input type="file" id="event-video-uploader" accept="video/*">
+                        
+                        <label for="event-video-thumbnail-uploader" class="input-label-small">Imagen para la miniatura (.jpg, .png):</label>
+                        <input type="file" id="event-video-thumbnail-uploader" accept="image/*">
+                    </div>
+                    <button id="upload-event-video-button" type="button">Añadir Vídeo Subido</button>
+                </div>
+
+                <input type="number" id="event-order-input" placeholder="Número de orden (ej: 0, 1, 2...)">
+                <div class="form-buttons">
+                    <button id="save-event-button">Guardar Evento</button>
+                    <button id="cancel-edit-event-button" style="display:none;">Cancelar Edición</button>
+                </div>
+            </div>
+            <hr class="section-divider">
+            <h3>Eventos Creados</h3>
+            <p>Arrastra los eventos para reordenarlos y luego pulsa "Guardar Orden".</p>
+            <div id="events-list"></div>
+            <button id="save-event-order-button">Guardar Orden de Eventos</button>
+        </div>
+
+        <div id="interviews-panel" class="panel">
+            <h2>Gestionar Entrevistas</h2>
+            <div class="form-section">
+                <h3 id="interview-form-title">Añadir Nueva Entrevista</h3>
+                <input type="hidden" id="interview-id-input">
+                <input type="text" id="interview-main-title-input" placeholder="Título principal (ej: 'El cáncer de mama en primera persona')">
+                <input type="text" id="interview-subtitle-input" placeholder="Subtítulo o medio (ej: 'Diario de Avisos')">
+                <input type="text" id="interview-url-input" placeholder="URL completa del artículo o vídeo">
+
+                <label class="input-label">Imagen de miniatura:</label>
+                <div id="interview-image-preview" class="gallery-list" style="grid-template-columns: minmax(180px, 220px);"></div>
+                <div id="interview-image-drop-zone" class="drop-zone-small">
+                    <p>Arrastra una imagen aquí o haz clic para subirla</p>
+                </div>
+                <input type="file" id="interview-image-uploader" accept="image/*" style="display: none;">
+                
+                <input type="number" id="interview-order-input" placeholder="Número de orden (ej: 0, 1, 2...)">
+                <div class="form-buttons">
+                    <button id="save-interview-button">Guardar Entrevista</button>
+                    <button id="cancel-edit-interview-button" style="display:none;">Cancelar Edición</button>
+                </div>
+            </div>
+            <hr class="section-divider">
+            <h3>Entrevistas Creadas</h3>
+            <p>Arrastra las entrevistas para reordenarlas y pulsa "Guardar Orden".</p>
+            <div id="interviews-list"></div>
+            <button id="save-interview-order-button">Guardar Orden de Entrevistas</button>
+        </div>
+
+        <div id="awards-panel" class="panel">
+            <h2>Gestionar Premios</h2>
+            <div class="form-section">
+                <h3 id="award-form-title">Añadir Nuevo Premio</h3>
+                <input type="hidden" id="award-id-input">
+                <input type="text" id="award-title-input" placeholder="Nombre del premio (ej: 'Premio Isla Tenerife 2024')">
+                <textarea id="award-text-input" placeholder="Descripción detallada del premio..." rows="4"></textarea>
+                
+                <label class="input-label">Galería de imágenes/vídeos del premio:</label>
+                <div id="award-images-preview-list" class="gallery-list"></div>
+                <div id="award-images-drop-zone" class="drop-zone-small">
+                    <p>Arrastra imágenes aquí o haz clic para subirlas</p>
+                </div>
+                <input type="file" id="award-image-uploader" multiple accept="image/*" style="display: none;">
+                
+                <label class="input-label" style="margin-top: 1.5rem;">Añadir vídeo a la galería:</label>
+                <input type="text" id="award-video-url-input" placeholder="URL del vídeo (.mp4, .webm...)">
+                <input type="text" id="award-thumbnail-url-input" placeholder="URL de la miniatura para el vídeo (.jpg, .png...)">
+                <button id="add-award-video-button" type="button">Añadir Vídeo</button>
+
+                <input type="number" id="award-order-input" placeholder="Número de orden (ej: 0, 1, 2...)">
+                <div class="form-buttons">
+                    <button id="save-award-button">Guardar Premio</button>
+                    <button id="cancel-edit-award-button" style="display:none;">Cancelar Edición</button>
+                </div>
+            </div>
+            <hr class="section-divider">
+            <h3>Premios Creados</h3>
+            <p>Arrastra los premios para reordenarlos y pulsa "Guardar Orden".</p>
+            <div id="awards-list"></div>
+            <button id="save-award-order-button">Guardar Orden de Premios</button>
+        </div>
+
+        <div id="texts-panel" class="panel">
+            <h2>Gestionar Textos de la Web</h2>
+            <div class="form-section">
+                <label for="page-selector" class="input-label">Selecciona la página a editar:</label>
+                <select id="page-selector">
+                    <option value="homepage">Página de Inicio (Textos)</option>
+                    <option value="televisionPage">Página de Televisión</option>
+                    <option value="eventosPage">Página de Eventos</option>
+                    <option value="radioPage">Página de Radio</option>
+                    <option value="publicidadPage">Página de Publicidad</option>
+                    <option value="comunicacionPage">Página de Comunicación</option>
+                    <option value="investigacionPage">Página de Documentales</option>
+                    <option value="proyectosPage">Página de Proyectos</option>
+                    <option value="premiosPage">Página de Premios</option>
+                    <option value="entrevistasPage">Página de Entrevistas</option>
+                    <option value="libroPage">Página del Libro</option>
+                    <option value="modelajePage">Página de Modelo</option>
+                </select>
+            </div>
+            <hr class="section-divider">
+            <div id="text-fields-container"></div>
+            <button id="save-texts-button" style="margin-top: 1rem;">Guardar Cambios de Textos</button>
+        </div>
+
     </div>
     
-    <!-- 1. Carga la configuración desde el archivo externo -->
     <script src="config.js"></script>
-
-    <!-- 2. SDK de Firebase v9 (Recomendado) -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
-        import { getFirestore, collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-storage.js";
-
-        // La variable 'firebaseConfig' ahora viene del archivo config.js
-      
-        // Inicializar Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        const storage = getStorage(app);
-
-        // Hacemos las funciones y variables accesibles globalmente
-        window.firebaseServices = {
-            auth, signInWithEmailAndPassword, onAuthStateChanged, signOut,
-            db, collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc,
-            storage, ref, uploadBytes, getDownloadURL, deleteObject
-        };
-    </script>
-
-    <!-- Librería para arrastrar y soltar -->
+    <script type="module" src="admin.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
-    
-    <!-- Nuestro script de administración -->
-    <script src="admin.js" type="module"></script>
+
 </body>
 </html>

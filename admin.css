@@ -1,15 +1,371 @@
-body { font-family: sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; }
-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-#login-container, #admin-panel { max-width: 900px; margin: 2rem auto; padding: 2rem; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-radius: 8px; }
-h1, h2 { text-align: center; color: #1a1a1a; margin-top: 0;}
-input, button { display: block; width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 4px; border: 1px solid #ddd; box-sizing: border-box; }
-button { background-color: #bca07d; color: white; border: none; cursor: pointer; font-size: 1rem; transition: background-color 0.2s; }
-button:hover { background-color: #a78d6b; }
-#logout-button { width: auto; padding: 8px 15px; font-size: 0.9rem; }
-#drop-zone { border: 2px dashed #bca07d; padding: 2rem; text-align: center; margin-bottom: 1.5rem; cursor: pointer; background-color: #fdfaf6; }
-#gallery-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-.gallery-item { background: #f9f9f9; padding: 0.5rem; border: 1px solid #eee; border-radius: 4px; text-align: center; }
-.gallery-item img { width: 100%; height: 100px; object-fit: cover; margin-bottom: 10px; }
-.description-input { width: 100%; height: 60px; font-size: 0.8rem; padding: 5px; border: 1px solid #ddd; border-radius: 3px; }
-.delete-button { background-color: #e74c3c; font-size: 0.8rem; padding: 5px; margin-top: 5px; }
-.sortable-ghost { opacity: 0.4; background-color: #f0eada; }
+/* ======================================== */
+/*    PANEL DE ADMINISTRACIÓN (DISEÑO v2)   */
+/* ======================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --color-fondo: #f4f7fa;
+    --color-superficie: #ffffff;
+    --color-primario: #1a202c;
+    --color-secundario: #4a5568;
+    --color-acento: #bca07d;
+    --color-acento-hover: #a78d6b;
+    --color-acento-suave: #f0eada;
+    --color-borde: #e2e8f0;
+    --color-error: #e53e3e;
+    --color-error-hover: #c53030;
+    
+    --fuente-principal: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --radio-borde: 10px;
+    --sombra-sutil: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+    --sombra-media: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --transicion-suave: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: var(--fuente-principal);
+    background-color: var(--color-fondo);
+    color: var(--color-primario);
+    margin: 0;
+    padding: 20px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#login-container, #admin-panel {
+    max-width: 950px;
+    margin: 2rem auto;
+    padding: 3rem;
+    background: var(--color-superficie);
+    box-shadow: var(--sombra-media);
+    border-radius: var(--radio-borde);
+    border: 1px solid var(--color-borde);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+h1 { font-size: 2rem; font-weight: 700; color: var(--color-primario); margin: 0; }
+h2 { font-size: 1.25rem; font-weight: 600; color: var(--color-acento); margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--color-borde); }
+h3 { font-size: 1.1rem; font-weight: 600; color: var(--color-primario); margin: 2rem 0 1rem 0; }
+
+/* === Formularios y Botones === */
+
+/* === Contenedor del selector de galerías === */
+.gallery-selector-container {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-borde);
+}
+.gallery-selector-container label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--color-primario);
+}
+
+.input-label { font-weight: 500; margin-bottom: 0.5rem; display: block; }
+.input-label-small { font-weight: 500; font-size: 0.8rem; margin-bottom: 0.3rem; display: block; color: var(--color-secundario); text-align: left;}
+
+
+input, select, textarea {
+    display: block; width: 100%;
+    padding: 10px 14px;
+    margin-bottom: 1rem;
+    border-radius: var(--radio-borde);
+    border: 1px solid var(--color-borde);
+    background-color: var(--color-fondo);
+    font-family: var(--fuente-principal);
+    font-size: 0.95rem;
+    transition: var(--transicion-suave);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+textarea { resize: vertical; min-height: 100px; }
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--color-acento);
+    background-color: var(--color-superficie);
+    box-shadow: 0 0 0 3px var(--color-acento-suave);
+}
+
+button {
+    background-color: var(--color-acento); color: var(--color-superficie);
+    border: none; cursor: pointer;
+    font-size: 1rem; font-weight: 600;
+    padding: 12px 24px;
+    border-radius: var(--radio-borde);
+    transition: var(--transicion-suave);
+    box-shadow: var(--sombra-sutil);
+}
+button:hover {
+    background-color: var(--color-acento-hover);
+    box-shadow: var(--sombra-media);
+    transform: translateY(-2px);
+}
+button:active { transform: translateY(0px) scale(0.98); }
+button:disabled { background-color: var(--color-secundario); cursor: not-allowed; transform: none; box-shadow: none; }
+
+
+#logout-button {
+    background: none; color: var(--color-secundario);
+    font-size: 0.9rem; font-weight: 500;
+    padding: 8px 0; box-shadow: none;
+}
+#logout-button:hover { background: none; color: var(--color-primario); transform: none; box-shadow: none; }
+
+/* === Navegación del Panel === */
+.admin-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2.5rem;
+    background-color: var(--color-fondo);
+    padding: 0.5rem;
+    border-radius: var(--radio-borde);
+}
+.admin-nav button {
+    flex-grow: 1;
+    background: none;
+    box-shadow: none;
+    color: var(--color-secundario);
+    font-weight: 600;
+    padding: 10px 20px;
+    border: none;
+    position: relative;
+}
+.admin-nav button:hover {
+    background-color: rgba(0,0,0,0.05);
+    color: var(--color-primario);
+    transform: none;
+}
+.admin-nav button.active {
+    background-color: var(--color-superficie);
+    color: var(--color-acento);
+    box-shadow: var(--sombra-sutil);
+}
+
+.panel { display: none; }
+.panel.active { display: block; animation: fadeIn 0.5s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* === Zonas de Arrastrar y Soltar === */
+#drop-zone, .drop-zone-small {
+    border: 2px dashed var(--color-borde);
+    padding: 2.5rem; text-align: center; margin-bottom: 1.5rem;
+    cursor: pointer; background-color: var(--color-fondo);
+    border-radius: var(--radio-borde);
+    transition: var(--transicion-suave);
+}
+#drop-zone:hover, .drop-zone-small:hover {
+    border-color: var(--color-acento);
+    background-color: var(--color-acento-suave);
+}
+#drop-zone p, .drop-zone-small p { margin: 0; color: var(--color-secundario); font-weight: 500; }
+
+/* INICIO: Estilos para la nueva sección de subida de vídeo */
+.video-upload-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-borde);
+}
+.video-upload-inputs {
+    margin-bottom: 1rem;
+}
+.video-upload-inputs .input-label-small {
+    margin-top: 1rem;
+}
+.video-upload-inputs .input-label-small:first-child {
+    margin-top: 0;
+}
+.video-upload-section button {
+    width: 100%;
+}
+/* FIN: Estilos para la nueva sección de subida de vídeo */
+
+/* === Estilos para la nueva gestión del Slider de Inicio === */
+.hero-slider-admin-section {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    background-color: var(--color-fondo);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-borde);
+}
+
+.hero-slider-admin-section h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-borde);
+}
+
+/* === Lista de Galerías, Entrevistas, Premios, etc. === */
+#gallery-list, #event-images-preview-list, #award-images-preview-list, #interview-image-preview, #hero1-preview-list, #hero2-preview-list, #hero3-preview-list {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem; margin-bottom: 2rem;
+}
+.gallery-item, .preview-item {
+    background: var(--color-superficie);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-borde);
+    padding: 1rem;
+    text-align: center;
+    box-shadow: var(--sombra-sutil);
+    transition: var(--transicion-suave);
+    position: relative;
+    overflow: hidden;
+}
+.gallery-item:hover, .preview-item:hover { transform: translateY(-5px); box-shadow: var(--sombra-media); }
+.gallery-item img, .preview-item img {
+    width: 100%; height: 120px; 
+    object-fit: cover;
+    object-position: center 25%;
+    margin-bottom: 10px; 
+    border-radius: 6px; 
+    background-color: #eee;
+}
+.description-input {
+    font-size: 0.85rem;
+    padding: 8px;
+    min-height: 60px;
+    background-color: #fff;
+    margin-bottom: 0.5rem;
+}
+.position-input, .position-input-desktop, .position-input-mobile {
+    font-size: 0.8rem;
+    padding: 6px 8px !important;
+    text-align: center;
+    margin-bottom: 0.5rem !important;
+}
+
+/* --- INICIO: NUEVOS ESTILOS PARA LOS CONTROLES DE POSICIÓN --- */
+.position-controls-slider { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
+.position-controls-slider .range-value { color: var(--color-primario); font-weight: 600; }
+.position-controls-slider input[type="range"] { width: 100%; margin: 0; padding: 0; accent-color: var(--color-acento); }
+/* --- FIN: NUEVOS ESTILOS --- */
+
+.delete-button {
+    background-color: var(--color-error);
+    font-size: 0.8rem; padding: 6px 12px; margin-top: 10px;
+    box-shadow: none;
+}
+.delete-button:hover { background-color: var(--color-error-hover); box-shadow: var(--sombra-sutil); transform: translateY(-1px); }
+
+/* === Lista de Elementos Creados (Eventos, Entrevistas, Premios) === */
+#events-list, #interviews-list, #awards-list { 
+    display: flex; flex-direction: column; gap: 1rem; 
+}
+.event-item, .interview-item, .award-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    background: var(--color-superficie); padding: 1rem 1.5rem;
+    border-radius: var(--radio-borde);
+    border: 1px solid var(--color-borde);
+    box-shadow: var(--sombra-sutil);
+    cursor: grab;
+    transition: var(--transicion-suave);
+}
+.event-item:hover, .interview-item:hover, .award-item:hover { 
+    box-shadow: var(--sombra-media); 
+    transform: translateY(-2px); 
+}
+.event-item h4, .interview-item h4, .award-item h4 { 
+    margin: 0; font-weight: 500; 
+}
+.event-controls, .interview-controls, .award-controls { 
+    display: flex; gap: 0.75rem; 
+}
+.event-edit-button, .interview-edit-button, .award-edit-button, .delete-button {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.event-edit-button, .interview-edit-button, .award-edit-button { 
+    background-color: var(--color-secundario); color: #fff; 
+}
+.event-edit-button:hover, .interview-edit-button:hover, .award-edit-button:hover { 
+    background-color: var(--color-primario); 
+}
+
+/* === Previsualización de Imágenes === */
+.event-image-preview-item {
+    box-shadow: var(--sombra-sutil);
+    border-radius: var(--radio-borde);
+}
+.preview-image-wrapper img { height: 120px; border-radius: var(--radio-borde) var(--radio-borde) 0 0; }
+.event-image-description {
+    border-radius: 0 0 var(--radio-borde) var(--radio-borde);
+    background-color: var(--color-fondo);
+    border: none;
+}
+.event-image-description:focus { background-color: #fff; }
+
+.item-type-badge {
+    position: absolute; top: 8px; left: 8px;
+    background-color: rgba(26, 32, 44, 0.7);
+    backdrop-filter: blur(4px);
+    color: white; padding: 4px 8px;
+    font-size: 0.7rem; font-weight: 600;
+    border-radius: 6px; z-index: 2;
+}
+
+/* Fantasma para Arrastrar y Soltar */
+.sortable-ghost {
+    opacity: 0.4;
+    background-color: var(--color-acento-suave);
+    border: 2px dashed var(--color-acento);
+}
+/* ======================== */
+/*    INDICADOR DE CARGA    */
+/* ======================== */
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 150px;
+    width: 100%;
+}
+
+.loader {
+    border: 5px solid var(--color-fondo);
+    border-top: 5px solid var(--color-acento);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ======================================= */
+/* === ESTILOS PARA EL ENLACE DE RESET === */
+/* ======================================= */
+#forgot-password-link {
+    display: block;
+    text-align: right;
+    margin-top: -0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--color-secundario);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+#forgot-password-link:hover {
+    color: var(--color-acento);
+    text-decoration: underline;
+}

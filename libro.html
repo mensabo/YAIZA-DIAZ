@@ -3,24 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Hija del Ciego - Yaiza Díaz</title>
-    <link rel="stylesheet" href="style.css">
+    <title>La Hija del Ciego - La Novela de Yaiza Díaz</title>
+    <!-- Favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="description" content="Descubre mi novela 'La Hija del Ciego', una historia íntima sobre el amor padre e hija y la superación. Compra el libro y conoce su sinopsis, booktrailer y galería.">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.yaizadiaz.com/libro.html">
+    <meta property="og:title" content="La Hija del Ciego - La Novela de Yaiza Díaz">
+    <meta property="og:description" content="Una historia íntima sobre el amor padre e hija y la superación. Compra el libro y conoce su sinopsis.">
+    <meta property="og:image" content="https://www.yaizadiaz.com/images/portada-libro.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.yaizadiaz.com/libro.html">
+    <meta name="twitter:title" content="La Hija del Ciego - La Novela de Yaiza Díaz">
+    <meta name="twitter:description" content="Una historia íntima sobre el amor padre e hija y la superación. Compra el libro y conoce su sinopsis.">
+    <meta name="twitter:image" content="https://www.yaizadiaz.com/images/portada-libro.png">
+
+    <link rel="stylesheet" href="style.css?v=1760385513400">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- Start cookieyes banner --> <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/a79fad2eb1803d3e1747ed5d/script.js"></script> <!-- End cookieyes banner -->
 </head>
-<body class="libro-page">
+<body id="libroPage" class="libro-page">
     
     <header>
         <nav class="container">
             <div class="nav-title">
                 <h1>YAIZA DÍAZ</h1>
             </div>
+            <button id="mobile-menu-toggle" aria-label="Abrir menú de navegación">☰</button>
             <ul id="nav-links">
-                <li><a href="index.html">Volver</a></li>
-                <li><a href="index.html#sobre-mi">Sobre mí</a></li>
-                <li><a href="index.html#portfolio">Trayectoria</a></li>
-                <li><a href="index.html#prensa">Eventos</a></li>
-                <li><a href="index.html#contacto">Contacto</a></li>
+                <li class="nav-logo-mobile"><a href="index.html"><img src="images/logo-personal.png" alt="Logo Yaiza Díaz"></a></li>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="television.html">Televisión</a></li>
+                <li><a href="eventos.html">Eventos</a></li>
+                <li><a href="radio.html">Radio</a></li>
+                <li><a href="publicidad.html">Publicidad</a></li>
+                <li><a href="comunicacion.html">Comunicación</a></li>
+                <li><a href="investigacion.html">Documentales</a></li>
+                <li><a href="proyectos.html">Proyectos</a></li>
+                <li><a href="premios.html">Premios</a></li>
+                <li><a href="entrevistas.html">Entrevistas</a></li>
+                <li><a href="libro.html">Libro</a></li>
+                <li><a href="modelaje.html">Modelo</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <div id="scroll-indicator"><i class="fas fa-chevron-down"></i></div>
             </ul>
         </nav>
     </header>
@@ -28,52 +62,62 @@
     <div class="return-bar">
         <div class="container">
             <a href="index.html" class="breadcrumb-return-link">
-                <i class="fas fa-arrow-left"></i> Volver a la página principal
+                 <i class="fas fa-arrow-left"></i> Volver a la página principal
             </a>
         </div>
     </div>
 
-    <!-- ========= SECCIÓN PRINCIPAL DEL LIBRO ========= -->
     <section id="libro-hero">
         <div class="container libro-hero-content">
             <div class="libro-hero-img">
                 <img src="images/portada-libro.png" alt="Portada de La Hija del Ciego">
-                <p class="pie-de-foto-portada">
-                    Publicada en 2021<br>
-                    1ª y 2ª Edición: <strong>Kinnamon</strong> | 3ª Edición: <strong>Editorial Taoro</strong>
-                </p>
+                <p class="pie-de-foto-portada" data-content-id="heroCaption"></p>
             </div>
             <div class="libro-hero-text">
-                <h2>La Hija del Ciego</h2>
-                <p class="subtitulo-libro">"Un trabajo que nos hace reír, llorar y pensar… Nos tapa los ojos y nos suelta de la mano. Si hoy tuviera que definir la ceguera, les diría que lean y abracen a La hija del ciego. A partir de entonces todo tendrá sentido”.</p>
-                <p class="autor-cita">- Christian Santana Hernández, Prologuista</p>
-                <!-- === BOTÓN DE LA CARTA MODIFICADO === -->
+                <h2 data-content-id="heroTitle"></h2>
+                <p class="subtitulo-libro" data-content-id="heroSubtitle"></p>
+                <p class="autor-cita" data-content-id="heroQuoteAuthor"></p>
                 <a href="#" id="open-letter-modal" class="letter-button"><i class="fas fa-envelope-open-text"></i> Leer la carta de la autora</a>
                 <a href="#comprar-libro" class="buy-button">Comprar la novela</a>
             </div>
         </div>
     </section>
 
-    <!-- ========= EL CORAZÓN DE LA HISTORIA ========= -->
     <section id="sinopsis" class="section-gray">
         <div class="container">
              <div class="section-header">
-                <h2>La razón de ser de una periodista</h2>
-                <p>A sus treinta y ocho años y con una dilatada carrera profesional de catorce años en Televisión Canaria, Yaiza Díaz (1983) se anima a publicar su primera novela, un trabajo que llevaba gestando toda una vida.</p>
+                <h2 data-content-id="synopsisSectionTitle"></h2>
+                <div class="header-line"></div>
+                <p data-content-id="synopsisSectionIntro"></p>
             </div>
             <div class="sinopsis-content">
                 <div class="sinopsis-img">
                     <img src="images/yaiza-bn.jpg" alt="Foto de Yaiza Díaz">
                 </div>
                 <div class="sinopsis-text">
-                    <p>Díaz resume la esencia de este libro en la historia de una niña, Marina, que nace con la necesidad de comunicar y explicarle a su padre ciego cómo era el mundo para que no perdiera detalle.</p>
-                    <blockquote>"Esta es mi razón de ser como periodista, porque esa niña soy yo, y este libro es una muestra de amor hacia mi padre que ahora quiero compartir con todos ustedes con el fin de acercarles la ceguera de la manera más natural, como la vivimos en mi casa".</blockquote>
-                    <p>La periodista advierte que es un libro solo apto para las personas que leen con el corazón, pues lleva toda una vida almacenando situaciones en su mente porque <strong>“sabía que algún día tenía que contarlo”</strong>.</p>
+                    <p data-content-id="synopsisParagraph1"></p>
+                    <blockquote data-content-id="synopsisQuote"></blockquote>
+                    <p data-content-id="synopsisParagraph2"></p>
                 </div>
             </div>
-             <div class="sinopsis-content-reversed" style="margin-top: 4rem;">
+        </div>
+    </section>
+
+    <section id="book-trailer">
+        <div class="container">
+            <h2 data-content-id="trailerTitle"></h2>
+            <div class="header-line"></div>
+            <div class="video-container">
+                <video src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fbooktrailer.mp4?alt=media&token=281311c1-7ee6-46ef-81a7-c45bc9061f9c" controls playsinline poster="images/booktrailer.png"></video>
+            </div>
+        </div>
+    </section>
+
+    <section id="cita-tio" class="section-gray">
+        <div class="container">
+            <div class="sinopsis-content-reversed">
                  <div class="sinopsis-text">
-                    <p class="pie-de-foto" style="text-align: left; font-size: 1.1rem; font-style: italic;">"Si cierras los ojos y dejas que tu corazón lea, verás mucho más de lo que ves. Verás la vida de un ciego como nunca nadie te la contó. Te lo dice su hermano, que lo quiere con el alma”.<br><strong>- Jaime Díaz, tío de la autora.</strong></p>
+                    <p class="pie-de-foto" style="text-align: left; font-size: 1.1rem; font-style: italic;" data-content-id="uncleQuote"></p>
                 </div>
                 <div class="sinopsis-img">
                     <img src="images/foto-tio.jpg" alt="Tio Yaiza Díaz con su familia">
@@ -82,14 +126,13 @@
         </div>
     </section>
 
-    <!-- ========= UN VIAJE A LA LAGUNA ========= -->
     <section id="viaje-laguna">
         <div class="container">
             <div class="sinopsis-content">
                 <div class="sinopsis-text">
-                    <h3>Embajadora de la ciudad de La Laguna</h3>
-                    <p>La novela convierte a su autora en embajadora de su ciudad natal, <strong>La Laguna</strong>, lugar donde se crió vendiendo cupones con su padre cerca de La Catedral. Cualquiera que lea esta historia de complicidad paseará con ellos por las calles laguneras, reconocerá sus bares, pasará frío en los partidos de fútbol, se emocionará y reirá.</p>
-                     <p>La obra deja para la posteridad la historia de sus abuelos, quienes lucharon para sacar adelante a seis hijos, tres de ellos ciegos. Díaz nos traslada a los años sesenta, cuando sus abuelos tenían un despacho de pan en la <strong>Avenida de la Trinidad</strong> y su padre y hermanos jugaban en la <strong>calle del Juego</strong> con otros niños que veían.</p>
+                    <h3 data-content-id="lagunaTitle"></h3>
+                    <p data-content-id="lagunaParagraph1"></p>
+                     <p data-content-id="lagunaParagraph2"></p>
                 </div>
                 <div class="sinopsis-img">
                     <img src="images/casa-abuelos.jpg" alt="Antigua casa en la Avenida de la Trinidad">
@@ -99,12 +142,12 @@
         </div>
     </section>
 
-    <!-- ========= EL ARTE DE LA NOVELA ========= -->
     <section id="arte-libro" class="section-gray">
         <div class="container">
             <div class="section-header">
-                <h2>Un libro lleno de arte</h2>
-                <p>Una obra cuidada al detalle, desde el contenido hasta el continente.</p>
+                <h2 data-content-id="artTitle"></h2>
+                <div class="header-line"></div>
+                <p data-content-id="artIntro"></p>
             </div>
             <div class="arte-grid">
                 <div class="arte-item">
@@ -112,125 +155,116 @@
                     <p class="pie-de-foto">Rafael de Lorenzo y Yaiza Díaz con el lienzo de la portada.</p>
                 </div>
                 <div class="arte-text">
-                    <blockquote>"Cuando busques la verdad y no lo veas nada claro, asume que la oscuridad es la luz, vista desde el otro lado".<cite>- Rafael de Lorenzo, Secretario General del Consejo General de la ONCE, quien apadrina la obra.</cite></blockquote>
-                    <p>La novela destaca por su llamativa portada, una descriptiva imagen de los paseos compartidos entre Yaiza y su padre. Ha sido retratada por el artista, también lagunero, <strong><a href="https://albertoleon.es/" target="_blank" rel="noopener noreferrer">Alberto León</a></strong> <i class="fas fa-video video-icon-trigger" id="alberto-leon-video-trigger" aria-label="Ver vídeos"></i>, quien expone en la Graffik Gallery de Londres y cuenta con galería propia en Barcelona.</p>
-                    <p>La foto de la contraportada es obra de la paisana y fotógrafa internacional <strong><a href="https://yapciramos.com/" target="_blank" rel="noopener noreferrer">Yapci Ramos</a></strong>. Con todo esto, Díaz nos presenta un libro con papel reciclado, letra apta para gente con dificultades visuales y, lo más importante, de color <span class="text-magenta"><strong>magenta, el color de una auténtica princesa guerrera</strong></span>.</p>
+                    <blockquote data-content-id="artQuote"></blockquote>
+                    <p data-content-id="artParagraph1"></p>
+                    <p data-content-id="artParagraph2"></p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ========= BOOK TRAILER ========= -->
-    <section id="book-trailer">
+    <section id="edicion-taoro">
         <div class="container">
-            <h2>Book Trailer</h2>
-            <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/LSkMKMnVreQ" title="Book Trailer La Hija del Ciego" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            </div>
+            <h2 data-content-id="taoroSectionTitle">Tercera Edición ya disponible</h2>
+            <div class="header-line"></div>
+            <div data-content-id="taoroSectionParagraph"></div>
         </div>
     </section>
 
-    <!-- ========= GALERÍA DE FOTOS DINÁMICA DESDE FIREBASE ========= -->
     <section id="galeria-libro" class="section-gray">
         <div class="container">
-            <h2>Momentos</h2>
-            <div id="galeria-interactiva">
-                <div id="galeria-principal">
-                    <div id="galeria-bg-desenfocado"></div>
-                    <img id="imagen-principal" src="" alt="Visor principal de la galería de momentos">
-                    <div id="descripcion-principal">
+            <h2 data-content-id="galleryTitle"></h2>
+            <div class="header-line"></div>
+            <div id="galeria-interactiva" class="galeria-interactiva-container">
+                <div class="galeria-principal">
+                    <div class="galeria-bg-desenfocado"></div>
+                    <img class="imagen-principal" src="" alt="Visor principal de la galería de momentos">
+                    <div class="descripcion-principal">
                         <p>Cargando galería...</p>
                     </div>
                 </div>
-                <div id="galeria-lista-miniaturas">
-                </div>
+                <div class="galeria-lista-miniaturas"></div>
             </div>
         </div>
     </section>
 
     <section id="prensa-libro">
         <div class="container">
-            <h2>El libro en los medios</h2>
+            <h2 data-content-id="mediaTitle"></h2>
+            <div class="header-line"></div>
             <div class="media-grid">
-                <a href="https://www.youtube.com/watch?v=LuvJTP897RA" target="_blank" class="media-card">
-                    <div class="media-card-logo-container">
-                        <img src="images/logo-rtvc.png" alt="Logo de Radio Televisión Canaria">
-                    </div>
-                    <div class="media-card-text">
-                        <h4>Buenos Días Canarias</h4>
-                        <p>RTVC</p>
-                    </div>
+                <a href="https://www.youtube.com/watch?v=LuvJTP897RA" target="_blank" rel="noopener noreferrer" class="media-card">
+                    <div class="media-card-logo-container"><img src="images/logo-rtvc.png" alt="Logo de Radio Televisión Canaria"></div>
+                    <div class="media-card-text"><h4>Buenos Días Canarias</h4><p>RTVC</p></div>
                 </a>
-                <a href="https://www.youtube.com/watch?v=9bI1Trj8IJg" target="_blank" class="media-card">
-                    <div class="media-card-logo-container">
-                        <img src="images/logo-rtvc.png" alt="Logo de Radio Televisión Canaria">
-                    </div>
-                    <div class="media-card-text">
-                        <h4>Informativos</h4>
-                        <p>RTVC</p>
-                    </div>
+                <a href="https://www.youtube.com/watch?v=9bI1Trj8IJg" target="_blank" rel="noopener noreferrer" class="media-card">
+                    <div class="media-card-logo-container"><img src="images/logo-rtvc.png" alt="Logo de Radio Televisión Canaria"></div>
+                    <div class="media-card-text"><h4>Informativos</h4><p>RTVC</p></div>
                 </a>
-                <a href="https://www.youtube.com/watch?v=VQBcAdBW7mc" target="_blank" class="media-card">
-                    <div class="media-card-logo-container">
-                        <img src="images/logo-diarioavisos.png" alt="Logo de Diario de Avisos">
-                    </div>
-                    <div class="media-card-text">
-                        <h4>Diario de Avisos</h4>
-                        <p>Entrevista</p>
-                    </div>
+                <a href="https://www.youtube.com/watch?v=VQBcAdBW7mc" target="_blank" rel="noopener noreferrer" class="media-card">
+                    <div class="media-card-logo-container"><img src="images/logo-diarioavisos.png" alt="Logo de Diario de Avisos"></div>
+                    <div class="media-card-text"><h4>Diario de Avisos</h4><p>Entrevista</p></div>
                 </a>
-                <a href= "https://www.youtube.com/watch?v=PJZLBC8O-6o" target="_blank" class="media-card">
-                    <div class="media-card-logo-container">
-                        <img src="images/logo-mirametv.png" alt="Logo de Mírame TV">
-                    </div>
-                    <div class="media-card-text">
-                        <h4>De Cerca</h4>
-                        <p>Mírame TV</p>
-                    </div>
+                <a href= "https://www.youtube.com/watch?v=PJZLBC8O-6o" target="_blank" rel="noopener noreferrer" class="media-card">
+                    <div class="media-card-logo-container"><img src="images/logo-mirametv.png" alt="Logo de Mírame TV"></div>
+                    <div class="media-card-text"><h4>De Cerca</h4><p>Mírame TV</p></div>
                 </a>
-                <a href="https://www.youtube.com/watch?v=dGaHpgk3R8k" target="_blank" class="media-card">
-                    <div class="media-card-logo-container">
-                        <img src="images/logo-glaucoma.png" alt="Logo de Asociación de Glaucoma">
-                    </div>
-                    <div class="media-card-text">
-                        <h4>Charla sobre Glaucoma</h4>
-                        <p>Asociación de Afectados</p>
-                    </div>
+                <a href="https://www.youtube.com/watch?v=dGaHpgk3R8k" target="_blank" rel="noopener noreferrer" class="media-card">
+                    <div class="media-card-logo-container"><img src="images/logo-glaucoma.png" alt="Logo de Asociación de Glaucoma"></div>
+                    <div class="media-card-text"><h4>Charla sobre Glaucoma</h4><p>Asociación de Afectados</p></div>
                 </a>
-                <a href="https://www.youtube.com/watch?v=LSkMKMnVreQ&t=24s" target="_blank" class="media-card">
-                    <div class="media-card-logo-container">
-                        <img src="images/logo-blogoferoz.png" alt="Logo de El Blogo Feroz">
-                    </div>
-                    <div class="media-card-text">
-                        <h4>El Blogo Feroz</h4>
-                        <p>Entrevista</p>
-                    </div>
+                <a href="https://www.youtube.com/watch?v=LSkMKMnVreQ&t=24s" target="_blank" rel="noopener noreferrer" class="media-card">
+                    <div class="media-card-logo-container"><img src="images/logo-blogoferoz.png" alt="Logo de El Blogo Feroz"></div>
+                    <div class="media-card-text"><h4>El Blogo Feroz</h4><p>Entrevista</p></div>
+                </a>
+                <a href="https://radiosintonia.com/el-salpicon-entrevista-a-yaiza-diaz-escritora-del-libro-la-hija-del-ciego-13-11-21/" target="_blank" rel="noopener noreferrer" class="media-card">
+                    <div class="media-card-logo-container"><img src="images/radiosintonia.png" alt="Logo de Radio Sintonía"></div>
+                    <div class="media-card-text"><h4>El Salpicón</h4><p>Radio Sintonía Fuerteventura</p></div>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- ========= COMPRAR EL LIBRO ========= -->
     <section id="comprar-libro" class="section-gray">
         <div class="container">
-            <h2>Comprar la novela</h2>
-            <p>Elige tu formato preferido para adentrarte en esta historia.</p>
-            <div class="opciones-compra">
-                <div class="opcion-card">
-                    <h3>Libro Físico</h3>
-                    <p>
-                        (1ª y 2ª Edición - Editorial Kinnamon<br>
-                        3ª Edición - Editorial Taoro)
-                    </p>
-                    <a href="#" class="buy-button-image-bg buy-button-libro">Comprar en [Librería 1]</a>
-                    <a href="#" class="buy-button-image-bg buy-button-libro">Comprar en [Librería 2]</a>
+            <h2 data-content-id="buyTitle"></h2>
+            <div class="header-line"></div>
+            <div class="compra-container">
+                <div class="compra-portada">
+                    <img src="images/portada-libro.png" alt="Portada de la novela La Hija del Ciego">
                 </div>
-                <div class="opcion-card">
-                    <h3>Audiolibro (ONCE)</h3>
-                    <p>La novela ha sido locutada por la propia autora para el servicio de audiolibros para afiliados de la ONCE, haciendo la historia accesible para todos.</p>
-                    <a href="https://club.once.es/afiliados/login?came_from=/afiliados/servicios#content" class="buy-button-image-bg buy-button-once" target="_blank" rel="noopener noreferrer">Acceder como afiliado</a>
+                <div class="compra-info">
+                    <h3 data-content-id="buySubtitle"></h3>
+                    <p data-content-id="buyParagraph"></p>
+                    <div class="formato-compra">
+                        <h4 data-content-id="buyPhysicalTitle"></h4>
+                        <p class="ediciones-info" data-content-id="buyPhysicalInfo"></p>
+                        <a href="#" id="open-purchase-modal" class="btn-compra">Puntos de venta</a>
+                    </div>
+                    <hr class="compra-divisor">
+                    <div class="formato-compra">
+                        <h4 data-content-id="buyAudiobookTitle"></h4>
+                        <p data-content-id="buyAudiobookInfo"></p>
+                        <img src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/gallery%2F1755307568181_Captura%202023-07-04%20a%20las%2012.08.59.jpg?alt=media&token=d444af93-d5e3-4d22-a00e-e2ba26151707" alt="Yaiza Díaz durante la grabación del audiolibro para la ONCE" class="locutora-img">
+                        <a href="https://club.once.es/afiliados/login?came_from=/afiliados/servicios#content" class="btn-compra btn-once" target="_blank" rel="noopener noreferrer">
+                            <img src="images/logo-once.png" alt="Logo ONCE">
+                            <span>Acceder como afiliado</span>
+                        </a>
+                    </div>
+                </div>
             </div>
-            </section>
+        </div>
+    </section>
+    
+    <div id="lightbox-modal" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <span class="lightbox-prev">&#10094;</span>
+        <span class="lightbox-next">&#10095;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-image" src="" alt="Visor de imágenes del libro">
+            <div id="lightbox-caption"></div>
+        </div>
+    </div>
     
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
     
@@ -246,56 +280,88 @@
         </div>
     </div>
 
-    <!-- === INICIO: ESTRUCTURA DEL MODAL DE LA CARTA === -->
-    <div id="letter-modal" class="modal-overlay">
-        <div class="modal-content letter-content">
-            <button id="letter-modal-close-btn" class="modal-close" aria-label="Cerrar">&times;</button>
-            <div class="letter-body">
-                <p>Me crié regalando suerte, compartiendo cada día una sonrisa. Con la intención más consciente de mostrar agradecimiento, mi disciplina llegaba a tornarse frágil cuando mi cuerpo ya llevaba varias horas de pie junto a mi padre en su oficina [una mesa con mamparas de plástico y una silla plegable de madera...] El cariño de los clientes que le compraban el cupón nos hacía felices, no tanto lo prejuicios.</p>
-                <p>Mi libertad era un desafío, mi padre ciego mi cordón umbilical, mi misión describirle como era el mundo para que no perdiera detalle. La necesidad de comunicar con la que nací me llevó a escoger esta profesión, periodismo.</p>
-                <p>Aprendí a ver la vida con otros ojos y ahora con "La hija del ciego" te acerco con esmerada naturalidad a la ceguera.</p>
-                <p>Querer seguir compartiendo mi suerte, no fue un camino fácil, la lucha por ser alguien como esos clientes importantes de mi padre, tampoco.</p>
-                <p>Salí de Tenerife para llegar a Madrid, allí él llegó antes al cielo. Nos despedimos en la lejanía para que la ausencia no doliera tanto. En mis pasos: radio, prensa escrita, gabinete de prensa, televisión, presentaciones, dirección audiovisual... Sí, un extenso curriculum que discurre por el mismo sendero, contar algo.</p>
-                <p>Con La hija del ciego me abro en canal, volviendo a esos inicios en los que de nuevo me expongo a ser juzgada, pero si me lees con el corazón sentirás que te regalo una sonrisa que convertirá cualquier oscuridad en color, todos los de sus ojos, ¡los colores de la vida!</p>
-                <p>Deseo que puedas disfrutar de este homenaje al amor padre e hija.</p>
-                <footer class="letter-signature">"La vida son palabras que generan sensaciones" <br><strong>Yaiza Díaz.</strong></footer>
+    <div id="purchase-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button id="purchase-modal-close" class="modal-close">&times;</button>
+            <h3>Puntos de Venta</h3>
+            <p>Haz clic en el siguiente enlace para ver todos los puntos de venta disponibles.</p>
+            <div class="modal-links">
+                <a href="https://share.google/NysrMoluwYvXkln3d" target="_blank" rel="noopener noreferrer" class="modal-button">Ver Puntos de Venta</a>
             </div>
         </div>
     </div>
-    <!-- === FIN: ESTRUCTURA DEL MODAL DE LA CARTA === -->
 
-    <footer>
-        <div class="container">
-            <div class="footer-social-icons">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
+    <div id="letter-modal" class="modal-overlay">
+        <button id="letter-modal-close-btn" class="modal-close" aria-label="Cerrar">&times;</button>
+        <div class="modal-content letter-content">
+            <div class="envelope-wrapper">
+                <div class="envelope">
+                    <div class="envelope-body"></div>
+                    <div class="envelope-flap"></div>
+                </div>
+                <div class="letter-body">
+                    <p>Me crié regalando suerte, compartiendo cada día una sonrisa. Con la intención más consciente de mostrar agradecimiento, mi disciplina llegaba a tornarse frágil cuando mi cuerpo ya llevaba varias horas de pie junto a mi padre en su oficina (una mesa con mamparas de plástico y una silla plegable de madera...) El cariño de los clientes que le compraban el cupón nos hacía felices, no tanto lo prejuicios.</p>
+                    <p>Mi libertad era un desafío, mi padre ciego mi cordón umbilical, mi misión describirle como era el mundo para que no perdiera detalle. La necesidad de comunicar con la que nací me llevó a escoger esta profesión, periodismo.</p>
+                    <p>Aprendí a ver la vida con otros ojos y ahora con "La hija del ciego" te acerco con esmerada naturalidad a la ceguera.</p>
+                    <p>Querer seguir compartiendo mi suerte, no fue un camino fácil, la lucha por ser alguien como esos clientes importantes de mi padre, tampoco.</p>
+                    <p>Salí de Tenerife para llegar a Madrid, allí él llegó antes al cielo. Nos despedimos en la lejanía para que la ausencia no doliera tanto. En mis pasos: radio, prensa escrita, gabinete de prensa, televisión, presentaciones, dirección audiovisual... Sí, un extenso curriculum que discurre por el mismo sendero, contar algo.</p>
+                    <p>Con La hija del ciego me abro en canal, volviendo a esos inicios en los que de nuevo me expongo a ser juzgada, pero si me lees con el corazón sentirás que te regalo una sonrisa que convertirá cualquier oscuridad en color, todos los de sus ojos, ¡los colores de la vida!</p>
+                    <p>Deseo que puedas disfrutar de este homenaje al amor padre e hija.</p>
+                    <footer class="letter-signature">"La vida son palabras que generan sensaciones" <br><strong>Yaiza Díaz.</strong></footer>
+                </div>
             </div>
-            <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
         </div>
-    </footer>
+    </div>
 
-    <!-- 1. Carga la configuración desde el archivo externo -->
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content contact-modal-content">
+            <button id="contact-modal-close" class="modal-close">&times;</button>
+            <h2 data-content-id="contactTitle">Contacto</h2>
+            <div class="header-line"></div>
+            <p data-content-id="contactParagraph">Si deseas contratar mis servicios como presentadora, comunicadora o escritora, o si tienes alguna consulta, no dudes en ponerte en contacto conmigo.</p>
+            <div class="contact-buttons-container">
+                <a href="mailto:yaizadiaztv@gmail.com" class="email-link">yaizadiaztv@gmail.com</a>
+            </div>
+            <div class="social-icons">
+                <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+
+ <footer>
+    <div class="container">
+        <div class="footer-social-icons">
+             <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Yaiza Díaz"><i class="fab fa-instagram"></i></a>
+            <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Yaiza Díaz"><i class="fab fa-linkedin"></i></a>
+            <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer" aria-label="Twitter de Yaiza Díaz"><i class="fab fa-twitter"></i></a>
+        </div>
+        <p class="footer-legal-links">
+            <a href="aviso-legal.html">Aviso legal</a> • 
+            <a href="politica-privacidad.html">Política de privacidad</a> • 
+            <a href="politica-cookies.html">Política de cookies</a>
+        </p>
+        <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
+       <p class="developer-credit">
+          Developed by 
+          <a href="images/chacho-creations-logo.png" class="developer-logo-link expandable-image">
+            <img src="images/chacho-creations-logo.png" alt="ChachoCreations Logo">
+          </a>
+        </p>
+    </div>
+</footer>
+
     <script src="config.js"></script>
-
-    <!-- 2. SDK de Firebase -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
-
-        // La variable 'firebaseConfig' ahora viene del archivo config.js
-      
+        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
-        // Hacemos los servicios necesarios accesibles para nuestro script.js principal
         window.firebaseServices = {
-            db, collection, getDocs, orderBy, query
+            db, collection, getDocs, orderBy, query, doc, getDoc
         };
     </script>
-    
-    <!-- Nuestro script principal -->
-    <script src="script.js" defer></script>
+    <script src="script.js?v=1760385513400" type="module"></script>
 </body>
 </html>
