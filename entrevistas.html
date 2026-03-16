@@ -30,6 +30,220 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+        /* Hace que todas las tarjetas tengan exactamente la misma altura en la cuadrícula */
+        .media-card {
+            height: 100%;
+        }
+
+        /* Contenedor de la imagen con ALTURA FIJA estricta */
+        .media-card .image-container { 
+            position: relative; 
+            width: 100%;
+            height: 260px; /* Altura fija para igualar todas las tarjetas */
+            background-color: #000; /* Fondo negro para los bordes de fotos verticales */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 'contain' evita el zoom, muestra la imagen entera sin recortar cabezas */
+        .media-card .image-container img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; /* <-- ESTO EVITA EL EFECTO LUPA */
+            display: block;
+            transition: transform 0.3s ease, filter 0.3s ease; 
+        }
+
+        /* Efecto al pasar el ratón */
+        .media-card:hover .image-container img { 
+            transform: scale(1.05); 
+            filter: brightness(1.1); 
+        }
+
+        /* Icono de Play */
+        .video-overlay-icon { 
+            position: absolute; 
+            bottom: 10px; 
+            right: 10px; 
+            width: 40px; 
+            height: 40px; 
+            background-color: rgba(0, 0, 0, 0.7); 
+            color: white; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1rem; 
+            pointer-events: none; 
+            transition: transform 0.3s ease, background-color 0.3s ease; 
+            backdrop-filter: blur(3px); 
+            border: 1px solid rgba(255, 255, 255, 0.4); 
+        }
+        .media-card:hover .video-overlay-icon { 
+            transform: scale(1.1); 
+            background-color: rgba(204, 0, 0, 0.9); 
+        }
+    </style>
+<!-- Start cookieyes banner --> <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/a79fad2eb1803d3e1747ed5d/script.js"></script> <!-- End cookieyes banner -->
+</head>
+
+<body id="entrevistasPage" class="libro-page">
+    
+    <header>
+        <nav class="container">
+            <div class="nav-title">
+                <h1>YAIZA DÍAZ</h1>
+            </div>
+            <button id="mobile-menu-toggle" aria-label="Abrir menú de navegación">☰</button>
+            <ul id="nav-links">
+                <li class="nav-logo-mobile"><a href="index.html"><img src="images/logo-personal.png" alt="Logo Yaiza Díaz"></a></li>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="television.html">Televisión</a></li>
+                <li><a href="eventos.html">Eventos</a></li>
+                <li><a href="radio.html">Radio</a></li>
+                <li><a href="publicidad.html">Publicidad</a></li>
+                <li><a href="comunicacion.html">Comunicación</a></li>
+                <li><a href="investigacion.html">Documentales</a></li>
+                <li><a href="proyectos.html">Proyectos</a></li>
+                <li><a href="premios.html">Premios</a></li>
+                <li><a href="entrevistas.html">Entrevistas</a></li>
+                <li><a href="libro.html">Libro</a></li>
+                <li><a href="modelaje.html">Modelo</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+                <div id="scroll-indicator"><i class="fas fa-chevron-down"></i></div>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="return-bar">
+        <div class="container">
+            <a href="index.html" class="breadcrumb-return-link">
+                <i class="fas fa-arrow-left"></i> Volver a Inicio
+            </a>
+        </div>
+    </div>
+
+    <section id="entrevistas-main">
+        <div class="container">
+            <h2 data-content-id="mainTitle"></h2>
+            <div class="header-line"></div>
+            <p class="section-intro" data-content-id="introParagraph"></p>
+            
+            <div id="dynamic-interviews-grid" class="media-grid" style="padding-top: 2rem;">
+                <!-- Las entrevistas se cargarán aquí dinámicamente -->
+                <p>Cargando entrevistas...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- INICIO: CÓDIGO DEL MODAL AÑADIDO -->
+    <div id="iframe-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Cerrar">&times;</button>
+            <div class="video-container">
+                 <iframe id="modal-iframe-player" src="" title="Entrevista" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <!-- FIN: CÓDIGO DEL MODAL AÑADIDO -->
+
+    <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
+
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content contact-modal-content">
+            <button id="contact-modal-close" class="modal-close">&times;</button>
+            <h2 data-content-id="contactTitle">Contacto</h2>
+            <div class="header-line"></div>
+            <p data-content-id="contactParagraph">Si deseas contratar mis servicios como presentadora, comunicadora o escritora, o si tienes alguna consulta, no dudes en ponerte en contacto conmigo.</p>
+            <div class="contact-buttons-container">
+                <a href="mailto:yaizadiaztv@gmail.com" class="email-link">yaizadiaztv@gmail.com</a>
+            </div>
+            <div class="social-icons">
+                <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+
+   <footer>
+    <div class="container">
+        <div class="footer-social-icons">
+             <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Yaiza Díaz"><i class="fab fa-instagram"></i></a>
+            <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Yaiza Díaz"><i class="fab fa-linkedin"></i></a>
+            <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer" aria-label="Twitter de Yaiza Díaz"><i class="fab fa-twitter"></i></a>
+        </div>
+        <p class="footer-legal-links">
+            <a href="aviso-legal.html">Aviso legal</a> • 
+            <a href="politica-privacidad.html">Política de privacidad</a> • 
+            <a href="politica-cookies.html">Política de cookies</a>
+        </p>
+        <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
+      <p class="developer-credit">
+          Developed by 
+          <a href="images/chacho-creations-logo.png" class="developer-logo-link expandable-image">
+            <img src="images/chacho-creations-logo.png" alt="ChachoCreations Logo">
+          </a>
+        </p>
+    </div>
+    <div id="lightbox-modal" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <span class="lightbox-prev">&#10094;</span>
+        <span class="lightbox-next">&#10095;</span>
+        <div class="lightbox-content">
+            <img id="lightbox-image" src="" alt="Visor de imágenes">
+            <div id="lightbox-caption"></div>
+        </div>
+    </div>
+</footer>
+    
+    <script src="config.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        window.firebaseServices = {
+            db, collection, getDocs, orderBy, query, doc, getDoc
+        };
+    </script>
+    <script src="script.js?v=1760385513400" type="module"></script>
+</body>
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrevistas y Artículos - Yaiza Díaz</title>
+    <!-- Favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="description" content="Una selección de entrevistas y artículos en prensa y medios digitales donde hablo sobre mi libro, mi carrera en televisión y mi lucha contra el cáncer de mama.">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.yaizadiaz.com/entrevistas.html">
+    <meta property="og:title" content="Entrevistas y Artículos - Yaiza Díaz">
+    <meta property="og:description" content="Una selección de entrevistas donde hablo sobre mi libro, mi carrera y mis proyectos.">
+    <meta property="og:image" content="https://www.yaizadiaz.com/images/portfolio-2.jpeg">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.yaizadiaz.com/entrevistas.html">
+    <meta name="twitter:title" content="Entrevistas y Artículos - Yaiza Díaz">
+    <meta name="twitter:description" content="Una selección de entrevistas donde hablo sobre mi libro, mi carrera y mis proyectos.">
+    <meta name="twitter:image" content="https://www.yaizadiaz.com/images/portfolio-2.jpeg">
+
+    <link rel="stylesheet" href="style.css?v=1760385513400">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
         .media-card img { transition: transform 0.3s ease, filter 0.3s ease; }
         .media-card:hover img { transform: scale(1.05); filter: brightness(1.1); }
         .video-overlay-icon { position: absolute; bottom: 10px; right: 10px; width: 40px; height: 40px; background-color: rgba(0, 0, 0, 0.5); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; pointer-events: none; transition: transform 0.3s ease, background-color 0.3s ease; backdrop-filter: blur(3px); border: 1px solid rgba(255, 255, 255, 0.2); }
@@ -161,4 +375,5 @@
     </script>
     <script src="script.js?v=1760385513400" type="module"></script>
 </body>
+>>>>>>> db84651d117e073e6846a27366aefa3fc74cc443
 </html>
