@@ -94,60 +94,14 @@
                 <p data-content-id="introParagraph2"></p>
             </div>
 
-            <div class="comunicacion-section">
-                <h3 data-content-id="video1Title"></h3>
-                <a href="https://www.youtube.com/watch?v=Z5h9yFQZKkg" target="_blank" rel="noopener noreferrer" class="video-fallback">
-                    <img src="images/mini1.png" alt="Miniatura Reel Presentadora de Informativos">
-                    <div class="play-button-overlay"><i class="fas fa-play"></i></div>
-                </a>
+            <!-- CONTENEDOR DINÁMICO DE PROGRAMAS TV -->
+            <div id="dynamic-tv-programs-container">
+                <div class="loader-container" style="text-align: center; padding: 2rem;">
+                    <div class="loader" style="margin: 0 auto;"></div>
+                    <p style="margin-top: 1rem; color: #666;">Cargando programas...</p>
+                </div>
             </div>
-            <div class="comunicacion-section">
-                <h3 data-content-id="video2Title"></h3>
-                <a href="https://www.youtube.com/watch?v=6j0JrC1dYFg" target="_blank" rel="noopener noreferrer" class="video-fallback">
-                    <img src="images/mini2.png" alt="Miniatura Telenoticias Fin de Semana">
-                    <div class="play-button-overlay"><i class="fas fa-play"></i></div>
-                </a>
-            </div>
-            <div class="comunicacion-section">
-                <h3 data-content-id="video9Title"></h3>
-                <p data-content-id="video9Paragraph"></p>
-                <a href="https://www.youtube.com/watch?v=WYcz1gjjw0s&t=28s" target="_blank" rel="noopener noreferrer" class="video-fallback">
-                    <img src="images/permacultura.png" alt="Miniatura del reportaje sobre Permacultura">
-                    <div class="play-button-overlay"><i class="fas fa-play"></i></div>
-                </a>
-            </div>
-            <div class="comunicacion-section">
-                <h3 data-content-id="video4Title"></h3>
-                <p data-content-id="video4Paragraph"></p>
-                <a href="https://www.youtube.com/watch?v=yVGlZAg_fgM" target="_blank" rel="noopener noreferrer" class="video-fallback">
-                    <img src="images/mini4.png" alt="Miniatura del reportaje Bueno, Bonito y Barato">
-                    <div class="play-button-overlay"><i class="fas fa-play"></i></div>
-                </a>
-            </div>
-            <div class="comunicacion-section">
-                <h3 data-content-id="video5Title"></h3>
-                <p data-content-id="video5Paragraph"></p>
-                <a href="https://www.youtube.com/watch?v=rOdh71Cd668" target="_blank" rel="noopener noreferrer" class="video-fallback">
-                    <img src="https://img.youtube.com/vi/rOdh71Cd668/hqdefault.jpg" alt="Miniatura Especial 10 Años de Canarias Radio">
-                    <div class="play-button-overlay"><i class="fas fa-play"></i></div>
-                </a>
-            </div>
-            <div class="comunicacion-section">
-                <h3 data-content-id="video7Title"></h3>
-                <p data-content-id="video7Paragraph"></p>
-                <a href="https://www.youtube.com/watch?v=0CoL_nJow-g" target="_blank" rel="noopener noreferrer" class="video-fallback">
-                    <img src="https://img.youtube.com/vi/0CoL_nJow-g/hqdefault.jpg" alt="Miniatura Promo Ecominutos">
-                    <div class="play-button-overlay"><i class="fas fa-play"></i></div>
-                </a>
-            </div>
-            <div class="comunicacion-section">
-                <h3 data-content-id="video8Title"></h3>
-                <p data-content-id="video8Paragraph"></p>
-                <a href="https://www.youtube.com/watch?v=Uza5nNuGl6E" target="_blank" rel="noopener noreferrer" class="video-fallback">
-                    <img src="https://img.youtube.com/vi/Uza5nNuGl6E/hqdefault.jpg" alt="Miniatura Píldora Sostenible">
-                    <div class="play-button-overlay"><i class="fas fa-play"></i></div>
-                </a>
-            </div>
+
         </div>
     </section>
 
@@ -217,25 +171,16 @@
           </a>
         </p>
     </div>
-    <div id="lightbox-modal" class="lightbox">
-        <span class="lightbox-close">&times;</span>
-        <span class="lightbox-prev">&#10094;</span>
-        <span class="lightbox-next">&#10095;</span>
-        <div class="lightbox-content">
-            <img id="lightbox-image" src="" alt="Visor de imágenes">
-            <div id="lightbox-caption"></div>
-        </div>
-    </div>
 </footer>
 
     <script src="config.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, addDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         window.firebaseServices = {
-            db, collection, getDocs, orderBy, query, doc, getDoc
+            db, collection, getDocs, orderBy, query, doc, getDoc, addDoc
         };
     </script>
     <script src="script.js?v=1760385513400" type="module"></script>

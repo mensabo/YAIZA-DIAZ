@@ -104,6 +104,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (pageId === 'entrevistasPage') {
         loadAndRenderInterviews();
     }
+    if (pageId === 'televisionPage') {
+        loadAndRenderTVPrograms();
+    }
     if (pageId === 'libroPage') {
         initializeLetterModal();
         initializeAlbertoLeonModal();
@@ -372,6 +375,48 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
+    async function loadAndRenderTVPrograms() {
+        const container = document.getElementById('dynamic-tv-programs-container');
+        if (!container) return;
+        try {
+            const q = query(collection(db, 'tv_programs'), orderBy('order'));
+            const snapshot = await getDocs(q);
+            const programs = snapshot.docs.map(doc => doc.data());
+            container.innerHTML = '';
+            
+            if (programs.length === 0) {
+                container.innerHTML = '<p style="text-align: center;">No hay programas disponibles.</p>';
+                return;
+            }
+            
+            programs.forEach(program => {
+                const programDiv = document.createElement('div');
+                programDiv.className = 'comunicacion-section';
+                
+                const textHtml = program.text ? `<p>${program.text}</p>` : '';
+                
+                programDiv.innerHTML = `
+                    <h3>${program.title}</h3>
+                    ${textHtml}
+                    <a href="${program.url}" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                        <img src="${program.thumbnailUrl}" alt="Miniatura ${program.title}" loading="lazy">
+                        <div class="play-button-overlay"><i class="fas fa-play"></i></div>
+                    </a>
+                `;
+                container.appendChild(programDiv);
+            });
+
+            initializeVideoModals();
+
+        } catch (error) {
+            console.error("Error cargando programas TV:", error);
+            container.innerHTML = '<p style="text-align: center;">Error al cargar los programas.</p>';
+        }
+    }
+
+    // ==================================================================
+    // === GALERÍA INTERACTIVA (AÑADIDA COMPATIBILIDAD CON YOUTUBE) ===
+    // ==================================================================
     async function initializeInteractiveGallery(containerId, collectionName) {
         const container = document.getElementById(containerId);
         if (!container) return;
@@ -382,18 +427,56 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!mainImage || !mainDesc || !bgImage || !thumbnailsContainer) return;
 
         let activeItem = null;
-        mainImage.addEventListener('click', () => {
-            if (activeItem && activeItem.type !== 'video') {
+
+        // Crear un icono de "Play" dinámicamente sobre la foto principal
+        let playIcon = container.querySelector('.interactive-play-icon');
+        if (!playIcon) {
+            playIcon = document.createElement('div');
+            playIcon.className = 'play-button-overlay interactive-play-icon';
+            playIcon.innerHTML = '<i class="fas fa-play"></i>';
+            playIcon.style.zIndex = '3';
+            playIcon.style.cursor = 'pointer';
+            playIcon.style.display = 'none'; // Oculto por defecto
+            mainImage.parentNode.insertBefore(playIcon, mainImage.nextSibling);
+        }
+
+        // Lógica al hacer clic en la foto gigante o el botón Play
+        const handleMediaClick = () => {
+            if (!activeItem) return;
+            
+            if (activeItem.type !== 'video') {
                 const lightboxModal = document.getElementById('lightbox-modal');
                 const lightboxImage = document.getElementById('lightbox-image');
                 const lightboxCaption = document.getElementById('lightbox-caption');
                 if (lightboxModal && lightboxImage && lightboxCaption) {
-                    lightboxImage.src = activeItem.src;
+                    lightboxImage.src = activeItem.src || activeItem.thumbnailSrc;
                     lightboxCaption.textContent = activeItem.descripcion || '';
                     lightboxModal.classList.add('visible');
                 }
+            } else {
+                // Si es un vídeo, abrimos el modal de iframe (YouTube/Vimeo)
+                const iframeModal = document.getElementById('iframe-modal');
+                const iframePlayer = document.getElementById('modal-iframe-player');
+                if (iframeModal && iframePlayer && activeItem.videoSrc) {
+                    let embedUrl = activeItem.videoSrc;
+                    
+                    // Magia: Convertir enlaces de YouTube normales a formato embed para que se reproduzcan bien
+                    if (embedUrl.includes('youtube.com/watch?v=')) {
+                        embedUrl = embedUrl.replace('watch?v=', 'embed/');
+                        embedUrl = embedUrl.split('&')[0];
+                    } else if (embedUrl.includes('youtu.be/')) {
+                        embedUrl = embedUrl.replace('youtu.be/', 'youtube.com/embed/');
+                        embedUrl = embedUrl.split('?')[0];
+                    }
+                    
+                    iframePlayer.src = embedUrl;
+                    iframeModal.classList.add('visible');
+                }
             }
-        });
+        };
+
+        mainImage.addEventListener('click', handleMediaClick);
+        playIcon.addEventListener('click', handleMediaClick);
         
         mainImage.style.opacity = '0';
         mainDesc.textContent = 'Cargando galería...';
@@ -407,7 +490,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 items.forEach((item) => {
                     const thumbDiv = document.createElement('div');
                     thumbDiv.className = 'miniatura-item';
-                    thumbDiv.innerHTML = `<img src="${item.thumbnailSrc || item.src}" alt="${item.descripcion || 'Miniatura'}" loading="lazy">`;
+                    
+                    // Añadimos un pequeño indicativo de "Play" a las miniaturas que son vídeos
+                    const playBadge = item.type === 'video' ? '<div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.7); color:white; border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-size:12px; border: 1px solid rgba(255,255,255,0.5);"><i class="fas fa-play"></i></div>' : '';
+                    
+                    thumbDiv.innerHTML = `<img src="${item.thumbnailSrc || item.src}" alt="${item.descripcion || 'Miniatura'}" loading="lazy">${playBadge}`;
                     thumbDiv.addEventListener('click', () => setActiveItem(item, thumbDiv));
                     thumbnailsContainer.appendChild(thumbDiv);
                 });
@@ -418,7 +505,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             function setActiveItem(item, thumbElement) {
                 activeItem = item;
-                mainImage.style.cursor = item.type !== 'video' ? 'zoom-in' : 'default';
+                mainImage.style.cursor = item.type !== 'video' ? 'zoom-in' : 'pointer';
+                
+                // Mostrar u ocultar el botón Play gigante
+                if(playIcon) {
+                    playIcon.style.display = item.type === 'video' ? 'flex' : 'none';
+                }
+
                 mainImage.style.opacity = '0';
                 setTimeout(() => {
                     mainImage.src = item.src || item.thumbnailSrc;

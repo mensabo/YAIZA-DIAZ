@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
             text: text,
             duration: 3000,
             close: true,
-            gravity: "top", // `top` or `bottom`
-            position: "right", // `left`, `center` or `right`
-            stopOnFocus: true, // Prevents dismissing of toast on hover
+            gravity: "top", 
+            position: "right", 
+            stopOnFocus: true, 
             style: {
                 background: type === 'success' ? "linear-gradient(to right, #00b09b, #96c93d)" : "linear-gradient(to right, #e53e3e, #c53030)",
             },
@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loadEvents();
             loadInterviews();
             loadAwards();
+            loadTVPrograms();
             loadPageTexts();
         } else {
             loginContainer.style.display = 'block';
@@ -106,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let heroSortables = {};
 
-    function renderHeroPreviewList(listElement, items = []) {
+    function renderHeroPreviewList(listElement, items =[]) {
         if (heroSortables[listElement.id]) {
             heroSortables[listElement.id].destroy();
         }
@@ -158,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
 
         const currentItems = getItemsFromList(listElement);
-        const newItems = [];
+        const newItems =[];
 
         for (const file of files) {
             if (!file.type.startsWith('image/')) continue;
@@ -168,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             newItems.push({ src: url, posYDesktop: 50, posYMobile: 50 });
         }
 
-        renderHeroPreviewList(listElement, [...currentItems, ...newItems]);
+        renderHeroPreviewList(listElement,[...currentItems, ...newItems]);
         dropZone.querySelector('p').textContent = 'Arrastra imágenes aquí o haz clic para subirlas';
     }
 
@@ -178,12 +179,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (docSnap.exists()) {
             const data = docSnap.data();
             renderHeroPreviewList(hero1PreviewList, data.heroSlider1 || []);
-            renderHeroPreviewList(hero2PreviewList, data.heroSlider2 || []);
-            renderHeroPreviewList(hero3PreviewList, data.heroSlider3 || []);
+            renderHeroPreviewList(hero2PreviewList, data.heroSlider2 ||[]);
+            renderHeroPreviewList(hero3PreviewList, data.heroSlider3 ||[]);
         } else {
-            renderHeroPreviewList(hero1PreviewList, []);
-            renderHeroPreviewList(hero2PreviewList, []);
-            renderHeroPreviewList(hero3PreviewList, []);
+            renderHeroPreviewList(hero1PreviewList,[]);
+            renderHeroPreviewList(hero2PreviewList,[]);
+            renderHeroPreviewList(hero3PreviewList,[]);
         }
     }
 
@@ -209,24 +210,18 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast("Hubo un error al guardar los cambios.", "error");
             console.error("Error al guardar datos de inicio:", error);
         }
-    }
-    
-    [hero1DropZone, hero2DropZone, hero3DropZone].forEach(zone => {
+    }[hero1DropZone, hero2DropZone, hero3DropZone].forEach(zone => {
         zone.addEventListener('click', () => zone.nextElementSibling.click());
         zone.addEventListener('dragover', e => e.preventDefault());
         zone.addEventListener('drop', e => {
             e.preventDefault();
             handleHeroImageUpload(e.dataTransfer.files, zone.previousElementSibling);
         });
-    });
-
-    [hero1Uploader, hero2Uploader, hero3Uploader].forEach(uploader => {
+    });[hero1Uploader, hero2Uploader, hero3Uploader].forEach(uploader => {
         uploader.addEventListener('change', e => {
             handleHeroImageUpload(e.target.files, uploader.previousElementSibling.previousElementSibling);
         });
-    });
-    
-    [hero1PreviewList, hero2PreviewList, hero3PreviewList].forEach(list => {
+    });[hero1PreviewList, hero2PreviewList, hero3PreviewList].forEach(list => {
         list.addEventListener('click', e => {
             if (e.target.classList.contains('delete-button')) {
                 e.target.closest('.preview-item').remove();
@@ -244,10 +239,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const galleryListEl = document.getElementById('gallery-list');
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
+
+    // Elementos nuevos para edición
+    const galleryFormTitle = document.getElementById('gallery-form-title');
+    const galleryItemIdInput = document.getElementById('gallery-item-id-input');
     const videoUrlInput = document.getElementById('video-url-input');
     const thumbnailUrlInput = document.getElementById('thumbnail-url-input');
     const videoDescriptionInput = document.getElementById('video-description-input');
     const addVideoButton = document.getElementById('add-video-button');
+    const cancelEditGalleryBtn = document.getElementById('cancel-edit-gallery-button');
+
     const saveButton = document.getElementById('save-button');
     let gallerySortable = null;
     let currentCollection = 'gallery';
@@ -258,9 +259,20 @@ document.addEventListener('DOMContentLoaded', () => {
         habecu_gallery: "Galería de HABECU"
     };
 
+    function resetGalleryForm() {
+        galleryItemIdInput.value = '';
+        videoUrlInput.value = '';
+        thumbnailUrlInput.value = '';
+        videoDescriptionInput.value = '';
+        galleryFormTitle.textContent = 'Añadir Nuevo Vídeo';
+        addVideoButton.textContent = 'Añadir Vídeo a la Galería';
+        cancelEditGalleryBtn.style.display = 'none';
+    }
+
     gallerySelector.addEventListener('change', (e) => {
         currentCollection = e.target.value;
         currentStoragePath = `${currentCollection}/`;
+        resetGalleryForm();
         loadGalleries();
     });
 
@@ -280,11 +292,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.className = 'gallery-item';
             div.dataset.id = item.id;
+            
+            // Guardar URLs de video en dataset para recuperación fácil al editar
+            if(item.type === 'video') {
+                div.dataset.videoSrc = item.videoSrc || '';
+                div.dataset.thumbnailSrc = item.thumbnailSrc || '';
+            }
+
             div.innerHTML = `
                 <img src="${item.thumbnailSrc || item.src}" alt="miniatura">
                 <span class="item-type-badge">${item.type === 'video' ? 'VÍDEO' : 'IMAGEN'}</span>
                 <textarea class="description-input" placeholder="Descripción...">${item.descripcion || ''}</textarea>
-                <button class="delete-button">Eliminar</button>`;
+                <div class="event-controls" style="justify-content: center; margin-top: 10px;">
+                    ${item.type === 'video' ? '<button class="gallery-edit-button" style="background-color: var(--color-secundario); font-size: 0.8rem; padding: 6px 12px; color:white;">Editar Links</button>' : ''}
+                    <button class="delete-button" style="margin-top:0;">Eliminar</button>
+                </div>`;
             galleryListEl.appendChild(div);
         });
         if (gallerySortable) gallerySortable.destroy();
@@ -314,12 +336,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const videoUrl = videoUrlInput.value.trim();
         const thumbUrl = thumbnailUrlInput.value.trim();
         const desc = videoDescriptionInput.value.trim();
-        if (!videoUrl || !thumbUrl || !desc) return showToast("Por favor, completa todos los campos del vídeo.", "error");
-        const currentCount = galleryListEl.querySelectorAll('.gallery-item').length;
-        await addDoc(collection(db, currentCollection), {
-            type: 'video', videoSrc: videoUrl, thumbnailSrc: thumbUrl, descripcion: desc, order: currentCount
-        });
-        videoUrlInput.value = thumbnailUrlInput.value = videoDescriptionInput.value = '';
+        const id = galleryItemIdInput.value;
+
+        if (!videoUrl || !thumbUrl) return showToast("Por favor, completa los campos de URL.", "error");
+
+        if (id) {
+            // EDITAR EXISTENTE
+            const docRef = doc(db, currentCollection, id);
+            await updateDoc(docRef, {
+                videoSrc: videoUrl,
+                thumbnailSrc: thumbUrl,
+                descripcion: desc
+            });
+            showToast("Vídeo actualizado con éxito");
+        } else {
+            // AÑADIR NUEVO
+            const currentCount = galleryListEl.querySelectorAll('.gallery-item').length;
+            await addDoc(collection(db, currentCollection), {
+                type: 'video', videoSrc: videoUrl, thumbnailSrc: thumbUrl, descripcion: desc, order: currentCount
+            });
+            showToast("Vídeo añadido con éxito");
+        }
+        
+        resetGalleryForm();
         loadGalleries();
     });
 
@@ -335,14 +374,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     galleryListEl.addEventListener('click', async e => {
+        const item = e.target.closest('.gallery-item');
+        if (!item) return;
+        const id = item.dataset.id;
+
         if (e.target.classList.contains('delete-button')) {
-            const item = e.target.closest('.gallery-item');
             if (confirm('¿Seguro que quieres eliminar este elemento?')) {
-                await deleteDoc(doc(db, currentCollection, item.dataset.id));
+                await deleteDoc(doc(db, currentCollection, id));
                 loadGalleries();
             }
+        } 
+        else if (e.target.classList.contains('gallery-edit-button')) {
+            // CARGAR DATOS EN EL FORMULARIO
+            galleryItemIdInput.value = id;
+            videoUrlInput.value = item.dataset.videoSrc;
+            thumbnailUrlInput.value = item.dataset.thumbnailSrc;
+            videoDescriptionInput.value = item.querySelector('.description-input').value;
+            
+            galleryFormTitle.textContent = 'Editando Vídeo';
+            addVideoButton.textContent = 'Guardar Cambios';
+            cancelEditGalleryBtn.style.display = 'inline-block';
+            
+            document.getElementById('gallery-form-title').scrollIntoView({ behavior: 'smooth' });
         }
     });
+
+    cancelEditGalleryBtn.addEventListener('click', resetGalleryForm);
 
     // ===========================================
     // --- SECCIÓN DE GESTIÓN DE EVENTOS ---
@@ -365,129 +422,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let eventsSortable = null;
     let eventImagesSortable = null;
 
-    // ===========================================
-    // --- SECCIÓN DE GESTIÓN DE ENTREVISTAS ---
-    // ===========================================
-    const interviewsListEl = document.getElementById('interviews-list');
-    const interviewFormTitle = document.getElementById('interview-form-title');
-    const interviewIdInput = document.getElementById('interview-id-input');
-    const interviewMainTitleInput = document.getElementById('interview-main-title-input');
-    const interviewSubtitleInput = document.getElementById('interview-subtitle-input');
-    const interviewUrlInput = document.getElementById('interview-url-input');
-    const interviewOrderInput = document.getElementById('interview-order-input');
-    const interviewImagePreview = document.getElementById('interview-image-preview');
-    const interviewImageDropZone = document.getElementById('interview-image-drop-zone');
-    const interviewImageUploader = document.getElementById('interview-image-uploader');
-    const saveInterviewButton = document.getElementById('save-interview-button');
-    const cancelEditInterviewButton = document.getElementById('cancel-edit-interview-button');
-    const saveInterviewOrderButton = document.getElementById('save-interview-order-button');
-    let interviewsSortable = null;
-    let interviewThumbnailUrl = '';
-
-    // ===========================================
-    // --- SECCIÓN DE GESTIÓN DE PREMIOS ---
-    // ===========================================
-    const awardsListEl = document.getElementById('awards-list');
-    const awardFormTitle = document.getElementById('award-form-title');
-    const awardIdInput = document.getElementById('award-id-input');
-    const awardTitleInput = document.getElementById('award-title-input');
-    const awardTextInput = document.getElementById('award-text-input');
-    const awardOrderInput = document.getElementById('award-order-input');
-    const saveAwardButton = document.getElementById('save-award-button');
-    const cancelEditAwardButton = document.getElementById('cancel-edit-award-button');
-    const saveAwardOrderButton = document.getElementById('save-award-order-button');
-    const awardImagesPreviewList = document.getElementById('award-images-preview-list');
-    const awardImagesDropZone = document.getElementById('award-images-drop-zone');
-    const awardImageUploader = document.getElementById('award-image-uploader');
-    const addAwardVideoButton = document.getElementById('add-award-video-button');
-    const awardVideoUrlInput = document.getElementById('award-video-url-input');
-    const awardThumbnailUrlInput = document.getElementById('award-thumbnail-url-input');
-    let awardsSortable = null;
-    let awardImagesSortable = null;
-
-    // ===========================================
-    // --- SECCIÓN DE GESTIÓN DE TEXTOS ---
-    // ===========================================
-    const pageSelector = document.getElementById('page-selector');
-    const textFieldsContainer = document.getElementById('text-fields-container');
-    const saveTextsButton = document.getElementById('save-texts-button');
-
-    const pageContentMap = {
-        homepage: ['heroTitle1', 'heroSubtitle1', 'heroTitle2', 'heroSubtitle2', 'heroTitle3', 'heroSubtitle3', 'aboutMeTitle', 'aboutMeParagraph1', 'aboutMeQuote', 'aboutMeParagraph2', 'skillsTitle', 'trajectoryTitle', 'card1Category', 'card1Title', 'card1Subtitle', 'card1Paragraph', 'card2Category', 'card2Title', 'card2Subtitle', 'card2Paragraph', 'card3Category', 'card3Title', 'card3Subtitle', 'card3Paragraph', 'eventsTitle', 'eventsParagraph', 'contactTitle', 'contactParagraph'],
-        eventosPage: ['eventsTitle', 'eventsParagraph'],
-        televisionPage: ['mainTitle', 'introParagraph1', 'introParagraph2', 'video1Title', 'video2Title', 'video4Title', 'video4Paragraph', 'video5Title', 'video5Paragraph', 'video7Title', 'video7Paragraph', 'video8Title', 'video8Paragraph', 'video9Title', 'video9Paragraph', 'galleryTitle'],
-        radioPage: ['mainTitle', 'introParagraph', 'programTitle', 'programParagraph1', 'programParagraph2', 'galleryTitle'],
-        publicidadPage: ['mainTitle', 'introParagraph1', 'introParagraph2', 'campaign1Title', 'campaign2Title', 'campaign3Title', 'campaign4Title', 'campaign5Title'],
-        comunicacionPage: ['mainTitle', 'jefaPrensaTitle', 'jefaPrensaParagraph', 'bpwTitle', 'bpwParagraph', 'dreamlandTitle', 'dreamlandParagraph', 'videosCorpTitle', 'videosCorpParagraph', 'eaveTitle', 'eaveParagraph', 'habecuTitle', 'habecuParagraph', 'inmogoldTitle', 'inmogoldParagraph1', 'inmogoldParagraph2'],
-        investigacionPage: ['mainTitle', 'trilogy1Title', 'trilogy1Paragraph', 'trilogy1Video1Title', 'trilogy1Video2Title', 'trilogy1Video3Title', 'nocheReporterosTitle', 'reportaje1Title', 'reportaje1Paragraph', 'reportaje2Title', 'reportaje2Paragraph', 'trilogy2Title', 'trilogy2Paragraph', 'trilogy2Video1Title', 'trilogy2Video2Title', 'trilogy2Video3Title', 'otrosReportajesTitle', 'reportaje3Title', 'reportaje3Paragraph', 'reportaje4Title', 'reportaje4Paragraph', 'reportaje5Title', 'reportaje5Paragraph'],
-        proyectosPage: ['mainTitle', 'projectTitle', 'projectParagraph1', 'projectParagraph2', 'projectQuote', 'socialsText'],
-        premiosPage: ['mainTitle', 'premio1Title', 'premio1Paragraph1', 'premio1Paragraph2', 'premio1Paragraph3', 'premio1InstagramLink', 'premio2Title', 'premio2Paragraph1', 'premio2Paragraph2', 'premio3Title', 'premio3Paragraph', 'premio4Title', 'premio4Paragraph'],
-        entrevistasPage: ['mainTitle', 'introParagraph'],
-         contactPage: ['contactTitle', 'contactParagraph'],
-        libroPage: ['heroCaption', 'heroTitle', 'heroSubtitle', 'heroQuoteAuthor', 'synopsisSectionTitle', 'synopsisSectionIntro', 'synopsisParagraph1', 'synopsisQuote', 'synopsisParagraph2', 'trailerTitle', 'uncleQuote', 'lagunaTitle', 'lagunaParagraph1', 'lagunaParagraph2', 'artTitle', 'artIntro', 'artQuote', 'artParagraph1', 'artParagraph2', 'taoroSectionTitle', 'taoroSectionParagraph', 'galleryTitle', 'mediaTitle', 'buyTitle', 'buySubtitle', 'buyParagraph', 'buyPhysicalTitle', 'buyPhysicalInfo', 'buyAudiobookTitle', 'buyAudiobookInfo'],
-        modelajePage: ['mainTitle', 'introParagraph', 'calendarTitle', 'calendarParagraph']
-    };
-    
-    async function loadPageTexts() {
-        const pageId = pageSelector.value.replace(' (Textos)', '');
-        if (!pageId) return;
-        textFieldsContainer.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
-        try {
-            const docRef = doc(db, 'pages', pageId);
-            const docSnap = await getDoc(docRef);
-            const existingData = docSnap.exists() ? docSnap.data() : {};
-            textFieldsContainer.innerHTML = '';
-            const expectedKeys = pageContentMap[pageId] || Object.keys(existingData);
-            
-            expectedKeys.sort().forEach(key => {
-                if (key.startsWith('heroSlider')) return;
-                const value = existingData[key] || '';
-                const fieldWrapper = document.createElement('div');
-                fieldWrapper.className = 'form-section';
-                const label = document.createElement('label');
-                label.className = 'input-label';
-                label.textContent = key;
-                const isLongText = typeof value === 'string' && (value.length > 100 || value.includes('<'));
-                const inputElement = isLongText ? document.createElement('textarea') : document.createElement('input');
-                inputElement.dataset.key = key;
-                inputElement.value = value;
-                if (isLongText) inputElement.rows = 5;
-                fieldWrapper.appendChild(label);
-                fieldWrapper.appendChild(inputElement);
-                textFieldsContainer.appendChild(fieldWrapper);
-            });
-        } catch (error) {
-            console.error("Error al cargar textos:", error);
-            textFieldsContainer.innerHTML = '<p>Error al cargar los textos.</p>';
-        }
-    }
-
-    async function savePageTexts() {
-        const pageId = pageSelector.value.replace(' (Textos)', '');
-        if (!pageId) return;
-        const dataToUpdate = {};
-        textFieldsContainer.querySelectorAll('input, textarea').forEach(input => {
-            dataToUpdate[input.dataset.key] = input.value;
-        });
-        try {
-            await setDoc(doc(db, 'pages', pageId), dataToUpdate, { merge: true });
-            showToast('¡Textos guardados con éxito!');
-            loadPageTexts();
-        } catch (error) {
-            showToast("Hubo un error al guardar los textos.", "error");
-            console.error("Error al guardar textos:", error);
-        }
-    }
-
-    pageSelector.addEventListener('change', loadPageTexts);
-    saveTextsButton.addEventListener('click', savePageTexts);
-
-    // ===========================================
-    // --- IMPLEMENTACIÓN COMPLETA DE EVENTOS ---
-    // ===========================================
-    
     function getItemsFromEventPreview() {
-        const items = [];
+        const items =[];
         eventImagesPreviewList.querySelectorAll('.preview-item').forEach(el => {
             const description = el.querySelector('.description-input').value;
             const position = el.querySelector('.position-input').value;
@@ -503,7 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return items;
     }
 
-    function renderEventGalleryPreview(items = []) {
+    function renderEventGalleryPreview(items =[]) {
         if (eventImagesSortable) eventImagesSortable.destroy();
         eventImagesPreviewList.innerHTML = '';
         items.forEach(item => {
@@ -535,7 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function handleEventImageUpload(files) {
         eventImagesDropZone.querySelector('p').textContent = 'Subiendo...';
         const currentItems = getItemsFromEventPreview();
-        const newItems = [];
+        const newItems =[];
         for (const file of files) {
             if (!file.type.startsWith('image/')) continue;
             const storageRef = ref(storage, `events/${Date.now()}_${file.name}`);
@@ -554,7 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const snapshot = await getDocs(q);
         const events = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         renderEvents(events);
-    };
+    }
 
     function renderEvents(events) {
         eventsListEl.innerHTML = '';
@@ -568,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (eventsSortable) eventsSortable.destroy();
         eventsSortable = new Sortable(eventsListEl, { animation: 150, ghostClass: 'sortable-ghost' });
-    };
+    }
     
     function resetEventForm() {
         eventFormTitle.textContent = 'Crear Nuevo Evento';
@@ -580,7 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
         eventVideoUploader.value = '';
         eventVideoThumbnailUploader.value = '';
         cancelEditEventButton.style.display = 'none';
-    };
+    }
     
     eventImagesDropZone.addEventListener('click', () => eventImageUploader.click());
     eventImageUploader.addEventListener('change', e => handleEventImageUpload(e.target.files));
@@ -670,7 +606,7 @@ document.addEventListener('DOMContentLoaded', () => {
             eventTitleInput.value = data.title;
             eventTextInput.value = data.text;
             eventOrderInput.value = data.order;
-            renderEventGalleryPreview(data.galleryItems || []);
+            renderEventGalleryPreview(data.galleryItems ||[]);
             cancelEditEventButton.style.display = 'inline-block';
             item.scrollIntoView({ behavior: 'smooth' });
         }
@@ -686,16 +622,33 @@ document.addEventListener('DOMContentLoaded', () => {
         loadEvents();
     });
 
+
     // ===========================================
-    // --- IMPLEMENTACIÓN COMPLETA DE ENTREVISTAS ---
+    // --- SECCIÓN DE GESTIÓN DE ENTREVISTAS ---
     // ===========================================
+    const interviewsListEl = document.getElementById('interviews-list');
+    const interviewFormTitle = document.getElementById('interview-form-title');
+    const interviewIdInput = document.getElementById('interview-id-input');
+    const interviewMainTitleInput = document.getElementById('interview-main-title-input');
+    const interviewSubtitleInput = document.getElementById('interview-subtitle-input');
+    const interviewUrlInput = document.getElementById('interview-url-input');
+    const interviewOrderInput = document.getElementById('interview-order-input');
+    const interviewImagePreview = document.getElementById('interview-image-preview');
+    const interviewImageDropZone = document.getElementById('interview-image-drop-zone');
+    const interviewImageUploader = document.getElementById('interview-image-uploader');
+    const saveInterviewButton = document.getElementById('save-interview-button');
+    const cancelEditInterviewButton = document.getElementById('cancel-edit-interview-button');
+    const saveInterviewOrderButton = document.getElementById('save-interview-order-button');
+    let interviewsSortable = null;
+    let interviewThumbnailUrl = '';
+
     async function loadInterviews() {
         const interviewsListEl = document.getElementById('interviews-list');
         interviewsListEl.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
         const q = query(collection(db, 'interviews'), orderBy('order'));
         const snapshot = await getDocs(q);
         renderInterviews(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
-    };
+    }
 
     function renderInterviews(interviews) {
         const interviewsListEl = document.getElementById('interviews-list');
@@ -710,7 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (interviewsSortable) interviewsSortable.destroy();
         interviewsSortable = new Sortable(interviewsListEl, { animation: 150, ghostClass: 'sortable-ghost' });
-    };
+    }
     
     function resetInterviewForm() {
         const interviewFormTitle = document.getElementById('interview-form-title');
@@ -723,7 +676,7 @@ document.addEventListener('DOMContentLoaded', () => {
         interviewImagePreview.innerHTML = '';
         interviewThumbnailUrl = '';
         cancelEditInterviewButton.style.display = 'none';
-    };
+    }
     
     async function handleInterviewImageUpload(file) {
         if (!file) return;
@@ -805,12 +758,31 @@ document.addEventListener('DOMContentLoaded', () => {
         loadInterviews();
     });
 
+
     // ===========================================
-    // --- IMPLEMENTACIÓN COMPLETA DE PREMIOS ---
+    // --- SECCIÓN DE GESTIÓN DE PREMIOS ---
     // ===========================================
+    const awardsListEl = document.getElementById('awards-list');
+    const awardFormTitle = document.getElementById('award-form-title');
+    const awardIdInput = document.getElementById('award-id-input');
+    const awardTitleInput = document.getElementById('award-title-input');
+    const awardTextInput = document.getElementById('award-text-input');
+    const awardOrderInput = document.getElementById('award-order-input');
+    const saveAwardButton = document.getElementById('save-award-button');
+    const cancelEditAwardButton = document.getElementById('cancel-edit-award-button');
+    const saveAwardOrderButton = document.getElementById('save-award-order-button');
+    const awardImagesPreviewList = document.getElementById('award-images-preview-list');
+    const awardImagesDropZone = document.getElementById('award-images-drop-zone');
+    const awardImageUploader = document.getElementById('award-image-uploader');
+    const addAwardVideoButton = document.getElementById('add-award-video-button');
+    const awardVideoUrlInput = document.getElementById('award-video-url-input');
+    const awardThumbnailUrlInput = document.getElementById('award-thumbnail-url-input');
+    let awardsSortable = null;
+    let awardImagesSortable = null;
+
     const awardLogic = (() => {
         function getItemsFromPreview() {
-            const items = [];
+            const items =[];
             awardImagesPreviewList.querySelectorAll('.preview-item').forEach(el => {
                 const description = el.querySelector('.description-input').value;
                 const itemData = { type: el.dataset.type, description };
@@ -824,7 +796,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return items;
         }
 
-        function renderPreview(items = []) {
+        function renderPreview(items =[]) {
             if (awardImagesSortable) awardImagesSortable.destroy();
             awardImagesPreviewList.innerHTML = '';
             items.forEach(item => {
@@ -849,7 +821,7 @@ document.addEventListener('DOMContentLoaded', () => {
         async function handleImageUpload(files) {
             awardImagesDropZone.querySelector('p').textContent = 'Subiendo...';
             const currentItems = getItemsFromPreview();
-            const newItems = [];
+            const newItems =[];
             for (const file of files) {
                 if (!file.type.startsWith('image/')) continue;
                 const storageRef = ref(storage, `awards/${Date.now()}_${file.name}`);
@@ -870,7 +842,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const q = query(collection(db, 'awards'), orderBy('order'));
         const snapshot = await getDocs(q);
         renderAwards(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
-    };
+    }
 
     function renderAwards(awards) {
         awardsListEl.innerHTML = '';
@@ -884,7 +856,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (awardsSortable) awardsSortable.destroy();
         awardsSortable = new Sortable(awardsListEl, { animation: 150, ghostClass: 'sortable-ghost' });
-    };
+    }
 
     function resetAwardForm() {
         awardFormTitle.textContent = 'Añadir Nuevo Premio';
@@ -894,7 +866,7 @@ document.addEventListener('DOMContentLoaded', () => {
         awardOrderInput.value = '';
         awardLogic.renderPreview([]);
         cancelEditAwardButton.style.display = 'none';
-    };
+    }
 
     awardImagesDropZone.addEventListener('click', () => awardImageUploader.click());
     awardImageUploader.addEventListener('change', e => awardLogic.handleImageUpload(e.target.files));
@@ -948,7 +920,7 @@ document.addEventListener('DOMContentLoaded', () => {
             awardTitleInput.value = data.title;
             awardTextInput.value = data.text;
             awardOrderInput.value = data.order;
-            awardLogic.renderPreview(data.galleryItems || []);
+            awardLogic.renderPreview(data.galleryItems ||[]);
             cancelEditAwardButton.style.display = 'inline-block';
             item.scrollIntoView({ behavior: 'smooth' });
         }
@@ -963,4 +935,268 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('¡Orden guardado!');
         loadAwards();
     });
+
+
+    // ===========================================
+    // --- IMPLEMENTACIÓN PROGRAMAS TV ----------
+    // ===========================================
+    const tvProgramsListEl = document.getElementById('tv-programs-list');
+    const tvProgramFormTitle = document.getElementById('tv-program-form-title');
+    const tvProgramIdInput = document.getElementById('tv-program-id-input');
+    const tvProgramTitleInput = document.getElementById('tv-program-title-input');
+    const tvProgramTextInput = document.getElementById('tv-program-text-input');
+    const tvProgramUrlInput = document.getElementById('tv-program-url-input');
+    const tvProgramOrderInput = document.getElementById('tv-program-order-input');
+    const tvProgramImagePreview = document.getElementById('tv-program-image-preview');
+    const tvProgramImageDropZone = document.getElementById('tv-program-image-drop-zone');
+    const tvProgramImageUploader = document.getElementById('tv-program-image-uploader');
+    const saveTvProgramButton = document.getElementById('save-tv-program-button');
+    const cancelEditTvProgramButton = document.getElementById('cancel-edit-tv-program-button');
+    const saveTvProgramOrderButton = document.getElementById('save-tv-program-order-button');
+    
+    let tvProgramsSortable = null;
+    let tvProgramThumbnailUrl = '';
+
+    async function loadTVPrograms() {
+        if(!tvProgramsListEl) return;
+        tvProgramsListEl.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
+        
+        try {
+            let q = query(collection(db, 'tv_programs'), orderBy('order'));
+            let snapshot = await getDocs(q);
+
+            // --- INICIO MIGRACIÓN MÁGICA EN EL PANEL ADMIN ---
+            if (snapshot.empty) {
+                console.log("Iniciando migración automática de programas de TV...");
+                const docRef = doc(db, 'pages', 'televisionPage');
+                const docSnap = await getDoc(docRef);
+                const data = docSnap.exists() ? docSnap.data() : {};
+
+                const oldPrograms =[
+                    { titleKey: 'video1Title', textKey: null, url: 'https://www.youtube.com/watch?v=Z5h9yFQZKkg', img: 'images/mini1.png' },
+                    { titleKey: 'video2Title', textKey: null, url: 'https://www.youtube.com/watch?v=6j0JrC1dYFg', img: 'images/mini2.png' },
+                    { titleKey: 'video9Title', textKey: 'video9Paragraph', url: 'https://www.youtube.com/watch?v=WYcz1gjjw0s&t=28s', img: 'images/permacultura.png' },
+                    { titleKey: 'video4Title', textKey: 'video4Paragraph', url: 'https://www.youtube.com/watch?v=yVGlZAg_fgM', img: 'images/mini4.png' },
+                    { titleKey: 'video5Title', textKey: 'video5Paragraph', url: 'https://www.youtube.com/watch?v=rOdh71Cd668', img: 'https://img.youtube.com/vi/rOdh71Cd668/hqdefault.jpg' },
+                    { titleKey: 'video7Title', textKey: 'video7Paragraph', url: 'https://www.youtube.com/watch?v=0CoL_nJow-g', img: 'https://img.youtube.com/vi/0CoL_nJow-g/hqdefault.jpg' },
+                    { titleKey: 'video8Title', textKey: 'video8Paragraph', url: 'https://www.youtube.com/watch?v=Uza5nNuGl6E', img: 'https://img.youtube.com/vi/Uza5nNuGl6E/hqdefault.jpg' }
+                ];
+
+                let order = 0;
+                for (const prog of oldPrograms) {
+                    let titleStr = data[prog.titleKey];
+                    if(!titleStr || titleStr.trim() === '') {
+                         if(prog.titleKey === 'video1Title') titleStr = "Reel Presentadora de Informativos";
+                         else if(prog.titleKey === 'video2Title') titleStr = "Telenoticias Fin de Semana";
+                         else if(prog.titleKey === 'video9Title') titleStr = "Permacultura";
+                         else if(prog.titleKey === 'video4Title') titleStr = "Bueno, Bonito y Barato";
+                         else if(prog.titleKey === 'video5Title') titleStr = "Especial 10 Años de Canarias Radio";
+                         else if(prog.titleKey === 'video7Title') titleStr = "Promo Ecominutos";
+                         else if(prog.titleKey === 'video8Title') titleStr = "Píldora Sostenible";
+                         else titleStr = "Programa de TV";
+                    }
+
+                    await addDoc(collection(db, 'tv_programs'), {
+                        title: titleStr,
+                        text: prog.textKey ? (data[prog.textKey] || '') : '',
+                        url: prog.url,
+                        thumbnailUrl: prog.img,
+                        order: order++
+                    });
+                }
+                snapshot = await getDocs(q);
+                showToast("¡Programas importados automáticamente con éxito!", "success");
+            }
+            renderTVPrograms(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
+        } catch(error) {
+            console.error("Error:", error);
+            tvProgramsListEl.innerHTML = '<p>Error al cargar los programas.</p>';
+        }
+    }
+
+    function renderTVPrograms(programs) {
+        tvProgramsListEl.innerHTML = '';
+        if (programs.length === 0) tvProgramsListEl.innerHTML = '<p>No hay programas creados.</p>';
+        programs.forEach(program => {
+            const div = document.createElement('div');
+            div.className = 'interview-item'; 
+            div.dataset.id = program.id;
+            div.innerHTML = `<h4>${program.title}</h4><div class="interview-controls"><button class="tv-program-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
+            tvProgramsListEl.appendChild(div);
+        });
+        if (tvProgramsSortable) tvProgramsSortable.destroy();
+        tvProgramsSortable = new Sortable(tvProgramsListEl, { animation: 150, ghostClass: 'sortable-ghost' });
+    }
+    
+    function resetTVProgramForm() {
+        tvProgramFormTitle.textContent = 'Añadir Nuevo Programa';
+        tvProgramIdInput.value = '';
+        tvProgramTitleInput.value = '';
+        tvProgramTextInput.value = '';
+        tvProgramUrlInput.value = '';
+        tvProgramOrderInput.value = '';
+        tvProgramImagePreview.innerHTML = '';
+        tvProgramThumbnailUrl = '';
+        cancelEditTvProgramButton.style.display = 'none';
+    }
+    
+    async function handleTVProgramImageUpload(file) {
+        if (!file) return;
+        tvProgramImageDropZone.querySelector('p').textContent = 'Subiendo...';
+        const storageRef = ref(storage, `tv_programs/${Date.now()}_${file.name}`);
+        await uploadBytes(storageRef, file);
+        tvProgramThumbnailUrl = await getDownloadURL(storageRef);
+        tvProgramImagePreview.innerHTML = `<div class="preview-item"><img src="${tvProgramThumbnailUrl}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
+        tvProgramImageDropZone.querySelector('p').textContent = 'Arrastra una imagen o haz clic';
+    }
+
+    if(tvProgramImageDropZone) {
+        tvProgramImageDropZone.addEventListener('click', () => tvProgramImageUploader.click());
+        tvProgramImageUploader.addEventListener('change', e => handleTVProgramImageUpload(e.target.files[0]));
+        tvProgramImageDropZone.addEventListener('dragover', e => e.preventDefault());
+        tvProgramImageDropZone.addEventListener('drop', e => { e.preventDefault(); handleTVProgramImageUpload(e.dataTransfer.files[0]); });
+        
+        tvProgramImagePreview.addEventListener('click', e => {
+            if (e.target.classList.contains('delete-button')) {
+                tvProgramImagePreview.innerHTML = '';
+                tvProgramThumbnailUrl = '';
+            }
+        });
+
+        cancelEditTvProgramButton.addEventListener('click', resetTVProgramForm);
+
+        saveTvProgramButton.addEventListener('click', async () => {
+            const id = tvProgramIdInput.value;
+            const order = parseInt(tvProgramOrderInput.value) || 0;
+            const data = {
+                title: tvProgramTitleInput.value,
+                text: tvProgramTextInput.value,
+                url: tvProgramUrlInput.value,
+                thumbnailUrl: tvProgramThumbnailUrl,
+                order
+            };
+            if (!data.title || !data.url || !data.thumbnailUrl) return showToast('Completa título, URL e imagen.', 'error');
+            
+            if (id) await updateDoc(doc(db, 'tv_programs', id), data);
+            else await addDoc(collection(db, 'tv_programs'), data);
+
+            showToast('¡Programa guardado!');
+            resetTVProgramForm();
+            loadTVPrograms();
+        });
+
+        tvProgramsListEl.addEventListener('click', async e => {
+            const item = e.target.closest('.interview-item');
+            if (!item) return;
+            const docId = item.dataset.id;
+            if (e.target.classList.contains('delete-button')) {
+                if (confirm('¿Seguro que quieres eliminar este programa?')) {
+                    await deleteDoc(doc(db, 'tv_programs', docId));
+                    loadTVPrograms();
+                }
+            } else if (e.target.classList.contains('tv-program-edit-button')) {
+                const docSnap = await getDoc(doc(db, 'tv_programs', docId));
+                const data = docSnap.data();
+                tvProgramFormTitle.textContent = 'Editando Programa';
+                tvProgramIdInput.value = docId;
+                tvProgramTitleInput.value = data.title;
+                tvProgramTextInput.value = data.text || '';
+                tvProgramUrlInput.value = data.url;
+                tvProgramOrderInput.value = data.order;
+                tvProgramThumbnailUrl = data.thumbnailUrl;
+                tvProgramImagePreview.innerHTML = `<div class="preview-item"><img src="${tvProgramThumbnailUrl}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
+                cancelEditTvProgramButton.style.display = 'inline-block';
+                item.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        saveTvProgramOrderButton.addEventListener('click', async () => {
+            const batch = writeBatch(db);
+            tvProgramsListEl.querySelectorAll('.interview-item').forEach((item, index) => {
+                batch.update(doc(db, 'tv_programs', item.dataset.id), { order: index });
+            });
+            await batch.commit();
+            showToast('¡Orden guardado!');
+            loadTVPrograms();
+        });
+    }
+
+
+    // ===========================================
+    // --- SECCIÓN DE GESTIÓN DE TEXTOS ---
+    // ===========================================
+    const pageSelector = document.getElementById('page-selector');
+    const textFieldsContainer = document.getElementById('text-fields-container');
+    const saveTextsButton = document.getElementById('save-texts-button');
+
+    const pageContentMap = {
+        homepage:['heroTitle1', 'heroSubtitle1', 'heroTitle2', 'heroSubtitle2', 'heroTitle3', 'heroSubtitle3', 'aboutMeTitle', 'aboutMeParagraph1', 'aboutMeQuote', 'aboutMeParagraph2', 'skillsTitle', 'trajectoryTitle', 'card1Category', 'card1Title', 'card1Subtitle', 'card1Paragraph', 'card2Category', 'card2Title', 'card2Subtitle', 'card2Paragraph', 'card3Category', 'card3Title', 'card3Subtitle', 'card3Paragraph', 'eventsTitle', 'eventsParagraph', 'contactTitle', 'contactParagraph'],
+        eventosPage:['eventsTitle', 'eventsParagraph'],
+        televisionPage:['mainTitle', 'introParagraph1', 'introParagraph2', 'galleryTitle'], 
+        radioPage:['mainTitle', 'introParagraph', 'programTitle', 'programParagraph1', 'programParagraph2', 'galleryTitle'],
+        publicidadPage:['mainTitle', 'introParagraph1', 'introParagraph2', 'campaign1Title', 'campaign2Title', 'campaign3Title', 'campaign4Title', 'campaign5Title'],
+        comunicacionPage:['mainTitle', 'jefaPrensaTitle', 'jefaPrensaParagraph', 'bpwTitle', 'bpwParagraph', 'dreamlandTitle', 'dreamlandParagraph', 'videosCorpTitle', 'videosCorpParagraph', 'eaveTitle', 'eaveParagraph', 'habecuTitle', 'habecuParagraph', 'inmogoldTitle', 'inmogoldParagraph1', 'inmogoldParagraph2'],
+        investigacionPage:['mainTitle', 'trilogy1Title', 'trilogy1Paragraph', 'trilogy1Video1Title', 'trilogy1Video2Title', 'trilogy1Video3Title', 'nocheReporterosTitle', 'reportaje1Title', 'reportaje1Paragraph', 'reportaje2Title', 'reportaje2Paragraph', 'trilogy2Title', 'trilogy2Paragraph', 'trilogy2Video1Title', 'trilogy2Video2Title', 'trilogy2Video3Title', 'otrosReportajesTitle', 'reportaje3Title', 'reportaje3Paragraph', 'reportaje4Title', 'reportaje4Paragraph', 'reportaje5Title', 'reportaje5Paragraph'],
+        proyectosPage:['mainTitle', 'projectTitle', 'projectParagraph1', 'projectParagraph2', 'projectQuote', 'socialsText'],
+        premiosPage:['mainTitle', 'premio1Title', 'premio1Paragraph1', 'premio1Paragraph2', 'premio1Paragraph3', 'premio1InstagramLink', 'premio2Title', 'premio2Paragraph1', 'premio2Paragraph2', 'premio3Title', 'premio3Paragraph', 'premio4Title', 'premio4Paragraph'],
+        entrevistasPage:['mainTitle', 'introParagraph'],
+         contactPage:['contactTitle', 'contactParagraph'],
+        libroPage:['heroCaption', 'heroTitle', 'heroSubtitle', 'heroQuoteAuthor', 'synopsisSectionTitle', 'synopsisSectionIntro', 'synopsisParagraph1', 'synopsisQuote', 'synopsisParagraph2', 'trailerTitle', 'uncleQuote', 'lagunaTitle', 'lagunaParagraph1', 'lagunaParagraph2', 'artTitle', 'artIntro', 'artQuote', 'artParagraph1', 'artParagraph2', 'taoroSectionTitle', 'taoroSectionParagraph', 'galleryTitle', 'mediaTitle', 'buyTitle', 'buySubtitle', 'buyParagraph', 'buyPhysicalTitle', 'buyPhysicalInfo', 'buyAudiobookTitle', 'buyAudiobookInfo'],
+        modelajePage:['mainTitle', 'introParagraph', 'calendarTitle', 'calendarParagraph']
+    };
+    
+    async function loadPageTexts() {
+        const pageId = pageSelector.value.replace(' (Textos)', '');
+        if (!pageId) return;
+        textFieldsContainer.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
+        try {
+            const docRef = doc(db, 'pages', pageId);
+            const docSnap = await getDoc(docRef);
+            const existingData = docSnap.exists() ? docSnap.data() : {};
+            textFieldsContainer.innerHTML = '';
+            const expectedKeys = pageContentMap[pageId] || Object.keys(existingData);
+            
+            expectedKeys.sort().forEach(key => {
+                if (key.startsWith('heroSlider')) return;
+                const value = existingData[key] || '';
+                const fieldWrapper = document.createElement('div');
+                fieldWrapper.className = 'form-section';
+                const label = document.createElement('label');
+                label.className = 'input-label';
+                label.textContent = key;
+                const isLongText = typeof value === 'string' && (value.length > 100 || value.includes('<'));
+                const inputElement = isLongText ? document.createElement('textarea') : document.createElement('input');
+                inputElement.dataset.key = key;
+                inputElement.value = value;
+                if (isLongText) inputElement.rows = 5;
+                fieldWrapper.appendChild(label);
+                fieldWrapper.appendChild(inputElement);
+                textFieldsContainer.appendChild(fieldWrapper);
+            });
+        } catch (error) {
+            console.error("Error al cargar textos:", error);
+            textFieldsContainer.innerHTML = '<p>Error al cargar los textos.</p>';
+        }
+    }
+
+    async function savePageTexts() {
+        const pageId = pageSelector.value.replace(' (Textos)', '');
+        if (!pageId) return;
+        const dataToUpdate = {};
+        textFieldsContainer.querySelectorAll('input, textarea').forEach(input => {
+            dataToUpdate[input.dataset.key] = input.value;
+        });
+        try {
+            await setDoc(doc(db, 'pages', pageId), dataToUpdate, { merge: true });
+            showToast('¡Textos guardados con éxito!');
+            loadPageTexts();
+        } catch (error) {
+            showToast("Hubo un error al guardar los textos.", "error");
+            console.error("Error al guardar textos:", error);
+        }
+    }
+
+    pageSelector.addEventListener('change', loadPageTexts);
+    saveTextsButton.addEventListener('click', savePageTexts);
+
 });
