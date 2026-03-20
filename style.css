@@ -1377,7 +1377,7 @@ footer {
 }
 
 /* =================================== */
-/*   ESTILOS NUEVA GALERÍA INTERACTIVA (CORREGIDO) */
+/*   ESTILOS NUEVA GALERÍA INTERACTIVA (CORREGIDO CON FLECHAS) */
 /* =================================== */
 #galeria-interactiva,
 .galeria-interactiva-container {
@@ -1397,9 +1397,8 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    max-height: 600px;
+    height: 600px; /* Altura fija para consistencia */
 }
-
 
 .galeria-bg-desenfocado {
     position: absolute;
@@ -1423,6 +1422,7 @@ footer {
     border-radius: 4px;
     box-shadow: 0 5px 25px rgba(0,0,0,0.3);
     transition: opacity 0.4s ease-in-out;
+    cursor: zoom-in;
 }
 
 .descripcion-principal {
@@ -1447,29 +1447,69 @@ footer {
     transform: translateY(0);
 }
 
-.galeria-lista-miniaturas {
+/* === ENVOLTORIO PARA FLECHAS Y MINIATURAS === */
+.thumbnails-wrapper {
+    position: relative;
     flex-basis: 180px;
     flex-shrink: 0;
-    overflow-y: auto;
-    max-height: 600px;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    gap: 8px;
 }
 
+.galeria-lista-miniaturas {
+    flex-grow: 1;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: column;
+}
 
 .galeria-lista-miniaturas::-webkit-scrollbar {
     display: none;
 }
 
+.thumb-nav-arrow {
+    background: var(--color-secundario);
+    color: var(--color-acento);
+    width: 100%;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s ease;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+    border: 1px solid rgba(188, 160, 125, 0.2);
+}
+
+.thumb-nav-arrow:hover {
+    background: var(--color-acento);
+    color: white;
+}
+
+.thumb-nav-arrow.disabled {
+    opacity: 0.15;
+    cursor: default;
+    pointer-events: none;
+}
+
 .miniatura-item {
     cursor: pointer;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     border-radius: 5px;
     overflow: hidden;
     border: 3px solid transparent;
     transition: all 0.3s ease;
     opacity: 0.7;
     position: relative;
+    flex-shrink: 0;
 }
 
 .miniatura-item:hover {
@@ -1480,7 +1520,7 @@ footer {
 .miniatura-item.active {
     border-color: var(--color-acento);
     opacity: 1;
-    transform: scale(1.08);
+    transform: scale(1.05);
 }
 
 .miniatura-item img {
@@ -1490,26 +1530,20 @@ footer {
     display: block;
 }
 
-.miniatura-overlay {
+.thumb-video-badge {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    padding: 1.5rem 0.5rem 0.5rem;
-    pointer-events: none;
-}
-
-.miniatura-descripcion {
-    color: var(--color-blanco);
-    font-size: 0.8rem;
-    text-align: center;
-    margin: 0;
-    line-height: 1.2;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    border: 1px solid rgba(255,255,255,0.5);
 }
 
 /* ===================================================== */
@@ -2033,15 +2067,29 @@ footer {
         max-height: none;
     }
     .galeria-principal { min-height: 50vh; }
-    .galeria-lista-miniaturas {
+    
+    .thumbnails-wrapper {
+        flex-direction: row; /* Horizontal en móvil */
+        width: 100%;
+        height: auto;
         flex-basis: auto;
-        overflow-y: initial;
-        overflow-x: auto;
-        display: flex;
-        gap: 1rem;
-        padding-bottom: 1rem;
-        padding-right: 0;
+        align-items: center;
     }
+    
+    .galeria-lista-miniaturas {
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        gap: 1rem;
+        flex-basis: auto;
+        padding-bottom: 1rem;
+    }
+    
+    .thumb-nav-arrow {
+        width: 40px;
+        height: 70px;
+    }
+    
     .miniatura-item {
         margin-bottom: 0;
         flex: 0 0 120px;
@@ -2113,7 +2161,7 @@ footer {
         justify-content: flex-start;
         align-items: center;
         overflow-y: auto;
-        padding-top: 0; /* <-- CAMBIO DEFINITIVO: Eliminado el espacio superior general */
+        padding-top: 0.1rem; 
         transition: left 0.3s ease-in-out;
         box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
         -ms-overflow-style: none;
@@ -2688,28 +2736,6 @@ footer {
 #radio-main .comunicacion-gallery img:first-child {
     grid-column: 1 / -1;
     aspect-ratio: 16 / 9;
-}
-
-@media (max-width: 900px) {
-    .galeria-interactiva-container {
-        flex-direction: column;
-        height: auto;
-        max-height: none;
-    }
-    .galeria-principal { min-height: 50vh; }
-    .galeria-lista-miniaturas {
-        flex-basis: auto;
-        overflow-y: initial;
-        overflow-x: auto;
-        display: flex;
-        gap: 1rem;
-        padding-bottom: 1rem;
-        padding-right: 0;
-    }
-    .galeria-lista-miniaturas .miniatura-item {
-        margin-bottom: 0;
-        flex: 0 0 120px;
-    }
 }
 
 /* ======================================================= */
@@ -3728,4 +3754,100 @@ div.cky-btn-revisit-wrapper img {
 } 
 body {
     top: 0px !important; 
+}
+/* ============================================================ */
+/*   ARREGLO DEFINITIVO: BOTÓN CERRAR (X) EN MÓVIL Y ESCRITORIO */
+/* ============================================================ */
+.lightbox-close, 
+.modal-close {
+    position: fixed !important; /* Se queda quieto en la pantalla */
+    top: 20px !important;
+    right: 20px !important;
+    width: 50px !important;      /* Tamaño grande para que sea fácil de pulsar */
+    height: 50px !important;
+    background-color: var(--color-acento) !important; /* Color dorado Yaiza */
+    color: white !important;
+    border-radius: 50% !important;
+    border: 2px solid white !important;
+    display: flex !important;    /* Centra la X */
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 32px !important;
+    font-weight: bold !important;
+    z-index: 9999 !important;    /* Asegura que esté por encima de la foto */
+    cursor: pointer !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Ajuste específico para que en el móvil no se pierda */
+@media (max-width: 768px) {
+    .lightbox-close, 
+    .modal-close {
+        top: 15px !important;
+        right: 15px !important;
+        width: 45px !important;
+        height: 45px !important;
+        font-size: 26px !important;
+        background-color: #000 !important; /* Fondo negro en móvil para máximo contraste */
+        border-color: var(--color-acento) !important;
+    }
+}
+/* ============================================================ */
+/*   REFUERZO FINAL: SOLUCIÓN FLECHAS LIGHTBOX MÓVIL            */
+/* ============================================================ */
+
+/* Aseguramos que las flechas tengan un área de clic grande y estén visibles */
+.lightbox-prev, 
+.lightbox-next {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 10001 !important; /* Por encima de la foto (z-index 10000) */
+    width: 60px !important;    /* Área de contacto ancha */
+    height: 100px !important;  /* Área de contacto alta */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: rgba(0, 0, 0, 0.2) !important; /* Fondo sutil para indicar que es clicable */
+    color: white !important;
+    font-size: 35px !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s ease !important;
+    border-radius: 8px !important;
+}
+
+.lightbox-prev:hover, 
+.lightbox-next:hover {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.lightbox-prev { left: 10px !important; }
+.lightbox-next { right: 10px !important; }
+
+/* AJUSTES ESPECÍFICOS PARA MÓVIL (768px o menos) */
+@media (max-width: 768px) {
+    /* Hacemos la foto un poco más pequeña de ancho para que no tape las flechas laterales */
+    #lightbox-image {
+        max-width: 82vw !important; 
+        max-height: 70vh !important;
+        object-fit: contain !important;
+    }
+
+    /* En móvil, hacemos las flechas más opacas para que el usuario las vea claramente */
+    .lightbox-prev, 
+    .lightbox-next {
+        width: 55px !important;
+        height: 80px !important;
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        font-size: 30px !important;
+    }
+    
+    /* Evitamos que el pie de foto (caption) se monte sobre las flechas */
+    #lightbox-caption {
+        width: 80% !important;
+        margin: 15px auto !important;
+        font-size: 0.9rem !important;
+    }
 }
