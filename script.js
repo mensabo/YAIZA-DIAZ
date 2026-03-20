@@ -410,8 +410,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 container.appendChild(programDiv);
             });
 
-            // Re-inicializar modales tras render dinámico
-            initializeVideoModals();
+           
 
         } catch (error) {
             console.error("Error cargando programas TV:", error);
@@ -702,19 +701,32 @@ function updateLightboxContent() {
     // ==================================================================
     // === SISTEMA DE VÍDEOS (ACTUALIZADO PARA APERTURA EXTERNA) ===
     // ==================================================================
+    // === SISTEMA DE VÍDEOS (PROTEGIDO CONTRA DOBLE APERTURA) ===
+    // ==================================================================
     function initializeVideoModals() {
+        // Si ya hemos añadido el escuchador, no hacemos nada más
+        if (window.videoListenerAdded) return;
+
         const iframeModal = document.getElementById('iframe-modal');
         const iframePlayer = document.getElementById('modal-iframe-player');
 
+        // Escuchador global en el body (Delegación de eventos)
         document.body.addEventListener('click', (e) => {
             const trigger = e.target.closest('.js-video-modal-trigger');
+            
             if (trigger) {
                 e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation(); // Detiene cualquier otro evento duplicado
+
                 const url = trigger.dataset.videoSrc || trigger.href;
-                openVideoInModal(url);
+                if (url) {
+                    openVideoInModal(url);
+                }
             }
         });
 
+        // Lógica de cierre de modal (si existiera el elemento en el HTML)
         if (iframeModal) {
             const closeButtons = iframeModal.querySelectorAll('.modal-close');
             const closeModal = () => { 
@@ -724,15 +736,15 @@ function updateLightboxContent() {
             closeButtons.forEach(btn => btn.addEventListener('click', closeModal));
             iframeModal.addEventListener('click', (e) => { if (e.target === iframeModal) closeModal(); });
         }
+
+        // Marcamos que ya está configurado
+        window.videoListenerAdded = true;
     }
 
     function openVideoInModal(url) {
         if (!url) return;
+        // Abrimos en una nueva pestaña de forma limpia
         window.open(url, '_blank', 'noopener,noreferrer');
-        const iframeModal = document.getElementById('iframe-modal');
-        if (iframeModal) {
-            iframeModal.classList.remove('visible');
-        }
     }
 
     // =======================================================

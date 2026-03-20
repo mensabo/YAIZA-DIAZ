@@ -3851,3 +3851,13 @@ body {
         font-size: 0.9rem !important;
     }
 }
+/* Evita que los iconos internos interfieran con el clic del enlace del vídeo */
+.js-video-modal-trigger * {
+    pointer-events: none;
+}
+
+/* Asegura que el trigger tenga el control del evento */
+.js-video-modal-trigger {
+    pointer-events: auto !important;
+    display: block;
+}
