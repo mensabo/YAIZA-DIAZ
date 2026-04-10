@@ -239,16 +239,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const galleryListEl = document.getElementById('gallery-list');
     const dropZone = document.getElementById('drop-zone');
     const fileInput = document.getElementById('file-input');
-
-    // Elementos nuevos para edición
-    const galleryFormTitle = document.getElementById('gallery-form-title');
-    const galleryItemIdInput = document.getElementById('gallery-item-id-input');
     const videoUrlInput = document.getElementById('video-url-input');
     const thumbnailUrlInput = document.getElementById('thumbnail-url-input');
     const videoDescriptionInput = document.getElementById('video-description-input');
     const addVideoButton = document.getElementById('add-video-button');
-    const cancelEditGalleryBtn = document.getElementById('cancel-edit-gallery-button');
-
     const saveButton = document.getElementById('save-button');
     let gallerySortable = null;
     let currentCollection = 'gallery';
@@ -259,20 +253,9 @@ document.addEventListener('DOMContentLoaded', () => {
         habecu_gallery: "Galería de HABECU"
     };
 
-    function resetGalleryForm() {
-        galleryItemIdInput.value = '';
-        videoUrlInput.value = '';
-        thumbnailUrlInput.value = '';
-        videoDescriptionInput.value = '';
-        galleryFormTitle.textContent = 'Añadir Nuevo Vídeo';
-        addVideoButton.textContent = 'Añadir Vídeo a la Galería';
-        cancelEditGalleryBtn.style.display = 'none';
-    }
-
     gallerySelector.addEventListener('change', (e) => {
         currentCollection = e.target.value;
         currentStoragePath = `${currentCollection}/`;
-        resetGalleryForm();
         loadGalleries();
     });
 
@@ -292,21 +275,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.className = 'gallery-item';
             div.dataset.id = item.id;
-            
-            // Guardar URLs de video en dataset para recuperación fácil al editar
-            if(item.type === 'video') {
-                div.dataset.videoSrc = item.videoSrc || '';
-                div.dataset.thumbnailSrc = item.thumbnailSrc || '';
-            }
-
             div.innerHTML = `
                 <img src="${item.thumbnailSrc || item.src}" alt="miniatura">
                 <span class="item-type-badge">${item.type === 'video' ? 'VÍDEO' : 'IMAGEN'}</span>
                 <textarea class="description-input" placeholder="Descripción...">${item.descripcion || ''}</textarea>
-                <div class="event-controls" style="justify-content: center; margin-top: 10px;">
-                    ${item.type === 'video' ? '<button class="gallery-edit-button" style="background-color: var(--color-secundario); font-size: 0.8rem; padding: 6px 12px; color:white;">Editar Links</button>' : ''}
-                    <button class="delete-button" style="margin-top:0;">Eliminar</button>
-                </div>`;
+                <button class="delete-button">Eliminar</button>`;
             galleryListEl.appendChild(div);
         });
         if (gallerySortable) gallerySortable.destroy();
@@ -336,29 +309,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const videoUrl = videoUrlInput.value.trim();
         const thumbUrl = thumbnailUrlInput.value.trim();
         const desc = videoDescriptionInput.value.trim();
-        const id = galleryItemIdInput.value;
-
-        if (!videoUrl || !thumbUrl) return showToast("Por favor, completa los campos de URL.", "error");
-
-        if (id) {
-            // EDITAR EXISTENTE
-            const docRef = doc(db, currentCollection, id);
-            await updateDoc(docRef, {
-                videoSrc: videoUrl,
-                thumbnailSrc: thumbUrl,
-                descripcion: desc
-            });
-            showToast("Vídeo actualizado con éxito");
-        } else {
-            // AÑADIR NUEVO
-            const currentCount = galleryListEl.querySelectorAll('.gallery-item').length;
-            await addDoc(collection(db, currentCollection), {
-                type: 'video', videoSrc: videoUrl, thumbnailSrc: thumbUrl, descripcion: desc, order: currentCount
-            });
-            showToast("Vídeo añadido con éxito");
-        }
-        
-        resetGalleryForm();
+        if (!videoUrl || !thumbUrl || !desc) return showToast("Por favor, completa todos los campos del vídeo.", "error");
+        const currentCount = galleryListEl.querySelectorAll('.gallery-item').length;
+        await addDoc(collection(db, currentCollection), {
+            type: 'video', videoSrc: videoUrl, thumbnailSrc: thumbUrl, descripcion: desc, order: currentCount
+        });
+        videoUrlInput.value = thumbnailUrlInput.value = videoDescriptionInput.value = '';
         loadGalleries();
     });
 
@@ -374,32 +330,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     galleryListEl.addEventListener('click', async e => {
-        const item = e.target.closest('.gallery-item');
-        if (!item) return;
-        const id = item.dataset.id;
-
         if (e.target.classList.contains('delete-button')) {
+            const item = e.target.closest('.gallery-item');
             if (confirm('¿Seguro que quieres eliminar este elemento?')) {
-                await deleteDoc(doc(db, currentCollection, id));
+                await deleteDoc(doc(db, currentCollection, item.dataset.id));
                 loadGalleries();
             }
-        } 
-        else if (e.target.classList.contains('gallery-edit-button')) {
-            // CARGAR DATOS EN EL FORMULARIO
-            galleryItemIdInput.value = id;
-            videoUrlInput.value = item.dataset.videoSrc;
-            thumbnailUrlInput.value = item.dataset.thumbnailSrc;
-            videoDescriptionInput.value = item.querySelector('.description-input').value;
-            
-            galleryFormTitle.textContent = 'Editando Vídeo';
-            addVideoButton.textContent = 'Guardar Cambios';
-            cancelEditGalleryBtn.style.display = 'inline-block';
-            
-            document.getElementById('gallery-form-title').scrollIntoView({ behavior: 'smooth' });
         }
     });
-
-    cancelEditGalleryBtn.addEventListener('click', resetGalleryForm);
 
     // ===========================================
     // --- SECCIÓN DE GESTIÓN DE EVENTOS ---
@@ -422,6 +360,163 @@ document.addEventListener('DOMContentLoaded', () => {
     let eventsSortable = null;
     let eventImagesSortable = null;
 
+    // ===========================================
+    // --- SECCIÓN DE GESTIÓN DE ENTREVISTAS ---
+    // ===========================================
+    const interviewsListEl = document.getElementById('interviews-list');
+    const interviewFormTitle = document.getElementById('interview-form-title');
+    const interviewIdInput = document.getElementById('interview-id-input');
+    const interviewMainTitleInput = document.getElementById('interview-main-title-input');
+    const interviewSubtitleInput = document.getElementById('interview-subtitle-input');
+    const interviewUrlInput = document.getElementById('interview-url-input');
+    const interviewOrderInput = document.getElementById('interview-order-input');
+    const interviewImagePreview = document.getElementById('interview-image-preview');
+    const interviewImageDropZone = document.getElementById('interview-image-drop-zone');
+    const interviewImageUploader = document.getElementById('interview-image-uploader');
+    const saveInterviewButton = document.getElementById('save-interview-button');
+    const cancelEditInterviewButton = document.getElementById('cancel-edit-interview-button');
+    const saveInterviewOrderButton = document.getElementById('save-interview-order-button');
+    let interviewsSortable = null;
+    let interviewThumbnailUrl = '';
+
+    // ===========================================
+    // --- SECCIÓN DE GESTIÓN DE PREMIOS ---
+    // ===========================================
+    const awardsListEl = document.getElementById('awards-list');
+    const awardFormTitle = document.getElementById('award-form-title');
+    const awardIdInput = document.getElementById('award-id-input');
+    const awardTitleInput = document.getElementById('award-title-input');
+    const awardTextInput = document.getElementById('award-text-input');
+    const awardOrderInput = document.getElementById('award-order-input');
+    const saveAwardButton = document.getElementById('save-award-button');
+    const cancelEditAwardButton = document.getElementById('cancel-edit-award-button');
+    const saveAwardOrderButton = document.getElementById('save-award-order-button');
+    const awardImagesPreviewList = document.getElementById('award-images-preview-list');
+    const awardImagesDropZone = document.getElementById('award-images-drop-zone');
+    const awardImageUploader = document.getElementById('award-image-uploader');
+    const addAwardVideoButton = document.getElementById('add-award-video-button');
+    const awardVideoUrlInput = document.getElementById('award-video-url-input');
+    const awardThumbnailUrlInput = document.getElementById('award-thumbnail-url-input');
+    let awardsSortable = null;
+    let awardImagesSortable = null;
+
+    // ===========================================
+    // --- SECCIÓN DE GESTIÓN DE TEXTOS ---
+    // ===========================================
+    const pageSelector = document.getElementById('page-selector');
+    const textFieldsContainer = document.getElementById('text-fields-container');
+    const saveTextsButton = document.getElementById('save-texts-button');
+
+    // === DICCIONARIO DE PÁGINAS ===
+    const pageContentMap = {
+        homepage:['heroTitle1', 'heroSubtitle1', 'heroTitle2', 'heroSubtitle2', 'heroTitle3', 'heroSubtitle3', 'aboutMeTitle', 'aboutMeParagraph1', 'aboutMeQuote', 'aboutMeParagraph2', 'skillsTitle', 'skillsList', 'trajectoryTitle', 'card1Category', 'card1Title', 'card1Subtitle', 'card1Paragraph', 'card2Category', 'card2Title', 'card2Subtitle', 'card2Paragraph', 'card3Category', 'card3Title', 'card3Subtitle', 'card3Paragraph', 'eventsTitle', 'eventsParagraph', 'contactTitle', 'contactParagraph'],
+        eventosPage:['eventsTitle', 'eventsParagraph'],
+        televisionPage:['mainTitle', 'introParagraph1', 'introParagraph2', 'galleryTitle'], 
+        radioPage:['mainTitle', 'introParagraph', 'programTitle', 'programParagraph1', 'programParagraph2', 'galleryTitle'],
+        publicidadPage:['mainTitle', 'introParagraph1', 'introParagraph2', 'campaign1Title', 'campaign2Title', 'campaign3Title', 'campaign4Title', 'campaign5Title'],
+        comunicacionPage:['mainTitle', 'jefaPrensaTitle', 'jefaPrensaParagraph', 'bpwTitle', 'bpwParagraph', 'dreamlandTitle', 'dreamlandParagraph', 'videosCorpTitle', 'videosCorpParagraph', 'eaveTitle', 'eaveParagraph', 'habecuTitle', 'habecuParagraph', 'inmogoldTitle', 'inmogoldParagraph1', 'inmogoldParagraph2'],
+        investigacionPage:['mainTitle', 'trilogy1Title', 'trilogy1Paragraph', 'trilogy1Video1Title', 'trilogy1Video2Title', 'trilogy1Video3Title', 'nocheReporterosTitle', 'reportaje1Title', 'reportaje1Paragraph', 'reportaje2Title', 'reportaje2Paragraph', 'trilogy2Title', 'trilogy2Paragraph', 'trilogy2Video1Title', 'trilogy2Video2Title', 'trilogy2Video3Title', 'otrosReportajesTitle', 'reportaje3Title', 'reportaje3Paragraph', 'reportaje4Title', 'reportaje4Paragraph', 'reportaje5Title', 'reportaje5Paragraph'],
+        proyectosPage:['mainTitle', 'projectTitle', 'projectParagraph1', 'projectParagraph2', 'projectQuote', 'socialsText'],
+        premiosPage:['mainTitle', 'premio1Title', 'premio1Paragraph1', 'premio1Paragraph2', 'premio1Paragraph3', 'premio1InstagramLink', 'premio2Title', 'premio2Paragraph1', 'premio2Paragraph2', 'premio3Title', 'premio3Paragraph', 'premio4Title', 'premio4Paragraph'],
+        entrevistasPage:['mainTitle', 'introParagraph'],
+         contactPage:['contactTitle', 'contactParagraph'],
+        libroPage:['heroCaption', 'heroTitle', 'heroSubtitle', 'heroQuoteAuthor', 'synopsisSectionTitle', 'synopsisSectionIntro', 'synopsisParagraph1', 'synopsisQuote', 'synopsisParagraph2', 'trailerTitle', 'uncleQuote', 'lagunaTitle', 'lagunaParagraph1', 'lagunaParagraph2', 'artTitle', 'artIntro', 'artQuote', 'artParagraph1', 'artParagraph2', 'taoroSectionTitle', 'taoroSectionParagraph', 'galleryTitle', 'mediaTitle', 'buyTitle', 'buySubtitle', 'buyParagraph', 'buyPhysicalTitle', 'buyPhysicalInfo', 'buyAudiobookTitle', 'buyAudiobookInfo'],
+        modelajePage:['mainTitle', 'introParagraph', 'calendarTitle', 'calendarParagraph']
+    };
+
+    // === TRADUCTOR DE NOMBRES AMIGABLES PARA EL PANEL ===
+    const friendlyLabels = {
+        skillsList: "👉 HABILIDADES (Separadas por comas. Ej: Locución, Radio, Modelo...)",
+        skillsTitle: "Título de la sección Habilidades",
+        aboutMeTitle: "Título sección 'Sobre Mí'",
+        aboutMeParagraph1: "Párrafo 1 'Sobre Mí'",
+        aboutMeParagraph2: "Párrafo 2 'Sobre Mí'",
+        aboutMeQuote: "Frase destacada en 'Sobre Mí'",
+        heroTitle1: "Slide 1 (Presentadora) - Título",
+        heroSubtitle1: "Slide 1 (Presentadora) - Subtítulo",
+        heroTitle2: "Slide 2 (Eventos) - Título",
+        heroSubtitle2: "Slide 2 (Eventos) - Subtítulo",
+        heroTitle3: "Slide 3 (Escritora) - Título",
+        heroSubtitle3: "Slide 3 (Escritora) - Subtítulo",
+        mainTitle: "Título Principal de la página",
+        introParagraph1: "Párrafo de Introducción 1",
+        introParagraph2: "Párrafo de Introducción 2",
+        introParagraph: "Párrafo de Introducción",
+        contactTitle: "Título sección Contacto",
+        contactParagraph: "Texto explicativo sección Contacto"
+    };
+    
+    async function loadPageTexts() {
+        const pageId = pageSelector.value.replace(' (Textos)', '');
+        if (!pageId) return;
+        textFieldsContainer.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
+        try {
+            const docRef = doc(db, 'pages', pageId);
+            const docSnap = await getDoc(docRef);
+            const existingData = docSnap.exists() ? docSnap.data() : {};
+            textFieldsContainer.innerHTML = '';
+            const expectedKeys = pageContentMap[pageId] || Object.keys(existingData);
+            
+            expectedKeys.sort().forEach(key => {
+                if (key.startsWith('heroSlider')) return;
+                
+                // Valor que tiene Firebase
+                const value = existingData[key] !== undefined ? existingData[key] : '';
+                
+                // MIGRACIÓN MÁGICA: Si es la caja de habilidades y está vacía, pone las actuales
+                let finalValue = value;
+                if (key === 'skillsList' && !value) {
+                    finalValue = "Presentación de programas y eventos, Locución, Guionización, Edición de vídeo, Dirección de documentales, Manejo de redes sociales, Representación de marcas / spots, Radio y TV, Gabinete de prensa, Prensa escrita";
+                }
+
+                const fieldWrapper = document.createElement('div');
+                fieldWrapper.className = 'form-section';
+                
+                const label = document.createElement('label');
+                label.className = 'input-label';
+                label.textContent = friendlyLabels[key] || key; 
+                
+                const isLongText = typeof finalValue === 'string' && (finalValue.length > 80 || finalValue.includes('<')) || key === 'skillsList';
+                
+                const inputElement = isLongText ? document.createElement('textarea') : document.createElement('input');
+                inputElement.dataset.key = key;
+                inputElement.value = finalValue;
+                if (isLongText) inputElement.rows = 4;
+                
+                fieldWrapper.appendChild(label);
+                fieldWrapper.appendChild(inputElement);
+                textFieldsContainer.appendChild(fieldWrapper);
+            });
+        } catch (error) {
+            console.error("Error al cargar textos:", error);
+            textFieldsContainer.innerHTML = '<p>Error al cargar los textos.</p>';
+        }
+    }
+
+    async function savePageTexts() {
+        const pageId = pageSelector.value.replace(' (Textos)', '');
+        if (!pageId) return;
+        const dataToUpdate = {};
+        textFieldsContainer.querySelectorAll('input, textarea').forEach(input => {
+            dataToUpdate[input.dataset.key] = input.value;
+        });
+        try {
+            await setDoc(doc(db, 'pages', pageId), dataToUpdate, { merge: true });
+            showToast('¡Textos guardados con éxito!');
+            loadPageTexts();
+        } catch (error) {
+            showToast("Hubo un error al guardar los textos.", "error");
+            console.error("Error al guardar textos:", error);
+        }
+    }
+
+    pageSelector.addEventListener('change', loadPageTexts);
+    saveTextsButton.addEventListener('click', savePageTexts);
+
+    // ===========================================
+    // --- IMPLEMENTACIÓN COMPLETA DE EVENTOS ---
+    // ===========================================
+    
     function getItemsFromEventPreview() {
         const items =[];
         eventImagesPreviewList.querySelectorAll('.preview-item').forEach(el => {
@@ -490,7 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const snapshot = await getDocs(q);
         const events = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         renderEvents(events);
-    }
+    };
 
     function renderEvents(events) {
         eventsListEl.innerHTML = '';
@@ -504,7 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (eventsSortable) eventsSortable.destroy();
         eventsSortable = new Sortable(eventsListEl, { animation: 150, ghostClass: 'sortable-ghost' });
-    }
+    };
     
     function resetEventForm() {
         eventFormTitle.textContent = 'Crear Nuevo Evento';
@@ -516,7 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
         eventVideoUploader.value = '';
         eventVideoThumbnailUploader.value = '';
         cancelEditEventButton.style.display = 'none';
-    }
+    };
     
     eventImagesDropZone.addEventListener('click', () => eventImageUploader.click());
     eventImageUploader.addEventListener('change', e => handleEventImageUpload(e.target.files));
@@ -622,33 +717,16 @@ document.addEventListener('DOMContentLoaded', () => {
         loadEvents();
     });
 
-
     // ===========================================
-    // --- SECCIÓN DE GESTIÓN DE ENTREVISTAS ---
+    // --- IMPLEMENTACIÓN COMPLETA DE ENTREVISTAS ---
     // ===========================================
-    const interviewsListEl = document.getElementById('interviews-list');
-    const interviewFormTitle = document.getElementById('interview-form-title');
-    const interviewIdInput = document.getElementById('interview-id-input');
-    const interviewMainTitleInput = document.getElementById('interview-main-title-input');
-    const interviewSubtitleInput = document.getElementById('interview-subtitle-input');
-    const interviewUrlInput = document.getElementById('interview-url-input');
-    const interviewOrderInput = document.getElementById('interview-order-input');
-    const interviewImagePreview = document.getElementById('interview-image-preview');
-    const interviewImageDropZone = document.getElementById('interview-image-drop-zone');
-    const interviewImageUploader = document.getElementById('interview-image-uploader');
-    const saveInterviewButton = document.getElementById('save-interview-button');
-    const cancelEditInterviewButton = document.getElementById('cancel-edit-interview-button');
-    const saveInterviewOrderButton = document.getElementById('save-interview-order-button');
-    let interviewsSortable = null;
-    let interviewThumbnailUrl = '';
-
     async function loadInterviews() {
         const interviewsListEl = document.getElementById('interviews-list');
         interviewsListEl.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
         const q = query(collection(db, 'interviews'), orderBy('order'));
         const snapshot = await getDocs(q);
         renderInterviews(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
-    }
+    };
 
     function renderInterviews(interviews) {
         const interviewsListEl = document.getElementById('interviews-list');
@@ -663,7 +741,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (interviewsSortable) interviewsSortable.destroy();
         interviewsSortable = new Sortable(interviewsListEl, { animation: 150, ghostClass: 'sortable-ghost' });
-    }
+    };
     
     function resetInterviewForm() {
         const interviewFormTitle = document.getElementById('interview-form-title');
@@ -676,7 +754,7 @@ document.addEventListener('DOMContentLoaded', () => {
         interviewImagePreview.innerHTML = '';
         interviewThumbnailUrl = '';
         cancelEditInterviewButton.style.display = 'none';
-    }
+    };
     
     async function handleInterviewImageUpload(file) {
         if (!file) return;
@@ -758,28 +836,9 @@ document.addEventListener('DOMContentLoaded', () => {
         loadInterviews();
     });
 
-
     // ===========================================
-    // --- SECCIÓN DE GESTIÓN DE PREMIOS ---
+    // --- IMPLEMENTACIÓN COMPLETA DE PREMIOS ---
     // ===========================================
-    const awardsListEl = document.getElementById('awards-list');
-    const awardFormTitle = document.getElementById('award-form-title');
-    const awardIdInput = document.getElementById('award-id-input');
-    const awardTitleInput = document.getElementById('award-title-input');
-    const awardTextInput = document.getElementById('award-text-input');
-    const awardOrderInput = document.getElementById('award-order-input');
-    const saveAwardButton = document.getElementById('save-award-button');
-    const cancelEditAwardButton = document.getElementById('cancel-edit-award-button');
-    const saveAwardOrderButton = document.getElementById('save-award-order-button');
-    const awardImagesPreviewList = document.getElementById('award-images-preview-list');
-    const awardImagesDropZone = document.getElementById('award-images-drop-zone');
-    const awardImageUploader = document.getElementById('award-image-uploader');
-    const addAwardVideoButton = document.getElementById('add-award-video-button');
-    const awardVideoUrlInput = document.getElementById('award-video-url-input');
-    const awardThumbnailUrlInput = document.getElementById('award-thumbnail-url-input');
-    let awardsSortable = null;
-    let awardImagesSortable = null;
-
     const awardLogic = (() => {
         function getItemsFromPreview() {
             const items =[];
@@ -842,7 +901,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const q = query(collection(db, 'awards'), orderBy('order'));
         const snapshot = await getDocs(q);
         renderAwards(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
-    }
+    };
 
     function renderAwards(awards) {
         awardsListEl.innerHTML = '';
@@ -856,7 +915,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (awardsSortable) awardsSortable.destroy();
         awardsSortable = new Sortable(awardsListEl, { animation: 150, ghostClass: 'sortable-ghost' });
-    }
+    };
 
     function resetAwardForm() {
         awardFormTitle.textContent = 'Añadir Nuevo Premio';
@@ -866,7 +925,7 @@ document.addEventListener('DOMContentLoaded', () => {
         awardOrderInput.value = '';
         awardLogic.renderPreview([]);
         cancelEditAwardButton.style.display = 'none';
-    }
+    };
 
     awardImagesDropZone.addEventListener('click', () => awardImageUploader.click());
     awardImageUploader.addEventListener('change', e => awardLogic.handleImageUpload(e.target.files));
@@ -936,9 +995,8 @@ document.addEventListener('DOMContentLoaded', () => {
         loadAwards();
     });
 
-
     // ===========================================
-    // --- IMPLEMENTACIÓN PROGRAMAS TV ----------
+    // --- IMPLEMENTACIÓN COMPLETA PROGRAMAS TV --
     // ===========================================
     const tvProgramsListEl = document.getElementById('tv-programs-list');
     const tvProgramFormTitle = document.getElementById('tv-program-form-title');
@@ -965,7 +1023,6 @@ document.addEventListener('DOMContentLoaded', () => {
             let q = query(collection(db, 'tv_programs'), orderBy('order'));
             let snapshot = await getDocs(q);
 
-            // --- INICIO MIGRACIÓN MÁGICA EN EL PANEL ADMIN ---
             if (snapshot.empty) {
                 console.log("Iniciando migración automática de programas de TV...");
                 const docRef = doc(db, 'pages', 'televisionPage');
@@ -1004,9 +1061,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         order: order++
                     });
                 }
+                
                 snapshot = await getDocs(q);
-                showToast("¡Programas importados automáticamente con éxito!", "success");
             }
+
             renderTVPrograms(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
         } catch(error) {
             console.error("Error:", error);
@@ -1120,83 +1178,4 @@ document.addEventListener('DOMContentLoaded', () => {
             loadTVPrograms();
         });
     }
-
-
-    // ===========================================
-    // --- SECCIÓN DE GESTIÓN DE TEXTOS ---
-    // ===========================================
-    const pageSelector = document.getElementById('page-selector');
-    const textFieldsContainer = document.getElementById('text-fields-container');
-    const saveTextsButton = document.getElementById('save-texts-button');
-
-    const pageContentMap = {
-        homepage:['heroTitle1', 'heroSubtitle1', 'heroTitle2', 'heroSubtitle2', 'heroTitle3', 'heroSubtitle3', 'aboutMeTitle', 'aboutMeParagraph1', 'aboutMeQuote', 'aboutMeParagraph2', 'skillsTitle', 'trajectoryTitle', 'card1Category', 'card1Title', 'card1Subtitle', 'card1Paragraph', 'card2Category', 'card2Title', 'card2Subtitle', 'card2Paragraph', 'card3Category', 'card3Title', 'card3Subtitle', 'card3Paragraph', 'eventsTitle', 'eventsParagraph', 'contactTitle', 'contactParagraph'],
-        eventosPage:['eventsTitle', 'eventsParagraph'],
-        televisionPage:['mainTitle', 'introParagraph1', 'introParagraph2', 'galleryTitle'], 
-        radioPage:['mainTitle', 'introParagraph', 'programTitle', 'programParagraph1', 'programParagraph2', 'galleryTitle'],
-        publicidadPage:['mainTitle', 'introParagraph1', 'introParagraph2', 'campaign1Title', 'campaign2Title', 'campaign3Title', 'campaign4Title', 'campaign5Title'],
-        comunicacionPage:['mainTitle', 'jefaPrensaTitle', 'jefaPrensaParagraph', 'bpwTitle', 'bpwParagraph', 'dreamlandTitle', 'dreamlandParagraph', 'videosCorpTitle', 'videosCorpParagraph', 'eaveTitle', 'eaveParagraph', 'habecuTitle', 'habecuParagraph', 'inmogoldTitle', 'inmogoldParagraph1', 'inmogoldParagraph2'],
-        investigacionPage:['mainTitle', 'trilogy1Title', 'trilogy1Paragraph', 'trilogy1Video1Title', 'trilogy1Video2Title', 'trilogy1Video3Title', 'nocheReporterosTitle', 'reportaje1Title', 'reportaje1Paragraph', 'reportaje2Title', 'reportaje2Paragraph', 'trilogy2Title', 'trilogy2Paragraph', 'trilogy2Video1Title', 'trilogy2Video2Title', 'trilogy2Video3Title', 'otrosReportajesTitle', 'reportaje3Title', 'reportaje3Paragraph', 'reportaje4Title', 'reportaje4Paragraph', 'reportaje5Title', 'reportaje5Paragraph'],
-        proyectosPage:['mainTitle', 'projectTitle', 'projectParagraph1', 'projectParagraph2', 'projectQuote', 'socialsText'],
-        premiosPage:['mainTitle', 'premio1Title', 'premio1Paragraph1', 'premio1Paragraph2', 'premio1Paragraph3', 'premio1InstagramLink', 'premio2Title', 'premio2Paragraph1', 'premio2Paragraph2', 'premio3Title', 'premio3Paragraph', 'premio4Title', 'premio4Paragraph'],
-        entrevistasPage:['mainTitle', 'introParagraph'],
-         contactPage:['contactTitle', 'contactParagraph'],
-        libroPage:['heroCaption', 'heroTitle', 'heroSubtitle', 'heroQuoteAuthor', 'synopsisSectionTitle', 'synopsisSectionIntro', 'synopsisParagraph1', 'synopsisQuote', 'synopsisParagraph2', 'trailerTitle', 'uncleQuote', 'lagunaTitle', 'lagunaParagraph1', 'lagunaParagraph2', 'artTitle', 'artIntro', 'artQuote', 'artParagraph1', 'artParagraph2', 'taoroSectionTitle', 'taoroSectionParagraph', 'galleryTitle', 'mediaTitle', 'buyTitle', 'buySubtitle', 'buyParagraph', 'buyPhysicalTitle', 'buyPhysicalInfo', 'buyAudiobookTitle', 'buyAudiobookInfo'],
-        modelajePage:['mainTitle', 'introParagraph', 'calendarTitle', 'calendarParagraph']
-    };
-    
-    async function loadPageTexts() {
-        const pageId = pageSelector.value.replace(' (Textos)', '');
-        if (!pageId) return;
-        textFieldsContainer.innerHTML = '<div class="loader-container"><div class="loader"></div></div>';
-        try {
-            const docRef = doc(db, 'pages', pageId);
-            const docSnap = await getDoc(docRef);
-            const existingData = docSnap.exists() ? docSnap.data() : {};
-            textFieldsContainer.innerHTML = '';
-            const expectedKeys = pageContentMap[pageId] || Object.keys(existingData);
-            
-            expectedKeys.sort().forEach(key => {
-                if (key.startsWith('heroSlider')) return;
-                const value = existingData[key] || '';
-                const fieldWrapper = document.createElement('div');
-                fieldWrapper.className = 'form-section';
-                const label = document.createElement('label');
-                label.className = 'input-label';
-                label.textContent = key;
-                const isLongText = typeof value === 'string' && (value.length > 100 || value.includes('<'));
-                const inputElement = isLongText ? document.createElement('textarea') : document.createElement('input');
-                inputElement.dataset.key = key;
-                inputElement.value = value;
-                if (isLongText) inputElement.rows = 5;
-                fieldWrapper.appendChild(label);
-                fieldWrapper.appendChild(inputElement);
-                textFieldsContainer.appendChild(fieldWrapper);
-            });
-        } catch (error) {
-            console.error("Error al cargar textos:", error);
-            textFieldsContainer.innerHTML = '<p>Error al cargar los textos.</p>';
-        }
-    }
-
-    async function savePageTexts() {
-        const pageId = pageSelector.value.replace(' (Textos)', '');
-        if (!pageId) return;
-        const dataToUpdate = {};
-        textFieldsContainer.querySelectorAll('input, textarea').forEach(input => {
-            dataToUpdate[input.dataset.key] = input.value;
-        });
-        try {
-            await setDoc(doc(db, 'pages', pageId), dataToUpdate, { merge: true });
-            showToast('¡Textos guardados con éxito!');
-            loadPageTexts();
-        } catch (error) {
-            showToast("Hubo un error al guardar los textos.", "error");
-            console.error("Error al guardar textos:", error);
-        }
-    }
-
-    pageSelector.addEventListener('change', loadPageTexts);
-    saveTextsButton.addEventListener('click', savePageTexts);
-
 });

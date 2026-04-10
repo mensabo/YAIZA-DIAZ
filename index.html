@@ -115,8 +115,6 @@
         </div>
     </section>
 
-    <!-- ... (resto del contenido de la página sin cambios) ... -->
-
     <section id="sobre-mi">
         <div class="container about-content">
             <h2 data-content-id="aboutMeTitle"></h2>
@@ -129,25 +127,21 @@
             <p data-content-id="aboutMeParagraph2"></p>
         </div>
     </section>
+    
     <section id="habilidades" class="section-gray">
         <div class="container">
             <h2 data-content-id="skillsTitle"></h2>
             <div class="header-line"></div>
-            <div class="event-tags">
-                <span>Presentación de programas y eventos</span>
-                <span>Locución</span>
-                <span>Guionización</span>
-                <span>Edición de vídeo</span>
-                <span>Dirección de documentales</span>
-                <span>Manejo de redes sociales</span>
-                <span>Representación de marcas / spots</span>
-                <span>Radio y TV</span>
-                <span>Gabinete de prensa</span>
-                <span>Prensa escrita</span>
+            
+            <!-- AQUI ES DONDE SE CARGARÁN LAS HABILIDADES DINÁMICAMENTE -->
+            <div class="event-tags" id="dynamic-skills-list">
+                <!-- Se cargarán solas desde Firebase (o desde las predeterminadas) -->
             </div>
+
             <img src="images/tele7.jpg" alt="Yaiza Díaz presentando en un escenario" class="section-image">
         </div>
     </section>
+
     <section id="portfolio">
         <div class="container">
             <h2 data-content-id="trajectoryTitle"></h2>
@@ -192,6 +186,7 @@
             </div>
         </div>
     </section>
+
     <section id="home-events">
         <div class="container">
             <h2 data-content-id="eventsTitle">Eventos y Publicidad</h2>
@@ -211,6 +206,7 @@
             </div>
         </div>
     </section>
+
     <section id="contacto">
         <div class="container">
             <h2 data-content-id="contactTitle"></h2>
@@ -221,7 +217,9 @@
             </div>
         </div>
     </section>
+
     <a href="#" id="volver-arriba-btn" title="Volver arriba"><i class="fas fa-arrow-up"></i></a>
+    
     <div id="contact-modal" class="modal-overlay">
         <div class="modal-content contact-modal-content">
             <button id="contact-modal-close" class="modal-close">&times;</button>
@@ -238,6 +236,7 @@
             </div>
         </div>
     </div>
+    
     <div id="lightbox-modal" class="lightbox">
         <span class="lightbox-close">&times;</span>
         <span class="lightbox-prev">&#10094;</span>
@@ -247,6 +246,7 @@
             <div id="lightbox-caption"></div>
         </div>
     </div>
+
     <footer>
         <div class="container">
             <div class="footer-social-icons">
@@ -272,14 +272,12 @@
     <script src="config.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        // ***** INICIO DE LA CORRECCIÓN *****
         import { getFirestore, collection, getDocs, orderBy, query, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         window.firebaseServices = {
-            db, collection, getDocs, orderBy, query, doc, getDoc, setDoc // <-- Añadimos setDoc aquí
+            db, collection, getDocs, orderBy, query, doc, getDoc, setDoc
         };
-        // ***** FIN DE LA CORRECCIÓN *****
     </script>
     <script src="script.js?v=1760385513400" type="module"></script>
 </body>
