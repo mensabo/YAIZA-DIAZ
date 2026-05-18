@@ -680,7 +680,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const target = href.length > 1 ? document.querySelector(href) : null;
                 if (target) {
                     e.preventDefault();
-                    if (navLinks && navLinks.classList.contains('nav-open')) navLinks.classList.remove('nav-open');
+                    
+                    // --- LA SOLUCIÓN ESTÁ AQUÍ ---
+                    // Cerramos el menú Y también quitamos el bloqueo de pantalla
+                    if (navLinks && navLinks.classList.contains('nav-open')) {
+                        navLinks.classList.remove('nav-open');
+                        document.body.classList.remove('scroll-locked');
+                    }
+                    
                     setTimeout(() => performScroll(target), 50);
                 }
             });
@@ -689,7 +696,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (window.location.hash) performScroll(document.querySelector(window.location.hash));
         });
     }
-
     function initializeScrollIndicator() {
         const scrollIndicator = document.getElementById('scroll-indicator');
         const mobileMenuToggle = document.getElementById('mobile-menu-toggle');

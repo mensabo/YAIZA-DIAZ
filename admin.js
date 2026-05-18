@@ -37,6 +37,35 @@ document.addEventListener('DOMContentLoaded', () => {
             },
         }).showToast();
     };
+    // --- MOTOR MÁGICO PARA AUTO-COMPLETAR MINIATURAS DE YOUTUBE ---
+    function autoFillYouTubeThumbnail(urlInput, thumbInputOrCallback) {
+        urlInput.addEventListener('input', () => {
+            let url = urlInput.value.trim();
+            if (!url) return;
+            if (!url.startsWith('http')) url = 'https://' + url; // Por si lo pegas sin el https://
+            
+            let videoId = null;
+            try {
+                if (url.includes('youtube.com/watch')) {
+                    videoId = new URL(url).searchParams.get('v');
+                } else if (url.includes('youtu.be/')) {
+                    videoId = url.split('youtu.be/')[1].split(/[?#]/)[0];
+                } else if (url.includes('youtube.com/embed/')) {
+                    videoId = url.split('youtube.com/embed/')[1].split(/[?#]/)[0];
+                }
+            } catch(e) {}
+            
+            if (videoId) {
+                const thumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+                if (typeof thumbInputOrCallback === 'function') {
+                    thumbInputOrCallback(thumbUrl);
+                } else if (thumbInputOrCallback) {
+                    thumbInputOrCallback.value = thumbUrl;
+                }
+            }
+        });
+    }
+    
 
     // --- LÓGICA DE AUTENTICACIÓN ---
     onAuthStateChanged(auth, user => {
@@ -244,6 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const videoDescriptionInput = document.getElementById('video-description-input');
     const addVideoButton = document.getElementById('add-video-button');
     const saveButton = document.getElementById('save-button');
+    // Activar auto-miniatura para Galerías
+    autoFillYouTubeThumbnail(videoUrlInput, thumbnailUrlInput);
     let gallerySortable = null;
     let currentCollection = 'gallery';
     let currentStoragePath = 'gallery/';
@@ -378,7 +409,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveInterviewOrderButton = document.getElementById('save-interview-order-button');
     let interviewsSortable = null;
     let interviewThumbnailUrl = '';
-
+// Activar auto-miniatura para Entrevistas
+    autoFillYouTubeThumbnail(interviewUrlInput, (thumbUrl) => {
+        if (!interviewThumbnailUrl) {
+            interviewThumbnailUrl = thumbUrl;
+            interviewImagePreview.innerHTML = `<div class="preview-item"><img src="${thumbUrl}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
+        }
+    });
     // ===========================================
     // --- SECCIÓN DE GESTIÓN DE PREMIOS ---
     // ===========================================
@@ -399,6 +436,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const awardThumbnailUrlInput = document.getElementById('award-thumbnail-url-input');
     let awardsSortable = null;
     let awardImagesSortable = null;
+    // Activar auto-miniatura para Premios
+    autoFillYouTubeThumbnail(awardVideoUrlInput, awardThumbnailUrlInput);
+    
 
     // ===========================================
     // --- SECCIÓN DE GESTIÓN DE TEXTOS ---
@@ -1014,6 +1054,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     let tvProgramsSortable = null;
     let tvProgramThumbnailUrl = '';
+    // Activar auto-miniatura para Programas TV
+    autoFillYouTubeThumbnail(tvProgramUrlInput, (thumbUrl) => {
+        if (!tvProgramThumbnailUrl) {
+            tvProgramThumbnailUrl = thumbUrl;
+            tvProgramImagePreview.innerHTML = `<div class="preview-item"><img src="${thumbUrl}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
+        }
+    });
 
     async function loadTVPrograms() {
         if(!tvProgramsListEl) return;
