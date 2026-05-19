@@ -3770,25 +3770,24 @@ body {
 /* ============================================================ */
 .lightbox-close, 
 .modal-close {
-    position: fixed !important; /* Se queda quieto en la pantalla */
+    position: fixed !important; 
     top: 20px !important;
     right: 20px !important;
-    width: 50px !important;      /* Tamaño grande para que sea fácil de pulsar */
+    width: 50px !important;      
     height: 50px !important;
-    background-color: var(--color-acento) !important; /* Color dorado Yaiza */
+    background-color: var(--color-acento) !important; 
     color: white !important;
     border-radius: 50% !important;
     border: 2px solid white !important;
-    display: flex !important;    /* Centra la X */
+    display: flex !important;    
     align-items: center !important;
     justify-content: center !important;
     font-size: 32px !important;
     font-weight: bold !important;
-    z-index: 9999 !important;    /* Asegura que esté por encima de la foto */
+    z-index: 9999 !important;    
     cursor: pointer !important;
     box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
+    /* Hemos eliminado las líneas "opacity" y "visibility" que causaban el escudo invisible */
 }
 
 /* Ajuste específico para que en el móvil no se pierda */
@@ -3800,9 +3799,22 @@ body {
         width: 45px !important;
         height: 45px !important;
         font-size: 26px !important;
-        background-color: #000 !important; /* Fondo negro en móvil para máximo contraste */
+        background-color: #000 !important; 
         border-color: var(--color-acento) !important;
     }
+}
+
+/* ============================================================ */
+/*   ESCUDO ANTI-SOLAPAMIENTO (Hace intocables las ventanas ocultas) */
+/* ============================================================ */
+.modal-overlay, 
+.lightbox {
+    pointer-events: none !important; /* Si está cerrado, los clics lo atraviesan */
+}
+
+.modal-overlay.visible, 
+.lightbox.visible {
+    pointer-events: auto !important; /* Si está abierto, vuelve a detectar clics */
 }
 /* ============================================================ */
 /*   REFUERZO FINAL: SOLUCIÓN FLECHAS LIGHTBOX MÓVIL            */
@@ -4085,4 +4097,193 @@ body {
 
 @media (max-width: 600px) {
     .form-row { flex-direction: column; gap: 0; }
+}
+/* ============================================================ */
+/*   REFUERZO FINAL: SOLUCIÓN FLECHAS LIGHTBOX MÓVIL            */
+/* ============================================================ */
+
+/* Aseguramos que las flechas tengan un área de clic grande y estén visibles */
+.lightbox-prev, 
+.lightbox-next {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    z-index: 10001 !important; /* Por encima de la foto (z-index 10000) */
+    width: 60px !important;    /* Área de contacto ancha */
+    height: 100px !important;  /* Área de contacto alta */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: rgba(0, 0, 0, 0.2) !important; /* Fondo sutil para indicar que es clicable */
+    color: white !important;
+    font-size: 35px !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s ease !important;
+    border-radius: 8px !important;
+}
+
+.lightbox-prev:hover, 
+.lightbox-next:hover {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.lightbox-prev { left: 10px !important; }
+.lightbox-next { right: 10px !important; }
+
+/* Evita que los iconos internos interfieran con el clic del enlace del vídeo */
+.js-video-modal-trigger * {
+    pointer-events: none;
+}
+
+/* Asegura que el trigger tenga el control del evento */
+.js-video-modal-trigger {
+    pointer-events: auto !important;
+    display: block;
+}
+
+/* AJUSTES ESPECÍFICOS PARA MÓVIL (768px o menos) */
+@media (max-width: 768px) {
+    /* Hacemos la foto un poco más pequeña de ancho para que no tape las flechas laterales */
+    #lightbox-image {
+        max-width: 82vw !important; 
+        max-height: 70vh !important;
+        object-fit: contain !important;
+    }
+
+    /* En móvil, hacemos las flechas más opacas para que el usuario las vea claramente */
+    .lightbox-prev, 
+    .lightbox-next {
+        width: 55px !important;
+        height: 80px !important;
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        font-size: 30px !important;
+    }
+    
+    /* Evitamos que el pie de foto (caption) se monte sobre las flechas */
+    #lightbox-caption {
+        width: 80% !important;
+        margin: 15px auto !important;
+        font-size: 0.9rem !important;
+    }
+}
+/* ============================================================ */
+/*   SOLUCIÓN ÁREA TÁCTIL: BOTÓN MENÚ MÓVIL GIGANTE             */
+/* ============================================================ */
+@media (max-width: 768px) {
+    #mobile-menu-toggle {
+        /* Hacemos que el botón sea una caja grande y centrada */
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        
+        /* Área de impacto mucho más grande (imposible fallar con el dedo) */
+        width: 55px !important;
+        height: 55px !important;
+        
+        background: transparent !important;
+        border: none !important;
+        color: var(--color-blanco) !important;
+        font-size: 2.2rem !important; /* Las rayitas un pelín más grandes */
+        
+        /* Ajustes de posición para que siga alineado a la derecha */
+        padding: 0 !important; 
+        margin-right: -10px !important; 
+        
+        /* Reglas anti-bloqueo táctil de los móviles */
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: transparent !important;
+        z-index: 9999 !important;
+    }
+}
+/* ============================================================ */
+/*   SOLUCIÓN DEFINITIVA: ÁREA TÁCTIL Y CUADRO AZUL EN MÓVILES  */
+/* ============================================================ */
+* {
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+@media (max-width: 768px) {
+    #mobile-menu-toggle {
+        width: 60px !important;
+        height: 60px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: absolute !important;
+        right: 10px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        font-size: 2.2rem !important;
+        z-index: 10000 !important;
+        touch-action: manipulation !important; 
+        outline: none !important;
+    }
+    
+    header nav.container {
+        position: relative;
+    }
+}
+@media (max-width: 768px) {
+    #mobile-menu-toggle {
+        touch-action: manipulation !important;
+        -webkit-tap-highlight-color: transparent !important;
+        width: 55px !important;
+        height: 55px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin-right: -10px !important; /* Ajuste visual */
+    }
+    
+    /* El SVG interior no debe interceptar el clic bajo ningún concepto */
+    #mobile-menu-toggle svg, 
+    #mobile-menu-toggle rect {
+        pointer-events: none !important;
+    }
+}
+/* ============================================================ */
+/*   SOLUCIÓN DEFINITIVA MENÚ: BOTÓN CSS PURO (ANTIFALLOS)      */
+/* ============================================================ */
+@media (max-width: 768px) {
+    #mobile-menu-toggle {
+        color: transparent !important; /* Hace invisible el texto original */
+        font-size: 0 !important;
+        width: 60px !important;
+        height: 60px !important;
+        background: transparent !important;
+        border: none !important;
+        position: absolute !important;
+        right: 10px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        z-index: 10000 !important;
+        -webkit-tap-highlight-color: transparent !important;
+        touch-action: manipulation !important;
+        outline: none !important;
+        cursor: pointer !important;
+        padding: 0 !important;
+    }
+
+    /* Dibujamos las 3 rayas como una ilusión óptica (sombras). 
+       El móvil no puede tocarlas ni bloquearse al pulsarlas. */
+    #mobile-menu-toggle::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 32px;
+        height: 3px;
+        background-color: var(--color-blanco);
+        border-radius: 2px;
+        box-shadow: 0 -10px 0 var(--color-blanco), 0 10px 0 var(--color-blanco);
+        pointer-events: none !important;
+    }
+    
+    header nav.container {
+        position: relative;
+    }
 }
