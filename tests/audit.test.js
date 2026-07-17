@@ -159,5 +159,26 @@ for (const f of PUBLIC_HTML_FILES) {
 }
 
 // ---------------------------------------------------------------------------
+// 9. SEO: robots.txt, sitemap.xml, canonical, admin sin indexar, un h1 por pagina
+// ---------------------------------------------------------------------------
+check('robots.txt existe', fs.existsSync(path.join(ROOT, 'robots.txt')));
+check('sitemap.xml existe', fs.existsSync(path.join(ROOT, 'sitemap.xml')));
+if (fs.existsSync(path.join(ROOT, 'robots.txt'))) {
+  const robots = readFile('robots.txt');
+  check('robots.txt referencia el sitemap', /Sitemap:/.test(robots));
+  check('robots.txt bloquea admin.html', /Disallow:\s*\/admin\.html/.test(robots));
+}
+
+for (const f of PUBLIC_HTML_FILES) {
+  const content = readFile(f);
+  check(`${f}: tiene rel="canonical"`, /rel="canonical"/.test(content));
+  const h1Count = (content.match(/<h1\b/g) || []).length;
+  check(`${f}: tiene exactamente un <h1>`, h1Count === 1, `encontrados: ${h1Count}`);
+}
+
+const adminContent = readFile('admin.html');
+check('admin.html: tiene meta robots noindex,nofollow', /name="robots"\s+content="noindex,\s*nofollow"/.test(adminContent));
+
+// ---------------------------------------------------------------------------
 console.log(`\n${passes} checks OK, ${failures} checks fallidos.`);
 process.exit(failures > 0 ? 1 : 0);
