@@ -1,24 +1,32 @@
 rules_version = '2';
-
 service firebase.storage {
   match /b/{bucket}/o {
+
     function isAdmin() {
       return request.auth != null && request.auth.token.email == 'mensabo78@gmail.com';
     }
 
-    // Adjuntos del formulario de contacto: cualquiera puede subir (es un
-    // formulario público), tamaño limitado a 10MB, sin sobrescritura de
-    // archivos existentes ni borrado público.
+    // --- REGLA ESPECÍFICA PARA ADJUNTOS DEL FORMULARIO ---
+    // Esta regla es más específica, por lo que se evalúa primero.
     match /contact-attachments/{fileName} {
-      allow read: if true;
+
+      // Permite que CUALQUIER persona suba (cree) un archivo a esta carpeta
+      // (es el formulario público de contacto), con límite de tamaño.
       allow create: if request.resource.size < 10 * 1024 * 1024;
-      allow update, delete: if isAdmin();
+
+      // Nadie puede leer, modificar o borrar los archivos adjuntos,
+      // excepto la cuenta admin. Esto protege la privacidad.
+      allow read, update, delete: if isAdmin();
     }
 
-    // Resto de imágenes/vídeos del sitio: lectura pública, escritura solo
-    // admin, limitada a 20MB por archivo.
+    // --- REGLA GENERAL PARA TODOS LOS DEMÁS ARCHIVOS ---
+    // Esta regla se aplica a todas las demás carpetas (imágenes de galerías, etc.).
     match /{allPaths=**} {
-      allow read: if true;
+
+      // Permite que cualquiera lea los archivos (necesario para que se vean en la web).
+      allow read;
+
+      // Solo la cuenta admin puede escribir en cualquier otro lugar.
       allow write: if isAdmin() && request.resource.size < 20 * 1024 * 1024;
     }
   }
