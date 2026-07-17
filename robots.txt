@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin.html
+Disallow: /admin.js
+Disallow: /functions/
+
+Sitemap: https://www.yaizadiaz.com/sitemap.xml

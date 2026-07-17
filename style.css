@@ -54,14 +54,14 @@ h1, h2, h3, h4 {
     line-height: 1.2;
 }
 
-h2 {
+h2, h1.page-title {
     font-size: 2.5rem;
     text-align: center;
     margin-bottom: 4rem; /* Espacio por defecto para títulos SIN línea */
 }
 
 /* Reduce el margen de H2 si va seguido de la línea, para un espaciado consistente */
-h2:has(+ .header-line) {
+h2:has(+ .header-line), h1.page-title:has(+ .header-line) {
     margin-bottom: 1.5rem;
 }
 
