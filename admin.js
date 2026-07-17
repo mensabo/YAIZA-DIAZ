@@ -68,8 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
     // --- LÓGICA DE AUTENTICACIÓN ---
+    const ADMIN_EMAIL = 'mensabo78@gmail.com';
+
     onAuthStateChanged(auth, user => {
-        if (user) {
+        if (user && user.email === ADMIN_EMAIL) {
             loginContainer.style.display = 'none';
             adminPanel.style.display = 'block';
             loadHomepageSliderData();
@@ -80,6 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
             loadTVPrograms();
             loadPageTexts();
         } else {
+            if (user) {
+                // Cuenta autenticada pero no autorizada: cerrar sesión.
+                signOut(auth);
+                showToast('No tienes permiso para acceder al panel.', 'error');
+            }
             loginContainer.style.display = 'block';
             adminPanel.style.display = 'none';
         }

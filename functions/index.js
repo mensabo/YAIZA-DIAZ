@@ -9,6 +9,16 @@ admin.initializeApp();
 const GMAIL_EMAIL = "mensabo78@gmail.com";
 const GMAIL_APP_PASSWORD = defineSecret("GMAIL_APP_PASSWORD");
 
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  }[char]));
+}
+
 exports.sendContactEmail = onDocumentCreated(
   { document: "contactMessages/{messageId}", secrets: [GMAIL_APP_PASSWORD] },
   (event) => {
@@ -21,24 +31,29 @@ exports.sendContactEmail = onDocumentCreated(
   });
 
   const data = event.data.data();
+  const name = escapeHtml(data.name);
+  const email = escapeHtml(data.email);
+  const subject = escapeHtml(data.subject);
+  const message = escapeHtml(data.message);
+  const attachmentName = escapeHtml(data.attachmentName);
 
   const mailOptions = {
-    from: `"${data.name}" <${GMAIL_EMAIL}>`,
+    from: `"${name}" <${GMAIL_EMAIL}>`,
     to: "yaizadiaztv@gmail.com",
     replyTo: data.email,
-    subject: `Nuevo mensaje web: ${data.subject}`,
+    subject: `Nuevo mensaje web: ${subject}`,
     html: `
       <h1>Nuevo Mensaje de yaizadiaz.com</h1>
-      <p><strong>De:</strong> ${data.name}</p>
-      <p><strong>Email:</strong> ${data.email}</p>
-      <p><strong>Asunto:</strong> ${data.subject}</p>
+      <p><strong>De:</strong> ${name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Asunto:</strong> ${subject}</p>
       <hr>
       <h3>Mensaje:</h3>
-      <p style="font-size: 1.1em; white-space: pre-wrap;">${data.message}</p>
+      <p style="font-size: 1.1em; white-space: pre-wrap;">${message}</p>
       <hr>
       ${
         data.attachment
-          ? `<p><strong>Archivo Adjunto:</strong> <a href="${data.attachment}">Descargar ${data.attachmentName}</a></p>`
+          ? `<p><strong>Archivo Adjunto:</strong> <a href="${data.attachment}">Descargar ${attachmentName}</a></p>`
           : "<p><em>No se adjuntó ningún archivo.</em></p>"
       }
       <br>

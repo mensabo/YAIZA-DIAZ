@@ -18,14 +18,14 @@
     
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.yaizadiaz.com/index.html">
+    <meta property="og:url" content="https://www.yaizadiaz.com/">
     <meta property="og:title" content="Yaiza Díaz - Presentadora, Escritora y Comunicadora">
     <meta property="og:description" content="Web oficial de Yaiza Díaz. Descubre mi trayectoria, mi novela 'La hija del ciego' y mis proyectos.">
     <meta property="og:image" content="https://www.yaizadiaz.com/images/comunicadora-bg.jpeg">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://www.yaizadiaz.com/index.html">
+    <meta property="twitter:url" content="https://www.yaizadiaz.com/">
     <meta name="twitter:title" content="Yaiza Díaz - Presentadora, Escritora y Comunicadora">
     <meta name="twitter:description" content="Web oficial de Yaiza Díaz. Descubre mi trayectoria, mi novela 'La hija del ciego' y mis proyectos.">
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/comunicadora-bg.jpeg">
@@ -58,6 +58,7 @@
     </script>
 </head>
 <body id="homepage">
+    <a href="#main-content" class="skip-link">Saltar al contenido</a>
     
     <header>
         <nav class="container">
@@ -85,7 +86,7 @@
         </nav>
     </header>
 
-    <section class="hero-dynamic">
+    <section id="main-content" class="hero-dynamic">
         <div class="hero-background-container"></div>
         <div class="hero-tabs-container">
             <div class="hero-tabs-desktop">
@@ -273,28 +274,7 @@
         </div>
     </div>
 
-    <footer>
-        <div class="container">
-            <div class="footer-social-icons">
-                 <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Yaiza Díaz"><i class="fab fa-instagram"></i></a>
-                <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Yaiza Díaz"><i class="fab fa-linkedin"></i></a>
-                <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer" aria-label="Twitter de Yaiza Díaz"><i class="fab fa-twitter"></i></a>
-            </div>
-            <p class="footer-legal-links">
-                <a href="aviso-legal.html">Aviso legal</a> • 
-                <a href="politica-privacidad.html">Política de privacidad</a> • 
-                <a href="politica-cookies.html">Política de cookies</a>
-            </p>
-            <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
-           <p class="developer-credit">
-              Developed by 
-              <a href="images/chacho-creations-logo.png" class="developer-logo-link expandable-image">
-                <img src="images/chacho-creations-logo.png" alt="ChachoCreations Logo" loading="lazy" width="1014" height="905">
-              </a>
-            </p>
-        </div>
-    </footer>
-    
+    <footer id="site-footer"></footer>
     <script src="config.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";

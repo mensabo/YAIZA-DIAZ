@@ -1,5 +1,36 @@
+// =======================================================
+// 0. FOOTER COMPARTIDO
+// Se inyecta aquí en vez de repetirse en las 17 páginas públicas,
+// para que un cambio (redes sociales, año, etc.) se aplique a todas
+// a la vez. Requiere <footer id="site-footer"></footer> vacío en el HTML.
+// =======================================================
+const SITE_FOOTER_HTML = `
+    <div class="container">
+        <div class="footer-social-icons">
+            <a href="https://www.instagram.com/yaizadiaztv/?hl=es" target="_blank" rel="noopener noreferrer" aria-label="Instagram de Yaiza Díaz"><i class="fab fa-instagram"></i></a>
+            <a href="https://es.linkedin.com/in/yaiza-d%C3%ADaz-51005412b" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Yaiza Díaz"><i class="fab fa-linkedin"></i></a>
+            <a href="https://x.com/yaizadiaztv?lang=es" target="_blank" rel="noopener noreferrer" aria-label="Twitter de Yaiza Díaz"><i class="fab fa-twitter"></i></a>
+        </div>
+        <p class="footer-legal-links">
+            <a href="aviso-legal.html">Aviso legal</a> •
+            <a href="politica-privacidad.html">Política de privacidad</a> •
+            <a href="politica-cookies.html">Política de cookies</a>
+        </p>
+        <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
+        <p class="developer-credit">
+            Developed by
+            <a href="images/chacho-creations-logo.png" class="developer-logo-link expandable-image">
+                <img src="images/chacho-creations-logo.png" alt="ChachoCreations Logo" loading="lazy" width="1014" height="905">
+            </a>
+        </p>
+    </div>
+`;
+
 document.addEventListener('DOMContentLoaded', () => {
-    
+
+    const siteFooter = document.getElementById('site-footer');
+    if (siteFooter) siteFooter.innerHTML = SITE_FOOTER_HTML;
+
     // =======================================================
     // 1. VARIABLES GLOBALES DE LA PÁGINA
     // =======================================================

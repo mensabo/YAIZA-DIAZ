@@ -1,0 +1,66 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'mensabo78@gmail.com';
+    }
+
+    // --- CONTENIDO PÚBLICO GESTIONADO POR EL ADMIN ---
+
+    match /pages/{pageId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /events/{eventId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /interviews/{interviewId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /awards/{awardId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /tv_programs/{programId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // GALERÍAS
+    match /gallery/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /modeling_gallery/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /television_gallery/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /radio_gallery/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /habecu_gallery/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // --- FORMULARIO DE CONTACTO ---
+    // Cualquiera puede crear un mensaje; solo el admin puede leerlos/gestionarlos.
+    match /contactMessages/{messageId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

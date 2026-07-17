@@ -1,4 +1,6 @@
-// Este archivo contiene la configuración de Firebase y NO DEBE subirse a GitHub.
+// Configuración pública de Firebase (cliente web). Estas claves no son secretas
+// por diseño: la seguridad real depende de firestore.rules y storage.rules.
+// Este archivo SÍ debe estar en git, o el sitio se rompe en producción.
 const firebaseConfig = {
     apiKey: "AIzaSyD8m41DIZSXeQDkicjan-cSwlPfC99dmaw",
     authDomain: "yaiza-diaz.firebaseapp.com",
