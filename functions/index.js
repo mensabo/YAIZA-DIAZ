@@ -1,25 +1,25 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const nodemailer = require("nodemailer");
+const { defineSecret } = require("firebase-functions/params");
+const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 
 admin.initializeApp();
 
-// --- CONFIGURACIÓN DE EMAIL ---
-const GMAIL_EMAIL = "mensabo78@gmail.com"; // TU CORREO DE GMAIL
-const GMAIL_APP_PASSWORD = "xpxmorkerckbggrl"; // TU CONTRASEÑA DE APLICACIÓN
+const GMAIL_EMAIL = "mensabo78@gmail.com";
+const GMAIL_APP_PASSWORD = defineSecret("GMAIL_APP_PASSWORD");
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: GMAIL_EMAIL,
-    pass: GMAIL_APP_PASSWORD,
-  },
-});
+exports.sendContactEmail = onDocumentCreated(
+  { document: "contactMessages/{messageId}", secrets: [GMAIL_APP_PASSWORD] },
+  (event) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: GMAIL_EMAIL,
+      pass: GMAIL_APP_PASSWORD.value(),
+    },
+  });
 
-// ESTA ES LA LÍNEA QUE HA CAMBIADO
-const { onDocumentCreated } = require("firebase-functions/v2/firestore");
-
-exports.sendContactEmail = onDocumentCreated("contactMessages/{messageId}", (event) => {
   const data = event.data.data();
 
   const mailOptions = {
