@@ -196,5 +196,29 @@ for (const f of HTML_FILES) {
 }
 
 // ---------------------------------------------------------------------------
+// 11. Hero de la home: fondo estatico como fallback + preload, para que no
+//     se quede en blanco mientras se resuelve la imagen dinamica de Firebase
+// ---------------------------------------------------------------------------
+const styleCss = readFile('style.css');
+check(
+  '.hero-background-container tiene background-image estatico de fallback',
+  /\.hero-background-container\s*\{[^}]*background-image:\s*url\(/s.test(styleCss)
+);
+check(
+  '.hero-background-container tiene background-color de fallback',
+  /\.hero-background-container\s*\{[^}]*background-color:/s.test(styleCss)
+);
+const indexContent = readFile('index.html');
+check(
+  'index.html: precarga la imagen del hero con rel="preload"',
+  /<link rel="preload" as="image"/.test(indexContent)
+);
+for (const f of PUBLIC_HTML_FILES) {
+  const content = readFile(f);
+  check(`${f}: preconnect a firestore.googleapis.com`, content.includes('https://firestore.googleapis.com'));
+  check(`${f}: preconnect a firebasestorage.googleapis.com`, content.includes('https://firebasestorage.googleapis.com'));
+}
+
+// ---------------------------------------------------------------------------
 console.log(`\n${passes} checks OK, ${failures} checks fallidos.`);
 process.exit(failures > 0 ? 1 : 0);
