@@ -180,5 +180,21 @@ const adminContent = readFile('admin.html');
 check('admin.html: tiene meta robots noindex,nofollow', /name="robots"\s+content="noindex,\s*nofollow"/.test(adminContent));
 
 // ---------------------------------------------------------------------------
+// 10. Sin rutas absolutas root-relative para manifest/favicon: rompen en
+//     subpaths (p.ej. preview de GitHub Pages en /usuario/repo/) aunque
+//     funcionen en produccion (dominio raiz)
+// ---------------------------------------------------------------------------
+for (const f of HTML_FILES) {
+  const content = readFile(f);
+  check(`${f}: manifest/favicon usan ruta relativa`, !/href="\/(site\.webmanifest|favicon\.ico)"/.test(content));
+}
+check('images/favicon.ico existe', fs.existsSync(path.join(imagesDir, 'favicon.ico')));
+for (const f of HTML_FILES) {
+  const content = readFile(f);
+  check(`${f}: tiene link rel="icon" (favicon)`, /rel="icon"/.test(content));
+  check(`${f}: tiene link rel="manifest"`, /rel="manifest"/.test(content));
+}
+
+// ---------------------------------------------------------------------------
 console.log(`\n${passes} checks OK, ${failures} checks fallidos.`);
 process.exit(failures > 0 ? 1 : 0);
