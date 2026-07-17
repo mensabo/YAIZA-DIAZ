@@ -184,6 +184,11 @@ nav ul li a:hover::after {
     height: 100%;
     background-size: cover;
     background-repeat: no-repeat;
+    background-position: center 20%;
+    /* Fondo estatico local mientras se resuelve la imagen dinamica de
+       Firebase (evita que el hero se vea en blanco durante la carga) */
+    background-image: url('images/comunicadora-bg.jpeg');
+    background-color: #000;
     transition: background-image 1s ease-in-out, opacity 0.3s ease-in-out;
     z-index: 1;
 }
