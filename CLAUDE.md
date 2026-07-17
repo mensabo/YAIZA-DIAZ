@@ -36,5 +36,17 @@ Cuando el usuario escriba **"Jarvis"** en un chat nuevo, significa que hay que a
 
 ## Despliegue
 
-- Firebase Hosting (`firebase.json`, `.firebaserc` → proyecto `yaiza-diaz`).
+- Firebase Hosting (`firebase.json`, `.firebaserc` → proyecto `yaiza-diaz`). El sitio aún no está publicado en `yaizadiaz.com`; mientras tanto el usuario lo revisa vía **GitHub Pages** en `mensabo.github.io/YAIZA-DIAZ/`, sirviendo desde `master` (por eso las URLs no tienen dominio propio y las rutas deben funcionar igual en un subpath que en la raíz — ver más abajo).
 - Cloud Functions en carpeta `functions/` (Node 22).
+- **`firebase.json` no traía bloque `hosting`** hasta la auditoría de 2026-07-17 (solo `functions`). Se añadió `hosting.public: "."`, `cleanUrls: true` y `headers` con cache-control (imágenes/audio/vídeo 7 días, css/js 1 año ya que usan `?v=` para cache-busting, HTML sin cache).
+
+## Auditoría de rendimiento y SEO (2026-07-17)
+
+Se hizo una auditoría completa a petición del usuario; quedó todo en `tests/audit.test.js` (`node tests/audit.test.js`, sin dependencias) para evitar regresiones. Puntos importantes para futuras sesiones:
+
+- **Rutas absolutas rompen en GitHub Pages**: `href="/site.webmanifest"` y `href="/favicon.ico"` (con `/` inicial) solo funcionan si el sitio vive en la raíz del dominio. Como la preview está en `mensabo.github.io/YAIZA-DIAZ/` (subpath), esas rutas absolutas devolvían 404. **Usar siempre rutas relativas** (`site.webmanifest`, `images/favicon.ico`) para que funcione tanto en la preview como en producción (dominio raíz).
+- `images/favicon.ico` existe pero vivía sin referenciar correctamente (el HTML apuntaba a `/favicon.ico` en la raíz, que no existe; el archivo real está en `images/favicon.ico`).
+- Imágenes: se recomprimieron in-place con `sharp` (mismo nombre/formato, sin tocar el HTML) las que sí se usan, ~10.4MB→~4MB, redimensionando a máx. 1920px de lado. Hay muchas imágenes en `images/` y `recursos/` que no se referencian desde ningún `.html/.js/.css` — no se borraron (podrían ser para uso futuro vía admin panel), pero si el repo pesa mucho, ahí hay margen.
+- SEO: se añadió `robots.txt`, `sitemap.xml`, `rel="canonical"` autoreferenciado en las 17 páginas públicas (usando URLs limpias sin `.html`, acorde a `cleanUrls: true`), `meta robots noindex,nofollow` en `admin.html`, y JSON-LD `Person` en `index.html`.
+- **El hero de `index.html` se cargaba 100% por JS** (esperar SDK Firebase desde gstatic → consultar Firestore `pages/homepage` → elegir imagen de Firebase Storage), sin ningún fondo por defecto → se veía en blanco unos segundos en carga. Fix: `.hero-background-container` tiene ahora un `background-image` CSS estático de respaldo + `background-color`, con `rel=preload fetchpriority=high` en `index.html` (es el elemento LCP). Además, en `script.js`, `switchTab()` usa `HERO_FALLBACK_IMAGES` (un fondo local temático por cada pestaña: Presentadora/TV, Eventos, Escritora) en vez de un placeholder genérico cuando Firestore aún no ha respondido — importante: esto se implementó en JS y no en CSS, porque `switchTab()` siempre fija `backgroundImage` como estilo inline, que tiene más especificidad que cualquier regla CSS.
+- El PR de esta auditoría (#3) se fusionó por squash; para el follow-up (#4, fix del hero) hubo que reencauzar la rama de trabajo (`git reset --hard origin/master` + reaplicar cambios) porque el squash-merge deja el historial de la rama vieja divergente del nuevo commit en `master`.
