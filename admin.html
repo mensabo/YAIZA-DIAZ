@@ -33,6 +33,7 @@
             <button id="nav-galleries">Gestionar Galerías</button>
             <button id="nav-events">Gestionar Eventos</button>
             <button id="nav-interviews">Gestionar Entrevistas</button>
+            <button id="nav-tv-programs">Gestionar Programas TV</button>
             <button id="nav-awards">Gestionar Premios</button>
             <button id="nav-texts">Gestionar Textos</button>
         </nav>
@@ -73,7 +74,7 @@
             <button id="save-homepage-button">Guardar Cambios de Inicio</button>
         </div>
 
-        <!-- ========= PANEL DE GALERÍAS ========= -->
+        <!-- ========= PANEL DE GALERÍAS (ACTUALIZADO PARA EDICIÓN) ========= -->
         <div id="galleries-panel" class="panel">
             
             <div class="gallery-selector-container">
@@ -96,11 +97,15 @@
                 </div>
             </div>
             <div class="form-section">
-                <h3>Añadir Nuevo Vídeo</h3>
-                <input type="text" id="video-url-input" placeholder="URL del vídeo (.mp4, .webm...)">
+                <h3 id="gallery-form-title">Añadir Nuevo Vídeo</h3>
+                <input type="hidden" id="gallery-item-id-input">
+                <input type="text" id="video-url-input" placeholder="URL del vídeo (.mp4, .webm, YouTube...)">
                 <input type="text" id="thumbnail-url-input" placeholder="URL de la imagen miniatura (.jpg, .png...)">
                 <input type="text" id="video-description-input" placeholder="Descripción del vídeo">
-                <button id="add-video-button">Añadir Vídeo a la Galería</button>
+                <div class="form-buttons">
+                    <button id="add-video-button">Añadir Vídeo a la Galería</button>
+                    <button id="cancel-edit-gallery-button" style="display:none; background-color: var(--color-secundario);">Cancelar Edición</button>
+                </div>
             </div>
             <hr class="section-divider">
             <h3>Editar Galería Actual</h3>
@@ -109,7 +114,7 @@
             <button id="save-button">Guardar Cambios de Galería</button>
         </div>
         
-        <!-- ========= RESTO DE PANELES SIN CAMBIOS ========= -->
+        <!-- ========= PANEL DE EVENTOS ========= -->
         <div id="events-panel" class="panel">
             <h2>Gestionar Eventos y Publicidad</h2>
             <div class="form-section">
@@ -177,6 +182,36 @@
             <p>Arrastra las entrevistas para reordenarlas y pulsa "Guardar Orden".</p>
             <div id="interviews-list"></div>
             <button id="save-interview-order-button">Guardar Orden de Entrevistas</button>
+        </div>
+
+        <!-- ========= PANEL DE PROGRAMAS TV ========= -->
+        <div id="tv-programs-panel" class="panel">
+            <h2>Gestionar Programas de Televisión</h2>
+            <div class="form-section">
+                <h3 id="tv-program-form-title">Añadir Nuevo Programa</h3>
+                <input type="hidden" id="tv-program-id-input">
+                <input type="text" id="tv-program-title-input" placeholder="Título (ej: 'Telenoticias Fin de Semana')">
+                <textarea id="tv-program-text-input" placeholder="Descripción (opcional)..." rows="3"></textarea>
+                <input type="text" id="tv-program-url-input" placeholder="URL completa del vídeo (YouTube, Vimeo...)">
+
+                <label class="input-label">Imagen de miniatura:</label>
+                <div id="tv-program-image-preview" class="gallery-list" style="grid-template-columns: minmax(180px, 220px);"></div>
+                <div id="tv-program-image-drop-zone" class="drop-zone-small">
+                    <p>Arrastra una imagen aquí o haz clic para subirla</p>
+                </div>
+                <input type="file" id="tv-program-image-uploader" accept="image/*" style="display: none;">
+                
+                <input type="number" id="tv-program-order-input" placeholder="Número de orden (ej: 0, 1, 2...)">
+                <div class="form-buttons">
+                    <button id="save-tv-program-button">Guardar Programa</button>
+                    <button id="cancel-edit-tv-program-button" style="display:none;">Cancelar Edición</button>
+                </div>
+            </div>
+            <hr class="section-divider">
+            <h3>Programas Creados</h3>
+            <p>Arrastra los programas para reordenarlos y pulsa "Guardar Orden".</p>
+            <div id="tv-programs-list"></div>
+            <button id="save-tv-program-order-button">Guardar Orden de Programas</button>
         </div>
 
         <div id="awards-panel" class="panel">
