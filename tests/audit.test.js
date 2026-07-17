@@ -1,0 +1,163 @@
+#!/usr/bin/env node
+/**
+ * Auditoria estatica de rendimiento e integridad del sitio.
+ * Sin dependencias externas: node tests/audit.test.js
+ * Sale con codigo 1 si algun check falla.
+ */
+const fs = require('fs');
+const path = require('path');
+
+const ROOT = path.join(__dirname, '..');
+const HTML_FILES = fs.readdirSync(ROOT).filter(f => f.endsWith('.html'));
+const PUBLIC_HTML_FILES = HTML_FILES.filter(f => f !== 'admin.html');
+
+let failures = 0;
+let passes = 0;
+
+function check(name, condition, detail) {
+  if (condition) {
+    passes++;
+  } else {
+    failures++;
+    console.log(`FAIL: ${name}${detail ? ' - ' + detail : ''}`);
+  }
+}
+
+function readFile(p) {
+  return fs.readFileSync(path.join(ROOT, p), 'utf-8');
+}
+
+// ---------------------------------------------------------------------------
+// 1. Peso de imagenes: ninguna imagen referenciada debe superar 400KB
+// ---------------------------------------------------------------------------
+const MAX_IMAGE_BYTES = 400 * 1024;
+const imagesDir = path.join(ROOT, 'images');
+const referencedImages = new Set();
+for (const f of [...HTML_FILES, 'script.js', 'admin.js', 'evento.js', 'style.css']) {
+  const content = readFile(f);
+  const matches = content.matchAll(/images\/([a-zA-Z0-9_\-.]+\.(?:png|jpe?g|webp|gif|svg))/g);
+  for (const m of matches) referencedImages.add(m[1]);
+}
+for (const img of referencedImages) {
+  const fp = path.join(imagesDir, img);
+  if (!fs.existsSync(fp)) continue;
+  const size = fs.statSync(fp).size;
+  check(`imagen ${img} <= 400KB`, size <= MAX_IMAGE_BYTES, `${(size / 1024).toFixed(0)}KB`);
+}
+
+// ---------------------------------------------------------------------------
+// 2. Todas las <img> con src local real deben tener loading="lazy"
+//    (excepto el logo de navegacion, visible above-the-fold en toda pagina)
+// ---------------------------------------------------------------------------
+for (const f of PUBLIC_HTML_FILES) {
+  const content = readFile(f);
+  const imgTags = content.match(/<img\b[^>]*>/g) || [];
+  for (const tag of imgTags) {
+    if (/src=""/.test(tag)) continue; // lightbox / galeria dinamica, sin src inicial
+    if (/logo-personal\.png/.test(tag)) continue; // logo de nav, above-the-fold
+    check(
+      `${f}: <img> tiene loading="lazy"`,
+      /loading="lazy"/.test(tag),
+      tag.slice(0, 80)
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 3. Todas las <img> con src local (images/...) deben declarar width/height
+//    para reservar espacio y evitar layout shift (CLS)
+// ---------------------------------------------------------------------------
+for (const f of PUBLIC_HTML_FILES) {
+  const content = readFile(f);
+  const imgTags = content.match(/<img\b[^>]*src="images\/[^"]+"[^>]*>/g) || [];
+  for (const tag of imgTags) {
+    check(
+      `${f}: <img> local tiene width/height`,
+      /width="\d+"/.test(tag) && /height="\d+"/.test(tag),
+      tag.slice(0, 80)
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 4. firebase.json valido y con hosting + cache headers configurados
+// ---------------------------------------------------------------------------
+try {
+  const fbJson = JSON.parse(readFile('firebase.json'));
+  check('firebase.json: es JSON valido', true);
+  check('firebase.json: tiene bloque "hosting"', !!fbJson.hosting);
+  check('firebase.json: hosting tiene "headers"', !!(fbJson.hosting && fbJson.hosting.headers && fbJson.hosting.headers.length > 0));
+  const headerSources = (fbJson.hosting?.headers || []).map(h => h.source).join(' ');
+  check('firebase.json: cache headers cubren imagenes/audio/video', /jpg|png|mp4|mp3/.test(headerSources));
+  check('firebase.json: cache headers cubren css/js', /css|js/.test(headerSources));
+} catch (e) {
+  check('firebase.json: es JSON valido', false, e.message);
+}
+
+// ---------------------------------------------------------------------------
+// 5. Sin marcadores de conflicto de merge en ningun archivo trackeado relevante
+// ---------------------------------------------------------------------------
+const TRACKED_EXT = ['.html', '.js', '.css', '.json'];
+function walk(dir, files = []) {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.name === 'node_modules' || entry.name === '.git') continue;
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) walk(full, files);
+    else if (TRACKED_EXT.includes(path.extname(entry.name))) files.push(full);
+  }
+  return files;
+}
+// Solo se marca conflicto real si aparecen los marcadores de inicio/fin de
+// Git a comienzo de linea (evita falsos positivos con separadores tipo
+// "// =======" usados como comentarios decorativos en el codigo).
+const conflictStart = /^<{7}(?!=)/m;
+const conflictEnd = /^>{7}(?!=)/m;
+for (const fp of walk(ROOT)) {
+  if (fp === __filename) continue;
+  const content = fs.readFileSync(fp, 'utf-8');
+  const rel = path.relative(ROOT, fp);
+  const hasConflict = conflictStart.test(content) || conflictEnd.test(content);
+  check(`${rel}: sin marcadores de conflicto de merge`, !hasConflict);
+}
+
+// ---------------------------------------------------------------------------
+// 6. Sin credenciales hardcodeadas obvias en functions/index.js
+// ---------------------------------------------------------------------------
+const functionsIndex = path.join(ROOT, 'functions', 'index.js');
+if (fs.existsSync(functionsIndex)) {
+  const content = fs.readFileSync(functionsIndex, 'utf-8');
+  check(
+    'functions/index.js: usa defineSecret para GMAIL_APP_PASSWORD',
+    /defineSecret\(["']GMAIL_APP_PASSWORD["']\)/.test(content)
+  );
+  check(
+    'functions/index.js: no contiene contraseñas de aplicacion literales (16 chars sin espacios)',
+    !/["'][a-z]{16}["']/.test(content.replace(/defineSecret\([^)]*\)/g, ''))
+  );
+}
+
+// ---------------------------------------------------------------------------
+// 7. Sintaxis valida de los .js del frontend
+// ---------------------------------------------------------------------------
+const { execSync } = require('child_process');
+for (const jsFile of ['script.js', 'admin.js', 'evento.js', 'update.js']) {
+  try {
+    execSync(`node --check "${path.join(ROOT, jsFile)}"`, { stdio: 'pipe' });
+    check(`${jsFile}: sintaxis valida`, true);
+  } catch (e) {
+    check(`${jsFile}: sintaxis valida`, false, e.message);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 8. preconnect a fonts/cdnjs presente en todas las paginas publicas
+// ---------------------------------------------------------------------------
+for (const f of PUBLIC_HTML_FILES) {
+  const content = readFile(f);
+  check(`${f}: preconnect a fonts.googleapis.com`, content.includes('rel="preconnect" href="https://fonts.googleapis.com"'));
+  check(`${f}: link de Google Fonts bien formado`, /<link href="https:\/\/fonts\.googleapis\.com\/css2\?family=/.test(content));
+}
+
+// ---------------------------------------------------------------------------
+console.log(`\n${passes} checks OK, ${failures} checks fallidos.`);
+process.exit(failures > 0 ? 1 : 0);

@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) backToTopButton.classList.add('visible');
             else backToTopButton.classList.remove('visible');
-        });
+        }, { passive: true });
     }
 
     initializeContactModal();
@@ -493,7 +493,7 @@ document.addEventListener('DOMContentLoaded', () => {
             arrowNext.innerHTML = isMobile ? '<i class="fas fa-chevron-right"></i>' : '<i class="fas fa-chevron-down"></i>';
         };
 
-        thumbnailsContainer.addEventListener('scroll', updateThumbArrows);
+        thumbnailsContainer.addEventListener('scroll', updateThumbArrows, { passive: true });
         window.addEventListener('resize', updateThumbArrows);
 
         let activeItem = null;
@@ -833,7 +833,7 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollIndicator.classList.toggle('is-hidden', !isScrollable || isAtBottom);
         };
         
-        navLinks.addEventListener('scroll', checkScroll);
+        navLinks.addEventListener('scroll', checkScroll, { passive: true });
         scrollIndicator.addEventListener('click', () => navLinks.scrollTo({ top: navLinks.scrollHeight, behavior: 'smooth' }));
     }
 
