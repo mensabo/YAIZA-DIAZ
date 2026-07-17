@@ -1,0 +1,25 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'mensabo78@gmail.com';
+    }
+
+    // Contenido público del sitio (galerías, eventos, entrevistas, premios,
+    // programas de TV, textos de página, slider de portada): visible para
+    // cualquiera, editable solo por la cuenta admin.
+    match /{collection}/{docId} {
+      allow read: if collection != 'contactMessages';
+      allow write: if isAdmin();
+    }
+
+    // Mensajes de contacto: cualquiera puede crear uno (formulario público),
+    // nadie puede leerlos ni modificarlos salvo el admin.
+    match /contactMessages/{messageId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

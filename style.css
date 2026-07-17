@@ -24,6 +24,24 @@ html {
     scroll-behavior: smooth;
 }
 
+.skip-link {
+    position: absolute;
+    top: -50px;
+    left: 0;
+    z-index: 10000;
+    background: var(--color-primario);
+    color: var(--color-blanco);
+    padding: 12px 20px;
+    font-family: var(--fuente-texto);
+    font-weight: 600;
+    text-decoration: none;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
 body {
     font-family: var(--fuente-texto);
     color: var(--color-primario);
