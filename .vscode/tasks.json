@@ -4,7 +4,14 @@
     {
       "label": "Auto Git Pull",
       "type": "shell",
-      "command": "bash .vscode/autopull.sh",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}/.vscode/autopull.ps1"
+      ],
       "isBackground": true,
       "presentation": {
         "reveal": "silent",
