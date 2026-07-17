@@ -286,6 +286,15 @@ document.addEventListener('DOMContentLoaded', () => {
         let touchStartX = 0;
         let touchEndX = 0;
 
+        // Fondos locales de respaldo por pestaña, usados mientras aun no ha
+        // llegado la respuesta de Firestore/Storage con las fotos reales.
+        // Se eligen tematicamente en vez de un placeholder generico.
+        const HERO_FALLBACK_IMAGES = {
+            '1': 'images/presentadora-bg.jpg',
+            '2': 'images/eventos.jpeg',
+            '3': 'images/escritora-bg.jpg'
+        };
+
         tabs.forEach((tab, index) => {
             tab.addEventListener('click', (e) => {
                 if (e.target.closest('a')) return;
@@ -327,8 +336,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     bgContainer.style.backgroundPosition = `center ${posY}%`;
                 }
             } else {
-                bgContainer.style.backgroundImage = `url('images/placeholder.png')`;
-                bgContainer.style.backgroundPosition = 'center center';
+                const fallbackSrc = HERO_FALLBACK_IMAGES[heroId] || 'images/placeholder.png';
+                bgContainer.style.backgroundImage = `url('${fallbackSrc}')`;
+                bgContainer.style.backgroundPosition = 'center 20%';
             }
 
             tabs.forEach(t => t.classList.remove('active'));
