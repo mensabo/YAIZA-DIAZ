@@ -646,7 +646,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const currentPos = item.position || 'center';
             div.innerHTML = `
-                <img src="${escapeHtml(item.thumbnailSrc || item.src)}" alt="Previsualización">
+                <img src="${escapeHtml(item.thumbnailSrc || item.src)}" alt="Previsualización" class="event-thumb-preview" style="object-position: ${escapeHtml(currentPos)};">
+                <p class="event-thumb-preview-caption">Así se recortará en la tarjeta de "Eventos"</p>
                 <span class="item-type-badge">${item.type === 'video' ? 'VÍDEO' : 'IMAGEN'}</span>
                 <textarea class="description-input" placeholder="Descripción...">${escapeHtml(item.description || '')}</textarea>
                 <select class="position-input">
@@ -664,6 +665,16 @@ document.addEventListener('DOMContentLoaded', () => {
             eventImagesPreviewList.appendChild(div);
         });
         eventImagesSortable = new Sortable(eventImagesPreviewList, { animation: 150, ghostClass: 'sortable-ghost' });
+
+        // Vista previa en vivo: al cambiar la posición, actualiza al momento
+        // el recorte de la miniatura (misma proporción 4:5 que la tarjeta real
+        // en eventos.html), sin tener que guardar y mirar la web.
+        eventImagesPreviewList.querySelectorAll('.position-input').forEach(select => {
+            select.addEventListener('change', (e) => {
+                const img = e.target.closest('.preview-item').querySelector('.event-thumb-preview');
+                if (img) img.style.objectPosition = e.target.value;
+            });
+        });
     }
 
     async function handleEventImageUpload(files) {
