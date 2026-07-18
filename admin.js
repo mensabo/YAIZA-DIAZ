@@ -3,6 +3,18 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendP
 import { getFirestore, collection, getDocs, orderBy, query, addDoc, writeBatch, doc, deleteDoc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-storage.js";
 
+// Ver el mismo comentario en script.js: escapa texto que deberia ser plano
+// antes de interpolarlo en innerHTML.
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+    }[char]));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- INICIALIZACIÓN DE FIREBASE ---
     const app = initializeApp(firebaseConfig);
@@ -194,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const posYMobile = item.posYMobile || 50;
 
             div.innerHTML = `
-                <img src="${item.src}" alt="Previsualización">
+                <img src="${escapeHtml(item.src)}" alt="Previsualización">
                 <div class="position-controls-slider">
                     <div>
                         <label class="input-label-small">Foco PC: <span class="range-value">${posYDesktop}%</span></label>
@@ -351,9 +363,9 @@ document.addEventListener('DOMContentLoaded', () => {
             div.className = 'gallery-item';
             div.dataset.id = item.id;
             div.innerHTML = `
-                <img src="${item.thumbnailSrc || item.src}" alt="miniatura">
+                <img src="${escapeHtml(item.thumbnailSrc || item.src)}" alt="miniatura">
                 <span class="item-type-badge">${item.type === 'video' ? 'VÍDEO' : 'IMAGEN'}</span>
-                <textarea class="description-input" placeholder="Descripción...">${item.descripcion || ''}</textarea>
+                <textarea class="description-input" placeholder="Descripción...">${escapeHtml(item.descripcion || '')}</textarea>
                 <button class="delete-button">Eliminar</button>`;
             galleryListEl.appendChild(div);
         });
@@ -458,7 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
     autoFillYouTubeThumbnail(interviewUrlInput, (thumbUrl) => {
         if (!interviewThumbnailUrl) {
             interviewThumbnailUrl = thumbUrl;
-            interviewImagePreview.innerHTML = `<div class="preview-item"><img src="${thumbUrl}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
+            interviewImagePreview.innerHTML = `<div class="preview-item"><img src="${escapeHtml(thumbUrl)}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
         }
     });
     // ===========================================
@@ -634,9 +646,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const currentPos = item.position || 'center';
             div.innerHTML = `
-                <img src="${item.thumbnailSrc || item.src}" alt="Previsualización">
+                <img src="${escapeHtml(item.thumbnailSrc || item.src)}" alt="Previsualización">
                 <span class="item-type-badge">${item.type === 'video' ? 'VÍDEO' : 'IMAGEN'}</span>
-                <textarea class="description-input" placeholder="Descripción...">${item.description || ''}</textarea>
+                <textarea class="description-input" placeholder="Descripción...">${escapeHtml(item.description || '')}</textarea>
                 <select class="position-input">
                     <option value="center" ${currentPos === 'center' ? 'selected' : ''}>Centro (defecto)</option>
                     <option value="top" ${currentPos === 'top' ? 'selected' : ''}>Arriba</option>
@@ -678,7 +690,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.className = 'event-item';
             div.dataset.id = event.id;
-            div.innerHTML = `<h4>${event.title} (Orden: ${event.order})</h4><div class="event-controls"><button class="event-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
+            div.innerHTML = `<h4>${escapeHtml(event.title)} (Orden: ${event.order})</h4><div class="event-controls"><button class="event-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
             eventsListEl.appendChild(div);
         });
         if (eventsSortable) eventsSortable.destroy();
@@ -820,7 +832,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.className = 'interview-item';
             div.dataset.id = interview.id;
-            div.innerHTML = `<h4>${interview.mainTitle}</h4><div class="interview-controls"><button class="interview-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
+            div.innerHTML = `<h4>${escapeHtml(interview.mainTitle)}</h4><div class="interview-controls"><button class="interview-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
             interviewsListEl.appendChild(div);
         });
         if (interviewsSortable) interviewsSortable.destroy();
@@ -847,7 +859,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const storageRef = ref(storage, `interviews/${Date.now()}_${file.name}`);
         await uploadBytes(storageRef, file);
         interviewThumbnailUrl = await getDownloadURL(storageRef);
-        interviewImagePreview.innerHTML = `<div class="preview-item"><img src="${interviewThumbnailUrl}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
+        interviewImagePreview.innerHTML = `<div class="preview-item"><img src="${escapeHtml(interviewThumbnailUrl)}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
         interviewImageDropZone.querySelector('p').textContent = 'Arrastra una imagen o haz clic';
     }
 
@@ -905,7 +917,7 @@ document.addEventListener('DOMContentLoaded', () => {
             interviewUrlInput.value = data.url;
             interviewOrderInput.value = data.order;
             interviewThumbnailUrl = data.thumbnailUrl;
-            interviewImagePreview.innerHTML = `<div class="preview-item"><img src="${interviewThumbnailUrl}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
+            interviewImagePreview.innerHTML = `<div class="preview-item"><img src="${escapeHtml(interviewThumbnailUrl)}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
             cancelEditInterviewButton.style.display = 'inline-block';
             item.scrollIntoView({ behavior: 'smooth' });
         }
@@ -953,9 +965,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     div.dataset.thumbnailSrc = item.thumbnailSrc;
                 }
                 div.innerHTML = `
-                    <img src="${item.thumbnailSrc || item.src}" alt="Previsualización">
+                    <img src="${escapeHtml(item.thumbnailSrc || item.src)}" alt="Previsualización">
                     <span class="item-type-badge">${item.type === 'video' ? 'VÍDEO' : 'IMAGEN'}</span>
-                    <textarea class="description-input" placeholder="Descripción...">${item.description || ''}</textarea>
+                    <textarea class="description-input" placeholder="Descripción...">${escapeHtml(item.description || '')}</textarea>
                     <button type="button" class="delete-button">Eliminar</button>`;
                 awardImagesPreviewList.appendChild(div);
             });
@@ -994,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.className = 'award-item';
             div.dataset.id = award.id;
-            div.innerHTML = `<h4>${award.title} (Orden: ${award.order})</h4><div class="award-controls"><button class="award-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
+            div.innerHTML = `<h4>${escapeHtml(award.title)} (Orden: ${award.order})</h4><div class="award-controls"><button class="award-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
             awardsListEl.appendChild(div);
         });
         if (awardsSortable) awardsSortable.destroy();
@@ -1102,7 +1114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     autoFillYouTubeThumbnail(tvProgramUrlInput, (thumbUrl) => {
         if (!tvProgramThumbnailUrl) {
             tvProgramThumbnailUrl = thumbUrl;
-            tvProgramImagePreview.innerHTML = `<div class="preview-item"><img src="${thumbUrl}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
+            tvProgramImagePreview.innerHTML = `<div class="preview-item"><img src="${escapeHtml(thumbUrl)}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
         }
     });
 
@@ -1170,7 +1182,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.className = 'interview-item'; 
             div.dataset.id = program.id;
-            div.innerHTML = `<h4>${program.title}</h4><div class="interview-controls"><button class="tv-program-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
+            div.innerHTML = `<h4>${escapeHtml(program.title)}</h4><div class="interview-controls"><button class="tv-program-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
             tvProgramsListEl.appendChild(div);
         });
         if (tvProgramsSortable) tvProgramsSortable.destroy();
@@ -1196,7 +1208,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const storageRef = ref(storage, `tv_programs/${Date.now()}_${file.name}`);
         await uploadBytes(storageRef, file);
         tvProgramThumbnailUrl = await getDownloadURL(storageRef);
-        tvProgramImagePreview.innerHTML = `<div class="preview-item"><img src="${tvProgramThumbnailUrl}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
+        tvProgramImagePreview.innerHTML = `<div class="preview-item"><img src="${escapeHtml(tvProgramThumbnailUrl)}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
         tvProgramImageDropZone.querySelector('p').textContent = 'Arrastra una imagen o haz clic';
     }
 
@@ -1254,7 +1266,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 tvProgramUrlInput.value = data.url;
                 tvProgramOrderInput.value = data.order;
                 tvProgramThumbnailUrl = data.thumbnailUrl;
-                tvProgramImagePreview.innerHTML = `<div class="preview-item"><img src="${tvProgramThumbnailUrl}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
+                tvProgramImagePreview.innerHTML = `<div class="preview-item"><img src="${escapeHtml(tvProgramThumbnailUrl)}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
                 cancelEditTvProgramButton.style.display = 'inline-block';
                 item.scrollIntoView({ behavior: 'smooth' });
             }

@@ -1,3 +1,16 @@
+// Ver el mismo comentario en script.js: escapa texto que deberia ser plano
+// antes de interpolarlo en innerHTML, para evitar XSS si algun campo de
+// Firestore contuviera HTML/JS.
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+    }[char]));
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     // Asegurarse de que los servicios de Firebase estén disponibles
     if (!window.firebaseServices) {
@@ -32,7 +45,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             // 1. Rellenar el título y el texto del evento
             document.title = `${eventData.title} - Yaiza Díaz`; // Actualiza el título de la pestaña del navegador
             eventTitleEl.textContent = eventData.title;
-            eventTextEl.innerHTML = eventData.text; // Usamos innerHTML para permitir párrafos guardados desde el admin
+            // Este campo SI admite HTML con formato desde el admin, se sanea en vez de escapar
+            eventTextEl.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(eventData.text) : escapeHtml(eventData.text);
 
             // 2. Renderizar la galería de imágenes y vídeos
             eventGalleryEl.innerHTML = '';
@@ -47,14 +61,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                         galleryItem.classList.add('js-video-modal-trigger');
                         galleryItem.dataset.videoSrc = item.videoSrc;
                         galleryItem.innerHTML = `
-                            <img src="${item.thumbnailSrc}" alt="${item.description || eventData.title}" loading="lazy">
+                            <img src="${escapeHtml(item.thumbnailSrc)}" alt="${escapeHtml(item.description || eventData.title)}" loading="lazy">
                             <div class="video-overlay-icon"><i class="fas fa-play"></i></div>
                         `;
                     } else {
                         // Es una imagen
                         galleryItem.href = item.src;
                         galleryItem.classList.add('expandable-image');
-                        galleryItem.innerHTML = `<img src="${item.src}" alt="${item.description || eventData.title}" loading="lazy">`;
+                        galleryItem.innerHTML = `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.description || eventData.title)}" loading="lazy">`;
                     }
                     
                     // Aplicar el object-position si está definido
