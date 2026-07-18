@@ -593,8 +593,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             events.forEach(event => {
-                const firstItem = event.galleryItems && event.galleryItems.length > 0 ? event.galleryItems[0] : { type: 'image', src: 'images/placeholder.png' }; 
-                const mediaHtml = firstItem.type === 'video' && firstItem.videoSrc ? `<video autoplay loop muted playsinline poster="${escapeHtml(firstItem.thumbnailSrc || '')}"><source src="${escapeHtml(firstItem.videoSrc)}" type="video/mp4"></video>` : `<img src="${escapeHtml(firstItem.thumbnailSrc || firstItem.src)}" alt="${escapeHtml(event.title)}" loading="lazy">`;
+                const firstItem = event.galleryItems && event.galleryItems.length > 0 ? event.galleryItems[0] : { type: 'image', src: 'images/placeholder.png' };
+                // Igual que en evento.js: respeta el object-position guardado en el admin
+                // para esta foto, si no la miniatura de la tarjeta sale descentrada.
+                const positionStyle = firstItem.position ? ` style="object-position: center ${escapeHtml(firstItem.position)};"` : '';
+                const mediaHtml = firstItem.type === 'video' && firstItem.videoSrc ? `<video autoplay loop muted playsinline poster="${escapeHtml(firstItem.thumbnailSrc || '')}"${positionStyle}><source src="${escapeHtml(firstItem.videoSrc)}" type="video/mp4"></video>` : `<img src="${escapeHtml(firstItem.thumbnailSrc || firstItem.src)}" alt="${escapeHtml(event.title)}" loading="lazy"${positionStyle}>`;
                 const card = document.createElement('a');
                 card.href = `evento-detalle.html?id=${encodeURIComponent(event.id)}`;
                 card.className = 'event-card-link';
