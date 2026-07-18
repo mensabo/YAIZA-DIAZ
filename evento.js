@@ -71,9 +71,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                         galleryItem.innerHTML = `<img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.description || eventData.title)}" loading="lazy">`;
                     }
                     
-                    // Aplicar el object-position si está definido
+                    // Aplicar el object-position si está definido. "top"/"center"/"bottom"
+                    // (valores antiguos) siguen funcionando igual como keyword CSS suelto;
+                    // esto permite también valores horizontales como "left" o "top right".
                     if (item.position && galleryItem.querySelector('img')) {
-                         galleryItem.querySelector('img').style.objectPosition = `center ${item.position}`;
+                         galleryItem.querySelector('img').style.objectPosition = item.position;
                     }
 
                     eventGalleryEl.appendChild(galleryItem);
