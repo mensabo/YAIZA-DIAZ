@@ -388,19 +388,6 @@ nav ul li a:hover::after {
     visibility: visible;
 }
 
-/* === NUEVO ESTILO PARA EL ENLACE ROSA (CARRERA Y FÓRMULA) === */
-.link-carrera-rosa,
-.link-formula-rosa {
-    color: var(--color-magenta-libro) !important;
-    border-bottom-color: var(--color-magenta-libro) !important;
-}
-
-.link-carrera-rosa:hover,
-.link-formula-rosa:hover {
-    color: #b3226c !important; /* Un rosa más oscuro para el hover */
-}
-
-
 /* ======================== */
 /*    SECCIÓN PORTFOLIO     */
 /* ======================== */
@@ -555,12 +542,6 @@ NUEVO DISEÑO ARTÍSTICO PARA BOTONES/ETIQUETAS:
     background-color: var(--color-secundario);
 }
 
-.carousel-navigation,
-.toggle-events-button {
-    display: none;
-}
-
-
 /* ======================== */
 /*     SECCIÓN CONTACTO     */
 /* ======================== */
@@ -649,61 +630,6 @@ footer {
     margin: -2rem auto 4rem auto;
     font-size: 1.1rem;
 }
-
-/* Cuadrícula simple y adaptable para TODAS las galerías de eventos */
-.simple-photo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-}
-
-.simple-photo-item {
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-    position: relative;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.simple-photo-item:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-}
-
-.simple-photo-item img {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-    object-position: center center;
-    display: block;
-}
-
-.gallery-item-overlay {
-    position: absolute;
-    bottom: 0; left: 0; width: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    color: white;
-    padding: 2rem 1rem 1rem;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.3s, transform 0.3s;
-    pointer-events: none;
-    text-align: center;
-}
-
-.simple-photo-item:hover .gallery-item-overlay {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.gallery-item-overlay p {
-    margin: 0;
-    font-size: 0.9rem;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-}
-
 
 /* --- Lightbox --- */
 .lightbox {
@@ -856,22 +782,6 @@ footer {
     }
 }
 
-/* =================================== */
-/*   ENLACE FÓRMULA TRIPLE ROSA         */
-/* =================================== */
-.formula-rosa-link {
-    color: var(--color-magenta-libro);
-    font-weight: 600;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(212, 46, 132, 0.5);
-    padding-bottom: 1px;
-    transition: all 0.2s ease;
-}
-
-.formula-rosa-link:hover {
-    border-bottom-color: var(--color-magenta-libro);
-    opacity: 0.8;
-}
 
 /* ======================== */
 /*   ESTILOS PÁGINA LIBRO   */
@@ -1067,10 +977,6 @@ footer {
     color: var(--color-acento);
 }
 
-.text-magenta {
-    color: var(--color-magenta-libro);
-}
-
 #arte-libro .arte-item img {
     width: 100%;
     border-radius: 5px;
@@ -1101,18 +1007,6 @@ footer {
     font-style: normal;
 }
 
-.video-icon-trigger {
-    color: var(--color-acento);
-    cursor: pointer;
-    font-size: 1rem;
-    margin-left: 0.5rem;
-    transition: transform 0.2s, color 0.2s;
-}
-
-.video-icon-trigger:hover {
-    transform: scale(1.2);
-    color: var(--color-acento);
-}
 
 /* ==================================================================== */
 /* === ESTILOS GENERALES PARA MODALES (VIDEO Y CARTA) === */
@@ -1587,8 +1481,7 @@ footer {
     transition: opacity 0.4s, transform 0.4s;
 }
 
-.galeria-principal:hover .descripcion-principal,
-.descripcion-principal.visible-temporarily {
+.galeria-principal:hover .descripcion-principal {
     opacity: 1;
     transform: translateY(0);
 }
@@ -1674,22 +1567,6 @@ footer {
     height: 100px;
     object-fit: cover;
     display: block;
-}
-
-.thumb-video-badge {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background: rgba(0,0,0,0.7);
-    color: white;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    border: 1px solid rgba(255,255,255,0.5);
 }
 
 /* ===================================================== */
@@ -1878,16 +1755,6 @@ footer {
     line-height: 1.3;
 }
 
-.comunicacion-section h3 .brand-name {
-    display: block;
-    font-size: 1.5rem;
-    font-weight: 400;
-    font-family: var(--fuente-texto);
-    color: #555;
-    margin-top: 0.25rem;
-    border-bottom: none;
-    padding-bottom: 0;
-}
 
 .comunicacion-section p {
     font-size: 1.1rem;
@@ -2676,9 +2543,6 @@ footer {
         font-size: 1.4rem; 
     }
     
-    .simple-photo-grid {
-        grid-template-columns: 1fr;
-    }
     
     .compra-portada {
         height: 350px;
@@ -2701,25 +2565,6 @@ footer {
         width: 100%;
     }
 
-    .comunicacion-gallery {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
-    .comunicacion-gallery img {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 1 / 1;
-        object-fit: cover;
-        border-radius: 8px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        background-color: #e0e0e0;
-        border: 1px solid #ddd;
-    }
-    .comunicacion-gallery img:last-child:nth-child(odd) {
-        grid-column: 1 / -1;
-        aspect-ratio: 16 / 9;
-    }
-    
     .comunicacion-section h3.centered-mobile-title {
         display: block;
         text-align: center;
@@ -2736,10 +2581,6 @@ footer {
         margin: 0.75rem auto 0 auto;
     }
 
-    .comunicacion-section h3.centered-mobile-title .brand-name {
-        text-align: center;
-    }
-    
     .section-image {
         width: 100%;
         margin: 1.5rem auto 2.5rem auto;
@@ -2750,57 +2591,6 @@ footer {
         gap: 0.75rem;
     }
 
-    #dynamic-event-tags {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
-        align-items: stretch;
-    }
-
-    .event-tags button.event-tag-button {
-        width: 100%;
-        height: auto;
-        min-height: 80px;
-        padding: 0.5rem;
-        font-size: 0.9rem;
-        line-height: 1.3;
-        white-space: normal;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-    }
-
-    .event-tags button.event-tag-button:nth-child(-n+6) {
-        display: flex;
-    }
-
-    #dynamic-event-tags.is-expanded .event-tag-button {
-        display: flex;
-    }
-
-    .toggle-events-button {
-        display: block;
-        grid-column: 1 / -1;
-        width: 100%;
-        margin-top: 1rem;
-        padding: 0.9rem 1rem;
-        font-family: var(--fuente-titulos);
-        font-size: 1rem;
-        font-weight: 700;
-        cursor: pointer;
-        border: 1px solid var(--color-acento);
-        background-color: transparent;
-        color: var(--color-acento);
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
-
-    .toggle-events-button:hover {
-        background-color: var(--color-acento);
-        color: var(--color-blanco);
-    }
-    
     .eventos-page-hero {
         height: 40vh;
         margin-bottom: 3rem;
@@ -2872,15 +2662,6 @@ footer {
     accent-color: var(--color-acento);
 }
 
-.gallery-header {
-    font-size: 1.8rem;
-    text-align: center;
-    margin-top: 4rem;
-    margin-bottom: 2rem;
-    border: none;
-    padding: 0;
-}
-
 .radio-link-container {
     text-align: center;
     margin-top: 2rem;
@@ -2904,11 +2685,6 @@ footer {
 .radio-link-container i {
     font-size: 0.8em;
     margin-left: 0.5rem;
-}
-
-#radio-main .comunicacion-gallery img:first-child {
-    grid-column: 1 / -1;
-    aspect-ratio: 16 / 9;
 }
 
 /* ======================================================= */
@@ -3056,19 +2832,6 @@ footer {
     margin-bottom: 0;
 }
 
-.event-gallery-main-description {
-    font-size: 1rem;
-    color: #555;
-    background-color: #f7f8fc;
-    padding: 1rem;
-    border-radius: 8px;
-    margin-top: 1rem;
-    margin-bottom: 2rem;
-    border-left: 4px solid var(--color-acento);
-    line-height: 1.6;
-    min-height: 1.6em;
-}
-
 #eventos-modal-gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -3104,20 +2867,6 @@ footer {
 .sidenote-text-content {
     flex: 1 1 65%;
     transition: flex-basis 0.5s ease;
-}
-
-.image-sidenote-trigger {
-    color: var(--color-acento);
-    text-decoration: underline;
-    text-decoration-style: dashed;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 4px;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.image-sidenote-trigger:hover {
-    color: var(--color-primario);
 }
 
 .sidenote-trigger-button {
@@ -3165,11 +2914,6 @@ footer {
     animation-delay: 1.5s;
 }
 
-
-.image-sidenote-trigger .fa-image {
-    font-size: 0.8em;
-    margin-left: 0.25rem;
-}
 
 .image-sidenote-viewer {
     flex: 1 0 0px;
@@ -3897,132 +3641,6 @@ a.expandable-image:hover img {
     transform: scale(1.1);
     opacity: 0.9;
 }
-/* ======================================================= */
-/*   PERSONALIZACIÓN DEL WIDGET DE COOKIEYES (V5 - FINAL)  */
-/* ======================================================= */
-
-/* 1. Apuntamos al contenedor DIV y le cambiamos el fondo azul */
-div.cky-btn-revisit-wrapper {
-    background-color: #bca07d !important; /* Tu color acento dorado */
-    border: 1px solid rgba(0, 0, 0, 0.2) !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
-}
-
-/* 2. Apuntamos al icono IMG de adentro para cambiar su color */
-div.cky-btn-revisit-wrapper img {
-    filter: invert(1) brightness(0) !important;
-}
-/* ======================================================= */
-/*   PERSONALIZACIÓN DEL WIDGET DE COOKIEYES (V6.1 - MÁS TRANSLÚCIDO)  */
-/* ======================================================= */
-
-/* 1. Apuntamos al contenedor DIV para cambiar fondo, tamaño Y OPACIDAD */
-div.cky-btn-revisit-wrapper {
-    background-color: #bca07d !important;
-    border: 1px solid rgba(0, 0, 0, 0.2) !important;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
-    width: 38px !important;
-    height: 38px !important;
-
-    /* ===== CAMBIO: AHORA ES MÁS TRANSLÚCIDO (70%) ===== */
-    opacity: 0.7 !important; 
-    transform: scale(1);
-    transition: opacity 0.3s ease, transform 0.3s ease !important;
-}
-
-/* Efecto al pasar el ratón por encima: se vuelve sólido y un poco más grande */
-div.cky-btn-revisit-wrapper:hover {
-    opacity: 1 !important;
-    transform: scale(1.1) !important;
-}
-
-/* 2. Mantenemos el estilo del icono IMG de adentro */
-div.cky-btn-revisit-wrapper img {
-    filter: invert(1) brightness(0) !important;
-    width: 22px !important;
-    height: 22px !important;
-}
-/* =================================== */
-/*   ESTILOS HERRAMIENTAS ADICIONALES  */
-/* =================================== */
-#page-tools {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-}
-
-.page-tools-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 2rem;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.tool-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.tool-icon {
-    flex-shrink: 0;
-    width: 50px;
-    height: 50px;
-    background-color: #333; /* Un gris oscuro, puedes cambiarlo */
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 2px solid #555;
-}
-
-.tool-icon:hover {
-    background-color: var(--color-acento); /* Color dorado al pasar el ratón */
-    border-color: var(--color-acento);
-    transform: scale(1.1);
-}
-
-.tool-content {
-    min-width: 250px;
-}
-
-/* Estilos específicos para el Buscador de Google */
-.gcse-search {
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.5s ease-out, opacity 0.3s ease-out;
-}
-
-.gcse-search.visible {
-    max-height: 100px; /* Altura suficiente para que quepa el buscador */
-    opacity: 1;
-}
-
-/* Estilos para el Traductor de Google */
-#google_translate_element .goog-te-gadget-simple {
-    background-color: transparent !important;
-    border: 1px solid #ccc !important;
-    border-radius: 5px;
-    padding: 8px !important;
-}
-
-#google_translate_element .goog-te-gadget-simple span {
-    color: #333 !important;
-}
-
-/* Oculta el banner "Powered by Google" */
-.goog-te-banner-frame.skiptranslate {
-    display: none !important;
-} 
-body {
-    top: 0px !important; 
-}
 /* ============================================================ */
 /*   ARREGLO DEFINITIVO: BOTÓN CERRAR (X) EN MÓVIL Y ESCRITORIO */
 /* ============================================================ */
@@ -4309,27 +3927,16 @@ body {
     .letter-body { padding: 2.5rem 1.5rem; }
     .letter-body p { font-size: 1.3rem; line-height: 2; }
     .letter-body .letter-signature { font-size: 1.4rem; }
-    .simple-photo-grid { grid-template-columns: 1fr; }
     .compra-portada { height: 350px; }
     .compra-info { padding: 2rem 1.5rem; }
     .compra-info h3 { font-size: 1.8rem; text-align: center; }
     .compra-info > p { text-align: center; }
     .formato-compra { text-align: center; }
     .btn-compra { display: block; width: 100%; }
-    .comunicacion-gallery { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-    .comunicacion-gallery img { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); background-color: #e0e0e0; border: 1px solid #ddd; }
-    .comunicacion-gallery img:last-child:nth-child(odd) { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
     .comunicacion-section h3.centered-mobile-title { display: block; text-align: center; border-bottom: none; padding-bottom: 0; }
     .comunicacion-section h3.centered-mobile-title::after { content: ''; display: block; width: 80px; height: 2px; background-color: var(--color-acento); margin: 0.75rem auto 0 auto; }
-    .comunicacion-section h3.centered-mobile-title .brand-name { text-align: center; }
     .section-image { width: 100%; height: auto; margin: 1.5rem auto 2.5rem auto; }
     #habilidades .event-tags { flex-direction: column; gap: 0.75rem; }
-    #dynamic-event-tags { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; align-items: stretch; }
-    .event-tags button.event-tag-button { width: 100%; height: auto; min-height: 80px; padding: 0.5rem; font-size: 0.9rem; line-height: 1.3; white-space: normal; display: none; align-items: center; justify-content: center; text-align: center; }
-    .event-tags button.event-tag-button:nth-child(-n+6) { display: flex; }
-    #dynamic-event-tags.is-expanded .event-tag-button { display: flex; }
-    .toggle-events-button { display: block; grid-column: 1 / -1; width: 100%; margin-top: 1rem; padding: 0.9rem 1rem; font-family: var(--fuente-titulos); font-size: 1rem; font-weight: 700; cursor: pointer; border: 1px solid var(--color-acento); background-color: transparent; color: var(--color-acento); border-radius: 8px; transition: all 0.3s ease; }
-    .toggle-events-button:hover { background-color: var(--color-acento); color: var(--color-blanco); }
     .eventos-page-hero { height: 40vh; margin-bottom: 3rem; }
     #eventos-header { padding-bottom: 3rem; }
     .events-grid { grid-template-columns: 1fr; }
