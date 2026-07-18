@@ -201,14 +201,18 @@ for (const f of HTML_FILES) {
 // ---------------------------------------------------------------------------
 const styleCss = readFile('style.css');
 check(
-  '.hero-background-container tiene background-image estatico de fallback',
-  /\.hero-background-container\s*\{[^}]*background-image:\s*url\(/s.test(styleCss)
-);
-check(
   '.hero-background-container tiene background-color de fallback',
   /\.hero-background-container\s*\{[^}]*background-color:/s.test(styleCss)
 );
+check(
+  '.hero-bg-layer tiene transition de opacity para el crossfade',
+  /\.hero-bg-layer\s*\{[^}]*transition:\s*opacity/s.test(styleCss)
+);
 const indexContent = readFile('index.html');
+check(
+  'index.html: la capa de fondo activa del hero trae una imagen estatica de fallback',
+  /hero-bg-layer active"[^>]*background-image:\s*url\(/.test(indexContent)
+);
 check(
   'index.html: precarga la imagen del hero con rel="preload"',
   /<link rel="preload" as="image"/.test(indexContent)

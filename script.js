@@ -316,6 +316,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let intervalId = null;
         let touchStartX = 0;
         let touchEndX = 0;
+        const bgLayers = bgContainer.querySelectorAll('.hero-bg-layer');
+        let activeLayerIndex = 0;
 
         // Fondos locales de respaldo por pestaña, usados mientras aun no ha
         // llegado la respuesta de Firestore/Storage con las fotos reales.
@@ -350,6 +352,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const dots = document.querySelectorAll('.hero-dot');
 
+        let heroBgRequestId = 0;
+
+        function setHeroBackground(imageUrl, posY) {
+            // Precarga la imagen antes de iniciar el crossfade: si se activa
+            // la capa nueva antes de que la imagen haya llegado, se ve el
+            // fondo negro del contenedor hasta que termina de descargar.
+            const requestId = ++heroBgRequestId;
+            const preloader = new Image();
+            const applyBackground = () => {
+                if (requestId !== heroBgRequestId) return; // llegó una pestaña más nueva mientras cargaba
+                const nextLayer = bgLayers[1 - activeLayerIndex];
+                const currentLayer = bgLayers[activeLayerIndex];
+                nextLayer.style.backgroundImage = `url('${imageUrl}')`;
+                nextLayer.style.backgroundPosition = `center ${posY}`;
+                nextLayer.classList.add('active');
+                currentLayer.classList.remove('active');
+                activeLayerIndex = 1 - activeLayerIndex;
+            };
+            preloader.onload = applyBackground;
+            preloader.onerror = applyBackground;
+            preloader.src = imageUrl;
+            if (preloader.complete) applyBackground();
+        }
+
         function switchTab(index) {
             currentIndex = index;
             const activeTab = tabs[index];
@@ -361,15 +387,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const randomIndex = Math.floor(Math.random() * imageUrls.length);
                 const randomImageObject = imageUrls[randomIndex];
                 if (randomImageObject && randomImageObject.src) {
-                    bgContainer.style.backgroundImage = `url(${randomImageObject.src})`;
                     const isMobile = window.innerWidth < 768;
                     const posY = isMobile ? (randomImageObject.posYMobile || 50) : (randomImageObject.posYDesktop || 50);
-                    bgContainer.style.backgroundPosition = `center ${posY}%`;
+                    setHeroBackground(randomImageObject.src, `${posY}%`);
                 }
             } else {
                 const fallbackSrc = HERO_FALLBACK_IMAGES[heroId] || 'images/placeholder.png';
-                bgContainer.style.backgroundImage = `url('${fallbackSrc}')`;
-                bgContainer.style.backgroundPosition = 'center 20%';
+                setHeroBackground(fallbackSrc, '20%');
             }
 
             tabs.forEach(t => t.classList.remove('active'));
