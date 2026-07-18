@@ -9,7 +9,7 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const HTML_FILES = fs.readdirSync(ROOT).filter(f => f.endsWith('.html'));
-const PUBLIC_HTML_FILES = HTML_FILES.filter(f => f !== 'admin.html');
+const PUBLIC_HTML_FILES = HTML_FILES.filter(f => f !== 'admin.html' && f !== '404.html');
 
 let failures = 0;
 let passes = 0;
@@ -179,6 +179,10 @@ for (const f of PUBLIC_HTML_FILES) {
 const adminContent = readFile('admin.html');
 check('admin.html: tiene meta robots noindex,nofollow', /name="robots"\s+content="noindex,\s*nofollow"/.test(adminContent));
 
+check('404.html existe (pagina de error de GitHub Pages)', fs.existsSync(path.join(ROOT, '404.html')));
+const notFoundContent = readFile('404.html');
+check('404.html: tiene meta robots noindex,nofollow', /name="robots"\s+content="noindex,\s*nofollow"/.test(notFoundContent));
+
 // ---------------------------------------------------------------------------
 // 10. Sin rutas absolutas root-relative para manifest/favicon: rompen en
 //     subpaths (p.ej. preview de GitHub Pages en /usuario/repo/) aunque
@@ -222,6 +226,20 @@ for (const f of PUBLIC_HTML_FILES) {
   check(`${f}: preconnect a firestore.googleapis.com`, content.includes('https://firestore.googleapis.com'));
   check(`${f}: preconnect a firebasestorage.googleapis.com`, content.includes('https://firebasestorage.googleapis.com'));
 }
+
+// ---------------------------------------------------------------------------
+// 12. CookieYes no bloquea el render (defer) + videos de fondo autoplay
+//     con carga diferida (data-src en vez de src, para no descargar varios
+//     MP4 en paralelo al entrar en la pagina)
+// ---------------------------------------------------------------------------
+for (const f of HTML_FILES) {
+  const content = readFile(f);
+  if (content.includes('id="cookieyes"')) {
+    check(`${f}: CookieYes carga con defer`, /id="cookieyes"[^>]*\bdefer\b/.test(content));
+  }
+  check(`${f}: no quedan <video autoplay> con <source src> sin lazy-load`, !/<video[^>]*\bautoplay\b[^>]*>(?:(?!<\/video>).)*?<source src=/s.test(content));
+}
+check('script.js: inicializa el lazy-load de videos autoplay', /initializeLazyAutoplayVideos/.test(readFile('script.js')));
 
 // ---------------------------------------------------------------------------
 console.log(`\n${passes} checks OK, ${failures} checks fallidos.`);

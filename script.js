@@ -208,6 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeScrollIndicator();
     initializeStandaloneLightboxSetup();
     setupVideoModalClose(); // Inicia la lógica de cierre del modal de vídeo
+    initializeLazyAutoplayVideos();
 
     if (pageId === 'libroPage') {
         initializeLetterModal();
@@ -753,6 +754,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (e.target === iframeModal) closeModal(); 
             });
         }
+    }
+
+    function initializeLazyAutoplayVideos() {
+        // Vídeos de fondo (autoplay/loop/muted) con <source data-src="...">:
+        // no se descargan hasta que entran en el viewport, para no lanzar
+        // varias descargas de MP4 en paralelo al cargar la pagina (ej.
+        // investigacion.html tenia 11 videos autoplay simultaneos).
+        const lazyVideos = document.querySelectorAll('video > source[data-src]');
+        if (!lazyVideos.length) return;
+
+        const loadVideo = (video) => {
+            video.querySelectorAll('source[data-src]').forEach(source => {
+                source.src = source.dataset.src;
+                source.removeAttribute('data-src');
+            });
+            video.load();
+            video.play().catch(() => {}); // el navegador puede bloquear el autoplay; no es un error a reportar
+        };
+
+        const videos = new Set([...lazyVideos].map(source => source.closest('video')).filter(Boolean));
+
+        if (!('IntersectionObserver' in window)) {
+            videos.forEach(loadVideo);
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadVideo(entry.target);
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '200px' });
+
+        videos.forEach(video => observer.observe(video));
     }
 
     function initializeContactForm() {
