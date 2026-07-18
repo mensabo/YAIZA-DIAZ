@@ -1011,7 +1011,7 @@ footer {
 
 .sinopsis-content.media-heavy .sinopsis-img {
     flex-basis: 46%;
-    max-width: 580px;
+    max-width: 680px;
     margin-left: auto;
 }
 
@@ -1844,6 +1844,15 @@ footer {
 .comunicacion-content {
     max-width: 800px;
     margin: 0 auto;
+}
+
+/* premios.html y radio.html tienen secciones "media-heavy" con la foto
+   como protagonista: el contenedor de 800px por defecto (pensado para
+   texto largo) las dejaba pequeñas pase lo que pase con el max-width de
+   la propia imagen, asi que estas dos paginas usan un ancho mayor. */
+#premiosPage .comunicacion-content,
+#radioPage .comunicacion-content {
+    max-width: 1100px;
 }
 
 .comunicacion-section {
