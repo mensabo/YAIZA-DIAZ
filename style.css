@@ -999,6 +999,8 @@ footer {
 .sinopsis-img img.natural-ratio {
     aspect-ratio: auto;
     object-fit: initial;
+    width: auto;
+    max-width: 100%;
     height: auto;
 }
 
