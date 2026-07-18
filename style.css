@@ -3517,9 +3517,7 @@ a.expandable-image:hover img {
 
 .contact-layout {
     display: flex;
-    align-items: flex-start;
-    gap: 3rem;
-    max-width: 1000px;
+    justify-content: center;
     margin: 2rem auto 0 auto;
 }
 
@@ -3534,38 +3532,7 @@ a.expandable-image:hover img {
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
 }
 
-.contact-portrait-card {
-    flex: 0 0 220px;
-    text-align: center;
-}
-
-.contact-portrait-card img {
-    width: 100%;
-    aspect-ratio: 1 / 1.01;
-    object-fit: cover;
-    border-radius: 12px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-}
-
-.contact-portrait-quote {
-    margin-top: 1.25rem;
-    font-family: var(--fuente-titulos);
-    font-style: italic;
-    font-size: 1.05rem;
-    color: var(--color-secundario);
-    line-height: 1.4;
-}
-
 @media (max-width: 900px) {
-    .contact-layout {
-        flex-direction: column-reverse;
-        align-items: center;
-        gap: 2rem;
-    }
-    .contact-portrait-card {
-        flex: 0 0 auto;
-        max-width: 220px;
-    }
     .contact-page-form {
         width: 100%;
         padding: 1.75rem;
