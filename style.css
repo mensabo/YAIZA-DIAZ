@@ -3860,37 +3860,6 @@ a.expandable-image:hover img {
         gap: 0;
     }
 }
-/* =================================== */
-/*   ESTILOS CRÉDITO DESARROLLADOR (CON LOGO)   */
-/* =================================== */
-.developer-credit {
-    margin-top: 1.5rem;
-    font-size: 0.85rem;
-    color: #888;
-    letter-spacing: 0.5px;
-    /* Usamos Flexbox para alinear el texto y el logo verticalmente */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.75rem; /* Espacio entre "Developed by" y el logo */
-}
-
-.developer-logo-link {
-    display: inline-block; /* Importante para que el enlace se comporte bien */
-    line-height: 0; /* Elimina cualquier espacio extra debajo de la imagen */
-    cursor: default; /* Hacemos que el cursor no parezca un enlace */
-}
-
-.developer-logo-link img {
-    height: 30px; /* <-- Puedes ajustar la altura del logo aquí */
-    width: auto;  /* Mantiene la proporción del logo */
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.developer-logo-link:hover img {
-    transform: scale(1.05); /* Mantenemos el efecto visual */
-    opacity: 0.9;
-}
 /* ================================================= */
 /*   ESTILOS CRÉDITO DESARROLLADOR (VERSIÓN FINAL)   */
 /* ================================================= */
@@ -4382,37 +4351,6 @@ body {
 @media (max-width: 600px) {
     .form-row { flex-direction: column; gap: 0; }
 }
-/* ============================================================ */
-/*   REFUERZO FINAL: SOLUCIÓN FLECHAS LIGHTBOX MÓVIL            */
-/* ============================================================ */
-
-/* Aseguramos que las flechas tengan un área de clic grande y estén visibles */
-.lightbox-prev, 
-.lightbox-next {
-    position: absolute !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    z-index: 10001 !important; /* Por encima de la foto (z-index 10000) */
-    width: 60px !important;    /* Área de contacto ancha */
-    height: 100px !important;  /* Área de contacto alta */
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background-color: rgba(0, 0, 0, 0.2) !important; /* Fondo sutil para indicar que es clicable */
-    color: white !important;
-    font-size: 35px !important;
-    cursor: pointer !important;
-    transition: background-color 0.3s ease !important;
-    border-radius: 8px !important;
-}
-
-.lightbox-prev:hover, 
-.lightbox-next:hover {
-    background-color: rgba(0, 0, 0, 0.6) !important;
-}
-
-.lightbox-prev { left: 10px !important; }
-.lightbox-next { right: 10px !important; }
 
 /* Evita que los iconos internos interfieran con el clic del enlace del vídeo */
 .js-video-modal-trigger * {
