@@ -890,7 +890,7 @@ footer {
     flex-basis: 65%;
 }
 
-.sinopsis-text h3 {
+.sinopsis-text h2 {
     font-size: 2rem;
     margin-bottom: 2rem;
 }
@@ -1404,7 +1404,7 @@ footer {
     border-top: 1px solid #e0e0e0;
 }
 
-.media-card-text h4 {
+.media-card-text h3 {
     font-size: 1.1rem;
     margin: 0 0 0.25rem 0;
     color: var(--color-primario);
@@ -1746,7 +1746,7 @@ footer {
     margin-bottom: 4rem;
 }
 
-.comunicacion-section h3 {
+.comunicacion-section h2 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
     border-bottom: 2px solid var(--color-acento);
@@ -1768,13 +1768,13 @@ footer {
     display: block;
 }
 
-.project-card-link .project-card h4 {
+.project-card-link .project-card h3 {
     position: relative;
     display: inline-block;
     padding-bottom: 4px;
 }
 
-.project-card-link .project-card h4::after {
+.project-card-link .project-card h3::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -2467,7 +2467,7 @@ footer {
         order: 0;
     }
 
-    .sinopsis-text h3 {
+    .sinopsis-text h2 {
         font-size: 1.5rem;
         text-align: center;
     }
@@ -2565,14 +2565,14 @@ footer {
         width: 100%;
     }
 
-    .comunicacion-section h3.centered-mobile-title {
+    .comunicacion-section h2.centered-mobile-title {
         display: block;
         text-align: center;
         border-bottom: none;
         padding-bottom: 0;
     }
 
-    .comunicacion-section h3.centered-mobile-title::after {
+    .comunicacion-section h2.centered-mobile-title::after {
         content: '';
         display: block;
         width: 80px;
@@ -3289,7 +3289,7 @@ a.expandable-image:hover img {
     font-size: 1.05rem;
 }
 
-.legal-text-wrapper h3 {
+.legal-text-wrapper h2 {
     font-size: 1.6rem;
     color: var(--color-primario);
     margin-top: 2.5rem;
@@ -3298,10 +3298,11 @@ a.expandable-image:hover img {
     padding-bottom: 0.5rem;
 }
 
-.legal-text-wrapper h4 {
-    font-size: 1.3rem;
-    margin-top: 2rem;
-    margin-bottom: 0.5rem;
+.legal-text-wrapper h3 {
+    font-size: 1.25rem;
+    color: var(--color-primario);
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
 }
 
 .legal-text-wrapper p {
@@ -3919,7 +3920,7 @@ a.expandable-image:hover img {
     .sinopsis-content.media-heavy .sinopsis-img { flex-basis: auto; width: 100%; max-width: none; margin-left: 0; }
     .libro-hero-text h2 { text-align: center; font-size: 2.2rem; }
     .sinopsis-content-reversed .sinopsis-text, .sinopsis-content-reversed .sinopsis-img { order: 0; }
-    .sinopsis-text h3 { font-size: 1.5rem; text-align: center; }
+    .sinopsis-text h2 { font-size: 1.5rem; text-align: center; }
     .libro-hero-img { max-width: 280px; margin: 0 auto; position: relative; cursor: default; }
     .libro-hero-img img { transition: transform 0.2s ease; animation: none; }
     .libro-hero-img:active img { transform: scale(0.97); }
@@ -3933,8 +3934,8 @@ a.expandable-image:hover img {
     .compra-info > p { text-align: center; }
     .formato-compra { text-align: center; }
     .btn-compra { display: block; width: 100%; }
-    .comunicacion-section h3.centered-mobile-title { display: block; text-align: center; border-bottom: none; padding-bottom: 0; }
-    .comunicacion-section h3.centered-mobile-title::after { content: ''; display: block; width: 80px; height: 2px; background-color: var(--color-acento); margin: 0.75rem auto 0 auto; }
+    .comunicacion-section h2.centered-mobile-title { display: block; text-align: center; border-bottom: none; padding-bottom: 0; }
+    .comunicacion-section h2.centered-mobile-title::after { content: ''; display: block; width: 80px; height: 2px; background-color: var(--color-acento); margin: 0.75rem auto 0 auto; }
     .section-image { width: 100%; height: auto; margin: 1.5rem auto 2.5rem auto; }
     #habilidades .event-tags { flex-direction: column; gap: 0.75rem; }
     .eventos-page-hero { height: 40vh; margin-bottom: 3rem; }
