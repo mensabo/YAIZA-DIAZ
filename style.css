@@ -1017,6 +1017,26 @@ footer {
     margin-left: auto;
 }
 
+/* Premio 4 (Top Artistas Canarios): vídeo y foto uno junto al otro en
+   vez de apilados, para no alargar tanto la sección verticalmente. */
+.premio4-media {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+}
+
+.premio4-media > .video-fallback,
+.premio4-media > div {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+@media (max-width: 767px) {
+    .premio4-media {
+        flex-direction: column;
+    }
+}
+
 .pie-de-foto {
     font-size: 0.9rem;
     text-align: center;
