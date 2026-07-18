@@ -17,7 +17,7 @@
     <meta property="og:title" content="Contacto - Yaiza Díaz">
     <meta property="og:description" content="Contacta con Yaiza Díaz para consultas profesionales, contrataciones o entrevistas.">
     <meta property="og:url" content="https://www.yaizadiaz.com/contacto">
-    <link rel="stylesheet" href="style.css?v=1784398009435">
+    <link rel="stylesheet" href="style.css?v=1784411930919">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -79,41 +79,48 @@
                 Si deseas contratar mis servicios, proponer una colaboración o realizar cualquier consulta, puedes rellenar el siguiente formulario.
             </p>
 
-            <form id="contact-form" class="contact-page-form" novalidate>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="name">Nombre</label>
-                        <input type="text" id="name" name="name" required>
+            <div class="contact-layout">
+                <form id="contact-form" class="contact-page-form" novalidate>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Nombre</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
+                        <label for="subject">Asunto</label>
+                        <input type="text" id="subject" name="subject" required>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="subject">Asunto</label>
-                    <input type="text" id="subject" name="subject" required>
-                </div>
-                <div class="form-group">
-                    <label for="message">Mensaje</label>
-                    <textarea id="message" name="message" rows="6" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="attachment" class="file-label">
-                        <i class="fas fa-paperclip"></i>
-                        <span id="file-name">Adjuntar un archivo (opcional)</span>
-                    </label>
-                    <input type="file" id="attachment" name="attachment" class="file-input">
-                </div>
-                <div class="form-group-checkbox">
-                    <input type="checkbox" id="privacy" name="privacy" required>
-                    <label for="privacy">He leído y acepto la <a href="politica-privacidad.html" target="_blank" rel="noopener noreferrer">política de privacidad</a>.</label>
-                </div>
-                <div class="form-submit-area">
-                    <button type="submit" id="submit-button">Enviar Mensaje</button>
-                    <p id="form-status"></p>
-                </div>
-            </form>
+                    <div class="form-group">
+                        <label for="message">Mensaje</label>
+                        <textarea id="message" name="message" rows="6" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="attachment" class="file-label">
+                            <i class="fas fa-paperclip"></i>
+                            <span id="file-name">Adjuntar un archivo (opcional)</span>
+                        </label>
+                        <input type="file" id="attachment" name="attachment" class="file-input">
+                    </div>
+                    <div class="form-group-checkbox">
+                        <input type="checkbox" id="privacy" name="privacy" required>
+                        <label for="privacy">He leído y acepto la <a href="politica-privacidad.html" target="_blank" rel="noopener noreferrer">política de privacidad</a>.</label>
+                    </div>
+                    <div class="form-submit-area">
+                        <button type="submit" id="submit-button">Enviar Mensaje</button>
+                        <p id="form-status"></p>
+                    </div>
+                </form>
+
+                <aside class="contact-portrait-card">
+                    <img src="images/contacto-retrato.jpg" alt="Retrato de Yaiza Díaz" width="700" height="704" loading="lazy">
+                    <p class="contact-portrait-quote">"Cada mensaje es el comienzo de una nueva colaboración."</p>
+                </aside>
+            </div>
 
         </div>
     </section>
