@@ -254,5 +254,17 @@ const premiosContent = readFile('premios.html');
 check('premios.html: cada premio tiene boton de compartir', (premiosContent.match(/class="share-btn share-btn-inline"/g) || []).length === 4);
 
 // ---------------------------------------------------------------------------
+// 14. Google Analytics (GA4) con Consent Mode (denied por defecto, CookieYes
+//     lo actualiza al aceptar), en todas las paginas publicas salvo admin
+// ---------------------------------------------------------------------------
+for (const f of HTML_FILES) {
+  if (f === 'admin.html') continue;
+  const content = readFile(f);
+  check(`${f}: incluye gtag.js de GA4`, /googletagmanager\.com\/gtag\/js\?id=G-[A-Z0-9]+/.test(content));
+  check(`${f}: fija el consentimiento por defecto en "denied" antes de cargar gtag`, /gtag\('consent',\s*'default'/.test(content));
+}
+check('admin.html: no carga Google Analytics', !readFile('admin.html').includes('googletagmanager.com/gtag'));
+
+// ---------------------------------------------------------------------------
 console.log(`\n${passes} checks OK, ${failures} checks fallidos.`);
 process.exit(failures > 0 ? 1 : 0);
