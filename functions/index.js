@@ -19,6 +19,14 @@ function escapeHtml(value) {
   }[char]));
 }
 
+// Quita saltos de linea de un valor antes de usarlo en una cabecera de
+// correo (From/Reply-To): el formulario de contacto es publico (cualquiera
+// puede escribir en contactMessages), asi que un valor con \r\n podria
+// intentar inyectar cabeceras SMTP adicionales.
+function stripNewlines(value) {
+  return String(value ?? "").replace(/[\r\n]+/g, " ").trim();
+}
+
 exports.sendContactEmail = onDocumentCreated(
   { document: "contactMessages/{messageId}", secrets: [GMAIL_APP_PASSWORD] },
   (event) => {
@@ -38,10 +46,10 @@ exports.sendContactEmail = onDocumentCreated(
   const attachmentName = escapeHtml(data.attachmentName);
 
   const mailOptions = {
-    from: `"${name}" <${GMAIL_EMAIL}>`,
+    from: `"${stripNewlines(data.name)}" <${GMAIL_EMAIL}>`,
     to: "yaizadiaztv@gmail.com",
-    replyTo: data.email,
-    subject: `Nuevo mensaje web: ${subject}`,
+    replyTo: stripNewlines(data.email),
+    subject: `Nuevo mensaje web: ${stripNewlines(data.subject)}`,
     html: `
       <h1>Nuevo Mensaje de yaizadiaz.com</h1>
       <p><strong>De:</strong> ${name}</p>
@@ -53,7 +61,7 @@ exports.sendContactEmail = onDocumentCreated(
       <hr>
       ${
         data.attachment
-          ? `<p><strong>Archivo Adjunto:</strong> <a href="${data.attachment}">Descargar ${attachmentName}</a></p>`
+          ? `<p><strong>Archivo Adjunto:</strong> <a href="${escapeHtml(data.attachment)}">Descargar ${attachmentName}</a></p>`
           : "<p><em>No se adjuntó ningún archivo.</em></p>"
       }
       <br>
