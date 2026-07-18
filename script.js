@@ -187,12 +187,19 @@ document.addEventListener('DOMContentLoaded', () => {
         
         mobileMenuToggle.appendChild(clickShield);
 
+        // Mantiene aria-expanded sincronizado con el estado real del menú,
+        // sin importar por cuál de los varios sitios del código se cierre
+        // (clic en un enlace, resize, pageshow, etc.).
+        new MutationObserver(() => {
+            mobileMenuToggle.setAttribute('aria-expanded', String(navLinks.classList.contains('nav-open')));
+        }).observe(navLinks, { attributes: true, attributeFilter: ['class'] });
+
         const toggleMenu = () => {
             const isClosed = !navLinks.classList.contains('nav-open');
             if (isClosed) {
                 navLinks.classList.add('nav-open');
                 body.classList.add('scroll-locked');
-                
+
                 // Mostrar la flecha indicadora
                 setTimeout(() => {
                     const scrollIndicator = document.getElementById('scroll-indicator');
