@@ -212,10 +212,22 @@ check(
   '.hero-bg-layer tiene transition de opacity para el crossfade',
   /\.hero-bg-layer\s*\{[^}]*transition:\s*opacity/s.test(styleCss)
 );
+check(
+  '.hero-bg-photo usa background-size:contain para no recortar la foto real',
+  /\.hero-bg-photo\s*\{[^}]*background-size:\s*contain/s.test(styleCss)
+);
+check(
+  '.hero-bg-blur usa background-size:cover + blur como fondo de relleno',
+  /\.hero-bg-blur\s*\{[^}]*background-size:\s*cover[^}]*filter:\s*blur/s.test(styleCss)
+);
+check(
+  'script.js: setHeroBackground pinta tanto hero-bg-blur como hero-bg-photo',
+  /hero-bg-blur[\s\S]{0,300}?hero-bg-photo/.test(readFile('script.js'))
+);
 const indexContent = readFile('index.html');
 check(
-  'index.html: la capa de fondo activa del hero trae una imagen estatica de fallback',
-  /hero-bg-layer active"[^>]*background-image:\s*url\(/.test(indexContent)
+  'index.html: la capa de fondo activa del hero trae una imagen estatica de fallback (blur + foto sin recortar)',
+  /hero-bg-layer active"[\s\S]{0,400}?hero-bg-blur"\s*style="background-image:\s*url\([\s\S]{0,400}?hero-bg-photo"\s*style="background-image:\s*url\(/.test(indexContent)
 );
 check(
   'index.html: precarga la imagen del hero con rel="preload"',
