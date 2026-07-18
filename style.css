@@ -3480,6 +3480,7 @@ a.expandable-image:hover img {
     position: relative;
     overflow: hidden;
     color: var(--color-blanco);
+    padding: 9rem 0;
 }
 
 .contact-page-section::before {
@@ -3522,17 +3523,17 @@ a.expandable-image:hover img {
 }
 
 .contact-page-form {
-    max-width: 700px;
+    max-width: 560px;
     flex: 1 1 auto;
     margin: 0;
     text-align: left;
     background: var(--color-blanco);
-    padding: 2.5rem;
+    padding: 2.25rem;
     border-radius: 12px;
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 700px) {
     .contact-page-form {
         width: 100%;
         padding: 1.75rem;
