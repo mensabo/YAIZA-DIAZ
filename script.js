@@ -209,6 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeStandaloneLightboxSetup();
     setupVideoModalClose(); // Inicia la lógica de cierre del modal de vídeo
     initializeLazyAutoplayVideos();
+    initializeShareButtons();
 
     if (pageId === 'libroPage') {
         initializeLetterModal();
@@ -476,7 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.className = 'media-card';
                 card.target = '_blank';
                 card.rel = 'noopener noreferrer';
-                card.innerHTML = `<div class="image-container"><img src="${interview.thumbnailUrl}" alt="${interview.mainTitle}" loading="lazy">${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}</div><div class="media-card-text"><h4>${interview.mainTitle}</h4><p>${interview.subtitle}</p></div>`;
+                card.innerHTML = `<div class="image-container"><img src="${interview.thumbnailUrl}" alt="${interview.mainTitle}" loading="lazy">${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}</div><div class="media-card-text"><h4>${interview.mainTitle}</h4><p>${interview.subtitle}</p></div><button type="button" class="share-btn" data-share-title="${interview.mainTitle}" data-share-url="${interview.url}" aria-label="Compartir esta entrevista"><i class="fas fa-share-alt"></i></button>`;
                 grid.appendChild(card);
             });
         } catch (error) { console.error("Error cargando entrevistas:", error); }
@@ -754,6 +755,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (e.target === iframeModal) closeModal(); 
             });
         }
+    }
+
+    function initializeShareButtons() {
+        document.addEventListener('click', async (e) => {
+            const btn = e.target.closest('.share-btn');
+            if (!btn) return;
+            e.preventDefault();
+            e.stopPropagation();
+
+            const url = btn.dataset.shareUrl || location.href;
+            const title = btn.dataset.shareTitle
+                || btn.closest('.comunicacion-section, .media-card')?.querySelector('h3, h4')?.textContent?.trim()
+                || document.title;
+
+            if (navigator.share) {
+                try { await navigator.share({ title, url }); } catch (err) { /* el usuario cancelo el share, no es un error */ }
+                return;
+            }
+            try {
+                await navigator.clipboard.writeText(url);
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => { btn.innerHTML = original; }, 1500);
+            } catch (err) {
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
+            }
+        });
     }
 
     function initializeLazyAutoplayVideos() {

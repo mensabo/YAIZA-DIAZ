@@ -242,5 +242,17 @@ for (const f of HTML_FILES) {
 check('script.js: inicializa el lazy-load de videos autoplay', /initializeLazyAutoplayVideos/.test(readFile('script.js')));
 
 // ---------------------------------------------------------------------------
+// 13. CTA de contacto en el menu + botones de compartir
+// ---------------------------------------------------------------------------
+for (const f of PUBLIC_HTML_FILES) {
+  const content = readFile(f);
+  check(`${f}: el enlace "Contacto" del menu es un CTA destacado`, /<a href="contacto\.html" class="nav-cta">Contacto<\/a>/.test(content));
+}
+check('script.js: inicializa los botones de compartir', /initializeShareButtons/.test(readFile('script.js')));
+check('script.js: las tarjetas de entrevistas incluyen boton de compartir', /share-btn/.test(readFile('script.js')));
+const premiosContent = readFile('premios.html');
+check('premios.html: cada premio tiene boton de compartir', (premiosContent.match(/class="share-btn share-btn-inline"/g) || []).length === 4);
+
+// ---------------------------------------------------------------------------
 console.log(`\n${passes} checks OK, ${failures} checks fallidos.`);
 process.exit(failures > 0 ? 1 : 0);

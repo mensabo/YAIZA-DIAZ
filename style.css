@@ -180,6 +180,28 @@ nav ul li a:hover {
     transform: translateY(-2px);
 }
 
+/* CTA de contacto en el menú: destaca sobre el resto de enlaces para que
+   sea visible en todas las páginas, no solo en el hero de la home. */
+nav ul li a.nav-cta, nav ul li a.nav-cta:visited {
+    color: var(--color-negro, #1a1a1a);
+    background-color: var(--color-acento);
+    border-radius: 30px;
+    padding-top: 0.55rem;
+    padding-bottom: 0.55rem;
+    padding-left: clamp(0.7rem, 1.2vw, 1.1rem);
+    padding-right: clamp(0.7rem, 1.2vw, 1.1rem);
+}
+
+nav ul li a.nav-cta:hover {
+    color: var(--color-negro, #1a1a1a);
+    background-color: var(--color-blanco);
+    transform: translateY(-2px);
+}
+
+nav ul li a.nav-cta::after {
+    display: none;
+}
+
 nav ul li a:hover::after {
     transform: scaleX(1);
 }
@@ -1372,6 +1394,7 @@ footer {
 }
 
 .media-card {
+    position: relative;
     background-color: var(--color-blanco);
     border-radius: 8px;
     text-decoration: none;
@@ -1381,6 +1404,39 @@ footer {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+}
+
+/* Botón de compartir: reutilizable en tarjetas de entrevistas y en
+   secciones de premios (ahí sin position:absolute, ver .share-btn-inline). */
+.share-btn {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.55);
+    color: var(--color-blanco);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.share-btn:hover {
+    background-color: var(--color-acento);
+    transform: scale(1.08);
+}
+
+.share-btn-inline {
+    position: static;
+    display: inline-flex;
+    margin-left: 0.75rem;
+    vertical-align: middle;
 }
 
 .media-card:hover {
@@ -2289,6 +2345,18 @@ footer {
     #nav-links a:active {
         background-color: rgba(188, 160, 125, 0.15);
         color: var(--color-blanco);
+    }
+
+    #nav-links a.nav-cta {
+        background-color: var(--color-acento);
+        color: var(--color-negro, #1a1a1a);
+        margin-top: 0.25rem;
+    }
+
+    #nav-links a.nav-cta:hover,
+    #nav-links a.nav-cta:active {
+        background-color: var(--color-blanco);
+        color: var(--color-negro, #1a1a1a);
     }
 
     #nav-links a::after {
