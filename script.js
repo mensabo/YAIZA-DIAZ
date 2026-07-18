@@ -352,14 +352,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const dots = document.querySelectorAll('.hero-dot');
 
+        let heroBgRequestId = 0;
+
         function setHeroBackground(imageUrl, posY) {
-            const nextLayer = bgLayers[1 - activeLayerIndex];
-            const currentLayer = bgLayers[activeLayerIndex];
-            nextLayer.style.backgroundImage = `url('${imageUrl}')`;
-            nextLayer.style.backgroundPosition = `center ${posY}`;
-            nextLayer.classList.add('active');
-            currentLayer.classList.remove('active');
-            activeLayerIndex = 1 - activeLayerIndex;
+            // Precarga la imagen antes de iniciar el crossfade: si se activa
+            // la capa nueva antes de que la imagen haya llegado, se ve el
+            // fondo negro del contenedor hasta que termina de descargar.
+            const requestId = ++heroBgRequestId;
+            const preloader = new Image();
+            const applyBackground = () => {
+                if (requestId !== heroBgRequestId) return; // llegó una pestaña más nueva mientras cargaba
+                const nextLayer = bgLayers[1 - activeLayerIndex];
+                const currentLayer = bgLayers[activeLayerIndex];
+                nextLayer.style.backgroundImage = `url('${imageUrl}')`;
+                nextLayer.style.backgroundPosition = `center ${posY}`;
+                nextLayer.classList.add('active');
+                currentLayer.classList.remove('active');
+                activeLayerIndex = 1 - activeLayerIndex;
+            };
+            preloader.onload = applyBackground;
+            preloader.onerror = applyBackground;
+            preloader.src = imageUrl;
+            if (preloader.complete) applyBackground();
         }
 
         function switchTab(index) {
