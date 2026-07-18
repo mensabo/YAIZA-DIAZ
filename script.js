@@ -137,7 +137,11 @@ function initializeCookieConsent() {
     if (stored) {
         applyCookieConsent(stored.analytics); // reafirma el consent update por si gtag tardo en cargar
     } else {
-        showBanner(null);
+        // Retraso deliberado: si el banner aparece en el mismo instante que el
+        // resto del contenido, su texto (un bloque grande de párrafo) puede
+        // "ganar" la medición de Largest Contentful Paint por delante del
+        // contenido real de la página, empeorando esa métrica sin motivo.
+        setTimeout(() => showBanner(null), 1200);
     }
 }
 
