@@ -29,13 +29,51 @@ document.addEventListener('DOMContentLoaded', () => {
             text: text,
             duration: 3000,
             close: true,
-            gravity: "top", 
-            position: "right", 
-            stopOnFocus: true, 
+            gravity: "top",
+            position: "right",
+            stopOnFocus: true,
             style: {
                 background: type === 'success' ? "linear-gradient(to right, #00b09b, #96c93d)" : "linear-gradient(to right, #e53e3e, #c53030)",
             },
         }).showToast();
+    };
+
+    // --- VALIDACIÓN DE ARCHIVOS ANTES DE SUBIR A STORAGE ---
+    const MAX_UPLOAD_BYTES = 8 * 1024 * 1024; // 8MB, razonable para fotos de portfolio
+    // Filtra una FileList/array a solo imágenes válidas y de tamaño razonable,
+    // avisando por toast de lo que se descarta para que no sea un fallo silencioso.
+    const filterValidImageFiles = (files) => {
+        const valid =[];
+        for (const file of Array.from(files)) {
+            if (!file.type.startsWith('image/')) {
+                showToast(`"${file.name}" no es una imagen y se ha omitido.`, 'error');
+                continue;
+            }
+            if (file.size > MAX_UPLOAD_BYTES) {
+                showToast(`"${file.name}" pesa demasiado (máx. 8MB) y se ha omitido.`, 'error');
+                continue;
+            }
+            valid.push(file);
+        }
+        return valid;
+    };
+
+    // --- FUNCIÓN HELPER PARA BOTONES DE GUARDAR: evita doble-envío y da feedback visual ---
+    // Deshabilita el botón y muestra un estado de "Guardando..." mientras la promesa
+    // async está en curso; lo restaura al terminar (éxito o error).
+    const withButtonLoading = (button, handler) => async (...args) => {
+        if (button.disabled) return; // ya hay una petición en curso, ignora el doble click
+        const originalText = button.textContent;
+        button.disabled = true;
+        button.classList.add('is-loading');
+        button.textContent = 'Guardando...';
+        try {
+            await handler(...args);
+        } finally {
+            button.disabled = false;
+            button.classList.remove('is-loading');
+            button.textContent = originalText;
+        }
     };
     // --- MOTOR MÁGICO PARA AUTO-COMPLETAR MINIATURAS DE YOUTUBE ---
     function autoFillYouTubeThumbnail(urlInput, thumbInputOrCallback) {
@@ -197,8 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentItems = getItemsFromList(listElement);
         const newItems =[];
 
-        for (const file of files) {
-            if (!file.type.startsWith('image/')) continue;
+        for (const file of filterValidImageFiles(files)) {
             const storageRef = ref(storage, `hero-slider/${Date.now()}_${file.name}`);
             await uploadBytes(storageRef, file);
             const url = await getDownloadURL(storageRef);
@@ -265,7 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    saveHomepageButton.addEventListener('click', saveHomepageData);
+    saveHomepageButton.addEventListener('click', withButtonLoading(saveHomepageButton, saveHomepageData));
 
     // ===========================================
     // --- SECCIÓN DE GESTIÓN DE GALERÍAS ---
@@ -330,9 +367,10 @@ document.addEventListener('DOMContentLoaded', () => {
     fileInput.addEventListener('change', e => handleGalleryImageUpload(e.target.files));
 
     async function handleGalleryImageUpload(files) {
+        const validFiles = filterValidImageFiles(files);
         const currentCount = galleryListEl.querySelectorAll('.gallery-item').length;
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
+        for (let i = 0; i < validFiles.length; i++) {
+            const file = validFiles[i];
             const storageRef = ref(storage, `${currentStoragePath}${Date.now()}_${file.name}`);
             await uploadBytes(storageRef, file);
             const url = await getDownloadURL(storageRef);
@@ -356,7 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadGalleries();
     });
 
-    saveButton.addEventListener('click', async () => {
+    saveButton.addEventListener('click', withButtonLoading(saveButton, async () => {
         const batch = writeBatch(db);
         galleryListEl.querySelectorAll('.gallery-item').forEach((item, index) => {
             const docRef = doc(db, currentCollection, item.dataset.id);
@@ -365,7 +403,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await batch.commit();
         showToast('¡Galería guardada con éxito!');
         loadGalleries();
-    });
+    }));
 
     galleryListEl.addEventListener('click', async e => {
         if (e.target.classList.contains('delete-button')) {
@@ -614,8 +652,7 @@ document.addEventListener('DOMContentLoaded', () => {
         eventImagesDropZone.querySelector('p').textContent = 'Subiendo...';
         const currentItems = getItemsFromEventPreview();
         const newItems =[];
-        for (const file of files) {
-            if (!file.type.startsWith('image/')) continue;
+        for (const file of filterValidImageFiles(files)) {
             const storageRef = ref(storage, `events/${Date.now()}_${file.name}`);
             await uploadBytes(storageRef, file);
             const url = await getDownloadURL(storageRef);
@@ -711,7 +748,7 @@ document.addEventListener('DOMContentLoaded', () => {
     eventImagesPreviewList.addEventListener('click', e => { if (e.target.classList.contains('delete-button')) e.target.closest('.preview-item').remove(); });
     cancelEditEventButton.addEventListener('click', resetEventForm);
 
-    saveEventButton.addEventListener('click', async () => {
+    saveEventButton.addEventListener('click', withButtonLoading(saveEventButton, async () => {
         const eventId = eventIdInput.value;
         const order = parseInt(eventOrderInput.value) || 0;
         const eventData = {
@@ -728,7 +765,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('¡Evento guardado!');
         resetEventForm();
         loadEvents();
-    });
+    }));
 
     eventsListEl.addEventListener('click', async e => {
         const item = e.target.closest('.event-item');
@@ -754,7 +791,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    saveEventOrderButton.addEventListener('click', async () => {
+    saveEventOrderButton.addEventListener('click', withButtonLoading(saveEventOrderButton, async () => {
         const batch = writeBatch(db);
         eventsListEl.querySelectorAll('.event-item').forEach((item, index) => {
             batch.update(doc(db, 'events', item.dataset.id), { order: index });
@@ -762,7 +799,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await batch.commit();
         showToast('¡Orden guardado!');
         loadEvents();
-    });
+    }));
 
     // ===========================================
     // --- IMPLEMENTACIÓN COMPLETA DE ENTREVISTAS ---
@@ -805,6 +842,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     async function handleInterviewImageUpload(file) {
         if (!file) return;
+        if (filterValidImageFiles([file]).length === 0) return;
         interviewImageDropZone.querySelector('p').textContent = 'Subiendo...';
         const storageRef = ref(storage, `interviews/${Date.now()}_${file.name}`);
         await uploadBytes(storageRef, file);
@@ -827,7 +865,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cancelEditInterviewButton.addEventListener('click', resetInterviewForm);
 
-    saveInterviewButton.addEventListener('click', async () => {
+    saveInterviewButton.addEventListener('click', withButtonLoading(saveInterviewButton, async () => {
         const interviewId = interviewIdInput.value;
         const order = parseInt(interviewOrderInput.value) || 0;
         const interviewData = {
@@ -845,7 +883,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('¡Entrevista guardada!');
         resetInterviewForm();
         loadInterviews();
-    });
+    }));
 
     interviewsListEl.addEventListener('click', async e => {
         const item = e.target.closest('.interview-item');
@@ -873,7 +911,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    saveInterviewOrderButton.addEventListener('click', async () => {
+    saveInterviewOrderButton.addEventListener('click', withButtonLoading(saveInterviewOrderButton, async () => {
         const batch = writeBatch(db);
         interviewsListEl.querySelectorAll('.interview-item').forEach((item, index) => {
             batch.update(doc(db, 'interviews', item.dataset.id), { order: index });
@@ -881,7 +919,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await batch.commit();
         showToast('¡Orden guardado!');
         loadInterviews();
-    });
+    }));
 
     // ===========================================
     // --- IMPLEMENTACIÓN COMPLETA DE PREMIOS ---
@@ -928,8 +966,7 @@ document.addEventListener('DOMContentLoaded', () => {
             awardImagesDropZone.querySelector('p').textContent = 'Subiendo...';
             const currentItems = getItemsFromPreview();
             const newItems =[];
-            for (const file of files) {
-                if (!file.type.startsWith('image/')) continue;
+            for (const file of filterValidImageFiles(files)) {
                 const storageRef = ref(storage, `awards/${Date.now()}_${file.name}`);
                 await uploadBytes(storageRef, file);
                 const url = await getDownloadURL(storageRef);
@@ -989,7 +1026,7 @@ document.addEventListener('DOMContentLoaded', () => {
     awardImagesPreviewList.addEventListener('click', e => { if (e.target.classList.contains('delete-button')) e.target.closest('.preview-item').remove(); });
     cancelEditAwardButton.addEventListener('click', resetAwardForm);
 
-    saveAwardButton.addEventListener('click', async () => {
+    saveAwardButton.addEventListener('click', withButtonLoading(saveAwardButton, async () => {
         const awardId = awardIdInput.value;
         const order = parseInt(awardOrderInput.value) || 0;
         const awardData = {
@@ -1006,7 +1043,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast('¡Premio guardado!');
         resetAwardForm();
         loadAwards();
-    });
+    }));
 
     awardsListEl.addEventListener('click', async e => {
         const item = e.target.closest('.award-item');
@@ -1032,7 +1069,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    saveAwardOrderButton.addEventListener('click', async () => {
+    saveAwardOrderButton.addEventListener('click', withButtonLoading(saveAwardOrderButton, async () => {
         const batch = writeBatch(db);
         awardsListEl.querySelectorAll('.award-item').forEach((item, index) => {
             batch.update(doc(db, 'awards', item.dataset.id), { order: index });
@@ -1040,7 +1077,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await batch.commit();
         showToast('¡Orden guardado!');
         loadAwards();
-    });
+    }));
 
     // ===========================================
     // --- IMPLEMENTACIÓN COMPLETA PROGRAMAS TV --
@@ -1154,6 +1191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     async function handleTVProgramImageUpload(file) {
         if (!file) return;
+        if (filterValidImageFiles([file]).length === 0) return;
         tvProgramImageDropZone.querySelector('p').textContent = 'Subiendo...';
         const storageRef = ref(storage, `tv_programs/${Date.now()}_${file.name}`);
         await uploadBytes(storageRef, file);
@@ -1177,7 +1215,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cancelEditTvProgramButton.addEventListener('click', resetTVProgramForm);
 
-        saveTvProgramButton.addEventListener('click', async () => {
+        saveTvProgramButton.addEventListener('click', withButtonLoading(saveTvProgramButton, async () => {
             const id = tvProgramIdInput.value;
             const order = parseInt(tvProgramOrderInput.value) || 0;
             const data = {
@@ -1195,7 +1233,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast('¡Programa guardado!');
             resetTVProgramForm();
             loadTVPrograms();
-        });
+        }));
 
         tvProgramsListEl.addEventListener('click', async e => {
             const item = e.target.closest('.interview-item');
@@ -1222,7 +1260,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        saveTvProgramOrderButton.addEventListener('click', async () => {
+        saveTvProgramOrderButton.addEventListener('click', withButtonLoading(saveTvProgramOrderButton, async () => {
             const batch = writeBatch(db);
             tvProgramsListEl.querySelectorAll('.interview-item').forEach((item, index) => {
                 batch.update(doc(db, 'tv_programs', item.dataset.id), { order: index });
@@ -1230,6 +1268,6 @@ document.addEventListener('DOMContentLoaded', () => {
             await batch.commit();
             showToast('¡Orden guardado!');
             loadTVPrograms();
-        });
+        }));
     }
 });

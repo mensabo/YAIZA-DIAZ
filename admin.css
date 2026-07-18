@@ -113,6 +113,33 @@ button:hover {
 }
 button:active { transform: translateY(0px) scale(0.98); }
 button:disabled { background-color: var(--color-secundario); cursor: not-allowed; transform: none; box-shadow: none; }
+button:focus-visible {
+    outline: 3px solid var(--color-acento-suave);
+    outline-offset: 2px;
+}
+
+/* Estado de "Guardando..." mientras una operación async está en curso
+   (ver withButtonLoading en admin.js): icono de carga girando delante del texto. */
+button.is-loading {
+    position: relative;
+    padding-left: 40px;
+}
+button.is-loading::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: admin-spin 0.7s linear infinite;
+}
+@keyframes admin-spin {
+    to { transform: rotate(360deg); }
+}
 
 
 #logout-button {

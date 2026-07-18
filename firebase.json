@@ -26,7 +26,8 @@
       "**/node_modules/**",
       "functions/**",
       ".vscode/**",
-      "*.md"
+      "*.md",
+      "_sin-usar/**"
     ],
     "cleanUrls": true,
     "trailingSlash": false,
