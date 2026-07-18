@@ -483,12 +483,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (requestId !== heroBgRequestId) return; // llegó una pestaña más nueva mientras cargaba
                 const nextLayer = bgLayers[1 - activeLayerIndex];
                 const currentLayer = bgLayers[activeLayerIndex];
-                const blurEl = nextLayer.querySelector('.hero-bg-blur');
-                const photoEl = nextLayer.querySelector('.hero-bg-photo');
-                blurEl.style.backgroundImage = `url('${imageUrl}')`;
-                blurEl.style.backgroundPosition = `center ${posY}`;
-                photoEl.style.backgroundImage = `url('${imageUrl}')`;
-                photoEl.style.backgroundPosition = `center ${posY}`;
+                nextLayer.style.backgroundImage = `url('${imageUrl}')`;
+                nextLayer.style.backgroundPosition = `center ${posY}`;
                 nextLayer.classList.add('active');
                 currentLayer.classList.remove('active');
                 activeLayerIndex = 1 - activeLayerIndex;
