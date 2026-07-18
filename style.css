@@ -475,6 +475,7 @@ nav ul li a:hover::after {
     display: block;
     max-width: 100%;
     width: 700px;
+    height: auto;
     margin: 2rem auto 3rem auto;
     border-radius: 8px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
@@ -4332,7 +4333,7 @@ body {
     .comunicacion-section h3.centered-mobile-title { display: block; text-align: center; border-bottom: none; padding-bottom: 0; }
     .comunicacion-section h3.centered-mobile-title::after { content: ''; display: block; width: 80px; height: 2px; background-color: var(--color-acento); margin: 0.75rem auto 0 auto; }
     .comunicacion-section h3.centered-mobile-title .brand-name { text-align: center; }
-    .section-image { width: 100%; margin: 1.5rem auto 2.5rem auto; }
+    .section-image { width: 100%; height: auto; margin: 1.5rem auto 2.5rem auto; }
     #habilidades .event-tags { flex-direction: column; gap: 0.75rem; }
     #dynamic-event-tags { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; align-items: stretch; }
     .event-tags button.event-tag-button { width: 100%; height: auto; min-height: 80px; padding: 0.5rem; font-size: 0.9rem; line-height: 1.3; white-space: normal; display: none; align-items: center; justify-content: center; text-align: center; }
