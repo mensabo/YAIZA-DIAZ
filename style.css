@@ -984,6 +984,15 @@ footer {
     object-fit: cover;
 }
 
+/* Para fotos que no están compuestas para un recorte cuadrado (p. ej.
+   fotos de evento en formato paisaje): conservan su proporción real en
+   vez de recortarse y perder la composición original. */
+.sinopsis-img img.natural-ratio {
+    aspect-ratio: auto;
+    object-fit: initial;
+    height: auto;
+}
+
 /* Variante para secciones con foto protagonista (ej. premios.html): la
    imagen ocupa más espacio que el texto y conserva su proporción real en
    vez de recortarse a un cuadrado, para no perder parte de la foto. */
@@ -995,12 +1004,6 @@ footer {
     flex-basis: 46%;
     max-width: 440px;
     margin-left: auto;
-}
-
-.sinopsis-content.media-heavy .sinopsis-img img.natural-ratio {
-    aspect-ratio: auto;
-    object-fit: initial;
-    height: auto;
 }
 
 .pie-de-foto {
