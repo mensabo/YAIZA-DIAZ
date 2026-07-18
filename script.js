@@ -316,6 +316,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let intervalId = null;
         let touchStartX = 0;
         let touchEndX = 0;
+        const bgLayers = bgContainer.querySelectorAll('.hero-bg-layer');
+        let activeLayerIndex = 0;
 
         // Fondos locales de respaldo por pestaña, usados mientras aun no ha
         // llegado la respuesta de Firestore/Storage con las fotos reales.
@@ -350,6 +352,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const dots = document.querySelectorAll('.hero-dot');
 
+        function setHeroBackground(imageUrl, posY) {
+            const nextLayer = bgLayers[1 - activeLayerIndex];
+            const currentLayer = bgLayers[activeLayerIndex];
+            nextLayer.style.backgroundImage = `url('${imageUrl}')`;
+            nextLayer.style.backgroundPosition = `center ${posY}`;
+            nextLayer.classList.add('active');
+            currentLayer.classList.remove('active');
+            activeLayerIndex = 1 - activeLayerIndex;
+        }
+
         function switchTab(index) {
             currentIndex = index;
             const activeTab = tabs[index];
@@ -361,15 +373,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const randomIndex = Math.floor(Math.random() * imageUrls.length);
                 const randomImageObject = imageUrls[randomIndex];
                 if (randomImageObject && randomImageObject.src) {
-                    bgContainer.style.backgroundImage = `url(${randomImageObject.src})`;
                     const isMobile = window.innerWidth < 768;
                     const posY = isMobile ? (randomImageObject.posYMobile || 50) : (randomImageObject.posYDesktop || 50);
-                    bgContainer.style.backgroundPosition = `center ${posY}%`;
+                    setHeroBackground(randomImageObject.src, `${posY}%`);
                 }
             } else {
                 const fallbackSrc = HERO_FALLBACK_IMAGES[heroId] || 'images/placeholder.png';
-                bgContainer.style.backgroundImage = `url('${fallbackSrc}')`;
-                bgContainer.style.backgroundPosition = 'center 20%';
+                setHeroBackground(fallbackSrc, '20%');
             }
 
             tabs.forEach(t => t.classList.remove('active'));
