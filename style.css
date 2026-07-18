@@ -123,7 +123,7 @@ nav {
     flex-shrink: 0;
 }
 
-.nav-title h1 {
+.nav-title h1, .nav-title-text {
     font-size: clamp(1.2rem, 1.8vw, 1.6rem); /* El logo se adapta suavemente al monitor */
     color: var(--color-blanco);
     line-height: 1;
@@ -902,7 +902,8 @@ footer {
     flex-basis: 60%;
 }
 
-.libro-hero-text h2 {
+.libro-hero-text h2,
+.libro-hero-text h1.page-title {
     text-align: left;
     font-size: 3.5rem;
     margin-bottom: 0.5rem;
@@ -2257,7 +2258,7 @@ footer {
 }
 
 @media (max-width: 768px) {
-    h2 {
+    h2, h1.page-title {
         font-size: 1.8rem;
     }
 
@@ -2278,7 +2279,7 @@ footer {
         margin-right: 0;
     }
 
-    .nav-title h1 {
+    .nav-title h1, .nav-title-text {
         font-size: 1.4rem;
     }
 
@@ -2581,7 +2582,8 @@ footer {
         gap: 2rem;
     }
 
-    .libro-hero-text h2 {
+    .libro-hero-text h2,
+    .libro-hero-text h1.page-title {
         text-align: center;
         font-size: 2.2rem;
     }
@@ -4172,7 +4174,7 @@ body {
 @media (max-width: 1400px) and (min-width: 851px) {
     .container { padding: 0 1rem; max-width: 100%; width: 100%; }
     .nav-title { margin-right: 0.5rem; flex-shrink: 0; }
-    .nav-title h1 { font-size: 1.3rem; letter-spacing: 0; }
+    .nav-title h1, .nav-title-text { font-size: 1.3rem; letter-spacing: 0; }
     nav ul li { padding: 0 0.15rem; }
     nav ul li a, nav ul li a:visited {
         font-size: 0.8rem; 
@@ -4184,7 +4186,7 @@ body {
 @media (max-width: 850px) {
     nav { justify-content: space-between; padding: 0 1rem; }
     .nav-title { margin-right: 0; flex-shrink: 0; }
-    .nav-title h1 { font-size: 1.5rem; }
+    .nav-title h1, .nav-title-text { font-size: 1.5rem; }
     #mobile-menu-toggle {
         display: block; background: none; border: none; color: var(--color-blanco);
         font-size: 2rem; cursor: pointer; z-index: 1001; padding: 0.5rem;
@@ -4251,7 +4253,7 @@ body {
     /* --- MENÚ MÓVIL --- */
     nav { justify-content: space-between; padding: 0 1rem; }
     .nav-title { margin-right: 0; flex-shrink: 0; }
-    .nav-title h1 { font-size: 1.5rem; }
+    .nav-title h1, .nav-title-text { font-size: 1.5rem; }
     #mobile-menu-toggle {
         display: block; background: none; border: none; color: var(--color-blanco);
         font-size: 2rem; cursor: pointer; z-index: 1001; padding: 0.5rem;
@@ -4313,7 +4315,7 @@ body {
     .annotation-arrow-mobile .annotation-arrow { width: 100%; height: 100%; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.7)); animation: bounce-arrow 2s infinite; animation-delay: 1.5s; }
     
     /* --- AJUSTES MENORES SECCIONES --- */
-    h2 { font-size: 1.8rem; }
+    h2, h1.page-title { font-size: 1.8rem; }
     section { padding: 4rem 0; }
     .container { padding: 0 1rem; }
     .about-quote { background-color: rgba(188, 160, 125, 0.15); padding: 1rem; border-radius: 8px; font-size: 1.1rem; position: relative; overflow: hidden; }

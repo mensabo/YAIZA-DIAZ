@@ -276,5 +276,21 @@ check('script.js: el footer incluye el enlace para reconfigurar cookies', /cooki
 check('politica-cookies.html: menciona Google Analytics y como cambiar preferencias', /Google Analytics/.test(readFile('politica-cookies.html')) && /Configurar cookies/.test(readFile('politica-cookies.html')));
 
 // ---------------------------------------------------------------------------
+// 16. Cada pagina tiene exactamente un <h1>, y no es el generico de marca
+//     del nav (salvo en la portada, donde SI tiene sentido que el H1 sea el
+//     nombre) - un H1 duplicado idéntico en todas las páginas desperdicia
+//     esa señal de SEO. El nav usa <p class="nav-title-text"> en el resto.
+// ---------------------------------------------------------------------------
+for (const f of HTML_FILES) {
+  if (f === 'admin.html') continue;
+  const content = readFile(f);
+  const h1Matches = content.match(/<h1[\s>]/g) || [];
+  check(`${f}: tiene exactamente un <h1>`, h1Matches.length === 1, `encontrados: ${h1Matches.length}`);
+  if (f !== 'index.html') {
+    check(`${f}: el nav no usa <h1> para el nombre de marca (usa nav-title-text)`, !/<div class="nav-title">\s*<h1>/.test(content));
+  }
+}
+
+// ---------------------------------------------------------------------------
 console.log(`\n${passes} checks OK, ${failures} checks fallidos.`);
 process.exit(failures > 0 ? 1 : 0);
