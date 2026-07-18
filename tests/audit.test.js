@@ -228,15 +228,13 @@ for (const f of PUBLIC_HTML_FILES) {
 }
 
 // ---------------------------------------------------------------------------
-// 12. CookieYes no bloquea el render (defer) + videos de fondo autoplay
-//     con carga diferida (data-src en vez de src, para no descargar varios
-//     MP4 en paralelo al entrar en la pagina)
+// 12. Sin dependencia de CookieYes (banner de cookies propio, ver mas abajo)
+//     + videos de fondo autoplay con carga diferida (data-src en vez de src,
+//     para no descargar varios MP4 en paralelo al entrar en la pagina)
 // ---------------------------------------------------------------------------
 for (const f of HTML_FILES) {
   const content = readFile(f);
-  if (content.includes('id="cookieyes"')) {
-    check(`${f}: CookieYes carga con defer`, /id="cookieyes"[^>]*\bdefer\b/.test(content));
-  }
+  check(`${f}: no depende de CookieYes (script de terceros)`, !/cookieyes|cdn-cookieyes\.com/i.test(content));
   check(`${f}: no quedan <video autoplay> con <source src> sin lazy-load`, !/<video[^>]*\bautoplay\b[^>]*>(?:(?!<\/video>).)*?<source src=/s.test(content));
 }
 check('script.js: inicializa el lazy-load de videos autoplay', /initializeLazyAutoplayVideos/.test(readFile('script.js')));
@@ -254,8 +252,9 @@ const premiosContent = readFile('premios.html');
 check('premios.html: cada premio tiene boton de compartir', (premiosContent.match(/class="share-btn share-btn-inline"/g) || []).length === 4);
 
 // ---------------------------------------------------------------------------
-// 14. Google Analytics (GA4) con Consent Mode (denied por defecto, CookieYes
-//     lo actualiza al aceptar), en todas las paginas publicas salvo admin
+// 14. Google Analytics (GA4) con Consent Mode (denied por defecto; el banner
+//     de cookies propio en script.js lo actualiza al aceptar/rechazar), en
+//     todas las paginas publicas salvo admin
 // ---------------------------------------------------------------------------
 for (const f of HTML_FILES) {
   if (f === 'admin.html') continue;
@@ -264,6 +263,16 @@ for (const f of HTML_FILES) {
   check(`${f}: fija el consentimiento por defecto en "denied" antes de cargar gtag`, /gtag\('consent',\s*'default'/.test(content));
 }
 check('admin.html: no carga Google Analytics', !readFile('admin.html').includes('googletagmanager.com/gtag'));
+
+// ---------------------------------------------------------------------------
+// 15. Banner de cookies propio (sustituye a CookieYes)
+// ---------------------------------------------------------------------------
+const scriptContent = readFile('script.js');
+check('script.js: define el banner de cookies propio', /initializeCookieConsent/.test(scriptContent));
+check('script.js: guarda el consentimiento en localStorage', /COOKIE_CONSENT_KEY/.test(scriptContent));
+check('script.js: actualiza el Google Consent Mode al aceptar/rechazar', /gtag\('consent',\s*'update'/.test(scriptContent));
+check('script.js: el footer incluye el enlace para reconfigurar cookies', /cookie-settings-trigger/.test(scriptContent));
+check('politica-cookies.html: menciona Google Analytics y como cambiar preferencias', /Google Analytics/.test(readFile('politica-cookies.html')) && /Configurar cookies/.test(readFile('politica-cookies.html')));
 
 // ---------------------------------------------------------------------------
 console.log(`\n${passes} checks OK, ${failures} checks fallidos.`);
