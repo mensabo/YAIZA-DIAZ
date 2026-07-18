@@ -14,7 +14,8 @@ const SITE_FOOTER_HTML = `
         <p class="footer-legal-links">
             <a href="aviso-legal.html">Aviso legal</a> •
             <a href="politica-privacidad.html">Política de privacidad</a> •
-            <a href="politica-cookies.html">Política de cookies</a>
+            <a href="politica-cookies.html">Política de cookies</a> •
+            <button type="button" id="cookie-settings-trigger" class="footer-link-button">Configurar cookies</button>
         </p>
         <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
         <p class="developer-credit">
@@ -26,6 +27,120 @@ const SITE_FOOTER_HTML = `
     </div>
 `;
 
+// =======================================================
+// 0.1 BANNER DE COOKIES PROPIO (sin CookieYes ni terceros)
+// Guarda la decision del usuario en localStorage y actualiza el Google
+// Consent Mode (gtag('consent','update',...)) definido inline en el
+// <head> de cada pagina, que arranca en "denied" hasta que el usuario
+// decide. No se inyecta en admin.html (no carga script.js).
+// =======================================================
+const COOKIE_CONSENT_KEY = 'cookieConsent';
+
+const COOKIE_BANNER_HTML = `
+    <div class="cookie-banner-content">
+        <p>Usamos cookies propias necesarias para el funcionamiento de la web y, si lo aceptas, cookies analíticas (Google Analytics) para entender cómo se usa el sitio. Algunas páginas incrustan vídeos de YouTube que pueden instalar sus propias cookies al reproducirse. Más información en la <a href="politica-cookies.html">Política de Cookies</a>.</p>
+        <div class="cookie-banner-settings" id="cookie-banner-settings" hidden>
+            <label class="cookie-toggle">
+                <input type="checkbox" checked disabled> Cookies necesarias (siempre activas)
+            </label>
+            <label class="cookie-toggle">
+                <input type="checkbox" id="cookie-analytics-toggle"> Cookies analíticas (Google Analytics)
+            </label>
+        </div>
+    </div>
+    <div class="cookie-banner-actions">
+        <button type="button" id="cookie-reject-all" class="cookie-btn cookie-btn-secondary">Rechazar</button>
+        <button type="button" id="cookie-open-settings" class="cookie-btn cookie-btn-secondary">Configurar</button>
+        <button type="button" id="cookie-save-settings" class="cookie-btn cookie-btn-secondary" hidden>Guardar preferencias</button>
+        <button type="button" id="cookie-accept-all" class="cookie-btn cookie-btn-primary">Aceptar todas</button>
+    </div>
+`;
+
+function getCookieConsent() {
+    try {
+        return JSON.parse(localStorage.getItem(COOKIE_CONSENT_KEY));
+    } catch (err) {
+        return null;
+    }
+}
+
+function applyCookieConsent(analyticsGranted) {
+    localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify({
+        necessary: true,
+        analytics: analyticsGranted,
+        timestamp: Date.now()
+    }));
+    if (typeof window.gtag === 'function') {
+        window.gtag('consent', 'update', {
+            analytics_storage: analyticsGranted ? 'granted' : 'denied'
+        });
+    }
+}
+
+function initializeCookieConsent() {
+    if (document.getElementById('cookie-consent-banner')) return; // ya inyectado (no debería pasar)
+
+    const banner = document.createElement('div');
+    banner.id = 'cookie-consent-banner';
+    banner.className = 'cookie-banner';
+    banner.setAttribute('role', 'dialog');
+    banner.setAttribute('aria-label', 'Configuración de cookies');
+    banner.innerHTML = COOKIE_BANNER_HTML;
+    document.body.appendChild(banner);
+
+    const settingsPanel = document.getElementById('cookie-banner-settings');
+    const analyticsToggle = document.getElementById('cookie-analytics-toggle');
+    const openSettingsBtn = document.getElementById('cookie-open-settings');
+    const saveSettingsBtn = document.getElementById('cookie-save-settings');
+    const acceptAllBtn = document.getElementById('cookie-accept-all');
+    const rejectAllBtn = document.getElementById('cookie-reject-all');
+
+    const showBanner = (existingConsent) => {
+        analyticsToggle.checked = existingConsent ? existingConsent.analytics : false;
+        banner.classList.add('visible');
+    };
+
+    const hideBanner = () => banner.classList.remove('visible');
+
+    openSettingsBtn.addEventListener('click', () => {
+        settingsPanel.hidden = false;
+        openSettingsBtn.hidden = true;
+        saveSettingsBtn.hidden = false;
+    });
+
+    saveSettingsBtn.addEventListener('click', () => {
+        applyCookieConsent(analyticsToggle.checked);
+        hideBanner();
+    });
+
+    acceptAllBtn.addEventListener('click', () => {
+        applyCookieConsent(true);
+        hideBanner();
+    });
+
+    rejectAllBtn.addEventListener('click', () => {
+        applyCookieConsent(false);
+        hideBanner();
+    });
+
+    const trigger = document.getElementById('cookie-settings-trigger');
+    if (trigger) {
+        trigger.addEventListener('click', () => {
+            settingsPanel.hidden = false;
+            openSettingsBtn.hidden = true;
+            saveSettingsBtn.hidden = false;
+            showBanner(getCookieConsent());
+        });
+    }
+
+    const stored = getCookieConsent();
+    if (stored) {
+        applyCookieConsent(stored.analytics); // reafirma el consent update por si gtag tardo en cargar
+    } else {
+        showBanner(null);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     const siteFooter = document.getElementById('site-footer');
@@ -36,8 +151,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // =======================================================
     const pageId = document.body.id || '';
     let homepageData = {};
-    let lightboxItems = []; 
+    let lightboxItems = [];
     let currentLightboxIndex = 0;
+
+    initializeCookieConsent();
 
 
     // =======================================================
@@ -208,6 +325,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeScrollIndicator();
     initializeStandaloneLightboxSetup();
     setupVideoModalClose(); // Inicia la lógica de cierre del modal de vídeo
+    initializeLazyAutoplayVideos();
+    initializeShareButtons();
 
     if (pageId === 'libroPage') {
         initializeLetterModal();
@@ -475,7 +594,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.className = 'media-card';
                 card.target = '_blank';
                 card.rel = 'noopener noreferrer';
-                card.innerHTML = `<div class="image-container"><img src="${interview.thumbnailUrl}" alt="${interview.mainTitle}" loading="lazy">${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}</div><div class="media-card-text"><h4>${interview.mainTitle}</h4><p>${interview.subtitle}</p></div>`;
+                card.innerHTML = `<div class="image-container"><img src="${interview.thumbnailUrl}" alt="${interview.mainTitle}" loading="lazy">${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}</div><div class="media-card-text"><h4>${interview.mainTitle}</h4><p>${interview.subtitle}</p></div><button type="button" class="share-btn" data-share-title="${interview.mainTitle}" data-share-url="${interview.url}" aria-label="Compartir esta entrevista"><i class="fas fa-share-alt"></i></button>`;
                 grid.appendChild(card);
             });
         } catch (error) { console.error("Error cargando entrevistas:", error); }
@@ -753,6 +872,69 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (e.target === iframeModal) closeModal(); 
             });
         }
+    }
+
+    function initializeShareButtons() {
+        document.addEventListener('click', async (e) => {
+            const btn = e.target.closest('.share-btn');
+            if (!btn) return;
+            e.preventDefault();
+            e.stopPropagation();
+
+            const url = btn.dataset.shareUrl || location.href;
+            const title = btn.dataset.shareTitle
+                || btn.closest('.comunicacion-section, .media-card')?.querySelector('h3, h4')?.textContent?.trim()
+                || document.title;
+
+            if (navigator.share) {
+                try { await navigator.share({ title, url }); } catch (err) { /* el usuario cancelo el share, no es un error */ }
+                return;
+            }
+            try {
+                await navigator.clipboard.writeText(url);
+                const original = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => { btn.innerHTML = original; }, 1500);
+            } catch (err) {
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
+            }
+        });
+    }
+
+    function initializeLazyAutoplayVideos() {
+        // Vídeos de fondo (autoplay/loop/muted) con <source data-src="...">:
+        // no se descargan hasta que entran en el viewport, para no lanzar
+        // varias descargas de MP4 en paralelo al cargar la pagina (ej.
+        // investigacion.html tenia 11 videos autoplay simultaneos).
+        const lazyVideos = document.querySelectorAll('video > source[data-src]');
+        if (!lazyVideos.length) return;
+
+        const loadVideo = (video) => {
+            video.querySelectorAll('source[data-src]').forEach(source => {
+                source.src = source.dataset.src;
+                source.removeAttribute('data-src');
+            });
+            video.load();
+            video.play().catch(() => {}); // el navegador puede bloquear el autoplay; no es un error a reportar
+        };
+
+        const videos = new Set([...lazyVideos].map(source => source.closest('video')).filter(Boolean));
+
+        if (!('IntersectionObserver' in window)) {
+            videos.forEach(loadVideo);
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadVideo(entry.target);
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '200px' });
+
+        videos.forEach(video => observer.observe(video));
     }
 
     function initializeContactForm() {

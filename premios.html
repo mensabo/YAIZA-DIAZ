@@ -32,6 +32,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
     <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
     <link rel="preconnect" href="https://firebasestorage.googleapis.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
@@ -45,7 +46,24 @@
         .link-highlight { color: var(--color-acento); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; transition: color 0.3s ease; }
         .link-highlight:hover { color: #a78d6b; }
     </style>
-<!-- Start cookieyes banner --> <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/a79fad2eb1803d3e1747ed5d/script.js"></script> <!-- End cookieyes banner -->
+    <!-- Google tag (gtag.js) - Consent Mode: analytics_storage denegado por defecto,
+         nuestro propio banner de cookies (ver script.js) lo actualiza a
+         "granted" cuando el usuario acepta cookies analiticas -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied'
+      });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPTS82X18T"></script>
+    <script>
+      gtag('js', new Date());
+      gtag('config', 'G-GPTS82X18T');
+    </script>
 </head>
 <body id="premiosPage" class="libro-page">
     <a href="#main-content" class="skip-link">Saltar al contenido</a>
@@ -70,7 +88,7 @@
                 <li><a href="entrevistas.html">Entrevistas</a></li>
                 <li><a href="libro.html">Libro</a></li>
                 <li><a href="modelaje.html">Modelo</a></li>
-                <li><a href="contacto.html">Contacto</a></li>
+                <li><a href="contacto.html" class="nav-cta">Contacto</a></li>
                 <div id="scroll-indicator"><i class="fas fa-chevron-down"></i></div>
             </ul>
         </nav>
@@ -96,10 +114,11 @@
             </div>
 
             <!-- Premio 1: Isla Tenerife 2024 -->
-            <div class="comunicacion-section">
+            <div class="comunicacion-section" id="premio1">
                 <div class="sinopsis-content" style="gap: 2rem; align-items: flex-start;">
                     <div class="sinopsis-text">
                         <h3 data-content-id="premio1Title"></h3>
+                        <button type="button" class="share-btn share-btn-inline" data-share-url="https://www.yaizadiaz.com/premios#premio1" aria-label="Compartir este premio"><i class="fas fa-share-alt"></i></button>
                         <p data-content-id="premio1Paragraph1"></p>
                         <p data-content-id="premio1Paragraph2"></p>
                         <p data-content-id="premio1Paragraph3"></p>
@@ -113,10 +132,11 @@
             </div>
 
             <!-- Premio 2: Carrera por la Vida -->
-            <div class="comunicacion-section">
+            <div class="comunicacion-section" id="premio2">
                 <div class="sinopsis-content" style="gap: 2rem; align-items: flex-start;">
                      <div class="sinopsis-text">
                         <h3 data-content-id="premio2Title"></h3>
+                        <button type="button" class="share-btn share-btn-inline" data-share-url="https://www.yaizadiaz.com/premios#premio2" aria-label="Compartir este premio"><i class="fas fa-share-alt"></i></button>
                         <p data-content-id="premio2Paragraph1"></p>
                         <p data-content-id="premio2Paragraph2"></p>
                     </div>
@@ -127,10 +147,11 @@
             </div>
 
             <!-- Premio 3: Mujeres Gitanas -->
-            <div class="comunicacion-section">
+            <div class="comunicacion-section" id="premio3">
                  <div class="sinopsis-content" style="gap: 2rem; align-items: flex-start;">
                     <div class="sinopsis-text">
                         <h3 data-content-id="premio3Title"></h3>
+                        <button type="button" class="share-btn share-btn-inline" data-share-url="https://www.yaizadiaz.com/premios#premio3" aria-label="Compartir este premio"><i class="fas fa-share-alt"></i></button>
                         <p data-content-id="premio3Paragraph"></p>
                     </div>
                     <div class="sinopsis-img" style="flex-basis: 70%;">
@@ -143,16 +164,17 @@
             </div>
             
             <!-- Premio 4: Top Artistas Canarios -->
-            <div class="comunicacion-section">
+            <div class="comunicacion-section" id="premio4">
                 <div class="sinopsis-content" style="gap: 2rem; align-items: flex-start;">
                     <div class="sinopsis-text">
                         <h3 data-content-id="premio4Title"></h3>
+                        <button type="button" class="share-btn share-btn-inline" data-share-url="https://www.yaizadiaz.com/premios#premio4" aria-label="Compartir este premio"><i class="fas fa-share-alt"></i></button>
                         <p data-content-id="premio4Paragraph"></p>
                     </div>
                     <div class="sinopsis-img" style="flex-basis: 70%;">
                         <a href="https://www.youtube.com/watch?v=A7YhOl14_9A" target="_blank" rel="noopener noreferrer" class="video-fallback">
-                            <video autoplay loop muted playsinline>
-                                <source src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fpremiostop.mp4?alt=media&token=3a89e299-9388-486d-aff6-7b1575a12113" type="video/mp4">
+                            <video loop muted playsinline preload="none">
+                                <source data-src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fpremiostop.mp4?alt=media&token=3a89e299-9388-486d-aff6-7b1575a12113" type="video/mp4">
                             </video>
                             <span class="play-button-overlay"><i class="fab fa-youtube"></i></span>
                         </a>

@@ -9,7 +9,7 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const HTML_FILES = fs.readdirSync(ROOT).filter(f => f.endsWith('.html'));
-const PUBLIC_HTML_FILES = HTML_FILES.filter(f => f !== 'admin.html');
+const PUBLIC_HTML_FILES = HTML_FILES.filter(f => f !== 'admin.html' && f !== '404.html');
 
 let failures = 0;
 let passes = 0;
@@ -179,6 +179,10 @@ for (const f of PUBLIC_HTML_FILES) {
 const adminContent = readFile('admin.html');
 check('admin.html: tiene meta robots noindex,nofollow', /name="robots"\s+content="noindex,\s*nofollow"/.test(adminContent));
 
+check('404.html existe (pagina de error de GitHub Pages)', fs.existsSync(path.join(ROOT, '404.html')));
+const notFoundContent = readFile('404.html');
+check('404.html: tiene meta robots noindex,nofollow', /name="robots"\s+content="noindex,\s*nofollow"/.test(notFoundContent));
+
 // ---------------------------------------------------------------------------
 // 10. Sin rutas absolutas root-relative para manifest/favicon: rompen en
 //     subpaths (p.ej. preview de GitHub Pages en /usuario/repo/) aunque
@@ -222,6 +226,53 @@ for (const f of PUBLIC_HTML_FILES) {
   check(`${f}: preconnect a firestore.googleapis.com`, content.includes('https://firestore.googleapis.com'));
   check(`${f}: preconnect a firebasestorage.googleapis.com`, content.includes('https://firebasestorage.googleapis.com'));
 }
+
+// ---------------------------------------------------------------------------
+// 12. Sin dependencia de CookieYes (banner de cookies propio, ver mas abajo)
+//     + videos de fondo autoplay con carga diferida (data-src en vez de src,
+//     para no descargar varios MP4 en paralelo al entrar en la pagina)
+// ---------------------------------------------------------------------------
+for (const f of HTML_FILES) {
+  const content = readFile(f);
+  check(`${f}: no depende de CookieYes (script de terceros)`, !/cookieyes|cdn-cookieyes\.com/i.test(content));
+  check(`${f}: no quedan <video autoplay> con <source src> sin lazy-load`, !/<video[^>]*\bautoplay\b[^>]*>(?:(?!<\/video>).)*?<source src=/s.test(content));
+}
+check('script.js: inicializa el lazy-load de videos autoplay', /initializeLazyAutoplayVideos/.test(readFile('script.js')));
+
+// ---------------------------------------------------------------------------
+// 13. CTA de contacto en el menu + botones de compartir
+// ---------------------------------------------------------------------------
+for (const f of PUBLIC_HTML_FILES) {
+  const content = readFile(f);
+  check(`${f}: el enlace "Contacto" del menu es un CTA destacado`, /<a href="contacto\.html" class="nav-cta">Contacto<\/a>/.test(content));
+}
+check('script.js: inicializa los botones de compartir', /initializeShareButtons/.test(readFile('script.js')));
+check('script.js: las tarjetas de entrevistas incluyen boton de compartir', /share-btn/.test(readFile('script.js')));
+const premiosContent = readFile('premios.html');
+check('premios.html: cada premio tiene boton de compartir', (premiosContent.match(/class="share-btn share-btn-inline"/g) || []).length === 4);
+
+// ---------------------------------------------------------------------------
+// 14. Google Analytics (GA4) con Consent Mode (denied por defecto; el banner
+//     de cookies propio en script.js lo actualiza al aceptar/rechazar), en
+//     todas las paginas publicas salvo admin
+// ---------------------------------------------------------------------------
+for (const f of HTML_FILES) {
+  if (f === 'admin.html') continue;
+  const content = readFile(f);
+  check(`${f}: incluye gtag.js de GA4`, /googletagmanager\.com\/gtag\/js\?id=G-[A-Z0-9]+/.test(content));
+  check(`${f}: fija el consentimiento por defecto en "denied" antes de cargar gtag`, /gtag\('consent',\s*'default'/.test(content));
+}
+check('admin.html: no carga Google Analytics', !readFile('admin.html').includes('googletagmanager.com/gtag'));
+
+// ---------------------------------------------------------------------------
+// 15. Banner de cookies propio (sustituye a CookieYes)
+// ---------------------------------------------------------------------------
+const scriptContent = readFile('script.js');
+check('script.js: define el banner de cookies propio', /initializeCookieConsent/.test(scriptContent));
+check('script.js: guarda el consentimiento en localStorage', /COOKIE_CONSENT_KEY/.test(scriptContent));
+check('script.js: actualiza el Google Consent Mode al aceptar/rechazar', /gtag\('consent',\s*'update'/.test(scriptContent));
+check('script.js: el footer incluye el enlace para reconfigurar cookies', /cookie-settings-trigger/.test(scriptContent));
+check('politica-cookies.html: menciona Google Analytics y como cambiar preferencias', /Google Analytics/.test(readFile('politica-cookies.html')) && /Configurar cookies/.test(readFile('politica-cookies.html')));
 
 // ---------------------------------------------------------------------------
 console.log(`\n${passes} checks OK, ${failures} checks fallidos.`);
