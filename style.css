@@ -7,6 +7,13 @@
     --color-primario: #1a1a1a;
     --color-secundario: #F0EEEB; /* <-- CAMBIO A GRIS CÁLIDO */
     --color-acento: #bca07d;
+    /* Version mas oscura del acento para texto legible sobre fondo claro:
+       el acento normal (#bca07d) da un contraste de solo 2.4:1 sobre
+       --color-blanco, por debajo del minimo de accesibilidad AA (4.5:1)
+       para texto. Usar esta variante en cualquier texto de cuerpo/cita
+       sobre fondo claro; el acento normal sigue bien para botones,
+       iconos, bordes o texto sobre fondo oscuro (7:1 ahi). */
+    --color-acento-texto: #7d6344;
     --color-blanco: #FDFBF6;   /* <-- CAMBIO A BLANCO ROTO */
     --color-magenta-libro: #D42E84; 
     --fuente-titulos: 'Playfair Display', serif;
@@ -1075,7 +1082,7 @@ footer {
     font-family: var(--fuente-titulos);
     font-style: italic;
     font-size: 1.3rem;
-    color: var(--color-acento);
+    color: var(--color-acento-texto);
     border-left: 4px solid var(--color-acento);
     padding-left: 1.5rem;
     margin: 2rem 0;
