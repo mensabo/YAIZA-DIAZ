@@ -988,11 +988,13 @@ footer {
    imagen ocupa más espacio que el texto y conserva su proporción real en
    vez de recortarse a un cuadrado, para no perder parte de la foto. */
 .sinopsis-content.media-heavy .sinopsis-text {
-    flex-basis: 42%;
+    flex-basis: 44%;
 }
 
 .sinopsis-content.media-heavy .sinopsis-img {
-    flex-basis: 52%;
+    flex-basis: 46%;
+    max-width: 440px;
+    margin-left: auto;
 }
 
 .sinopsis-content.media-heavy .sinopsis-img img.natural-ratio {
@@ -2367,7 +2369,7 @@ footer {
     }
 
     #nav-links a.nav-cta {
-        background: transparent;
+        background: linear-gradient(135deg, rgba(188, 160, 125, 0.22), rgba(188, 160, 125, 0.4));
         border: 1px solid rgba(188, 160, 125, 0.6);
         color: var(--color-acento);
         margin-top: 0.25rem;
@@ -4295,7 +4297,7 @@ body {
     .portfolio-grid { gap: 1.2rem; }
     .libro-hero-content, .sinopsis-content, .sinopsis-content-reversed, #arte-libro .arte-grid { flex-direction: column; gap: 2rem; }
     .sinopsis-content.media-heavy .sinopsis-text,
-    .sinopsis-content.media-heavy .sinopsis-img { flex-basis: auto; width: 100%; }
+    .sinopsis-content.media-heavy .sinopsis-img { flex-basis: auto; width: 100%; max-width: none; margin-left: 0; }
     .libro-hero-text h2 { text-align: center; font-size: 2.2rem; }
     .sinopsis-content-reversed .sinopsis-text, .sinopsis-content-reversed .sinopsis-img { order: 0; }
     .sinopsis-text h3 { font-size: 1.5rem; text-align: center; }
