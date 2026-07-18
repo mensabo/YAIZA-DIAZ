@@ -431,6 +431,14 @@ nav ul li a:hover::after {
     background-color: #e9e9e9;
 }
 
+/* portfolio-2.jpeg es muy panorámica (1284x738): forzarla a 4:3 recortaba
+   demasiado de cerca la cara. Se deja con su proporción real aunque la
+   tarjeta quede algo más baja que las otras dos de la cuadrícula. */
+.project-card img.natural-ratio {
+    aspect-ratio: auto;
+    object-fit: initial;
+}
+
 .card-content {
     padding: 1.5rem;
     flex-grow: 1;
