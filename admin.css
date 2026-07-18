@@ -295,6 +295,21 @@ button.is-loading::before {
     border-radius: 6px; 
     background-color: #eee;
 }
+/* Miniatura de fotos de eventos: mismo recorte 4:5 que la tarjeta real
+   de eventos.html, para que la posición elegida en el <select> se vea
+   representada fielmente (ver renderEventGalleryPreview en admin.js). */
+.event-thumb-preview {
+    width: 100%;
+    height: auto !important;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+}
+.event-thumb-preview-caption {
+    font-size: 0.75rem;
+    color: var(--color-secundario);
+    margin: 0 0 0.75rem 0;
+}
+
 .description-input {
     font-size: 0.85rem;
     padding: 8px;
