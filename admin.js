@@ -653,6 +653,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <option value="center" ${currentPos === 'center' ? 'selected' : ''}>Centro (defecto)</option>
                     <option value="top" ${currentPos === 'top' ? 'selected' : ''}>Arriba</option>
                     <option value="bottom" ${currentPos === 'bottom' ? 'selected' : ''}>Abajo</option>
+                    <option value="left" ${currentPos === 'left' ? 'selected' : ''}>Izquierda</option>
+                    <option value="right" ${currentPos === 'right' ? 'selected' : ''}>Derecha</option>
+                    <option value="top left" ${currentPos === 'top left' ? 'selected' : ''}>Arriba-Izquierda</option>
+                    <option value="top right" ${currentPos === 'top right' ? 'selected' : ''}>Arriba-Derecha</option>
+                    <option value="bottom left" ${currentPos === 'bottom left' ? 'selected' : ''}>Abajo-Izquierda</option>
+                    <option value="bottom right" ${currentPos === 'bottom right' ? 'selected' : ''}>Abajo-Derecha</option>
                 </select>
                 <button type="button" class="delete-button">Eliminar</button>`;
             eventImagesPreviewList.appendChild(div);
