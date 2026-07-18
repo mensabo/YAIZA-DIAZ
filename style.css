@@ -184,7 +184,8 @@ nav ul li a:hover {
    sea visible en todas las páginas, no solo en el hero de la home. */
 nav ul li a.nav-cta, nav ul li a.nav-cta:visited {
     color: var(--color-negro, #1a1a1a);
-    background-color: var(--color-acento);
+    background: linear-gradient(135deg, rgba(188, 160, 125, 0.55), rgba(188, 160, 125, 0.85));
+    border: 1px solid rgba(188, 160, 125, 0.6);
     border-radius: 30px;
     padding-top: 0.55rem;
     padding-bottom: 0.55rem;
@@ -194,7 +195,7 @@ nav ul li a.nav-cta, nav ul li a.nav-cta:visited {
 
 nav ul li a.nav-cta:hover {
     color: var(--color-negro, #1a1a1a);
-    background-color: var(--color-blanco);
+    background: linear-gradient(135deg, rgba(188, 160, 125, 0.85), var(--color-acento));
     transform: translateY(-2px);
 }
 
@@ -980,6 +981,23 @@ footer {
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
     aspect-ratio: 1 / 1;
     object-fit: cover;
+}
+
+/* Variante para secciones con foto protagonista (ej. premios.html): la
+   imagen ocupa más espacio que el texto y conserva su proporción real en
+   vez de recortarse a un cuadrado, para no perder parte de la foto. */
+.sinopsis-content.media-heavy .sinopsis-text {
+    flex-basis: 42%;
+}
+
+.sinopsis-content.media-heavy .sinopsis-img {
+    flex-basis: 52%;
+}
+
+.sinopsis-content.media-heavy .sinopsis-img img.natural-ratio {
+    aspect-ratio: auto;
+    object-fit: initial;
+    height: auto;
 }
 
 .pie-de-foto {
@@ -2348,14 +2366,14 @@ footer {
     }
 
     #nav-links a.nav-cta {
-        background-color: var(--color-acento);
+        background: linear-gradient(135deg, rgba(188, 160, 125, 0.55), rgba(188, 160, 125, 0.85));
         color: var(--color-negro, #1a1a1a);
         margin-top: 0.25rem;
     }
 
     #nav-links a.nav-cta:hover,
     #nav-links a.nav-cta:active {
-        background-color: var(--color-blanco);
+        background: linear-gradient(135deg, rgba(188, 160, 125, 0.85), var(--color-acento));
         color: var(--color-negro, #1a1a1a);
     }
 
@@ -4270,6 +4288,8 @@ body {
     .about-quote { background-color: rgba(188, 160, 125, 0.15); padding: 1rem; border-radius: 8px; font-size: 1.1rem; position: relative; overflow: hidden; }
     .portfolio-grid { gap: 1.2rem; }
     .libro-hero-content, .sinopsis-content, .sinopsis-content-reversed, #arte-libro .arte-grid { flex-direction: column; gap: 2rem; }
+    .sinopsis-content.media-heavy .sinopsis-text,
+    .sinopsis-content.media-heavy .sinopsis-img { flex-basis: auto; width: 100%; }
     .libro-hero-text h2 { text-align: center; font-size: 2.2rem; }
     .sinopsis-content-reversed .sinopsis-text, .sinopsis-content-reversed .sinopsis-img { order: 0; }
     .sinopsis-text h3 { font-size: 1.5rem; text-align: center; }

@@ -886,18 +886,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 || btn.closest('.comunicacion-section, .media-card')?.querySelector('h3, h4')?.textContent?.trim()
                 || document.title;
 
+            const fallbackShare = async () => {
+                try {
+                    await navigator.clipboard.writeText(url);
+                    const original = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check"></i>';
+                    setTimeout(() => { btn.innerHTML = original; }, 1500);
+                } catch (err) {
+                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
+                }
+            };
+
             if (navigator.share) {
-                try { await navigator.share({ title, url }); } catch (err) { /* el usuario cancelo el share, no es un error */ }
+                try {
+                    await navigator.share({ title, url });
+                } catch (err) {
+                    // AbortError: el usuario cerro el panel nativo el mismo, no es un fallo.
+                    // Cualquier otro error (p.ej. API bloqueada en un iframe de preview) cae al fallback.
+                    if (err && err.name !== 'AbortError') await fallbackShare();
+                }
                 return;
             }
-            try {
-                await navigator.clipboard.writeText(url);
-                const original = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-check"></i>';
-                setTimeout(() => { btn.innerHTML = original; }, 1500);
-            } catch (err) {
-                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
-            }
+            await fallbackShare();
         });
     }
 
