@@ -3485,12 +3485,12 @@ a.expandable-image:hover img {
 .contact-page-section::before {
     content: "";
     position: absolute;
-    inset: -20px;
+    inset: -10px;
     background-image: url('images/contacto-fondo.jpg');
     background-size: cover;
     background-position: center 20%;
-    filter: blur(10px);
-    transform: scale(1.05);
+    filter: blur(3px);
+    transform: scale(1.02);
     z-index: 0;
 }
 
@@ -3498,7 +3498,7 @@ a.expandable-image:hover img {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(26, 26, 26, 0.82);
+    background: rgba(20, 18, 22, 0.55);
     z-index: 1;
 }
 
