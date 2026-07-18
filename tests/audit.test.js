@@ -292,5 +292,21 @@ for (const f of HTML_FILES) {
 }
 
 // ---------------------------------------------------------------------------
+// 17. La jerarquia de encabezados no se salta niveles (ej. h1 -> h3 sin h2
+//     en medio) - confunde a lectores de pantalla y desperdicia relevancia
+//     semantica para SEO.
+// ---------------------------------------------------------------------------
+for (const f of HTML_FILES) {
+  if (f === 'admin.html') continue;
+  const content = readFile(f);
+  const levels = [...content.matchAll(/<h([1-6])[\s>]/g)].map((m) => parseInt(m[1], 10));
+  const skips = [];
+  for (let i = 1; i < levels.length; i++) {
+    if (levels[i] > levels[i - 1] + 1) skips.push(`h${levels[i - 1]}->h${levels[i]}`);
+  }
+  check(`${f}: la jerarquia de encabezados no se salta niveles`, skips.length === 0, skips.join(', '));
+}
+
+// ---------------------------------------------------------------------------
 console.log(`\n${passes} checks OK, ${failures} checks fallidos.`);
 process.exit(failures > 0 ? 1 : 0);
