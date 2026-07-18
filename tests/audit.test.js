@@ -55,6 +55,7 @@ for (const f of PUBLIC_HTML_FILES) {
   for (const tag of imgTags) {
     if (/src=""/.test(tag)) continue; // lightbox / galeria dinamica, sin src inicial
     if (/logo-personal\.png/.test(tag)) continue; // logo de nav, above-the-fold
+    if (/aria-hidden="true"/.test(tag) && /presentadora-bg\.jpg/.test(tag)) continue; // marcador invisible de LCP del hero, a proposito sin lazy
     check(
       `${f}: <img> tiene loading="lazy"`,
       /loading="lazy"/.test(tag),
