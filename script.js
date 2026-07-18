@@ -1,4 +1,22 @@
 // =======================================================
+// 0. ESCAPADO DE HTML
+// Los campos de texto que vienen de Firestore (titulos, subtitulos,
+// descripciones...) se interpolan en innerHTML de plantillas: sin
+// escapar, un valor que contenga "<script>" se ejecutaria en el
+// navegador de cualquier visitante. Aunque solo la cuenta admin puede
+// escribir en Firestore (ver firestore.rules), esto es una capa extra
+// de defensa por si esa cuenta se viera comprometida.
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+    }[char]));
+}
+
+// =======================================================
 // 0. FOOTER COMPARTIDO
 // Se inyecta aquí en vez de repetirse en las 17 páginas públicas,
 // para que un cambio (redes sociales, año, etc.) se aplique a todas
@@ -420,7 +438,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelectorAll('[data-content-id]').forEach(element => {
                     const contentId = element.dataset.contentId;
                     if (data[contentId] !== undefined) {
-                        element.innerHTML = data[contentId];
+                        // Este campo SI admite HTML con formato (negrita, enlaces...) escrito
+                        // desde el panel admin, por eso no se puede escapar como texto plano;
+                        // se sanea con DOMPurify para permitir el formato pero bloquear
+                        // <script>, manejadores de eventos (onerror=...), etc.
+                        element.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(data[contentId]) : escapeHtml(data[contentId]);
                     }
                 });
             }
@@ -572,11 +594,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             events.forEach(event => {
                 const firstItem = event.galleryItems && event.galleryItems.length > 0 ? event.galleryItems[0] : { type: 'image', src: 'images/placeholder.png' }; 
-                const mediaHtml = firstItem.type === 'video' && firstItem.videoSrc ? `<video autoplay loop muted playsinline poster="${firstItem.thumbnailSrc || ''}"><source src="${firstItem.videoSrc}" type="video/mp4"></video>` : `<img src="${firstItem.thumbnailSrc || firstItem.src}" alt="${event.title}" loading="lazy">`;
+                const mediaHtml = firstItem.type === 'video' && firstItem.videoSrc ? `<video autoplay loop muted playsinline poster="${escapeHtml(firstItem.thumbnailSrc || '')}"><source src="${escapeHtml(firstItem.videoSrc)}" type="video/mp4"></video>` : `<img src="${escapeHtml(firstItem.thumbnailSrc || firstItem.src)}" alt="${escapeHtml(event.title)}" loading="lazy">`;
                 const card = document.createElement('a');
-                card.href = `evento-detalle.html?id=${event.id}`;
+                card.href = `evento-detalle.html?id=${encodeURIComponent(event.id)}`;
                 card.className = 'event-card-link';
-                card.innerHTML = `<div class="event-card-image">${mediaHtml}</div><div class="event-card-content"><h4>${event.title}</h4></div>`;
+                card.innerHTML = `<div class="event-card-image">${mediaHtml}</div><div class="event-card-content"><h4>${escapeHtml(event.title)}</h4></div>`;
                 grid.appendChild(card);
             });
         } catch (error) { console.error("Error cargando eventos:", error); }
@@ -601,7 +623,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.className = 'media-card';
                 card.target = '_blank';
                 card.rel = 'noopener noreferrer';
-                card.innerHTML = `<div class="image-container"><img src="${interview.thumbnailUrl}" alt="${interview.mainTitle}" loading="lazy">${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}</div><div class="media-card-text"><h4>${interview.mainTitle}</h4><p>${interview.subtitle}</p></div><button type="button" class="share-btn" data-share-title="${interview.mainTitle}" data-share-url="${interview.url}" aria-label="Compartir esta entrevista"><i class="fas fa-share-alt"></i></button>`;
+                card.innerHTML = `<div class="image-container"><img src="${escapeHtml(interview.thumbnailUrl)}" alt="${escapeHtml(interview.mainTitle)}" loading="lazy">${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}</div><div class="media-card-text"><h4>${escapeHtml(interview.mainTitle)}</h4><p>${escapeHtml(interview.subtitle)}</p></div><button type="button" class="share-btn" data-share-title="${escapeHtml(interview.mainTitle)}" data-share-url="${escapeHtml(interview.url)}" aria-label="Compartir esta entrevista"><i class="fas fa-share-alt"></i></button>`;
                 grid.appendChild(card);
             });
         } catch (error) { console.error("Error cargando entrevistas:", error); }
@@ -624,13 +646,13 @@ document.addEventListener('DOMContentLoaded', () => {
             programs.forEach(program => {
                 const programDiv = document.createElement('div');
                 programDiv.className = 'comunicacion-section';
-                const textHtml = program.text ? `<p>${program.text}</p>` : '';
-                
+                const textHtml = program.text ? `<p>${escapeHtml(program.text)}</p>` : '';
+
                 programDiv.innerHTML = `
-                    <h3>${program.title}</h3>
+                    <h3>${escapeHtml(program.title)}</h3>
                     ${textHtml}
-                    <a href="${program.url}" class="video-fallback js-video-modal-trigger" data-video-src="${program.url}">
-                        <img src="${program.thumbnailUrl}" alt="Miniatura ${program.title}" loading="lazy">
+                    <a href="${escapeHtml(program.url)}" class="video-fallback js-video-modal-trigger" data-video-src="${escapeHtml(program.url)}">
+                        <img src="${escapeHtml(program.thumbnailUrl)}" alt="Miniatura ${escapeHtml(program.title)}" loading="lazy">
                         <div class="play-button-overlay"><i class="fas fa-play"></i></div>
                     </a>
                 `;
@@ -741,7 +763,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const thumbDiv = document.createElement('div');
                     thumbDiv.className = 'miniatura-item';
                     const playBadge = item.type === 'video' ? '<div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.7); color:white; border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-size:12px; border: 1px solid rgba(255,255,255,0.5);"><i class="fas fa-play"></i></div>' : '';
-                    thumbDiv.innerHTML = `<img src="${item.thumbnailSrc || item.src}" alt="Miniatura" loading="lazy">${playBadge}`;
+                    thumbDiv.innerHTML = `<img src="${escapeHtml(item.thumbnailSrc || item.src)}" alt="Miniatura" loading="lazy">${playBadge}`;
                     thumbDiv.addEventListener('click', () => setActiveItem(item, thumbDiv));
                     thumbnailsContainer.appendChild(thumbDiv);
                 });
