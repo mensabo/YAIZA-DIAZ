@@ -44,7 +44,11 @@
 .form-submit-area button,
 .btn-primary {
     display: inline-block;
-    background-color: var(--color-acento);
+    /* --color-acento-texto (no --color-acento): texto blanco sobre el
+       dorado normal (#bca07d) da solo 2.4:1 de contraste, por debajo del
+       minimo de accesibilidad AA (4.5:1) para texto normal. Ver comentario
+       de --color-acento-texto en :root. */
+    background-color: var(--color-acento-texto);
     color: var(--color-blanco);
     text-decoration: none;
     font-weight: 600;
@@ -61,7 +65,7 @@
 .letter-button:hover,
 .form-submit-area button:hover,
 .btn-primary:hover {
-    background-color: #a78d6b;
+    background-color: #6b5439;
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
@@ -408,7 +412,7 @@ nav ul li a[aria-current="page"]::after {
     font-family: var(--fuente-titulos);
     font-size: 1.5rem;
     font-style: italic;
-    color: var(--color-acento);
+    color: var(--color-acento-texto);
     margin: 2.5rem 0;
     border: none;
     padding: 0;
@@ -505,7 +509,7 @@ nav ul li a[aria-current="page"]::after {
     display: inline-block;
     font-size: 0.8rem;
     font-weight: 500;
-    color: var(--color-acento);
+    color: var(--color-acento-texto);
     margin-bottom: 0.5rem;
     text-transform: uppercase;
 }
@@ -3307,7 +3311,7 @@ a.expandable-image:hover img {
     transition: opacity 0.3s ease;
     animation: bounce-down 2.5s infinite;
 }
-    #nav-links.nav-open #scroll-indicator {
+    #nav-links.nav-open ~ #scroll-indicator {
         opacity: 1; /* <--- Se hace visible cuando el menú se abre */
     }
 
@@ -3959,7 +3963,7 @@ a.expandable-image:hover img {
         text-shadow: 0 0 8px rgba(255, 255, 255, 0.7); backdrop-filter: blur(3px);
         cursor: pointer; opacity: 0; transition: opacity 0.3s ease; animation: bounce-down 2.5s infinite;
     }
-    #nav-links.nav-open #scroll-indicator { opacity: 1; }
+    #nav-links.nav-open ~ #scroll-indicator { opacity: 1; }
     #scroll-indicator.is-hidden { opacity: 0 !important; animation: none; }
 }
 /* ================================================== */
@@ -4030,7 +4034,7 @@ a.expandable-image:hover img {
         text-shadow: 0 0 8px rgba(255, 255, 255, 0.7); backdrop-filter: blur(3px);
         cursor: pointer; opacity: 0; transition: opacity 0.3s ease; animation: bounce-down 2.5s infinite;
     }
-    #nav-links.nav-open #scroll-indicator { opacity: 1; }
+    #nav-links.nav-open ~ #scroll-indicator { opacity: 1; }
     #scroll-indicator.is-hidden { opacity: 0 !important; animation: none; }
 
     /* --- PORTADA MÓVIL (Recuperada) --- */
