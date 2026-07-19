@@ -943,7 +943,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             };
 
-            if (navigator.share) {
+            // navigator.share existe también en Windows (Edge/Chrome), pero ahí abre
+            // el panel de "Compartir" del propio sistema operativo, que en Windows
+            // intenta generar una vista previa del enlace y puede fallar con un
+            // "Vuelve a intentarlo" que el usuario solo puede cerrar — el navegador
+            // interpreta ese cierre como cancelación (AbortError) y no hay forma de
+            // distinguirlo de un cierre voluntario. En móvil (Android/iOS) esa misma
+            // API funciona bien, así que se reserva solo para dispositivos táctiles;
+            // en escritorio se copia el enlace directamente, que siempre funciona.
+            const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+            if (navigator.share && isTouchDevice) {
                 try {
                     await navigator.share({ title, url });
                 } catch (err) {
