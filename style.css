@@ -1440,6 +1440,50 @@ footer {
     vertical-align: middle;
 }
 
+.share-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 5;
+    background-color: var(--color-primario);
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    padding: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 170px;
+}
+
+.share-menu a,
+.share-menu button {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: none;
+    border: none;
+    color: var(--color-blanco);
+    font-family: var(--fuente-texto);
+    font-size: 0.85rem;
+    text-decoration: none;
+    text-align: left;
+    padding: 0.55rem 0.7rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.share-menu a:hover,
+.share-menu button:hover {
+    background-color: rgba(188, 160, 125, 0.2);
+    color: var(--color-acento);
+}
+
+.share-menu i {
+    width: 16px;
+    text-align: center;
+}
+
 .media-card:hover {
     transform: translateY(-8px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.1);

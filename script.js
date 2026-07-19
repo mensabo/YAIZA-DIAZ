@@ -906,9 +906,70 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initializeShareButtons() {
+        let onEscKey = null;
+
+        const closeOpenShareMenu = () => {
+            document.querySelector('.share-menu')?.remove();
+            if (onEscKey) {
+                document.removeEventListener('keydown', onEscKey);
+                onEscKey = null;
+            }
+        };
+
+        const copyLink = async (btn, url) => {
+            try {
+                await navigator.clipboard.writeText(url);
+                const tooltip = document.createElement('span');
+                tooltip.className = 'share-copied-tooltip';
+                tooltip.textContent = 'Enlace copiado';
+                btn.style.position = btn.style.position || 'relative';
+                btn.appendChild(tooltip);
+                setTimeout(() => tooltip.remove(), 1500);
+            } catch (err) {
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(btn.dataset.shareTitle || '')}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
+            }
+        };
+
+        // En escritorio no hay panel nativo de compartir fiable (ver comentario más
+        // abajo), así que se genera un pequeño menú propio con enlaces directos a
+        // WhatsApp/X/Email + copiar enlace. Son URLs fijas abiertas en pestaña nueva,
+        // no dependen de ningún panel del sistema operativo, así que no pueden
+        // fallar de la misma manera.
+        const openShareMenu = (btn, url, title) => {
+            closeOpenShareMenu();
+            const menu = document.createElement('div');
+            menu.className = 'share-menu';
+            menu.innerHTML = `
+                <a href="https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}" target="_blank" rel="noopener noreferrer"><i class="fab fa-x-twitter"></i> X (Twitter)</a>
+                <a href="mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}"><i class="fas fa-envelope"></i> Email</a>
+                <button type="button" class="share-menu-copy"><i class="fas fa-link"></i> Copiar enlace</button>
+            `;
+            btn.style.position = btn.style.position || 'relative';
+            btn.appendChild(menu);
+
+            menu.querySelector('.share-menu-copy').addEventListener('click', async (ev) => {
+                ev.stopPropagation();
+                await copyLink(btn, url);
+                closeOpenShareMenu();
+            });
+            menu.addEventListener('click', (ev) => {
+                if (ev.target.closest('a')) closeOpenShareMenu();
+            });
+
+            // Cerrar con Escape (el clic fuera ya lo gestiona el listener principal).
+            onEscKey = (ev) => { if (ev.key === 'Escape') closeOpenShareMenu(); };
+            document.addEventListener('keydown', onEscKey);
+        };
+
         document.addEventListener('click', async (e) => {
+            // Los enlaces del menú viven dentro del propio botón (para posicionarse
+            // relativos a él): si el clic fue en el menú, se deja pasar sin
+            // reinterceptarlo como si fuera un nuevo clic en el botón de compartir.
+            if (e.target.closest('.share-menu')) return;
+
             const btn = e.target.closest('.share-btn');
-            if (!btn) return;
+            if (!btn) { closeOpenShareMenu(); return; }
             e.preventDefault();
             e.stopPropagation();
 
@@ -921,28 +982,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 || btn.closest('.comunicacion-section, .media-card')?.querySelector('h2, h3, h4')?.textContent?.trim()
                 || document.title;
 
-            const fallbackShare = async () => {
-                try {
-                    await navigator.clipboard.writeText(url);
-                    const original = btn.innerHTML;
-                    btn.innerHTML = '<i class="fas fa-check"></i>';
-                    // El icono a solas es fácil de pasar por alto (escritorio no tiene
-                    // panel nativo de compartir): se añade un tooltip flotante visible
-                    // con el mismo texto que confirma que el enlace se copió.
-                    const tooltip = document.createElement('span');
-                    tooltip.className = 'share-copied-tooltip';
-                    tooltip.textContent = 'Enlace copiado';
-                    btn.style.position = btn.style.position || 'relative';
-                    btn.appendChild(tooltip);
-                    setTimeout(() => {
-                        btn.innerHTML = original;
-                    }, 1500);
-                    setTimeout(() => tooltip.remove(), 1600);
-                } catch (err) {
-                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
-                }
-            };
-
             // navigator.share existe también en Windows (Edge/Chrome), pero ahí abre
             // el panel de "Compartir" del propio sistema operativo, que en Windows
             // intenta generar una vista previa del enlace y puede fallar con un
@@ -950,19 +989,18 @@ document.addEventListener('DOMContentLoaded', () => {
             // interpreta ese cierre como cancelación (AbortError) y no hay forma de
             // distinguirlo de un cierre voluntario. En móvil (Android/iOS) esa misma
             // API funciona bien, así que se reserva solo para dispositivos táctiles;
-            // en escritorio se copia el enlace directamente, que siempre funciona.
+            // en escritorio se muestra el menú propio, que siempre funciona.
             const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
             if (navigator.share && isTouchDevice) {
                 try {
                     await navigator.share({ title, url });
                 } catch (err) {
                     // AbortError: el usuario cerro el panel nativo el mismo, no es un fallo.
-                    // Cualquier otro error (p.ej. API bloqueada en un iframe de preview) cae al fallback.
-                    if (err && err.name !== 'AbortError') await fallbackShare();
+                    if (err && err.name !== 'AbortError') openShareMenu(btn, url, title);
                 }
                 return;
             }
-            await fallbackShare();
+            openShareMenu(btn, url, title);
         });
     }
 
