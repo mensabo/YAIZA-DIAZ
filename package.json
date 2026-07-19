@@ -1,0 +1,14 @@
+{
+  "name": "yaiza-diaz-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Build tooling for the static site (no runtime dependencies - this is not a bundled app).",
+  "scripts": {
+    "build": "node tools/build-assets.mjs",
+    "test": "node tests/audit.test.js"
+  },
+  "devDependencies": {
+    "clean-css": "^5.3.3",
+    "terser": "^5.36.0"
+  }
+}
