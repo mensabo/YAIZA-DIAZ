@@ -636,7 +636,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.className = 'media-card';
                 card.target = '_blank';
                 card.rel = 'noopener noreferrer';
-                card.innerHTML = `<div class="image-container"><img src="${escapeHtml(interview.thumbnailUrl)}" alt="${escapeHtml(interview.mainTitle)}" loading="lazy">${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}</div><div class="media-card-text"><h4>${escapeHtml(interview.mainTitle)}</h4><p>${escapeHtml(interview.subtitle)}</p></div><button type="button" class="share-btn" data-share-title="${escapeHtml(interview.mainTitle)}" data-share-url="${escapeHtml(interview.url)}" aria-label="Compartir esta entrevista"><i class="fas fa-share-alt"></i></button>`;
+                card.innerHTML = `<div class="image-container"><img src="${escapeHtml(interview.thumbnailUrl)}" alt="${escapeHtml(interview.mainTitle)}" loading="lazy">${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}</div><div class="media-card-text"><h3>${escapeHtml(interview.mainTitle)}</h3><p>${escapeHtml(interview.subtitle)}</p></div><button type="button" class="share-btn" data-share-title="${escapeHtml(interview.mainTitle)}" data-share-url="${escapeHtml(interview.url)}" aria-label="Compartir esta entrevista"><i class="fas fa-share-alt"></i></button>`;
                 grid.appendChild(card);
             });
         } catch (error) { console.error("Error cargando entrevistas:", error); }

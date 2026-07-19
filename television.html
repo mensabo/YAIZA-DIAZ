@@ -28,7 +28,7 @@
     <meta name="twitter:description" content="Explora mi carrera de más de 14 años en Televisión Canaria, presentando informativos y programas de investigación.">
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/tele4.jpg">
 
-    <link rel="stylesheet" href="style.css?v=1784475855911">
+    <link rel="stylesheet" href="style.css?v=1784476491367">
     <!-- Playfair Display/Montserrat/Caveat autoalojadas (ver style.css),
          ya no hace falta preconectar a Google Fonts. Solo queda cdnjs
          (Font Awesome); Firebase/Analytics se cargan después (JS async o
@@ -170,10 +170,13 @@
             <div class="header-line"></div>
             <div id="galeria-interactiva-television" class="galeria-interactiva-container">
                 <div class="galeria-principal">
-                    <div class="galeria-bg-desenfocado"></div>
-                    <img class="imagen-principal" src="" alt="Visor principal de la galería de televisión" loading="lazy">
+                    <!-- Foto real (orden 0 en Firestore) como fallback estatico: evita que
+                         el fondo desenfocado se quede vacio hasta que JS resuelve Firestore/
+                         Storage, que acababa ganando como elemento de LCP muy tarde. -->
+                    <div class="galeria-bg-desenfocado" style="background-image: url(https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/television_gallery%2F1756352755030_tele.jpg?alt=media&token=e61c2d2f-3274-40e2-bc5a-a1f20b3ad908);"></div>
+                    <img class="imagen-principal" src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/television_gallery%2F1756352755030_tele.jpg?alt=media&token=e61c2d2f-3274-40e2-bc5a-a1f20b3ad908" alt="Visor principal de la galería de televisión" loading="lazy">
                     <div class="descripcion-principal">
-                        <p>Cargando galería...</p>
+                        <p>Nueva imagen</p>
                     </div>
                 </div>
                 <div class="galeria-lista-miniaturas">
@@ -214,6 +217,6 @@
             db, collection, getDocs, orderBy, query, doc, getDoc, addDoc
         };
     </script>
-    <script src="script.js?v=1784474317005" type="module"></script>
+    <script src="script.js?v=1784476491367" type="module"></script>
 </body>
 </html>

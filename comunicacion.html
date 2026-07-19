@@ -28,7 +28,7 @@
     <meta name="twitter:description" content="Mi rol como Directora de Comunicación y Jefa de Prensa para proyectos como Dreamland Studios y EAVE.">
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/comunicacion-collage.jpg">
 
-    <link rel="stylesheet" href="style.css?v=1784475855911">
+    <link rel="stylesheet" href="style.css?v=1784476491367">
     <!-- Playfair Display/Montserrat/Caveat autoalojadas (ver style.css),
          ya no hace falta preconectar a Google Fonts. Solo queda cdnjs
          (Font Awesome); Firebase/Analytics se cargan después (JS async o
@@ -196,9 +196,11 @@
                 <p data-content-id="habecuParagraph">Yaiza Díaz es la Vicepresidenta de HABECU, la Hermandad de Amigos del Benemérito Cuerpo de la Guardia Civil en Santa Cruz de Tenerife. Un grupo de apoyo a los agentes y familias de los guardias civiles. Una red que existe a nivel nacional.</p>
                 <div id="galeria-interactiva-habecu" class="galeria-interactiva-container">
                     <div class="galeria-principal">
-                        <div class="galeria-bg-desenfocado"></div>
-                        <img class="imagen-principal" src="" alt="Visor principal de la galería de HABECU" loading="lazy">
-                        <div class="descripcion-principal"><p>Cargando galería...</p></div>
+                        <!-- Foto real (orden 0 en Firestore) como fallback estatico, ver
+                             misma nota en modelaje.html/television.html. -->
+                        <div class="galeria-bg-desenfocado" style="background-image: url(https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/habecu_gallery%2F1756856364738_habecu.jpg?alt=media&token=986b1d32-ac21-47bd-8e37-64ff54580f9b);"></div>
+                        <img class="imagen-principal" src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/habecu_gallery%2F1756856364738_habecu.jpg?alt=media&token=986b1d32-ac21-47bd-8e37-64ff54580f9b" alt="Visor principal de la galería de HABECU" loading="lazy">
+                        <div class="descripcion-principal"><p></p></div>
                     </div>
                     <div class="galeria-lista-miniaturas"></div>
                 </div>
@@ -244,6 +246,6 @@
             db, collection, getDocs, orderBy, query, doc, getDoc
         };
     </script>
-    <script src="script.js?v=1784474317005" type="module"></script>
+    <script src="script.js?v=1784476491367" type="module"></script>
 </body>
 </html>

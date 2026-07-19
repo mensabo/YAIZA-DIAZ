@@ -28,7 +28,7 @@
     <meta name="twitter:description" content="Una historia íntima sobre el amor padre e hija y la superación. Compra el libro y conoce su sinopsis.">
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/social/og-libro.jpg">
 
-    <link rel="stylesheet" href="style.css?v=1784475855911">
+    <link rel="stylesheet" href="style.css?v=1784476491367">
     <!-- La fuente Caveat solo la usan elementos que arrancan
          display:none (la anotacion del hero / la carta de libro.html)
          y el navegador no la pide hasta que se hacen visibles via JS -
@@ -243,10 +243,12 @@
             <div class="header-line"></div>
             <div id="galeria-interactiva" class="galeria-interactiva-container">
                 <div class="galeria-principal">
-                    <div class="galeria-bg-desenfocado"></div>
-                    <img class="imagen-principal" src="" alt="Visor principal de la galería de momentos" loading="lazy">
+                    <!-- Foto real (orden 0 en Firestore) como fallback estatico, ver
+                         misma nota en modelaje.html/television.html. -->
+                    <div class="galeria-bg-desenfocado" style="background-image: url(https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/gallery%2F1755301175435_IMG_1047.jpg?alt=media&token=97422e01-65cc-4ad5-a645-163206f08bfb);"></div>
+                    <img class="imagen-principal" src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/gallery%2F1755301175435_IMG_1047.jpg?alt=media&token=97422e01-65cc-4ad5-a645-163206f08bfb" alt="Visor principal de la galería de momentos" loading="lazy">
                     <div class="descripcion-principal">
-                        <p>Cargando galería...</p>
+                        <p>Presentación Audio-Libro</p>
                     </div>
                 </div>
                 <div class="galeria-lista-miniaturas"></div>
@@ -392,6 +394,6 @@
             db, collection, getDocs, orderBy, query, doc, getDoc
         };
     </script>
-    <script src="script.js?v=1784474317005" type="module"></script>
+    <script src="script.js?v=1784476491367" type="module"></script>
 </body>
 </html>

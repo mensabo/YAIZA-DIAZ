@@ -28,7 +28,7 @@
     <meta name="twitter:description" content="Mi paso por la radio con el programa 'Siempre nos quedará París' en Canarias Radio.">
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/portadaparis.jpeg">
 
-    <link rel="stylesheet" href="style.css?v=1784475855911">
+    <link rel="stylesheet" href="style.css?v=1784476491367">
     <!-- Playfair Display/Montserrat/Caveat autoalojadas (ver style.css),
          ya no hace falta preconectar a Google Fonts. Solo queda cdnjs
          (Font Awesome); Firebase/Analytics se cargan después (JS async o
@@ -162,10 +162,12 @@
                     <div class="header-line"></div>
                     <div id="galeria-interactiva-radio" class="galeria-interactiva-container">
                         <div class="galeria-principal">
-                            <div class="galeria-bg-desenfocado"></div>
-                            <img class="imagen-principal" src="" alt="Visor principal de la galería de radio" loading="lazy">
+                            <!-- Foto real (orden 0 en Firestore) como fallback estatico, ver
+                                 misma nota en modelaje.html/television.html. -->
+                            <div class="galeria-bg-desenfocado" style="background-image: url(https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/radio_gallery%2F1756848719948_Paris.jpeg?alt=media&token=07b3ea87-0181-4e48-b921-9bcc33362c44);"></div>
+                            <img class="imagen-principal" src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/radio_gallery%2F1756848719948_Paris.jpeg?alt=media&token=07b3ea87-0181-4e48-b921-9bcc33362c44" alt="Visor principal de la galería de radio" loading="lazy">
                             <div class="descripcion-principal">
-                                <p>Cargando galería...</p>
+                                <p>Nueva imagen</p>
                             </div>
                         </div>
                         <div class="galeria-lista-miniaturas"></div>
@@ -200,6 +202,6 @@
             db, collection, getDocs, orderBy, query, doc, getDoc
         };
     </script>
-    <script src="script.js?v=1784474317005" type="module"></script>
+    <script src="script.js?v=1784476491367" type="module"></script>
 </body>
 </html>
