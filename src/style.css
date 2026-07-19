@@ -3661,7 +3661,11 @@ a.expandable-image:hover img {
     inset: -10px;
     background-image: url('images/contacto-fondo.jpg');
     background-size: cover;
-    background-position: center 20%;
+    /* "top" en vez de "center 20%": el collage tiene las caras cerca de la
+       parte superior de cada foto (a proposito, ver comentario de arriba),
+       y esta seccion es muy ancha y baja - con cover, cualquier posicion
+       por debajo del 5-8% ya recorta las caras por arriba. */
+    background-position: center top;
     filter: blur(3px);
     transform: scale(1.02);
     z-index: 0;
