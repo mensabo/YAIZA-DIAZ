@@ -70,6 +70,53 @@ document.addEventListener('DOMContentLoaded', () => {
         return valid;
     };
 
+    // --- COMPRESIÓN DE IMÁGENES ANTES DE SUBIRLAS ---
+    // Las fotos que se suben aquí (móvil/cámara, varios MB) se guardaban tal
+    // cual en Storage: una foto de 1MB sin comprimir en el hero de la home
+    // fue el hallazgo más gordo de una auditoría de Lighthouse. Redimensiona
+    // en el propio navegador (canvas) a un máximo razonable para web y
+    // recomprime como JPEG antes de subir. Los PNG solo se redimensionan
+    // (sin bajar calidad, para no arriesgar la transparencia); SVG y GIF se
+    // dejan tal cual (el canvas no conserva vectores ni animación).
+    function compressImage(file, { maxDimension = 1920, quality = 0.82 } = {}) {
+        if (file.type === 'image/svg+xml' || file.type === 'image/gif') {
+            return Promise.resolve(file);
+        }
+        return new Promise((resolve) => {
+            const objectUrl = URL.createObjectURL(file);
+            const img = new Image();
+            img.onload = () => {
+                URL.revokeObjectURL(objectUrl);
+                const { width, height } = img;
+                const needsResize = width > maxDimension || height > maxDimension;
+                if (!needsResize && file.size < 400 * 1024) {
+                    resolve(file); // ya es razonablemente pequeña, no merece la pena recomprimir
+                    return;
+                }
+                const scale = Math.min(1, maxDimension / Math.max(width, height));
+                const canvas = document.createElement('canvas');
+                canvas.width = Math.round(width * scale);
+                canvas.height = Math.round(height * scale);
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                const outputType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+                canvas.toBlob((blob) => {
+                    if (!blob || blob.size >= file.size) {
+                        resolve(file); // si no mejora, se queda con el original
+                        return;
+                    }
+                    const newName = outputType === 'image/jpeg' ? file.name.replace(/\.\w+$/, '.jpg') : file.name;
+                    resolve(new File([blob], newName, { type: outputType, lastModified: Date.now() }));
+                }, outputType, quality);
+            };
+            img.onerror = () => {
+                URL.revokeObjectURL(objectUrl);
+                resolve(file); // si el navegador no puede decodificarla, se sube tal cual
+            };
+            img.src = objectUrl;
+        });
+    }
+
     // --- FUNCIÓN HELPER PARA BOTONES DE GUARDAR: evita doble-envío y da feedback visual ---
     // Deshabilita el botón y muestra un estado de "Guardando..." mientras la promesa
     // async está en curso; lo restaura al terminar (éxito o error).
@@ -247,7 +294,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentItems = getItemsFromList(listElement);
         const newItems =[];
 
-        for (const file of filterValidImageFiles(files)) {
+        for (const rawFile of filterValidImageFiles(files)) {
+            const file = await compressImage(rawFile);
             const storageRef = ref(storage, `hero-slider/${Date.now()}_${file.name}`);
             await uploadBytes(storageRef, file);
             const url = await getDownloadURL(storageRef);
@@ -382,7 +430,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const validFiles = filterValidImageFiles(files);
         const currentCount = galleryListEl.querySelectorAll('.gallery-item').length;
         for (let i = 0; i < validFiles.length; i++) {
-            const file = validFiles[i];
+            const file = await compressImage(validFiles[i]);
             const storageRef = ref(storage, `${currentStoragePath}${Date.now()}_${file.name}`);
             await uploadBytes(storageRef, file);
             const url = await getDownloadURL(storageRef);
@@ -681,7 +729,8 @@ document.addEventListener('DOMContentLoaded', () => {
         eventImagesDropZone.querySelector('p').textContent = 'Subiendo...';
         const currentItems = getItemsFromEventPreview();
         const newItems =[];
-        for (const file of filterValidImageFiles(files)) {
+        for (const rawFile of filterValidImageFiles(files)) {
+            const file = await compressImage(rawFile);
             const storageRef = ref(storage, `events/${Date.now()}_${file.name}`);
             await uploadBytes(storageRef, file);
             const url = await getDownloadURL(storageRef);
@@ -743,8 +792,9 @@ document.addEventListener('DOMContentLoaded', () => {
         uploadEventVideoButton.disabled = true;
 
         try {
-            const thumbStorageRef = ref(storage, `events/thumbnails/${Date.now()}_${thumbnailFile.name}`);
-            await uploadBytes(thumbStorageRef, thumbnailFile);
+            const compressedThumbnail = await compressImage(thumbnailFile);
+            const thumbStorageRef = ref(storage, `events/thumbnails/${Date.now()}_${compressedThumbnail.name}`);
+            await uploadBytes(thumbStorageRef, compressedThumbnail);
             const thumbnailUrl = await getDownloadURL(thumbStorageRef);
 
             const videoStorageRef = ref(storage, `events/videos/${Date.now()}_${videoFile.name}`);
@@ -873,8 +923,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!file) return;
         if (filterValidImageFiles([file]).length === 0) return;
         interviewImageDropZone.querySelector('p').textContent = 'Subiendo...';
-        const storageRef = ref(storage, `interviews/${Date.now()}_${file.name}`);
-        await uploadBytes(storageRef, file);
+        const compressed = await compressImage(file);
+        const storageRef = ref(storage, `interviews/${Date.now()}_${compressed.name}`);
+        await uploadBytes(storageRef, compressed);
         interviewThumbnailUrl = await getDownloadURL(storageRef);
         interviewImagePreview.innerHTML = `<div class="preview-item"><img src="${escapeHtml(interviewThumbnailUrl)}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
         interviewImageDropZone.querySelector('p').textContent = 'Arrastra una imagen o haz clic';
@@ -995,7 +1046,8 @@ document.addEventListener('DOMContentLoaded', () => {
             awardImagesDropZone.querySelector('p').textContent = 'Subiendo...';
             const currentItems = getItemsFromPreview();
             const newItems =[];
-            for (const file of filterValidImageFiles(files)) {
+            for (const rawFile of filterValidImageFiles(files)) {
+                const file = await compressImage(rawFile);
                 const storageRef = ref(storage, `awards/${Date.now()}_${file.name}`);
                 await uploadBytes(storageRef, file);
                 const url = await getDownloadURL(storageRef);
@@ -1222,8 +1274,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!file) return;
         if (filterValidImageFiles([file]).length === 0) return;
         tvProgramImageDropZone.querySelector('p').textContent = 'Subiendo...';
-        const storageRef = ref(storage, `tv_programs/${Date.now()}_${file.name}`);
-        await uploadBytes(storageRef, file);
+        const compressed = await compressImage(file);
+        const storageRef = ref(storage, `tv_programs/${Date.now()}_${compressed.name}`);
+        await uploadBytes(storageRef, compressed);
         tvProgramThumbnailUrl = await getDownloadURL(storageRef);
         tvProgramImagePreview.innerHTML = `<div class="preview-item"><img src="${escapeHtml(tvProgramThumbnailUrl)}" alt="miniatura"><button type="button" class="delete-button">Quitar</button></div>`;
         tvProgramImageDropZone.querySelector('p').textContent = 'Arrastra una imagen o haz clic';
