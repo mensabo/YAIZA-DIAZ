@@ -2628,6 +2628,11 @@ footer {
 
     .about-quote {
         background-color: rgba(188, 160, 125, 0.15);
+        /* El tinte dorado de fondo compuesto sobre la sección deja un fondo
+           efectivo mas oscuro que blanco puro (~#e8e2db); con ese fondo,
+           --color-acento-texto (el de la version de escritorio) solo daba
+           4.36:1, por debajo del minimo AA. Este tono mas oscuro da 5.5:1. */
+        color: #6b5439;
         padding: 1rem;
         border-radius: 8px;
         font-size: 1.1rem;
@@ -4121,7 +4126,7 @@ a.expandable-image:hover img {
     h2, h1.page-title { font-size: 1.8rem; }
     section { padding: 4rem 0; }
     .container { padding: 0 1rem; }
-    .about-quote { background-color: rgba(188, 160, 125, 0.15); padding: 1rem; border-radius: 8px; font-size: 1.1rem; position: relative; overflow: hidden; }
+    .about-quote { background-color: rgba(188, 160, 125, 0.15); color: #6b5439; padding: 1rem; border-radius: 8px; font-size: 1.1rem; position: relative; overflow: hidden; }
     .portfolio-grid { gap: 1.2rem; }
     .libro-hero-content, .sinopsis-content, .sinopsis-content-reversed, #arte-libro .arte-grid { flex-direction: column; gap: 2rem; }
     .sinopsis-content.media-heavy .sinopsis-text,
