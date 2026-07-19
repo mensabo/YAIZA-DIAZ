@@ -23,7 +23,8 @@
 // deshacer algo. Bórralas manualmente desde la consola de Storage cuando
 // confirmes que todo está bien.
 
-import admin from "firebase-admin";
+import { initializeApp, cert } from "firebase-admin/app";
+import { getStorage } from "firebase-admin/storage";
 import sharp from "sharp";
 import { readFileSync, existsSync } from "node:fs";
 
@@ -40,12 +41,12 @@ if (!existsSync(KEY_PATH)) {
 
 const serviceAccount = JSON.parse(readFileSync(KEY_PATH, "utf8"));
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+const app = initializeApp({
+  credential: cert(serviceAccount),
   storageBucket: "yaiza-diaz.firebasestorage.app",
 });
 
-const bucket = admin.storage().bucket();
+const bucket = getStorage(app).bucket();
 
 // Mismas carpetas donde admin.js sube imágenes (ver uploadBytes en admin.js).
 // events/videos/ queda fuera a propósito: ahí solo hay vídeos.
