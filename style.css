@@ -1440,6 +1440,26 @@ footer {
     vertical-align: middle;
 }
 
+/* Título + botón de compartir en su propia fila flex: sin esto, un h2
+   corto deja al botón en la misma línea pero uno largo (que ocupa el
+   ancho completo al envolver) empuja el botón a una línea aparte, así
+   que cada premio quedaba con el icono en un sitio distinto. */
+.premio-title-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.premio-title-row h2 {
+    margin-bottom: 0;
+}
+
+.premio-title-row .share-btn-inline {
+    margin-left: 0;
+}
+
 .share-menu {
     position: absolute;
     top: calc(100% + 8px);
