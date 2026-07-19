@@ -143,6 +143,22 @@ html {
     top: 0;
 }
 
+/* Encabezado de seccion necesario para no saltar de nivel (h1->h3) pero
+   que no aporta nada visualmente porque el h1 y la intro ya dejan claro
+   de que trata la seccion: oculto a la vista, disponible para lectores
+   de pantalla y para la estructura de encabezados. */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 body {
     font-family: var(--fuente-texto);
     color: var(--color-primario);
