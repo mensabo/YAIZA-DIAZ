@@ -36,7 +36,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&family=Caveat:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&family=Caveat:wght@400;700&display=swap"></noscript>
     <!-- Font Awesome cargado sin bloquear el renderizado: se precarga como
          "style" (no bloqueante) y se activa como hoja de estilos en cuanto
          llega, en vez de detener el pintado inicial a esperarlo. -->
@@ -107,7 +108,7 @@
     <section id="libro-hero">
         <div class="container libro-hero-content">
             <div class="libro-hero-img">
-                <img src="images/portada-libro.png" alt="Portada de La Hija del Ciego" loading="lazy" width="463" height="713">
+                <img src="images/portada-libro.jpg" alt="Portada de La Hija del Ciego" loading="lazy" width="463" height="713">
                 <p class="pie-de-foto-portada" data-content-id="heroCaption"></p>
             </div>
             <div class="libro-hero-text">
@@ -268,7 +269,7 @@
             <div class="header-line"></div>
             <div class="compra-container">
                 <div class="compra-portada">
-                    <img src="images/portada-libro.png" alt="Portada de la novela La Hija del Ciego" loading="lazy" width="463" height="713">
+                    <img src="images/portada-libro.jpg" alt="Portada de la novela La Hija del Ciego" loading="lazy" width="463" height="713">
                 </div>
                 <div class="compra-info">
                     <h3 data-content-id="buySubtitle"></h3>
