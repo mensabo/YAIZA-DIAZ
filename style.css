@@ -1405,6 +1405,34 @@ footer {
     transform: scale(1.08);
 }
 
+.share-copied-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--color-primario);
+    color: var(--color-blanco);
+    font-family: var(--fuente-texto);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    padding: 0.35rem 0.7rem;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+    pointer-events: none;
+    z-index: 4;
+}
+
+.share-copied-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--color-primario);
+}
+
 .share-btn-inline {
     position: static;
     display: inline-flex;

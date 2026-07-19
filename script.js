@@ -926,7 +926,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     await navigator.clipboard.writeText(url);
                     const original = btn.innerHTML;
                     btn.innerHTML = '<i class="fas fa-check"></i>';
-                    setTimeout(() => { btn.innerHTML = original; }, 1500);
+                    // El icono a solas es fácil de pasar por alto (escritorio no tiene
+                    // panel nativo de compartir): se añade un tooltip flotante visible
+                    // con el mismo texto que confirma que el enlace se copió.
+                    const tooltip = document.createElement('span');
+                    tooltip.className = 'share-copied-tooltip';
+                    tooltip.textContent = 'Enlace copiado';
+                    btn.style.position = btn.style.position || 'relative';
+                    btn.appendChild(tooltip);
+                    setTimeout(() => {
+                        btn.innerHTML = original;
+                    }, 1500);
+                    setTimeout(() => tooltip.remove(), 1600);
                 } catch (err) {
                     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer');
                 }
