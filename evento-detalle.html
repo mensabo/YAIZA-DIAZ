@@ -28,7 +28,7 @@
     <meta name="twitter:description" content="Galería de fotos y vídeos de uno de los eventos presentados por Yaiza Díaz.">
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/social/og-eventos.jpg">
 
-    <link rel="stylesheet" href="style.css?v=1784411930919">
+    <link rel="stylesheet" href="style.css?v=1784419303511">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -42,7 +42,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/brands.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         /* Estilos específicos para la galería de detalles de evento */
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 3rem; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 320px)); justify-content: center; gap: 1rem; margin-top: 3rem; }
         .gallery-grid-item { position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); aspect-ratio: 4 / 5; }
         .gallery-grid-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
         .gallery-grid-item:hover img { transform: scale(1.05); }
@@ -162,7 +162,7 @@
         const db = getFirestore(app);
         window.firebaseServices = { db, doc, getDoc };
     </script>
-    <script src="evento.js?v=1784417285064" type="module"></script>
+    <script src="evento.js?v=1784419303511" type="module"></script>
     <script src="script.js?v=1784417285072" type="module"></script>
 </body>
 </html>
