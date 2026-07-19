@@ -533,7 +533,6 @@ nav ul li a[aria-current="page"]::after {
    demasiado de cerca la cara. Se deja con su proporción real aunque la
    tarjeta quede algo más baja que las otras dos de la cuadrícula. */
 .project-card img.natural-ratio {
-    aspect-ratio: auto;
     object-fit: initial;
 }
 
@@ -1033,7 +1032,6 @@ footer {
    fotos de evento en formato paisaje): conservan su proporción real en
    vez de recortarse y perder la composición original. */
 .sinopsis-img img.natural-ratio {
-    aspect-ratio: auto;
     object-fit: initial;
     width: auto;
     max-width: 100%;
