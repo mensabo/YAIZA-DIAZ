@@ -912,9 +912,13 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             e.stopPropagation();
 
-            const url = btn.dataset.shareUrl || location.href;
+            // Se comparte siempre la URL actual (origin + pathname), nunca el dominio
+            // de producción hardcodeado: mientras el sitio solo vive en la preview de
+            // GitHub Pages, compartir un enlace a un dominio que no resuelve hace que
+            // el selector nativo de Android falle al intentar generar una vista previa.
+            const url = location.origin + location.pathname + (btn.dataset.shareAnchor || '');
             const title = btn.dataset.shareTitle
-                || btn.closest('.comunicacion-section, .media-card')?.querySelector('h3, h4')?.textContent?.trim()
+                || btn.closest('.comunicacion-section, .media-card')?.querySelector('h2, h3, h4')?.textContent?.trim()
                 || document.title;
 
             const fallbackShare = async () => {
