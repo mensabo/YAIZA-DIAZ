@@ -1031,9 +1031,15 @@ footer {
 /* Para fotos que no están compuestas para un recorte cuadrado (p. ej.
    fotos de evento en formato paisaje): conservan su proporción real en
    vez de recortarse y perder la composición original. */
+/* Sin "width" propio a proposito: el uso por defecto del atributo HTML
+   width del <img> como ancho, acotado por max-width, es lo que permite
+   reservar el hueco correcto desde el primer layout (antes de que cargue
+   la imagen) sin agrandar fotos mas alla de su tamano real. Poner
+   "width: auto" aqui parecia equivalente pero no lo es: sin una dimension
+   definida de la que derivar el aspect-ratio, la caja colapsa a 0x0 hasta
+   que la imagen (lazy) empieza a cargar, causando layout shift real. */
 .sinopsis-img img.natural-ratio {
     object-fit: initial;
-    width: auto;
     max-width: 100%;
     height: auto;
 }
