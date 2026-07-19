@@ -32,6 +32,13 @@
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/comunicadora-bg.jpeg">
 
     <link rel="stylesheet" href="style.css?v=1784470214392">
+    <!-- La fuente Caveat solo la usan elementos que arrancan
+         display:none (la anotacion del hero / la carta de libro.html)
+         y el navegador no la pide hasta que se hacen visibles via JS -
+         eso hacía que tardase muchisimo en llegar en la practica
+         (11s+ medidos con Lighthouse real). La precargamos para que
+         empiece a descargarse desde el primer instante. -->
+    <link rel="preload" as="font" type="font/woff2" href="fonts/caveat-400.woff2" crossorigin>
     <!-- Playfair Display/Montserrat/Caveat autoalojadas (ver style.css),
          ya no hace falta preconectar a Google Fonts. Solo queda cdnjs
          (Font Awesome); Firebase/Analytics se cargan después (JS async o
