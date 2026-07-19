@@ -190,7 +190,7 @@
     <script src="config.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
-        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-lite.js";
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         window.firebaseServices = { db, doc, getDoc };
