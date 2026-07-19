@@ -28,16 +28,13 @@
     <meta name="twitter:description" content="Galería de fotos y vídeos de uno de los eventos presentados por Yaiza Díaz.">
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/social/og-eventos.jpg">
 
-    <link rel="stylesheet" href="style.css?v=1784434988240">
-    <!-- Solo se preconecta a los orígenes que bloquean el primer renderizado
-         (fuentes + icono). Firebase/Analytics se cargan después (JS async o
+    <link rel="stylesheet" href="style.css?v=1784453547476">
+    <!-- Playfair Display/Montserrat/Caveat autoalojadas (ver style.css),
+         ya no hace falta preconectar a Google Fonts. Solo queda cdnjs
+         (Font Awesome); Firebase/Analytics se cargan después (JS async o
          type=module), preconectar a ellos aquí solo competía por ancho de
          banda con lo que sí importa para el LCP. -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&family=Caveat:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&family=Caveat:wght@400;700&display=swap"></noscript>
     <!-- Font Awesome cargado sin bloquear el renderizado: se precarga como
          "style" (no bloqueante) y se activa como hoja de estilos en cuanto
          llega, en vez de detener el pintado inicial a esperarlo. -->
@@ -71,7 +68,31 @@
         'ad_personalization': 'denied'
       });
     </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GPTS82X18T"></script>
+    <script>
+      // Retrasa la carga de gtag.js (~700ms de bloqueo del hilo principal
+      // segun un informe real de Lighthouse) hasta la primera interaccion
+      // real o hasta que el navegador este inactivo, lo que ocurra antes,
+      // con un limite de tiempo para no perder el dato en visitas pasivas.
+      (function () {
+        var loaded = false;
+        function loadGtag() {
+          if (loaded) return;
+          loaded = true;
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-GPTS82X18T';
+          document.head.appendChild(script);
+        }
+        ['scroll', 'mousemove', 'keydown', 'touchstart', 'click'].forEach(function (evt) {
+          window.addEventListener(evt, loadGtag, { passive: true, once: true });
+        });
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadGtag, { timeout: 4000 });
+        } else {
+          setTimeout(loadGtag, 4000);
+        }
+      })();
+    </script>
     <script>
       gtag('js', new Date());
       gtag('config', 'G-GPTS82X18T');

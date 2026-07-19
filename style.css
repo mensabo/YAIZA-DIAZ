@@ -1,14 +1,51 @@
 /* ======================== */
 /*    ESTILOS GENERALES     */
 /* ======================== */
-/* Caveat (fuente-manuscrita) se carga desde el <link> de Google Fonts en
-   el <head> de cada página, junto a Playfair Display y Montserrat, NO
-   como @import aquí: un @import dentro de un CSS crea una cadena
-   secuencial (esperar CSS -> descubrir @import -> esperar fuente) en vez
-   de paralela, y el navegador no puede empezar a descargarla hasta haber
-   descargado y parseado todo este archivo. Medido con Lighthouse real:
-   esa cadena por sí sola era la ruta crítica más lenta de toda la
-   página (~12s). */
+/* Playfair Display, Montserrat y Caveat autoalojadas en fonts/ (solo el
+   subconjunto "latin", U+0000-00FF: cubre de sobra el español con tildes
+   y ñ) en vez de pedirlas a fonts.googleapis.com/fonts.gstatic.com. Esto
+   elimina 2 orígenes externos del camino crítico de carga y, sobre todo,
+   una descarga de la fuente Caveat que en un informe real de Lighthouse
+   tardó 11s sueltos (latencia de red anómala de ese origen concreto en
+   esa medición) - al servirla desde el mismo origen que el resto del
+   sitio queda bajo el mismo control de caché y CDN que todo lo demás.
+   No usar @import: crea una cadena secuencial (esperar CSS -> descubrir
+   @import -> esperar fuente) en vez de paralela. */
+@font-face {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('fonts/playfair-700.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/montserrat-400.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('fonts/montserrat-500.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Caveat';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('fonts/caveat-400.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Caveat';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('fonts/caveat-700.woff2') format('woff2');
+}
 
 :root {
     --color-primario: #1a1a1a;
