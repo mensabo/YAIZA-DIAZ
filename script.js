@@ -316,7 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // D. SCROLL SUAVE (ENLACES INTERNOS)
         const anchor = e.target.closest('a[href^="#"]');
-        if (anchor && anchor.id !== 'contact-modal-trigger' && !anchor.classList.contains('letter-button')) {
+        if (anchor && !anchor.classList.contains('letter-button')) {
             const href = anchor.getAttribute('href');
             const target = href.length > 1 ? document.querySelector(href) : null;
             if (target) {
@@ -343,7 +343,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
 
-    initializeContactModal();
     initializeEscapeKeyForModals();
     initializeSidenotes();
     initializeLogoPopups();
@@ -996,9 +995,10 @@ document.addEventListener('DOMContentLoaded', () => {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const { name, email, subject, message, privacy } = form;
-            if (!name.value.trim() || !email.value.trim() || !subject.value.trim() || !message.value.trim()) {
+            if (!name.value.trim() || !email.value.trim() || !message.value.trim()) {
                 showStatus('Por favor, completa todos los campos requeridos.', 'error'); return;
             }
+            const subjectValue = subject.value.trim() || 'Contacto desde la web';
             if (!privacy.checked) {
                 showStatus('Debes aceptar la política de privacidad.', 'error'); return;
             }
@@ -1016,7 +1016,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     fileUrl = await getDownloadURL(snapshot.ref);
                     fileName = file.name;
                 }
-                await addDoc(collection(db, 'contactMessages'), { name: name.value, email: email.value, subject: subject.value, message: message.value, createdAt: serverTimestamp(), attachment: fileUrl, attachmentName: fileName });
+                await addDoc(collection(db, 'contactMessages'), { name: name.value, email: email.value, subject: subjectValue, message: message.value, createdAt: serverTimestamp(), attachment: fileUrl, attachmentName: fileName });
                 showStatus('¡Mensaje enviado con éxito! Gracias.', 'success');
                 form.reset();
                 if (fileNameSpan) fileNameSpan.textContent = 'Adjuntar un archivo (opcional)';
@@ -1032,26 +1032,6 @@ document.addEventListener('DOMContentLoaded', () => {
             statusMessage.textContent = msg;
             statusMessage.className = type;
         }
-    }
-
-    function initializeContactModal() {
-        const modal = document.getElementById('contact-modal');
-        const openTriggers = document.querySelectorAll('#contact-modal-trigger');
-        const closeButton = document.getElementById('contact-modal-close');
-        if (!modal || !closeButton) return;
-        const navLinks = document.getElementById('nav-links');
-        const openModal = (e) => { 
-            if (e) e.preventDefault(); 
-            if (navLinks && navLinks.classList.contains('nav-open')) {
-                navLinks.classList.remove('nav-open');
-                document.body.classList.remove('scroll-locked');
-            }
-            modal.classList.add('visible'); 
-        };
-        const closeModal = () => modal.classList.remove('visible');
-        openTriggers.forEach(trigger => trigger.addEventListener('click', openModal));
-        closeButton.addEventListener('click', closeModal);
-        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
     }
 
     function initializePurchaseModal() {

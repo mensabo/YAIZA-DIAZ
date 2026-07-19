@@ -21,6 +21,52 @@
     --fuente-manuscrita: 'Caveat', cursive;
 }
 
+/* ======================== */
+/*  SISTEMA DE BOTONES (CTA) */
+/* ======================== */
+/* Base compartida por todos los botones de acción del sitio (dorado de
+   marca = acción/conversión). Las clases originales (.email-link,
+   .buy-button, .modal-button, .letter-button, .form-submit-area button)
+   se mantienen en el HTML existente, pero ahora heredan esta base en vez
+   de repetir cada una su propio bg/hover. .cookie-btn-primary queda fuera
+   a propósito: usa texto oscuro sobre el banner de cookies, no blanco. */
+#contacto .email-link,
+.buy-button,
+.modal-button,
+.letter-button,
+.form-submit-area button,
+.btn-primary {
+    display: inline-block;
+    background-color: var(--color-acento);
+    color: var(--color-blanco);
+    text-decoration: none;
+    font-weight: 600;
+    font-family: var(--fuente-texto);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#contacto .email-link:hover,
+.buy-button:hover,
+.modal-button:hover,
+.letter-button:hover,
+.form-submit-area button:hover,
+.btn-primary:hover {
+    background-color: #a78d6b;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.form-submit-area button:disabled,
+.btn-primary:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -265,6 +311,26 @@ nav ul li a:hover::after {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
+}
+
+/* Titular fijo de posicionamiento: a diferencia de los tabs (rellenados
+   por JS desde Firestore, pueden tardar o fallar), esto vive en el HTML
+   estático para que la home nunca se vea vacía ni sin un mensaje claro
+   de quién es Yaiza y por qué contratarla. */
+.hero-headline {
+    position: absolute;
+    z-index: 3;
+    top: 8rem;
+    left: 2rem;
+    max-width: 620px;
+    font-family: var(--fuente-titulos);
+    font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+    line-height: 1.25;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+}
+
+.hero-headline strong {
+    color: var(--color-acento);
 }
 
 .hero-tabs-container {
@@ -542,6 +608,29 @@ NUEVO DISEÑO ARTÍSTICO PARA BOTONES/ETIQUETAS:
     background-color: var(--color-secundario);
 }
 
+.home-events-cta {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 0.9rem 2.5rem;
+}
+
+/* ================================================== */
+/*   PRUEBA SOCIAL (marcas) JUSTO DEBAJO DEL HERO      */
+/* ================================================== */
+#trusted-by {
+    background-color: var(--color-primario);
+    padding: 2.5rem 0;
+}
+
+.trusted-by-label {
+    text-align: center;
+    color: #aaa;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+}
+
 /* ======================== */
 /*     SECCIÓN CONTACTO     */
 /* ======================== */
@@ -561,21 +650,8 @@ NUEVO DISEÑO ARTÍSTICO PARA BOTONES/ETIQUETAS:
 }
 
 #contacto .email-link {
-    display: inline-block;
-    background-color: var(--color-acento);
-    color: var(--color-blanco);
     padding: 0.8rem 2.5rem;
-    border-radius: 8px;
     font-size: 1.2rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-#contacto .email-link:hover {
-    opacity: 1;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 .social-icons {
@@ -841,20 +917,8 @@ footer {
 }
 
 .buy-button {
-    display: inline-block;
-    background-color: var(--color-acento);
-    color: var(--color-blanco);
     padding: 1rem 2rem;
-    text-decoration: none;
-    font-weight: 500;
-    border-radius: 5px;
-    transition: all 0.3s ease;
     margin-top: 2rem;
-}
-
-.buy-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 .pie-de-foto-portada {
@@ -1097,17 +1161,10 @@ footer {
 
 .modal-button {
     display: block;
-    background-color: var(--color-acento);
-    color: var(--color-blanco);
-    text-decoration: none;
     padding: 1rem;
-    border-radius: 5px;
-    font-weight: 500;
-    transition: background-color 0.2s, transform 0.2s;
 }
 
 .modal-button:hover {
-    background-color: #a78d6b;
     transform: scale(1.03);
 }
 
@@ -1115,21 +1172,9 @@ footer {
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
-    background-color: var(--color-acento);
-    color: var(--color-blanco);
     padding: 0.8rem 1.5rem;
-    text-decoration: none;
-    font-weight: 500;
-    border-radius: 5px;
-    transition: all 0.3s ease;
     margin-bottom: 2rem;
     margin-right: 1rem;
-}
-
-.letter-button:hover {
-    background-color: #a78d6b;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 /* ==================================================================== */
@@ -2307,7 +2352,15 @@ footer {
         right: 0;
         height: auto;
     }
-    
+
+    .hero-headline {
+        top: 6rem;
+        left: 1.25rem;
+        right: 1.25rem;
+        max-width: none;
+        font-size: clamp(1.4rem, 6vw, 1.9rem);
+    }
+
     .hero-tabs-desktop {
         display: none;
     }
@@ -3080,45 +3133,6 @@ footer {
     visibility: visible;
 }
 
-.modal-content.contact-modal-content {
-    background-color: var(--color-primario);
-    color: var(--color-blanco);
-    padding: 3rem;
-    border-radius: 12px;
-    max-width: 600px;
-    width: 100%;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-    border: 1px solid rgba(188, 160, 125, 0.3);
-    transform: scale(0.95);
-    transition: transform 0.3s ease;
-}
-
-.modal-overlay.visible .modal-content.contact-modal-content {
-    transform: scale(1);
-}
-
-.contact-modal-content h2 {
-    color: var(--color-acento);
-    margin-bottom: 1.5rem;
-}
-
-.contact-modal-content p {
-    color: #e0e0e0;
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-}
-
-.contact-modal-content .email-link {
-    font-size: 1.3rem;
-    padding: 0.8rem 2rem;
-}
-
-.contact-modal-content .social-icons a {
-    color: var(--color-blanco);
-}
-
 .modal-close {
     position: absolute;
     top: 15px;
@@ -3181,11 +3195,6 @@ a.expandable-image:hover img {
     filter: brightness(0.6);
 }
 
-@media (max-width: 768px) {
-    .modal-content.contact-modal-content {
-        padding: 2.5rem 1.5rem;
-    }
-}
 /* =================================== */
 /*   INDICADOR DE SCROLL MENÚ MÓVIL (VERSIÓN FINAL)   */
 /* =================================== */
@@ -3559,6 +3568,12 @@ a.expandable-image:hover img {
     color: #333;
 }
 
+.optional-hint {
+    font-weight: 400;
+    color: #888;
+    font-size: 0.9em;
+}
+
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group textarea {
@@ -3632,29 +3647,9 @@ a.expandable-image:hover img {
 }
 
 .form-submit-area button {
-    background-color: var(--color-acento);
-    color: var(--color-blanco);
-    border: none;
     padding: 1rem 3rem;
     font-size: 1.1rem;
-    font-weight: 600;
     font-family: var(--fuente-titulos);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.form-submit-area button:hover {
-    background-color: #a78d6b;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-}
-
-.form-submit-area button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
 }
 
 #form-status {
@@ -4023,7 +4018,6 @@ a.expandable-image:hover img {
     .event-tags button:nth-child(6)::after { animation-delay: -1.8s; }
     .event-tags button:nth-child(7)::after { animation-delay: -1.1s; }
     .event-tags button:nth-child(8)::after { animation-delay: -2.5s; }
-    .modal-content.contact-modal-content { padding: 2.5rem 1.5rem; }
     .proyecto-social-icons a::after { animation: shine-sweep 2.8s ease-in-out infinite; }
     .proyecto-social-icons a:last-child::after { animation-delay: 1.4s; }
 }
