@@ -39,7 +39,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&family=Caveat:wght@400;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500&family=Caveat:wght@400;700&display=swap"></noscript>
     <!-- Font Awesome cargado sin bloquear el renderizado: se precarga como
          "style" (no bloqueante) y se activa como hoja de estilos en cuanto
          llega, en vez de detener el pintado inicial a esperarlo. -->
@@ -135,7 +136,7 @@
                     <h2 data-content-id="heroTitle3"></h2>
                     <p data-content-id="heroSubtitle3"></p>
                     <a href="libro.html" class="book-link" aria-label="Ver el libro La Hija del Ciego">
-                        <img class="tab-detail-image" src="images/portada-libro.png" alt="Portada del libro La Hija del Ciego" loading="lazy" width="463" height="713">
+                        <img class="tab-detail-image" src="images/portada-libro.jpg" alt="Portada del libro La Hija del Ciego" loading="lazy" width="463" height="713">
                         <div class="click-annotation click-annotation-desktop">
                             <span class="annotation-text">Click aquí</span>
                             <svg class="annotation-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
@@ -155,7 +156,7 @@
                     <h2 id="mobile-tab-title"></h2>
                     <a href="libro.html" class="book-link" id="mobile-book-link" aria-label="Ver el libro La Hija del Ciego">
                         <div class="mobile-book-image-wrapper">
-                            <img class="tab-detail-image" src="images/portada-libro.png" alt="Portada del libro La Hija del Ciego" loading="lazy" width="463" height="713">
+                            <img class="tab-detail-image" src="images/portada-libro-thumb.jpg" alt="Portada del libro La Hija del Ciego" loading="lazy" width="140" height="216">
                         </div>
                         <span class="annotation-text-mobile">Click aquí</span>
                         <div class="annotation-arrow-mobile">
@@ -212,7 +213,7 @@
                 <!-- Se cargarán solas desde Firebase (o desde las predeterminadas) -->
             </div>
 
-            <img src="images/tele7.jpg" srcset="images/tele7-720w.jpg 720w, images/tele7.jpg 1284w" sizes="(max-width: 768px) 100vw, 700px" alt="Yaiza Díaz presentando en un escenario" class="section-image" loading="lazy" width="1284" height="1282">
+            <img src="images/tele7.jpg" srcset="images/tele7-720w.jpg 720w, images/tele7-960w.jpg 960w, images/tele7.jpg 1284w" sizes="(max-width: 768px) calc(100vw - 64px), 700px" alt="Yaiza Díaz presentando en un escenario" class="section-image" loading="lazy" width="1284" height="1282">
         </div>
     </section>
 
