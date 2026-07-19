@@ -28,7 +28,7 @@
     <meta name="twitter:description" content="Un recorrido por los premios y reconocimientos a mi carrera, como el Premio Isla Tenerife a la Comunicación.">
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/social/og-premios.jpg">
 
-    <link rel="stylesheet" href="style.css?v=1784470214392">
+    <link rel="stylesheet" href="style.css?v=1784474317005">
     <!-- Playfair Display/Montserrat/Caveat autoalojadas (ver style.css),
          ya no hace falta preconectar a Google Fonts. Solo queda cdnjs
          (Font Awesome); Firebase/Analytics se cargan después (JS async o
@@ -52,7 +52,7 @@
         .video-fallback:hover video, .video-fallback:hover img { transform: scale(1.05); opacity: 1; }
         .play-button-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; font-size: 1.5rem; background-color: rgba(0, 0, 0, 0.5); color: white; border-radius: 50%; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; border: 2px solid white; backdrop-filter: blur(4px); }
         .video-fallback:hover .play-button-overlay { background-color: rgba(220, 0, 0, 0.8); transform: translate(-50%, -50%) scale(1.1); }
-        .link-highlight { color: var(--color-acento); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; transition: color 0.3s ease; }
+        .link-highlight { color: var(--color-acento-texto); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; transition: color 0.3s ease; }
         .link-highlight:hover { color: #a78d6b; }
     </style>
     <!-- Google tag (gtag.js) - Consent Mode: analytics_storage denegado por defecto,
@@ -213,7 +213,7 @@
                         <p data-content-id="premio4Paragraph"></p>
                     </div>
                     <div class="sinopsis-img">
-                        <a href="https://www.youtube.com/watch?v=A7YhOl14_9A" target="_blank" rel="noopener noreferrer" class="video-fallback">
+                        <a href="https://www.youtube.com/watch?v=A7YhOl14_9A" target="_blank" rel="noopener noreferrer" class="video-fallback" aria-label="Ver vídeo: Top Artistas Canarios en YouTube">
                             <video loop muted playsinline preload="none">
                                 <source data-src="https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/videos%2Fpremiostop.mp4?alt=media&token=3a89e299-9388-486d-aff6-7b1575a12113" type="video/mp4">
                             </video>
@@ -265,6 +265,6 @@
             db, collection, getDocs, orderBy, query, doc, getDoc
         };
     </script>
-   <script src="script.js?v=1784465696016" type="module"></script>
+   <script src="script.js?v=1784474317005" type="module"></script>
 </body>
 </html>
