@@ -843,25 +843,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const currentItem = lightboxItems[currentLightboxIndex];
         img.style.opacity = '0';
-        
+
         setTimeout(() => {
             const nuevaRuta = currentItem.src || currentItem.thumbnailSrc || currentItem.videoSrc;
             const nuevoTexto = currentItem.descripcion || currentItem.description || '';
-            
+
             img.src = nuevaRuta;
             caption.textContent = nuevoTexto;
             img.style.opacity = '1';
+            // El logo de ChachoCreations tiene fondo oscuro propio que se
+            // funde con el fondo del visor: le damos un brillo dorado
+            // animado en vez de dejarlo plano (ver .is-logo-preview en CSS).
+            img.classList.toggle('is-logo-preview', nuevaRuta.includes('chacho-creations-logo'));
         }, 150);
     }
 
     function openLightboxWithNavigation(index, items) {
         const modal = document.getElementById('lightbox-modal');
         if (!modal || !items || items.length === 0) return;
-        
+
         lightboxItems = items;
         currentLightboxIndex = index;
         updateLightboxContent();
         modal.classList.add('visible');
+
+        // Con una sola imagen, las flechas de navegación no llevan a
+        // ningún sitio (changeImage ya lo bloquea) - mejor ocultarlas.
+        // (clase, no display inline: hay una regla !important para las
+        // flechas que un style inline normal no puede ganar)
+        modal.classList.toggle('single-item', items.length <= 1);
     }
 
     function initializeStandaloneLightboxSetup() {
