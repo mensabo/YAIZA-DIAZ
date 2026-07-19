@@ -303,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const linkExpandable = e.target.closest('.expandable-image');
         if (linkExpandable && !linkExpandable.closest('.galeria-interactiva-container')) {
             e.preventDefault();
-            const parent = linkExpandable.closest('section') || document.body;
+            const parent = linkExpandable.closest('section, footer') || document.body;
             const siblings = Array.from(parent.querySelectorAll('.expandable-image'));
             const items = siblings.map(s => ({
                 src: s.href || (s.querySelector('img') ? s.querySelector('img').src : ''),
