@@ -595,8 +595,7 @@ NUEVO DISEÑO ARTÍSTICO PARA BOTONES/ETIQUETAS:
 - Fuente de títulos para un toque elegante.
 - Borde y sombra sutil para un efecto "letterpress" o de relieve.
 */
-.event-tags span,
-.event-tag-link {
+.event-tags span {
     background-color: var(--color-blanco); /* Blanco roto #FDFBF6 */
     color: var(--color-primario);
     font-family: var(--fuente-titulos);
@@ -613,8 +612,7 @@ NUEVO DISEÑO ARTÍSTICO PARA BOTONES/ETIQUETAS:
 }
 
 /* Hover mejorado con levantamiento y sombra más pronunciada */
-.event-tags span:hover,
-.event-tag-link:hover {
+.event-tags span:hover {
     background-color: var(--color-acento);
     color: var(--color-blanco); /* Aseguramos texto blanco sobre fondo dorado */
     border-color: var(--color-acento);
@@ -624,8 +622,7 @@ NUEVO DISEÑO ARTÍSTICO PARA BOTONES/ETIQUETAS:
 
 
 /* El destello ahora es dorado para mejor contraste en móvil */
-.event-tags span::after,
-.event-tag-link::after {
+.event-tags span::after {
     content: '';
     position: absolute;
     top: 0;
@@ -636,8 +633,7 @@ NUEVO DISEÑO ARTÍSTICO PARA BOTONES/ETIQUETAS:
     transform: translateX(-150%) skewX(-25deg);
 }
 
-.event-tags span:hover::after,
-.event-tag-link:hover::after {
+.event-tags span:hover::after {
     background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
     animation: shine-sweep 1s ease;
 }
@@ -2784,17 +2780,13 @@ footer {
 
     /* --- ANIMACIÓN DE BRILLO CONTINUO PARA BOTONES EN MÓVIL --- */
     #habilidades .event-tags span::after,
-    #home-events .event-tags span::after,
-    #home-events .event-tags .event-tag-link::after {
+    #home-events .event-tags span::after {
         animation: shine-sweep 3.5s ease-in-out infinite;
     }
-    
+
     #habilidades .event-tags span:nth-child(odd)::after,
     #home-events .event-tags span:nth-child(odd)::after {
         animation-delay: -1.8s;
-    }
-    #home-events .event-tags .event-tag-link::after {
-        animation-delay: -2.5s;
     }
 }
 
@@ -4130,9 +4122,8 @@ a.expandable-image:hover img {
     #eventos-header { padding-bottom: 3rem; }
     .events-grid { grid-template-columns: 1fr; }
     .logo-popup { display: none; }
-    #habilidades .event-tags span::after, #home-events .event-tags span::after, #home-events .event-tags .event-tag-link::after { animation: shine-sweep 3.5s ease-in-out infinite; }
+    #habilidades .event-tags span::after, #home-events .event-tags span::after { animation: shine-sweep 3.5s ease-in-out infinite; }
     #habilidades .event-tags span:nth-child(odd)::after, #home-events .event-tags span:nth-child(odd)::after { animation-delay: -1.8s; }
-    #home-events .event-tags .event-tag-link::after { animation-delay: -2.5s; }
     .image-sidenote-section { flex-direction: column; }
     .image-sidenote-viewer { max-height: 0; }
     .image-sidenote-section.is-sidenote-visible .sidenote-text-content { flex-basis: auto; }
