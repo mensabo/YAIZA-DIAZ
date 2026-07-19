@@ -3640,9 +3640,12 @@ a.expandable-image:hover img {
 /*   ESTILOS FORMULARIO DE CONTACTO    */
 /* =================================== */
 
-/* Fondo difuminado de ambiente (foto de photocall) en toda la sección,
-   con overlay oscuro encima para que el formulario y los textos sigan
-   siendo legibles. El pseudo-elemento se agranda con inset negativo y
+/* Fondo difuminado de ambiente en toda la sección, con overlay oscuro
+   encima para que el formulario y los textos sigan siendo legibles.
+   contacto-fondo.jpg es un collage de 6 fotos (TV, photocall de evento,
+   radio, publicidad, autora) en vez de una sola foto - se nota como
+   mosaico incluso desenfocado, y representa mejor la variedad de trabajo
+   que una unica imagen. El pseudo-elemento se agranda con inset negativo y
    overflow:hidden en la sección para que el blur no deje un borde nítido
    visible en los bordes del viewport. */
 .contact-page-section {
