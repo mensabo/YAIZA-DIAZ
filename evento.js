@@ -125,6 +125,7 @@ function initializeVideoModalsForDetailsPage() {
         const trigger = e.target.closest('.js-video-modal-trigger');
         if (trigger) {
             e.preventDefault();
+            e.stopPropagation();
             const videoSrc = trigger.dataset.videoSrc;
             if (videoSrc) {
                 openModal(videoSrc);
