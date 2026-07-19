@@ -1,7 +1,14 @@
 /* ======================== */
 /*    ESTILOS GENERALES     */
 /* ======================== */
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
+/* Caveat (fuente-manuscrita) se carga desde el <link> de Google Fonts en
+   el <head> de cada página, junto a Playfair Display y Montserrat, NO
+   como @import aquí: un @import dentro de un CSS crea una cadena
+   secuencial (esperar CSS -> descubrir @import -> esperar fuente) en vez
+   de paralela, y el navegador no puede empezar a descargarla hasta haber
+   descargado y parseado todo este archivo. Medido con Lighthouse real:
+   esa cadena por sí sola era la ruta crítica más lenta de toda la
+   página (~12s). */
 
 :root {
     --color-primario: #1a1a1a;
