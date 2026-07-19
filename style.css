@@ -59,7 +59,7 @@
        iconos, bordes o texto sobre fondo oscuro (7:1 ahi). */
     --color-acento-texto: #7d6344;
     --color-blanco: #FDFBF6;   /* <-- CAMBIO A BLANCO ROTO */
-    --color-magenta-libro: #D42E84; 
+    --color-magenta-libro: #B3226C;
     --fuente-titulos: 'Playfair Display', serif;
     --fuente-texto: 'Montserrat', sans-serif;
     --fuente-manuscrita: 'Caveat', cursive;
@@ -533,7 +533,6 @@ nav ul li a[aria-current="page"]::after {
    demasiado de cerca la cara. Se deja con su proporción real aunque la
    tarjeta quede algo más baja que las otras dos de la cuadrícula. */
 .project-card img.natural-ratio {
-    aspect-ratio: auto;
     object-fit: initial;
 }
 
@@ -966,7 +965,7 @@ footer {
 
 .autor-cita {
     font-size: 1rem;
-    color: #777;
+    color: #666;
     margin-bottom: 2rem;
 }
 
@@ -1033,7 +1032,6 @@ footer {
    fotos de evento en formato paisaje): conservan su proporción real en
    vez de recortarse y perder la composición original. */
 .sinopsis-img img.natural-ratio {
-    aspect-ratio: auto;
     object-fit: initial;
     width: auto;
     max-width: 100%;
@@ -2134,9 +2132,9 @@ footer {
 }
 
 .btn-compra:hover {
-    background-color: #b3226c;
+    background-color: #96155a;
     transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(212, 46, 132, 0.3);
+    box-shadow: 0 6px 15px rgba(179, 34, 108, 0.3);
 }
 
 .btn-compra.btn-once {
@@ -2259,7 +2257,7 @@ footer {
     text-align: center;
 }
 
-.event-card-content h4 {
+.event-card-content h2 {
     font-size: 1.4rem;
     margin: 0 0 0.5rem 0;
 }

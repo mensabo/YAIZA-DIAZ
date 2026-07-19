@@ -442,6 +442,17 @@ document.addEventListener('DOMContentLoaded', () => {
                         // se sanea con DOMPurify para permitir el formato pero bloquear
                         // <script>, manejadores de eventos (onerror=...), etc.
                         element.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(data[contentId]) : escapeHtml(data[contentId]);
+                        const videoTrigger = element.querySelector('#alberto-leon-video-trigger');
+                        if (videoTrigger) {
+                            videoTrigger.setAttribute('role', 'button');
+                            videoTrigger.setAttribute('tabindex', '0');
+                        }
+                        // Texto enriquecido guardado en Firestore con color inline
+                        // --color-acento (dorado): sobre fondo claro no llega a 4.5:1
+                        // de contraste, usar la variante oscura pensada para texto.
+                        element.querySelectorAll('[style*="--color-acento)"]').forEach(styledEl => {
+                            styledEl.style.color = 'var(--color-acento-texto)';
+                        });
                     }
                 });
             }
@@ -600,7 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const card = document.createElement('a');
                 card.href = `evento-detalle.html?id=${encodeURIComponent(event.id)}`;
                 card.className = 'event-card-link';
-                card.innerHTML = `<div class="event-card-image">${mediaHtml}</div><div class="event-card-content"><h4>${escapeHtml(event.title)}</h4></div>`;
+                card.innerHTML = `<div class="event-card-image">${mediaHtml}</div><div class="event-card-content"><h2>${escapeHtml(event.title)}</h2></div>`;
                 grid.appendChild(card);
             });
         } catch (error) { console.error("Error cargando eventos:", error); }
@@ -1136,6 +1147,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!modal || !closeBtn) return;
         document.addEventListener('click', (e) => {
             if (e.target && e.target.id === 'alberto-leon-video-trigger') {
+                modal.classList.add('visible');
+            }
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.target && e.target.id === 'alberto-leon-video-trigger' && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
                 modal.classList.add('visible');
             }
         });
