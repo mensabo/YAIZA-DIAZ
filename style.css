@@ -313,26 +313,6 @@ nav ul li a:hover::after {
     z-index: 2;
 }
 
-/* Titular fijo de posicionamiento: a diferencia de los tabs (rellenados
-   por JS desde Firestore, pueden tardar o fallar), esto vive en el HTML
-   estático para que la home nunca se vea vacía ni sin un mensaje claro
-   de quién es Yaiza y por qué contratarla. */
-.hero-headline {
-    position: absolute;
-    z-index: 3;
-    top: 8rem;
-    left: 2rem;
-    max-width: 620px;
-    font-family: var(--fuente-titulos);
-    font-size: clamp(1.6rem, 3.4vw, 2.6rem);
-    line-height: 1.25;
-    text-shadow: 0 2px 12px rgba(0,0,0,0.6);
-}
-
-.hero-headline strong {
-    color: var(--color-acento);
-}
-
 .hero-tabs-container {
     position: absolute;
     z-index: 3;
@@ -2351,14 +2331,6 @@ footer {
         bottom: 0;
         right: 0;
         height: auto;
-    }
-
-    .hero-headline {
-        top: 6rem;
-        left: 1.25rem;
-        right: 1.25rem;
-        max-width: none;
-        font-size: clamp(1.4rem, 6vw, 1.9rem);
     }
 
     .hero-tabs-desktop {
