@@ -1,0 +1,56 @@
+name: Desplegar en IONOS
+
+# Se ejecuta solo cuando cambia master (por ejemplo, al fusionar un PR).
+# tambien se puede lanzar a mano desde la pestaña "Actions" de GitHub
+# (workflow_dispatch) para volver a desplegar sin necesidad de un commit
+# nuevo.
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Instalar dependencias de build
+        run: npm ci
+
+      - name: Generar style.css/script.js minificados
+        run: npm run build
+
+      - name: Subir por SFTP al espacio web de IONOS (carpeta /YAIZADIAZ)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: sftp
+          port: 22
+          local-dir: ./
+          server-dir: ./
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/src/**
+            **/tools/**
+            **/tests/**
+            **/functions/**
+            .github/**
+            CLAUDE.md
+            package.json
+            package-lock.json
+            firebase.json
+            .firebaserc
+            firestore.rules
+            storage.rules
+            cors.json
