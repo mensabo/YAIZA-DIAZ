@@ -3909,6 +3909,13 @@ a.expandable-image:hover img {
     cursor: pointer;
 }
 
+.developer-logo-link.expandable-image::after {
+    /* La insignia de lupa dorada (icono Font Awesome) que sí queremos en
+       las fotos de galería no pega aquí: el logo ya se ve pequeño y con
+       su propio brillo de hover (.developer-logo-bg), no necesita zoom hint. */
+    display: none;
+}
+
 .developer-logo-link {
     display: inline-flex;
     align-items: center;
