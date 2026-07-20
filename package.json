@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "clean-css": "^5.3.3",
+    "ssh2-sftp-client": "^12.1.1",
     "terser": "^5.36.0"
   }
 }
