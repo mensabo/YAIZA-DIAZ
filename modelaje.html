@@ -28,7 +28,7 @@
     <meta name="twitter:description" content="Mi faceta como modelo en sesiones fotográficas y proyectos con causa, como el calendario solidario.">
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/calendario.jpg">
 
-    <link rel="stylesheet" href="style.css?v=1784582999506">
+    <link rel="stylesheet" href="style.css?v=1784584160579">
     <!-- Playfair Display/Montserrat/Caveat autoalojadas (ver style.css),
          ya no hace falta preconectar a Google Fonts. Solo queda cdnjs
          (Font Awesome); Firebase/Analytics se cargan después (JS async o
@@ -187,7 +187,10 @@
         <span class="lightbox-next">&#10095;</span>
         <div class="lightbox-content">
             <img id="lightbox-image" src="" alt="Visor de imágenes" loading="lazy">
-            <div id="lightbox-logo-bg"><span class="lightbox-logo-shine"></span></div>
+            <div id="lightbox-logo-bg">
+                <div class="lightbox-logo-inner"><span class="lightbox-logo-shine"></span></div>
+                <button type="button" class="lightbox-logo-close" aria-label="Cerrar">&times;</button>
+            </div>
             <div id="lightbox-caption"></div>
         </div>
     </div>
@@ -215,6 +218,6 @@
             db, collection, getDocs, orderBy, query, doc, getDoc
         };
     </script>
-    <script src="script.js?v=1784582999506" type="module"></script>
+    <script src="script.js?v=1784584160579" type="module"></script>
 </body>
 </html>
