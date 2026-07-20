@@ -3921,13 +3921,23 @@ a.expandable-image:hover img {
     margin: -0.5rem;
 }
 
-.developer-logo-link img {
+/* La miniatura se muestra como background-image de un <span> (no un
+   <img>) porque a este tamaño tan pequeño el icono nativo de lupa/Google
+   Lens del navegador puede llegar a cubrir el logo entero al pasar el
+   ratón - ver también #lightbox-logo-bg, mismo problema en el visor. */
+.developer-logo-bg {
+    display: block;
     height: 35px;
     width: auto;
+    aspect-ratio: 1014 / 905;
+    background-image: url('images/chacho-creations-logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.developer-logo-link:hover img {
+.developer-logo-link:hover .developer-logo-bg {
     transform: scale(1.1);
     opacity: 0.9;
 }
