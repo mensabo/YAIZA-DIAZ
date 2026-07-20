@@ -848,8 +848,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateLightboxContent() {
         const img = document.getElementById('lightbox-image');
+        const logoBg = document.getElementById('lightbox-logo-bg');
         const caption = document.getElementById('lightbox-caption');
-        
+
         if (!img || !lightboxItems || !lightboxItems[currentLightboxIndex]) return;
 
         const currentItem = lightboxItems[currentLightboxIndex];
@@ -858,14 +859,28 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             const nuevaRuta = currentItem.src || currentItem.thumbnailSrc || currentItem.videoSrc;
             const nuevoTexto = currentItem.descripcion || currentItem.description || '';
+            const esLogo = nuevaRuta.includes('chacho-creations-logo');
 
-            img.src = nuevaRuta;
             caption.textContent = nuevoTexto;
-            img.style.opacity = '1';
-            // El logo de ChachoCreations tiene fondo oscuro propio que se
-            // funde con el fondo del visor: le damos un brillo dorado
-            // animado en vez de dejarlo plano (ver .is-logo-preview en CSS).
-            img.classList.toggle('is-logo-preview', nuevaRuta.includes('chacho-creations-logo'));
+
+            // El logo de ChachoCreations se muestra como fondo de un <div>
+            // en vez de un <img>: así evitamos el icono nativo de lupa/Google
+            // Lens que el navegador superpone sobre las imágenes al pasar el
+            // ratón, y le damos un brillo dorado animado al abrirse.
+            if (esLogo && logoBg) {
+                img.style.display = 'none';
+                img.src = '';
+                logoBg.style.backgroundImage = `url(${nuevaRuta})`;
+                logoBg.classList.add('visible');
+                logoBg.classList.remove('play-shine');
+                void logoBg.offsetWidth;
+                logoBg.classList.add('play-shine');
+            } else {
+                if (logoBg) logoBg.classList.remove('visible', 'play-shine');
+                img.style.display = '';
+                img.src = nuevaRuta;
+                img.style.opacity = '1';
+            }
         }, 150);
     }
 
