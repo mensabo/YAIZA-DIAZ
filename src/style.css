@@ -788,12 +788,41 @@ footer {
     transition: opacity 0.15s ease-in-out;
 }
 
-/* El logo de ChachoCreations tiene fondo oscuro propio que se funde con
-   el fondo del visor - lo mostramos mas pequeno que una foto normal para
-   que no ocupe toda la pantalla, pero sin marco/brillo extra (quedaba
-   como una caja doble poco vistosa, sobre todo en fotos comprimidas). */
-#lightbox-image.is-logo-preview {
-    max-width: min(70%, 420px);
+/* Logo de ChachoCreations: se muestra como background-image de un <div>
+   (no un <img>) para evitar el icono nativo de lupa/Google Lens del
+   navegador, con un brillo dorado que cruza el logo al abrirse. */
+#lightbox-logo-bg {
+    display: none;
+    width: min(70%, 420px);
+    max-width: 100%;
+    aspect-ratio: 1014 / 905;
+    margin: 0 auto;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+#lightbox-logo-bg.visible { display: block; }
+
+#lightbox-logo-bg .lightbox-logo-shine {
+    position: absolute;
+    top: 0; left: -60%;
+    width: 40%; height: 100%;
+    background: linear-gradient(120deg, transparent 0%, rgba(255, 224, 168, 0.85) 50%, transparent 100%);
+    transform: skewX(-20deg);
+    pointer-events: none;
+}
+
+#lightbox-logo-bg.play-shine .lightbox-logo-shine {
+    animation: lightbox-logo-shine 0.9s ease-in-out;
+}
+
+@keyframes lightbox-logo-shine {
+    0% { left: -60%; }
+    100% { left: 140%; }
 }
 
 #lightbox-caption {
