@@ -28,29 +28,8 @@ jobs:
         run: npm run build
 
       - name: Subir por SFTP al espacio web de IONOS (carpeta /YAIZADIAZ)
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: sftp
-          port: 22
-          local-dir: ./
-          server-dir: ./
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/src/**
-            **/tools/**
-            **/tests/**
-            **/functions/**
-            .github/**
-            CLAUDE.md
-            package.json
-            package-lock.json
-            firebase.json
-            .firebaserc
-            firestore.rules
-            storage.rules
-            cors.json
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: node tools/deploy-ionos-sftp.mjs
