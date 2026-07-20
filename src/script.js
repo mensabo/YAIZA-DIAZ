@@ -38,8 +38,8 @@ const SITE_FOOTER_HTML = `
         <p>© 2024 Yaiza Díaz. Todos los derechos reservados.</p>
         <p class="developer-credit">
             Developed by
-            <a href="images/chacho-creations-logo.png" class="developer-logo-link expandable-image">
-                <img src="images/chacho-creations-logo.png" alt="ChachoCreations Logo" loading="lazy" width="1014" height="905">
+            <a href="images/chacho-creations-logo.png" class="developer-logo-link expandable-image" aria-label="ChachoCreations Logo">
+                <span class="developer-logo-bg"></span>
             </a>
         </p>
     </div>
