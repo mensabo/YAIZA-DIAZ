@@ -847,8 +847,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateLightboxContent() {
+        const modal = document.getElementById('lightbox-modal');
         const img = document.getElementById('lightbox-image');
         const logoBg = document.getElementById('lightbox-logo-bg');
+        const logoInner = logoBg ? logoBg.querySelector('.lightbox-logo-inner') : null;
         const caption = document.getElementById('lightbox-caption');
 
         if (!img || !lightboxItems || !lightboxItems[currentLightboxIndex]) return;
@@ -862,21 +864,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const esLogo = nuevaRuta.includes('chacho-creations-logo');
 
             caption.textContent = nuevoTexto;
+            if (modal) modal.classList.toggle('logo-mode', esLogo);
 
             // El logo de ChachoCreations se muestra como fondo de un <div>
             // en vez de un <img>: así evitamos el icono nativo de lupa/Google
             // Lens que el navegador superpone sobre las imágenes al pasar el
             // ratón, y le damos un brillo dorado animado al abrirse.
-            if (esLogo && logoBg) {
+            if (esLogo && logoBg && logoInner) {
                 img.style.display = 'none';
                 img.src = '';
-                logoBg.style.backgroundImage = `url(${nuevaRuta})`;
+                logoInner.style.backgroundImage = `url(${nuevaRuta})`;
                 logoBg.classList.add('visible');
-                logoBg.classList.remove('play-shine');
-                void logoBg.offsetWidth;
-                logoBg.classList.add('play-shine');
+                logoInner.classList.remove('play-shine');
+                void logoInner.offsetWidth;
+                logoInner.classList.add('play-shine');
             } else {
-                if (logoBg) logoBg.classList.remove('visible', 'play-shine');
+                if (logoBg) logoBg.classList.remove('visible');
+                if (logoInner) logoInner.classList.remove('play-shine');
                 img.style.display = '';
                 img.src = nuevaRuta;
                 img.style.opacity = '1';
@@ -905,6 +909,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!modal) return;
 
         const closeBtn = modal.querySelector('.lightbox-close');
+        const logoCloseBtn = modal.querySelector('.lightbox-logo-close');
         const prevBtn = modal.querySelector('.lightbox-prev');
         const nextBtn = modal.querySelector('.lightbox-next');
 
@@ -917,6 +922,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prevBtn) { prevBtn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); changeImage(-1); }; }
         if (nextBtn) { nextBtn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); changeImage(1); }; }
         if (closeBtn) { closeBtn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); modal.classList.remove('visible'); }; }
+        if (logoCloseBtn) { logoCloseBtn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); modal.classList.remove('visible'); }; }
         
         modal.onclick = (e) => {
             if (e.target === modal || e.target.classList.contains('lightbox-content')) {
