@@ -2,8 +2,23 @@
 # en Firebase Hosting: URLs limpias sin .html, cabeceras de cache y de
 # seguridad, redireccion a HTTPS y a www, y pagina 404 personalizada.
 #
-# admin.html/admin.js quedan fuera del bloqueo de indexacion de robots.txt
-# a nivel de Apache (ya llevan meta robots noindex en el propio HTML).
+# panel-yz28da.html/.js llevan meta robots noindex en el propio HTML y no
+# se listan en robots.txt (para no publicar esa ruta); ademas van
+# protegidos con contraseña de servidor (.htpasswd-panel) mas abajo,
+# independiente del login de Firebase.
+
+# Bloquea el acceso directo a cualquier archivo .ht* (.htaccess, .htpasswd-panel)
+<Files ~ "^\.ht">
+Require all denied
+</Files>
+
+# Contraseña de servidor para el panel de admin, ademas del login de Firebase
+<Files "panel-yz28da.html">
+AuthType Basic
+AuthName "Acceso restringido"
+AuthUserFile "/homepages/28/d4299186613/htdocs/YAIZADIAZ/.htpasswd-panel"
+Require valid-user
+</Files>
 
 <IfModule mod_rewrite.c>
 RewriteEngine On
