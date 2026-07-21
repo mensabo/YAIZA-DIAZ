@@ -117,6 +117,41 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Rota 90° en el sentido horario una imagen ya subida a Storage: la
+    // descarga (requiere CORS en el bucket, ver cors.json), la redibuja
+    // rotada en un <canvas> y sube el resultado como archivo nuevo. La
+    // imagen original se deja huérfana en Storage sin borrar (mismo criterio
+    // que el botón "Eliminar" de las galerías, que tampoco limpia Storage).
+    async function rotateImageUrl(url, storagePathPrefix) {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const objectUrl = URL.createObjectURL(blob);
+        const rotatedBlob = await new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => {
+                URL.revokeObjectURL(objectUrl);
+                const canvas = document.createElement('canvas');
+                canvas.width = img.height;
+                canvas.height = img.width;
+                const ctx = canvas.getContext('2d');
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate(Math.PI / 2);
+                ctx.drawImage(img, -img.width / 2, -img.height / 2);
+                const outputType = blob.type === 'image/png' ? 'image/png' : 'image/jpeg';
+                canvas.toBlob((rotated) => {
+                    if (!rotated) return reject(new Error('No se pudo generar la imagen rotada'));
+                    resolve(rotated);
+                }, outputType, 0.9);
+            };
+            img.onerror = () => reject(new Error('No se pudo cargar la imagen para rotarla'));
+            img.src = objectUrl;
+        });
+        const ext = rotatedBlob.type === 'image/png' ? 'png' : 'jpg';
+        const storageRef = ref(storage, `${storagePathPrefix}${Date.now()}_rotated.${ext}`);
+        await uploadBytes(storageRef, rotatedBlob);
+        return getDownloadURL(storageRef);
+    }
+
     // --- FUNCIÓN HELPER PARA BOTONES DE GUARDAR: evita doble-envío y da feedback visual ---
     // Deshabilita el botón y muestra un estado de "Guardando..." mientras la promesa
     // async está en curso; lo restaura al terminar (éxito o error).
@@ -414,6 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <img src="${escapeHtml(item.thumbnailSrc || item.src)}" alt="miniatura">
                 <span class="item-type-badge">${item.type === 'video' ? 'VÍDEO' : 'IMAGEN'}</span>
                 <textarea class="description-input" placeholder="Descripción...">${escapeHtml(item.descripcion || '')}</textarea>
+                ${item.type === 'video' ? '' : '<button class="rotate-button" title="Rotar 90°">⟳ Rotar</button>'}
                 <button class="delete-button">Eliminar</button>`;
             galleryListEl.appendChild(div);
         });
@@ -471,6 +507,27 @@ document.addEventListener('DOMContentLoaded', () => {
             if (confirm('¿Seguro que quieres eliminar este elemento?')) {
                 await deleteDoc(doc(db, currentCollection, item.dataset.id));
                 loadGalleries();
+            }
+        }
+        if (e.target.classList.contains('rotate-button')) {
+            const item = e.target.closest('.gallery-item');
+            const button = e.target;
+            const originalText = button.textContent;
+            button.disabled = true;
+            button.textContent = 'Rotando...';
+            try {
+                const docRef = doc(db, currentCollection, item.dataset.id);
+                const currentSrc = item.querySelector('img').src;
+                const newUrl = await rotateImageUrl(currentSrc, currentStoragePath);
+                await updateDoc(docRef, { src: newUrl });
+                item.querySelector('img').src = newUrl;
+                showToast('Imagen rotada con éxito.');
+            } catch (err) {
+                console.error(err);
+                showToast('No se pudo rotar la imagen.', 'error');
+            } finally {
+                button.disabled = false;
+                button.textContent = originalText;
             }
         }
     });
