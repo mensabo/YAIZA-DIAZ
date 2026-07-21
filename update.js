@@ -7,7 +7,7 @@ const newVersion = Date.now();
 // 2. Lista de todos los archivos HTML que necesitan ser actualizados.
 const htmlFiles = [
     'index.html',
-    'admin.html',
+    'panel-yz28da.html',
     'television.html',
     'eventos.html',
     'evento-detalle.html',

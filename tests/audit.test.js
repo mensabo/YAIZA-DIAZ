@@ -9,7 +9,7 @@ const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
 const HTML_FILES = fs.readdirSync(ROOT).filter(f => f.endsWith('.html'));
-const PUBLIC_HTML_FILES = HTML_FILES.filter(f => f !== 'admin.html' && f !== '404.html');
+const PUBLIC_HTML_FILES = HTML_FILES.filter(f => f !== 'panel-yz28da.html' && f !== '404.html');
 
 let failures = 0;
 let passes = 0;
@@ -33,7 +33,7 @@ function readFile(p) {
 const MAX_IMAGE_BYTES = 400 * 1024;
 const imagesDir = path.join(ROOT, 'images');
 const referencedImages = new Set();
-for (const f of [...HTML_FILES, 'script.js', 'admin.js', 'evento.js', 'style.css']) {
+for (const f of [...HTML_FILES, 'script.js', 'panel-yz28da.js', 'evento.js', 'style.css']) {
   const content = readFile(f);
   const matches = content.matchAll(/images\/([a-zA-Z0-9_\-.]+\.(?:png|jpe?g|webp|gif|svg))/g);
   for (const m of matches) referencedImages.add(m[1]);
@@ -141,7 +141,7 @@ if (fs.existsSync(functionsIndex)) {
 // 7. Sintaxis valida de los .js del frontend
 // ---------------------------------------------------------------------------
 const { execSync } = require('child_process');
-for (const jsFile of ['script.js', 'admin.js', 'evento.js', 'update.js']) {
+for (const jsFile of ['script.js', 'panel-yz28da.js', 'evento.js', 'update.js']) {
   try {
     execSync(`node --check "${path.join(ROOT, jsFile)}"`, { stdio: 'pipe' });
     check(`${jsFile}: sintaxis valida`, true);
@@ -167,7 +167,10 @@ check('sitemap.xml existe', fs.existsSync(path.join(ROOT, 'sitemap.xml')));
 if (fs.existsSync(path.join(ROOT, 'robots.txt'))) {
   const robots = readFile('robots.txt');
   check('robots.txt referencia el sitemap', /Sitemap:/.test(robots));
-  check('robots.txt bloquea admin.html', /Disallow:\s*\/admin\.html/.test(robots));
+  // El panel de admin ya NO se lista en robots.txt a proposito (es un
+  // archivo publico: listar su ruta ahi anularia el efecto de tener una
+  // URL no adivinable) - se apoya solo en el meta robots noindex del propio
+  // HTML y en la proteccion .htaccess.
 }
 
 for (const f of PUBLIC_HTML_FILES) {
@@ -177,8 +180,8 @@ for (const f of PUBLIC_HTML_FILES) {
   check(`${f}: tiene exactamente un <h1>`, h1Count === 1, `encontrados: ${h1Count}`);
 }
 
-const adminContent = readFile('admin.html');
-check('admin.html: tiene meta robots noindex,nofollow', /name="robots"\s+content="noindex,\s*nofollow"/.test(adminContent));
+const adminContent = readFile('panel-yz28da.html');
+check('panel-yz28da.html: tiene meta robots noindex,nofollow', /name="robots"\s+content="noindex,\s*nofollow"/.test(adminContent));
 
 check('404.html existe (pagina de error de GitHub Pages)', fs.existsSync(path.join(ROOT, '404.html')));
 const notFoundContent = readFile('404.html');
@@ -258,12 +261,12 @@ check('premios.html: cada premio tiene boton de compartir', (premiosContent.matc
 //     todas las paginas publicas salvo admin
 // ---------------------------------------------------------------------------
 for (const f of HTML_FILES) {
-  if (f === 'admin.html') continue;
+  if (f === 'panel-yz28da.html') continue;
   const content = readFile(f);
   check(`${f}: incluye gtag.js de GA4`, /googletagmanager\.com\/gtag\/js\?id=G-[A-Z0-9]+/.test(content));
   check(`${f}: fija el consentimiento por defecto en "denied" antes de cargar gtag`, /gtag\('consent',\s*'default'/.test(content));
 }
-check('admin.html: no carga Google Analytics', !readFile('admin.html').includes('googletagmanager.com/gtag'));
+check('panel-yz28da.html: no carga Google Analytics', !readFile('panel-yz28da.html').includes('googletagmanager.com/gtag'));
 
 // ---------------------------------------------------------------------------
 // 15. Banner de cookies propio (sustituye a CookieYes)
@@ -282,7 +285,7 @@ check('politica-cookies.html: menciona Google Analytics y como cambiar preferenc
 //     esa señal de SEO. El nav usa <p class="nav-title-text"> en el resto.
 // ---------------------------------------------------------------------------
 for (const f of HTML_FILES) {
-  if (f === 'admin.html') continue;
+  if (f === 'panel-yz28da.html') continue;
   const content = readFile(f);
   const h1Matches = content.match(/<h1[\s>]/g) || [];
   check(`${f}: tiene exactamente un <h1>`, h1Matches.length === 1, `encontrados: ${h1Matches.length}`);
@@ -297,7 +300,7 @@ for (const f of HTML_FILES) {
 //     semantica para SEO.
 // ---------------------------------------------------------------------------
 for (const f of HTML_FILES) {
-  if (f === 'admin.html') continue;
+  if (f === 'panel-yz28da.html') continue;
   const content = readFile(f);
   const levels = [...content.matchAll(/<h([1-6])[\s>]/g)].map((m) => parseInt(m[1], 10));
   const skips = [];
