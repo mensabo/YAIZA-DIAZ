@@ -337,6 +337,14 @@ button.is-loading::before {
 }
 .delete-button:hover { background-color: var(--color-error-hover); box-shadow: var(--sombra-sutil); transform: translateY(-1px); }
 
+.rotate-button {
+    background-color: var(--color-secundario, #555);
+    font-size: 0.8rem; padding: 6px 12px; margin-top: 10px; margin-right: 6px;
+    box-shadow: none;
+}
+.rotate-button:hover:not(:disabled) { box-shadow: var(--sombra-sutil); transform: translateY(-1px); }
+.rotate-button:disabled { opacity: 0.6; cursor: not-allowed; }
+
 /* === Lista de Elementos Creados (Eventos, Entrevistas, Premios) === */
 #events-list, #interviews-list, #awards-list { 
     display: flex; flex-direction: column; gap: 1rem; 
