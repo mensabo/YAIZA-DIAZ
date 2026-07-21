@@ -10,8 +10,14 @@
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-    <link rel="manifest" href="site.webmanifest">
     <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- PWA: para poder "instalar" el panel como app en Android/iPhone
+         (Añadir a pantalla de inicio) sin pasar por tiendas de apps -->
+    <link rel="manifest" href="panel-manifest.webmanifest">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Panel Yaiza">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <link rel="stylesheet" href="panel-yz28da.css?v=1784417525807">
@@ -284,6 +290,11 @@
     <script src="config.js"></script>
     <script type="module" src="panel-yz28da.js?v=1784472800954"></script>
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('panel-sw.js');
+        }
+    </script>
 
 </body>
 </html>
