@@ -75,6 +75,21 @@ async function main() {
         if (uploaded % 25 === 0) console.log(`  ${uploaded}/${files.length}...`);
     }
 
+    // Limpieza puntual (22/07/2026): admin.html/admin.css/admin.js se
+    // renombraron a panel-yz28da.* en el commit 02d17f2, pero este script
+    // nunca borra en el remoto lo que no esta en el repo (solo sube/
+    // sobrescribe) - por eso los archivos viejos seguian sirviendo el panel
+    // operativo en /admin, sin ninguna proteccion, meses despues del rename.
+    // Borrar este bloque una vez confirmado que /admin ya no responde.
+    const STALE_FILES = ['admin.html', 'admin.css', 'admin.js'];
+    for (const file of STALE_FILES) {
+        const exists = await sftp.exists(file);
+        if (exists) {
+            await sftp.delete(file);
+            console.log(`Borrado archivo huerfano: ${file}`);
+        }
+    }
+
     await sftp.end();
     console.log(`Listo: ${uploaded} archivos subidos.`);
 }
