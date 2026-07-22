@@ -394,6 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (pageId === 'eventosPage') loadAndRenderEventsGridPage();
                 if (pageId === 'entrevistasPage') loadAndRenderInterviews();
                 if (pageId === 'televisionPage') loadAndRenderTVPrograms();
+                if (pageId === 'premiosPage') loadAndRenderAwards();
 
                 if (document.getElementById('galeria-interactiva')) initializeInteractiveGallery('galeria-interactiva', 'gallery');
                 if (document.getElementById('galeria-interactiva-modelo')) initializeInteractiveGallery('galeria-interactiva-modelo', 'modeling_gallery');
@@ -672,6 +673,61 @@ document.addEventListener('DOMContentLoaded', () => {
                 container.appendChild(programDiv);
             });
         } catch (error) { console.error("Error cargando programas TV:", error); }
+    }
+
+    function renderAwardMediaItem(item, awardTitle) {
+        if (item.type === 'video') {
+            const src = item.videoSrc || '';
+            const icon = src.includes('youtube') || src.includes('youtu.be') ? 'fab fa-youtube' : 'fas fa-play';
+            return `<a href="#" class="video-fallback js-video-modal-trigger" data-video-src="${escapeHtml(src)}">
+                <img src="${escapeHtml(item.thumbnailSrc || '')}" alt="${escapeHtml(item.description || awardTitle)}" loading="lazy">
+                <span class="play-button-overlay"><i class="${icon}"></i></span>
+            </a>`;
+        }
+        const pie = item.description ? `<p class="pie-de-foto">${escapeHtml(item.description)}</p>` : '';
+        return `<a href="${escapeHtml(item.src)}" class="expandable-image">
+            <img class="natural-ratio" src="${escapeHtml(item.src)}" alt="${escapeHtml(item.description || awardTitle)}" loading="lazy">
+        </a>${pie}`;
+    }
+
+    async function loadAndRenderAwards() {
+        const container = document.getElementById('dynamic-awards-container');
+        if (!container) return;
+        try {
+            const q = query(collection(db, 'awards'), orderBy('order'));
+            const snapshot = await getDocs(q);
+            const awards = snapshot.docs.map(doc => doc.data());
+            // Si la coleccion esta vacia (o falla la lectura), se deja el
+            // contenido estatico de fallback tal cual esta en el HTML.
+            if (awards.length === 0) return;
+
+            container.innerHTML = '';
+            awards.forEach((award, index) => {
+                const anchorId = `premio${index + 1}`;
+                const galleryItems = award.galleryItems || [];
+                const mediaHtml = galleryItems.map((item, i) => {
+                    const inner = renderAwardMediaItem(item, award.title);
+                    return i === 0 ? inner : `<div style="margin-top: 1.5rem;">${inner}</div>`;
+                }).join('');
+
+                const section = document.createElement('div');
+                section.className = 'comunicacion-section';
+                section.id = anchorId;
+                section.innerHTML = `
+                    <div class="sinopsis-content${galleryItems.length ? ' media-heavy' : ''}" style="gap: 2rem;">
+                        <div class="sinopsis-text">
+                            <div class="premio-title-row">
+                                <h2>${escapeHtml(award.title)}</h2>
+                                <button type="button" class="share-btn share-btn-inline" data-share-anchor="#${anchorId}" aria-label="Compartir este premio"><i class="fas fa-share-alt"></i></button>
+                            </div>
+                            ${window.DOMPurify ? window.DOMPurify.sanitize(award.text || '') : escapeHtml(award.text || '')}
+                        </div>
+                        ${galleryItems.length ? `<div class="sinopsis-img">${mediaHtml}</div>` : ''}
+                    </div>
+                `;
+                container.appendChild(section);
+            });
+        } catch (error) { console.error("Error cargando premios:", error); }
     }
 
     async function initializeInteractiveGallery(containerId, collectionName) {
