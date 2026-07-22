@@ -15,6 +15,17 @@ function escapeHtml(value) {
     }[char]));
 }
 
+// Miniatura para listas de galleryItems (eventos, premios): el primer item de
+// tipo imagen/video, con repuesto si no hay ninguno o si la URL guardada es
+// una direccion local (127.0.0.1/localhost) de alguna sesion de pruebas vieja
+// que nunca llego a subirse de verdad a Storage.
+function firstGalleryThumbnail(galleryItems) {
+    const firstItem = (galleryItems || []).find(i => i.type === 'image' || i.type === 'video');
+    const src = firstItem ? (firstItem.type === 'image' ? firstItem.src : firstItem.thumbnailSrc) : '';
+    const isLocalUrl = /^https?:\/\/(127\.0\.0\.1|localhost)([:/]|$)/i.test(src || '');
+    return (src && !isLocalUrl) ? src : 'images/placeholder.png';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- INICIALIZACIÓN DE FIREBASE ---
     const app = initializeApp(firebaseConfig);
@@ -813,7 +824,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.className = 'event-item';
             div.dataset.id = event.id;
-            div.innerHTML = `<h4>${escapeHtml(event.title)} (Orden: ${event.order})</h4><div class="event-controls"><button class="event-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
+            const thumb = `<img src="${escapeHtml(firstGalleryThumbnail(event.galleryItems))}" alt="" loading="lazy" class="list-item-thumb">`;
+            div.innerHTML = `<div class="list-item-info">${thumb}<h4>${escapeHtml(event.title)} (Orden: ${event.order})</h4></div><div class="event-controls"><button class="event-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
             eventsListEl.appendChild(div);
         });
         if (eventsSortable) eventsSortable.destroy();
@@ -1133,9 +1145,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.className = 'award-item';
             div.dataset.id = award.id;
-            const firstItem = (award.galleryItems || []).find(i => i.type === 'image' || i.type === 'video');
-            const thumbSrc = firstItem ? (firstItem.type === 'image' ? firstItem.src : firstItem.thumbnailSrc) : '';
-            const thumb = thumbSrc ? `<img src="${escapeHtml(thumbSrc)}" alt="" loading="lazy" class="list-item-thumb">` : '';
+            const thumb = `<img src="${escapeHtml(firstGalleryThumbnail(award.galleryItems))}" alt="" loading="lazy" class="list-item-thumb">`;
             div.innerHTML = `<div class="list-item-info">${thumb}<h4>${escapeHtml(award.title)} (Orden: ${award.order})</h4></div><div class="award-controls"><button class="award-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
             awardsListEl.appendChild(div);
         });
