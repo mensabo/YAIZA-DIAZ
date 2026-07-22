@@ -46,11 +46,11 @@ Cuando el usuario escriba **"Jarvis"** en un chat nuevo, hay que actualizar el `
 
 ## Workflow git
 
-- Rama principal `master`. Patrón: trabajar en rama `claude/...`, PR, **squash-merge**.
-- **Primer paso de CADA ronda de cambios** (no solo tras fusionar): `git fetch origin master && git checkout -B <rama> origin/master`. El squash-merge deja la rama vieja divergente; reusar rama sin resetear produce diffs sucios y pushes rechazados.
-- Ante un rechazo non-fast-forward inesperado: antes de `--force-with-lease`, confirmar con `git merge-base --is-ancestor <sha-remoto> origin/master` que lo que se va a sobrescribir ya está integrado en master.
+- Rama principal `master`. **Desde 2026-07-22, a petición del usuario: sin PR intermedio.** No hay `gh`/token de GitHub disponible en las sesiones para automatizar el clic de "Merge", así que en vez de abrir rama + PR y pedirle que lo fusione a mano, se trabaja en rama `claude/...`, se hace `git checkout master && git merge --squash <rama> && git commit && git push origin master` directamente, y se borra la rama (local y remota). El usuario no quiere tener que fusionar nada manualmente.
+- **Primer paso de CADA ronda de cambios**: `git fetch origin master && git checkout -B <rama> origin/master`. Trabajar siempre sobre `origin/master` actualizado evita diffs sucios y pushes rechazados.
+- Ante un rechazo non-fast-forward inesperado al pushear a `master`: antes de `--force-with-lease`, confirmar con `git merge-base --is-ancestor <sha-remoto> origin/master` que lo que se va a sobrescribir ya está integrado en master.
 - **Nunca force-push a `master`** bajo ninguna circunstancia (regla dura). Si el usuario quiere reescribir un merge commit ("Unverified" cosmético de la API de GitHub), darle los comandos para que lo haga él en local.
-- Tras merge, el redeploy tarda ~30-60s: comprobar con `curl -sI URL | grep etag` en bucle antes de re-medir en vivo.
+- Tras el push a master, el redeploy tarda ~30-60s: comprobar con `curl -sI URL | grep etag` en bucle antes de re-medir en vivo.
 
 ## Lecciones de CSS/layout (bugs reales encontrados)
 
