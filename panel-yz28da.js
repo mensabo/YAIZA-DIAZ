@@ -956,7 +956,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.className = 'interview-item';
             div.dataset.id = interview.id;
-            div.innerHTML = `<h4>${escapeHtml(interview.mainTitle)}</h4><div class="interview-controls"><button class="interview-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
+            const thumb = interview.thumbnailUrl ? `<img src="${escapeHtml(interview.thumbnailUrl)}" alt="" loading="lazy" class="list-item-thumb">` : '';
+            div.innerHTML = `<div class="list-item-info">${thumb}<h4>${escapeHtml(interview.mainTitle)}</h4></div><div class="interview-controls"><button class="interview-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
             interviewsListEl.appendChild(div);
         });
         if (interviewsSortable) interviewsSortable.destroy();
@@ -1132,7 +1133,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const div = document.createElement('div');
             div.className = 'award-item';
             div.dataset.id = award.id;
-            div.innerHTML = `<h4>${escapeHtml(award.title)} (Orden: ${award.order})</h4><div class="award-controls"><button class="award-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
+            const firstItem = (award.galleryItems || []).find(i => i.type === 'image' || i.type === 'video');
+            const thumbSrc = firstItem ? (firstItem.type === 'image' ? firstItem.src : firstItem.thumbnailSrc) : '';
+            const thumb = thumbSrc ? `<img src="${escapeHtml(thumbSrc)}" alt="" loading="lazy" class="list-item-thumb">` : '';
+            div.innerHTML = `<div class="list-item-info">${thumb}<h4>${escapeHtml(award.title)} (Orden: ${award.order})</h4></div><div class="award-controls"><button class="award-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
             awardsListEl.appendChild(div);
         });
         if (awardsSortable) awardsSortable.destroy();
@@ -1306,9 +1310,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (programs.length === 0) tvProgramsListEl.innerHTML = '<p>No hay programas creados.</p>';
         programs.forEach(program => {
             const div = document.createElement('div');
-            div.className = 'interview-item'; 
+            div.className = 'interview-item';
             div.dataset.id = program.id;
-            div.innerHTML = `<h4>${escapeHtml(program.title)}</h4><div class="interview-controls"><button class="tv-program-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
+            const thumb = program.thumbnailUrl ? `<img src="${escapeHtml(program.thumbnailUrl)}" alt="" loading="lazy" class="list-item-thumb">` : '';
+            div.innerHTML = `<div class="list-item-info">${thumb}<h4>${escapeHtml(program.title)}</h4></div><div class="interview-controls"><button class="tv-program-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
             tvProgramsListEl.appendChild(div);
         });
         if (tvProgramsSortable) tvProgramsSortable.destroy();
