@@ -603,12 +603,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 grid.innerHTML = '<p>Próximamente se anunciarán nuevos eventos.</p>';
                 return;
             }
-            events.forEach(event => {
+            events.forEach((event, index) => {
                 const firstItem = event.galleryItems && event.galleryItems.length > 0 ? event.galleryItems[0] : { type: 'image', src: 'images/placeholder.png' };
                 // Igual que en evento.js: respeta el object-position guardado en el admin
                 // para esta foto, si no la miniatura de la tarjeta sale descentrada.
                 const positionStyle = firstItem.position ? ` style="object-position: ${escapeHtml(firstItem.position)};"` : '';
-                const mediaHtml = firstItem.type === 'video' && firstItem.videoSrc ? `<video autoplay loop muted playsinline poster="${escapeHtml(firstItem.thumbnailSrc || '')}"${positionStyle}><source src="${escapeHtml(firstItem.videoSrc)}" type="video/mp4"></video>` : `<img src="${escapeHtml(firstItem.thumbnailSrc || firstItem.src)}" alt="${escapeHtml(event.title)}" loading="lazy"${positionStyle}>`;
+                const loadingAttr = index === 0 ? '' : ' loading="lazy"';
+                const mediaHtml = firstItem.type === 'video' && firstItem.videoSrc ? `<video autoplay loop muted playsinline poster="${escapeHtml(firstItem.thumbnailSrc || '')}"${positionStyle}><source src="${escapeHtml(firstItem.videoSrc)}" type="video/mp4"></video>` : `<img src="${escapeHtml(firstItem.thumbnailSrc || firstItem.src)}" alt="${escapeHtml(event.title)}"${loadingAttr}${positionStyle}>`;
                 const card = document.createElement('a');
                 card.href = `evento-detalle.html?id=${encodeURIComponent(event.id)}`;
                 card.className = 'event-card-link';
@@ -630,14 +631,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 grid.innerHTML = '<p>No hay entrevistas disponibles.</p>';
                 return;
             }
-            interviews.forEach(interview => {
+            interviews.forEach((interview, index) => {
                 const isVideo = interview.url.includes('youtube.com') || interview.url.includes('youtu.be');
                 const card = document.createElement('a');
                 card.href = interview.url;
                 card.className = 'media-card';
                 card.target = '_blank';
                 card.rel = 'noopener noreferrer';
-                card.innerHTML = `<div class="image-container"><img src="${escapeHtml(interview.thumbnailUrl)}" alt="${escapeHtml(interview.mainTitle)}" loading="lazy">${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}</div><div class="media-card-text"><h3>${escapeHtml(interview.mainTitle)}</h3><p>${escapeHtml(interview.subtitle)}</p></div><button type="button" class="share-btn" data-share-title="${escapeHtml(interview.mainTitle)}" data-share-url="${escapeHtml(interview.url)}" aria-label="Compartir esta entrevista"><i class="fas fa-share-alt"></i></button>`;
+                const loadingAttr = index === 0 ? '' : ' loading="lazy"';
+                card.innerHTML = `<div class="image-container"><img src="${escapeHtml(interview.thumbnailUrl)}" alt="${escapeHtml(interview.mainTitle)}"${loadingAttr}>${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}</div><div class="media-card-text"><h3>${escapeHtml(interview.mainTitle)}</h3><p>${escapeHtml(interview.subtitle)}</p></div><button type="button" class="share-btn" data-share-title="${escapeHtml(interview.mainTitle)}" data-share-url="${escapeHtml(interview.url)}" aria-label="Compartir esta entrevista"><i class="fas fa-share-alt"></i></button>`;
                 grid.appendChild(card);
             });
         } catch (error) { console.error("Error cargando entrevistas:", error); }
@@ -657,16 +659,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            programs.forEach(program => {
+            programs.forEach((program, index) => {
                 const programDiv = document.createElement('div');
                 programDiv.className = 'comunicacion-section';
                 const textHtml = program.text ? `<p>${escapeHtml(program.text)}</p>` : '';
+                const loadingAttr = index === 0 ? '' : ' loading="lazy"';
 
                 programDiv.innerHTML = `
                     <h3>${escapeHtml(program.title)}</h3>
                     ${textHtml}
                     <a href="${escapeHtml(program.url)}" class="video-fallback js-video-modal-trigger" data-video-src="${escapeHtml(program.url)}">
-                        <img src="${escapeHtml(program.thumbnailUrl)}" alt="Miniatura ${escapeHtml(program.title)}" loading="lazy">
+                        <img src="${escapeHtml(program.thumbnailUrl)}" alt="Miniatura ${escapeHtml(program.title)}"${loadingAttr}>
                         <div class="play-button-overlay"><i class="fas fa-play"></i></div>
                     </a>
                 `;
