@@ -31,7 +31,7 @@ function escapeHtml(value) {
 // imágenes del sitio en producción. Cambiar ACTIVO a true tras confirmar
 // que https://yaiza-diaz.web.app/img-cache responde (no 404), hacer build y
 // pushear.
-const IMG_CACHE_ACTIVO = false;
+const IMG_CACHE_ACTIVO = true;
 function cachedImg(url) {
     const u = String(url ?? '');
     if (!IMG_CACHE_ACTIVO || !u.startsWith('https://firebasestorage.googleapis.com/')) return u;
