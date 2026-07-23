@@ -357,7 +357,6 @@ button.is-loading::before {
     border-radius: var(--radio-borde);
     border: 1px solid var(--color-borde);
     box-shadow: var(--sombra-sutil);
-    cursor: grab;
     transition: var(--transicion-suave);
 }
 .event-item:hover, .interview-item:hover, .award-item:hover { 
@@ -373,6 +372,33 @@ button.is-loading::before {
 .list-item-thumb {
     width: 44px; height: 44px; object-fit: cover; border-radius: 6px;
     flex-shrink: 0; background: var(--color-fondo);
+}
+
+/* Zona de agarre dedicada para reordenar por drag-and-drop: fuera de ella
+   el scroll táctil funciona con normalidad (touch-action solo restringido
+   aquí), evitando que un scroll en móvil se confunda con un arrastre. */
+.drag-handle {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    cursor: grab;
+    touch-action: none;
+    background-image: radial-gradient(circle, var(--color-secundario) 1.5px, transparent 1.5px);
+    background-size: 6px 6px;
+    background-position: center;
+    background-repeat: repeat;
+    opacity: 0.55;
+    transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+.drag-handle:hover, .drag-handle:active {
+    opacity: 1;
+    background-color: var(--color-fondo);
+}
+.gallery-item .drag-handle, .preview-item .drag-handle {
+    position: absolute;
+    top: 8px; right: 8px;
+    z-index: 3;
+    background-color: rgba(255, 255, 255, 0.85);
 }
 .event-controls, .interview-controls, .award-controls { 
     display: flex; gap: 0.75rem; 

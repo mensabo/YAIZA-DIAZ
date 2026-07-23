@@ -299,6 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const posYMobile = item.posYMobile || 50;
 
             div.innerHTML = `
+                <div class="drag-handle" title="Arrastrar para reordenar" aria-hidden="true"></div>
                 <img src="${escapeHtml(item.src)}" alt="Previsualización">
                 <div class="position-controls-slider">
                     <div>
@@ -314,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             listElement.appendChild(div);
         });
-        
+
         listElement.querySelectorAll('input[type="range"]').forEach(slider => {
             slider.addEventListener('input', (e) => {
                 const rangeValueSpan = e.target.previousElementSibling.querySelector('.range-value');
@@ -324,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        heroSortables[listElement.id] = new Sortable(listElement, { animation: 150, ghostClass: 'sortable-ghost' });
+        heroSortables[listElement.id] = new Sortable(listElement, { animation: 150, ghostClass: 'sortable-ghost', handle: '.drag-handle' });
     }
 
     async function handleHeroImageUpload(files, listElement) {
@@ -457,6 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
             div.className = 'gallery-item';
             div.dataset.id = item.id;
             div.innerHTML = `
+                <div class="drag-handle" title="Arrastrar para reordenar" aria-hidden="true"></div>
                 <img src="${escapeHtml(item.thumbnailSrc || item.src)}" alt="miniatura">
                 <span class="item-type-badge">${item.type === 'video' ? 'VÍDEO' : 'IMAGEN'}</span>
                 <textarea class="description-input" placeholder="Descripción...">${escapeHtml(item.descripcion || '')}</textarea>
@@ -465,7 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
             galleryListEl.appendChild(div);
         });
         if (gallerySortable) gallerySortable.destroy();
-        gallerySortable = new Sortable(galleryListEl, { animation: 150, ghostClass: 'sortable-ghost' });
+        gallerySortable = new Sortable(galleryListEl, { animation: 150, ghostClass: 'sortable-ghost', handle: '.drag-handle' });
     }
 
     dropZone.addEventListener('click', () => fileInput.click());
@@ -762,6 +764,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const currentPos = item.position || 'center';
             div.innerHTML = `
+                <div class="drag-handle" title="Arrastrar para reordenar" aria-hidden="true"></div>
                 <img src="${escapeHtml(item.thumbnailSrc || item.src)}" alt="Previsualización" class="event-thumb-preview" style="object-position: ${escapeHtml(currentPos)};">
                 <p class="event-thumb-preview-caption">Así se recortará en la tarjeta de "Eventos"</p>
                 <span class="item-type-badge">${item.type === 'video' ? 'VÍDEO' : 'IMAGEN'}</span>
@@ -780,7 +783,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button type="button" class="delete-button">Eliminar</button>`;
             eventImagesPreviewList.appendChild(div);
         });
-        eventImagesSortable = new Sortable(eventImagesPreviewList, { animation: 150, ghostClass: 'sortable-ghost' });
+        eventImagesSortable = new Sortable(eventImagesPreviewList, { animation: 150, ghostClass: 'sortable-ghost', handle: '.drag-handle' });
 
         // Vista previa en vivo: al cambiar la posición, actualiza al momento
         // el recorte de la miniatura (misma proporción 4:5 que la tarjeta real
@@ -825,11 +828,11 @@ document.addEventListener('DOMContentLoaded', () => {
             div.className = 'event-item';
             div.dataset.id = event.id;
             const thumb = `<img src="${escapeHtml(firstGalleryThumbnail(event.galleryItems))}" alt="" loading="lazy" class="list-item-thumb">`;
-            div.innerHTML = `<div class="list-item-info">${thumb}<h4>${escapeHtml(event.title)} (Orden: ${event.order})</h4></div><div class="event-controls"><button class="event-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
+            div.innerHTML = `<div class="list-item-info"><div class="drag-handle" title="Arrastrar para reordenar" aria-hidden="true"></div>${thumb}<h4>${escapeHtml(event.title)} (Orden: ${event.order})</h4></div><div class="event-controls"><button class="event-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
             eventsListEl.appendChild(div);
         });
         if (eventsSortable) eventsSortable.destroy();
-        eventsSortable = new Sortable(eventsListEl, { animation: 150, ghostClass: 'sortable-ghost' });
+        eventsSortable = new Sortable(eventsListEl, { animation: 150, ghostClass: 'sortable-ghost', handle: '.drag-handle' });
     };
     
     function resetEventForm() {
@@ -969,11 +972,11 @@ document.addEventListener('DOMContentLoaded', () => {
             div.className = 'interview-item';
             div.dataset.id = interview.id;
             const thumb = interview.thumbnailUrl ? `<img src="${escapeHtml(interview.thumbnailUrl)}" alt="" loading="lazy" class="list-item-thumb">` : '';
-            div.innerHTML = `<div class="list-item-info">${thumb}<h4>${escapeHtml(interview.mainTitle)}</h4></div><div class="interview-controls"><button class="interview-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
+            div.innerHTML = `<div class="list-item-info"><div class="drag-handle" title="Arrastrar para reordenar" aria-hidden="true"></div>${thumb}<h4>${escapeHtml(interview.mainTitle)}</h4></div><div class="interview-controls"><button class="interview-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
             interviewsListEl.appendChild(div);
         });
         if (interviewsSortable) interviewsSortable.destroy();
-        interviewsSortable = new Sortable(interviewsListEl, { animation: 150, ghostClass: 'sortable-ghost' });
+        interviewsSortable = new Sortable(interviewsListEl, { animation: 150, ghostClass: 'sortable-ghost', handle: '.drag-handle' });
     };
     
     function resetInterviewForm() {
@@ -1103,13 +1106,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     div.dataset.thumbnailSrc = item.thumbnailSrc;
                 }
                 div.innerHTML = `
+                    <div class="drag-handle" title="Arrastrar para reordenar" aria-hidden="true"></div>
                     <img src="${escapeHtml(item.thumbnailSrc || item.src)}" alt="Previsualización">
                     <span class="item-type-badge">${item.type === 'video' ? 'VÍDEO' : 'IMAGEN'}</span>
                     <textarea class="description-input" placeholder="Descripción...">${escapeHtml(item.description || '')}</textarea>
                     <button type="button" class="delete-button">Eliminar</button>`;
                 awardImagesPreviewList.appendChild(div);
             });
-            awardImagesSortable = new Sortable(awardImagesPreviewList, { animation: 150, ghostClass: 'sortable-ghost' });
+            awardImagesSortable = new Sortable(awardImagesPreviewList, { animation: 150, ghostClass: 'sortable-ghost', handle: '.drag-handle' });
         }
 
         async function handleImageUpload(files) {
@@ -1146,11 +1150,11 @@ document.addEventListener('DOMContentLoaded', () => {
             div.className = 'award-item';
             div.dataset.id = award.id;
             const thumb = `<img src="${escapeHtml(firstGalleryThumbnail(award.galleryItems))}" alt="" loading="lazy" class="list-item-thumb">`;
-            div.innerHTML = `<div class="list-item-info">${thumb}<h4>${escapeHtml(award.title)} (Orden: ${award.order})</h4></div><div class="award-controls"><button class="award-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
+            div.innerHTML = `<div class="list-item-info"><div class="drag-handle" title="Arrastrar para reordenar" aria-hidden="true"></div>${thumb}<h4>${escapeHtml(award.title)} (Orden: ${award.order})</h4></div><div class="award-controls"><button class="award-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
             awardsListEl.appendChild(div);
         });
         if (awardsSortable) awardsSortable.destroy();
-        awardsSortable = new Sortable(awardsListEl, { animation: 150, ghostClass: 'sortable-ghost' });
+        awardsSortable = new Sortable(awardsListEl, { animation: 150, ghostClass: 'sortable-ghost', handle: '.drag-handle' });
     };
 
     function resetAwardForm() {
@@ -1323,11 +1327,11 @@ document.addEventListener('DOMContentLoaded', () => {
             div.className = 'interview-item';
             div.dataset.id = program.id;
             const thumb = program.thumbnailUrl ? `<img src="${escapeHtml(program.thumbnailUrl)}" alt="" loading="lazy" class="list-item-thumb">` : '';
-            div.innerHTML = `<div class="list-item-info">${thumb}<h4>${escapeHtml(program.title)}</h4></div><div class="interview-controls"><button class="tv-program-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
+            div.innerHTML = `<div class="list-item-info"><div class="drag-handle" title="Arrastrar para reordenar" aria-hidden="true"></div>${thumb}<h4>${escapeHtml(program.title)}</h4></div><div class="interview-controls"><button class="tv-program-edit-button">Editar</button><button class="delete-button">Eliminar</button></div>`;
             tvProgramsListEl.appendChild(div);
         });
         if (tvProgramsSortable) tvProgramsSortable.destroy();
-        tvProgramsSortable = new Sortable(tvProgramsListEl, { animation: 150, ghostClass: 'sortable-ghost' });
+        tvProgramsSortable = new Sortable(tvProgramsListEl, { animation: 150, ghostClass: 'sortable-ghost', handle: '.drag-handle' });
     }
     
     function resetTVProgramForm() {
