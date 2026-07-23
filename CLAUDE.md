@@ -19,6 +19,7 @@ Cuando el usuario escriba **"Jarvis"** en un chat nuevo, hay que actualizar el `
 - `functions/index.js`: Cloud Function `sendContactEmail` — al crearse un doc en `contactMessages` envía email vía Gmail/nodemailer a `yaizadiaztv@gmail.com`. Depurar con `firebase functions:log --only sendContactEmail`.
 - Tests sin dependencias: `node tests/audit.test.js` (SEO, un solo H1 por página, jerarquía de encabezados, cadenas concretas en el `script.js` servido, etc.). Correrlo antes de subir.
 - Las listas del panel (Entrevistas/Programas TV/Eventos/Premios) muestran una miniatura de 44px junto al título (`.list-item-thumb`/`.list-item-info` en `panel-yz28da.css`, función `firstGalleryThumbnail()` en `panel-yz28da.js` para las que usan `galleryItems`) — no hace falta entrar a "Editar" para ver la foto.
+- Las 8 listas ordenables del panel (SortableJS: hero, galerías, imágenes de eventos/premios, eventos, entrevistas, premios, programas TV) usan `handle: '.drag-handle'` (23/07/2026) en vez de arrastrar desde toda la tarjeta/fila — sin esto, el scroll táctil en móvil se confundía con un arrastre y desordenaba elementos sin querer (mismo patrón que ya tenía `mensabo/FORMULA` en su panel). El icono `.drag-handle` es puntos dibujados por CSS (`radial-gradient`, sin Font Awesome en el panel), con `touch-action: none` solo en el propio icono para no tocar el scroll del resto de la tarjeta. Si se añade una lista ordenable nueva, replicar el mismo patrón (añadir el div del handle al template + `handle: '.drag-handle'` en el `new Sortable(...)`).
 
 ## Despliegue (IONOS)
 
@@ -85,6 +86,8 @@ Cuando el usuario escriba **"Jarvis"** en un chat nuevo, hay que actualizar el `
 - "No veo el cambio" del usuario casi siempre es caché: pedirle que abra la URL directa del `.css`/`.js` y busque una cadena nueva — si está ahí, es caché del navegador en la página contenedora (cerrar pestaña y reabrir), no el deploy.
 - "Funciona en unas páginas y en otras no" ⇒ sospechar markup que falta en algunas páginas (los HTML son independientes), no un bug de JS.
 - Performance de Lighthouse varía entre pruebas por naturaleza (mide tiempos reales); Accessibility/SEO/Best Practices no.
+- El acceso de red variable por sesión puede llegar a **0** (403/policy denial tanto en `curl` directo como en `WebFetch` al dominio real) — en ese caso no hay forma de sortearlo desde la sesión: decirlo claro y no fingir un Lighthouse. La política de red es del **entorno** (se fija al crearlo en Claude Code on the web), no cambia a mitad de sesión; si el usuario quiere red, tiene que crear/editar el entorno y abrir una sesión nueva.
+- **Website Grader (HubSpot)** marca "JavaScript minimizado: NO APROBADO" aunque `script.js` esté minificado de verdad — es ruido: penaliza `config.js` (público por diseño, sin minificar) y el bloque `<script>` inline corto de Consent Mode. No es un bug real, no hace falta tocar nada cuando el usuario lo reporte.
 
 ## Trato con el usuario
 
