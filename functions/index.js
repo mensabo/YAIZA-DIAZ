@@ -3,11 +3,63 @@ const admin = require("firebase-admin");
 const nodemailer = require("nodemailer");
 const { defineSecret } = require("firebase-functions/params");
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
+const { onRequest } = require("firebase-functions/v2/https");
+const { Readable } = require("node:stream");
 
 admin.initializeApp();
 
 const GMAIL_EMAIL = "mensabo78@gmail.com";
 const GMAIL_APP_PASSWORD = defineSecret("GMAIL_APP_PASSWORD");
+
+// Prefijo real del bucket de Storage de este proyecto (ver storageBucket en
+// config.js) -- imgCache SOLO reenvia URLs que empiecen exactamente por
+// esto. Sin esta restriccion, cualquiera podria usar la funcion como proxy
+// anonimo gratuito hacia CUALQUIER URL de internet (abuso de la cuota de
+// Cloud Functions ajeno al problema que esto intenta resolver).
+const STORAGE_URL_PREFIX =
+  "https://firebasestorage.googleapis.com/v0/b/yaiza-diaz.firebasestorage.app/o/";
+
+// Cache de imagenes/videos de Storage detras de la CDN de Firebase Hosting
+// (ver rewrite "/img-cache" en firebase.json). Motivo: las paginas publicas
+// pintan <img src> directo a firebasestorage.googleapis.com -- una peticion
+// HTTP normal del navegador no puede llevar token de App Check (por eso no
+// se puede proteger Storage con App Check sin romper esas imagenes), y cada
+// peticion de cada visitante distinto cuenta contra la cuota de bajada
+// gratuita de Storage (100GB/mes). Con este proxy, la CDN compartida de
+// Hosting responde las peticiones repetidas de la MISMA imagen sin volver a
+// tocar Storage -- mitiga un pico de coste por peticiones masivas (scraping,
+// bot hotlinking) sin depender de autenticacion.
+exports.imgCache = onRequest({ cors: true }, async (req, res) => {
+  const src = req.query.u;
+  if (typeof src !== "string" || !src.startsWith(STORAGE_URL_PREFIX)) {
+    res.status(400).send("URL invalida");
+    return;
+  }
+  let upstream;
+  try {
+    upstream = await fetch(src);
+  } catch (e) {
+    functions.logger.error("imgCache: error de red pidiendo el original:", e);
+    res.status(502).send("Error al obtener el recurso");
+    return;
+  }
+  if (!upstream.ok || !upstream.body) {
+    res.status(upstream.status || 502).send("Error al obtener el recurso");
+    return;
+  }
+  res.set("Content-Type", upstream.headers.get("content-type") || "application/octet-stream");
+  const contentLength = upstream.headers.get("content-length");
+  if (contentLength) res.set("Content-Length", contentLength);
+  // s-maxage es lo que respeta la CDN de Hosting (cache compartida entre
+  // TODOS los visitantes); max-age es para la cache del propio navegador.
+  // stale-while-revalidate evita que el primer visitante tras expirar la
+  // cache tenga que esperar a un refresco sincrono.
+  res.set(
+    "Cache-Control",
+    "public, max-age=604800, s-maxage=2592000, stale-while-revalidate=86400"
+  );
+  Readable.fromWeb(upstream.body).pipe(res);
+});
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => ({

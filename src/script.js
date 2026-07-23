@@ -16,6 +16,21 @@ function escapeHtml(value) {
     }[char]));
 }
 
+// Envuelve una URL de Firebase Storage para que pase por la Cloud Function
+// imgCache (cacheada en la CDN de Firebase Hosting) en vez de pedirse
+// directo a firebasestorage.googleapis.com. Motivo: cada <img> de estas
+// paginas es una peticion HTTP normal del navegador, sin SDK de por medio,
+// asi que no puede llevar token de App Check -- y cada visitante distinto
+// (o bot) cuenta contra la cuota de bajada gratuita de Storage (100GB/mes).
+// Con la CDN compartida delante, la MISMA imagen pedida por miles de
+// visitantes distintos solo golpea Storage una vez. Si la URL no es de
+// Storage (ej. placeholder local, YouTube), se devuelve tal cual.
+function cachedImg(url) {
+    const u = String(url ?? '');
+    if (!u.startsWith('https://firebasestorage.googleapis.com/')) return u;
+    return `https://yaiza-diaz.web.app/img-cache?u=${encodeURIComponent(u)}`;
+}
+
 // =======================================================
 // 0. FOOTER COMPARTIDO
 // Se inyecta aquí en vez de repetirse en las 17 páginas públicas,
@@ -548,7 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (randomImageObject && randomImageObject.src) {
                     const isMobile = window.innerWidth < 768;
                     const posY = isMobile ? (randomImageObject.posYMobile || 50) : (randomImageObject.posYDesktop || 50);
-                    setHeroBackground(randomImageObject.src, `${posY}%`);
+                    setHeroBackground(cachedImg(randomImageObject.src), `${posY}%`);
                 }
             } else {
                 const fallbackSrc = HERO_FALLBACK_IMAGES[heroId] || 'images/placeholder.png';
@@ -609,7 +624,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // para esta foto, si no la miniatura de la tarjeta sale descentrada.
                 const positionStyle = firstItem.position ? ` style="object-position: ${escapeHtml(firstItem.position)};"` : '';
                 const loadingAttr = index === 0 ? '' : ' loading="lazy"';
-                const mediaHtml = firstItem.type === 'video' && firstItem.videoSrc ? `<video autoplay loop muted playsinline poster="${escapeHtml(firstItem.thumbnailSrc || '')}"${positionStyle}><source src="${escapeHtml(firstItem.videoSrc)}" type="video/mp4"></video>` : `<img src="${escapeHtml(firstItem.thumbnailSrc || firstItem.src)}" alt="${escapeHtml(event.title)}"${loadingAttr}${positionStyle}>`;
+                const mediaHtml = firstItem.type === 'video' && firstItem.videoSrc ? `<video autoplay loop muted playsinline poster="${escapeHtml(firstItem.thumbnailSrc || '')}"${positionStyle}><source src="${escapeHtml(firstItem.videoSrc)}" type="video/mp4"></video>` : `<img src="${escapeHtml(cachedImg(firstItem.thumbnailSrc || firstItem.src))}" alt="${escapeHtml(event.title)}"${loadingAttr}${positionStyle}>`;
                 const card = document.createElement('a');
                 card.href = `evento-detalle.html?id=${encodeURIComponent(event.id)}`;
                 card.className = 'event-card-link';
@@ -639,7 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.target = '_blank';
                 card.rel = 'noopener noreferrer';
                 const loadingAttr = index === 0 ? '' : ' loading="lazy"';
-                card.innerHTML = `<div class="image-container"><img src="${escapeHtml(interview.thumbnailUrl)}" alt="${escapeHtml(interview.mainTitle)}"${loadingAttr}>${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}</div><div class="media-card-text"><h3>${escapeHtml(interview.mainTitle)}</h3><p>${escapeHtml(interview.subtitle)}</p></div><button type="button" class="share-btn" data-share-title="${escapeHtml(interview.mainTitle)}" data-share-url="${escapeHtml(interview.url)}" aria-label="Compartir esta entrevista"><i class="fas fa-share-alt"></i></button>`;
+                card.innerHTML = `<div class="image-container"><img src="${escapeHtml(cachedImg(interview.thumbnailUrl))}" alt="${escapeHtml(interview.mainTitle)}"${loadingAttr}>${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}</div><div class="media-card-text"><h3>${escapeHtml(interview.mainTitle)}</h3><p>${escapeHtml(interview.subtitle)}</p></div><button type="button" class="share-btn" data-share-title="${escapeHtml(interview.mainTitle)}" data-share-url="${escapeHtml(interview.url)}" aria-label="Compartir esta entrevista"><i class="fas fa-share-alt"></i></button>`;
                 grid.appendChild(card);
             });
         } catch (error) { console.error("Error cargando entrevistas:", error); }
@@ -669,7 +684,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <h3>${escapeHtml(program.title)}</h3>
                     ${textHtml}
                     <a href="${escapeHtml(program.url)}" class="video-fallback js-video-modal-trigger" data-video-src="${escapeHtml(program.url)}">
-                        <img src="${escapeHtml(program.thumbnailUrl)}" alt="Miniatura ${escapeHtml(program.title)}"${loadingAttr}>
+                        <img src="${escapeHtml(cachedImg(program.thumbnailUrl))}" alt="Miniatura ${escapeHtml(program.title)}"${loadingAttr}>
                         <div class="play-button-overlay"><i class="fas fa-play"></i></div>
                     </a>
                 `;
@@ -683,13 +698,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const src = item.videoSrc || '';
             const icon = src.includes('youtube') || src.includes('youtu.be') ? 'fab fa-youtube' : 'fas fa-play';
             return `<a href="#" class="video-fallback js-video-modal-trigger" data-video-src="${escapeHtml(src)}">
-                <img src="${escapeHtml(item.thumbnailSrc || '')}" alt="${escapeHtml(item.description || awardTitle)}" loading="lazy">
+                <img src="${escapeHtml(cachedImg(item.thumbnailSrc || ''))}" alt="${escapeHtml(item.description || awardTitle)}" loading="lazy">
                 <span class="play-button-overlay"><i class="${icon}"></i></span>
             </a>`;
         }
         const pie = item.description ? `<p class="pie-de-foto">${escapeHtml(item.description)}</p>` : '';
-        return `<a href="${escapeHtml(item.src)}" class="expandable-image">
-            <img class="natural-ratio" src="${escapeHtml(item.src)}" alt="${escapeHtml(item.description || awardTitle)}" loading="lazy">
+        return `<a href="${escapeHtml(cachedImg(item.src))}" class="expandable-image">
+            <img class="natural-ratio" src="${escapeHtml(cachedImg(item.src))}" alt="${escapeHtml(item.description || awardTitle)}" loading="lazy">
         </a>${pie}`;
     }
 
@@ -835,7 +850,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const thumbDiv = document.createElement('div');
                     thumbDiv.className = 'miniatura-item';
                     const playBadge = item.type === 'video' ? '<div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.7); color:white; border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-size:12px; border: 1px solid rgba(255,255,255,0.5);"><i class="fas fa-play"></i></div>' : '';
-                    thumbDiv.innerHTML = `<img src="${escapeHtml(item.thumbnailSrc || item.src)}" alt="Miniatura" loading="lazy">${playBadge}`;
+                    thumbDiv.innerHTML = `<img src="${escapeHtml(cachedImg(item.thumbnailSrc || item.src))}" alt="Miniatura" loading="lazy">${playBadge}`;
                     thumbDiv.addEventListener('click', () => setActiveItem(item, thumbDiv));
                     thumbnailsContainer.appendChild(thumbDiv);
                 });
@@ -853,8 +868,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 mainImage.style.cursor = item.type === 'video' ? 'pointer' : 'zoom-in';
 
                 setTimeout(() => {
-                    mainImage.src = item.thumbnailSrc || item.src;
-                    bgImage.style.backgroundImage = `url(${item.thumbnailSrc || item.src})`;
+                    mainImage.src = cachedImg(item.thumbnailSrc || item.src);
+                    bgImage.style.backgroundImage = `url(${cachedImg(item.thumbnailSrc || item.src)})`;
                     mainDesc.textContent = item.descripcion || '';
                     mainImage.style.opacity = '1';
                 }, 200);
@@ -893,8 +908,8 @@ document.addEventListener('DOMContentLoaded', () => {
         function setActiveItem(dataObj) {
             mainImage.style.opacity = '0';
             setTimeout(() => {
-                mainImage.src = dataObj.src;
-                bgImage.style.backgroundImage = `url(${dataObj.src})`;
+                mainImage.src = cachedImg(dataObj.src);
+                bgImage.style.backgroundImage = `url(${cachedImg(dataObj.src)})`;
                 mainDesc.textContent = dataObj.descripcion || '';
                 mainImage.style.opacity = '1';
             }, 200);
@@ -918,7 +933,7 @@ document.addEventListener('DOMContentLoaded', () => {
         img.style.opacity = '0';
 
         setTimeout(() => {
-            const nuevaRuta = currentItem.src || currentItem.thumbnailSrc || currentItem.videoSrc;
+            const nuevaRuta = cachedImg(currentItem.src || currentItem.thumbnailSrc || currentItem.videoSrc);
             const nuevoTexto = currentItem.descripcion || currentItem.description || '';
             const esLogo = nuevaRuta.includes('chacho-creations-logo');
 

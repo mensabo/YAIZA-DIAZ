@@ -30,6 +30,12 @@
     ],
     "cleanUrls": true,
     "trailingSlash": false,
+    "rewrites": [
+      {
+        "source": "/img-cache",
+        "function": "imgCache"
+      }
+    ],
     "headers": [
       {
         "source": "**/*.@(jpg|jpeg|png|gif|webp|svg|ico|mp4|mp3)",
