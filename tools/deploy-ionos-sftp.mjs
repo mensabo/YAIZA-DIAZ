@@ -90,6 +90,17 @@ async function main() {
         }
     }
 
+    // Limpieza puntual (23/07/2026): recursos/ eran fotos/video en bruto sin
+    // usar por ningun HTML/CSS/JS ni por ningun documento de Firestore
+    // (comprobado a mano antes de borrar), pero se subian igualmente a IONOS
+    // al no estar en EXCLUDE_DIRS. Borrar este bloque una vez confirmado que
+    // /recursos ya no responde.
+    const exists = await sftp.exists('recursos');
+    if (exists) {
+        await sftp.rmdir('recursos', true);
+        console.log('Borrada carpeta huerfana: recursos/');
+    }
+
     await sftp.end();
     console.log(`Listo: ${uploaded} archivos subidos.`);
 }
