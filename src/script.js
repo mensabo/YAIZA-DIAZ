@@ -25,9 +25,16 @@ function escapeHtml(value) {
 // Con la CDN compartida delante, la MISMA imagen pedida por miles de
 // visitantes distintos solo golpea Storage una vez. Si la URL no es de
 // Storage (ej. placeholder local, YouTube), se devuelve tal cual.
+// DESACTIVADO hasta que se despliegue la Cloud Function imgCache y el
+// hosting de Firebase (`firebase deploy --only functions:imgCache,hosting`)
+// -- mientras el endpoint no exista, reescribir las URLs rompería TODAS las
+// imágenes del sitio en producción. Cambiar ACTIVO a true tras confirmar
+// que https://yaiza-diaz.web.app/img-cache responde (no 404), hacer build y
+// pushear.
+const IMG_CACHE_ACTIVO = false;
 function cachedImg(url) {
     const u = String(url ?? '');
-    if (!u.startsWith('https://firebasestorage.googleapis.com/')) return u;
+    if (!IMG_CACHE_ACTIVO || !u.startsWith('https://firebasestorage.googleapis.com/')) return u;
     return `https://yaiza-diaz.web.app/img-cache?u=${encodeURIComponent(u)}`;
 }
 
