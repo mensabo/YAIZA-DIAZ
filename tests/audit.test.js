@@ -151,12 +151,11 @@ for (const jsFile of ['script.js', 'panel-yz28da.js', 'evento.js', 'update.js'])
 }
 
 // ---------------------------------------------------------------------------
-// 8. preconnect a fonts/cdnjs presente en todas las paginas publicas
+// 8. Fuentes auto-alojadas (fonts/, sin depender de fonts.googleapis.com)
 // ---------------------------------------------------------------------------
 for (const f of PUBLIC_HTML_FILES) {
   const content = readFile(f);
-  check(`${f}: preconnect a fonts.googleapis.com`, content.includes('rel="preconnect" href="https://fonts.googleapis.com"'));
-  check(`${f}: link de Google Fonts bien formado`, /<link href="https:\/\/fonts\.googleapis\.com\/css2\?family=/.test(content));
+  check(`${f}: no depende de fonts.googleapis.com`, !content.includes('fonts.googleapis.com'));
 }
 
 // ---------------------------------------------------------------------------
@@ -248,7 +247,7 @@ check('script.js: inicializa el lazy-load de videos autoplay', /initializeLazyAu
 // ---------------------------------------------------------------------------
 for (const f of PUBLIC_HTML_FILES) {
   const content = readFile(f);
-  check(`${f}: el enlace "Contacto" del menu es un CTA destacado`, /<a href="contacto\.html" class="nav-cta">Contacto<\/a>/.test(content));
+  check(`${f}: el enlace "Contacto" del menu es un CTA destacado`, /<a href="contacto\.html" class="nav-cta"[^>]*>Contacto<\/a>/.test(content));
 }
 check('script.js: inicializa los botones de compartir', /initializeShareButtons/.test(readFile('script.js')));
 check('script.js: las tarjetas de entrevistas incluyen boton de compartir', /share-btn/.test(readFile('script.js')));
