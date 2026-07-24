@@ -4333,11 +4333,14 @@ a.expandable-image:hover img {
     #nav-links::-webkit-scrollbar { display: none; }
     #nav-links.nav-open { left: 0; }
     #nav-links li { margin: 0; width: 100%; text-align: center; }
-    /* "Eventos" y "Libro" son enlaces sueltos, no etiquetas de grupo como
-       "MEDIOS"/"PROFESIONAL" -- centrados se confundían visualmente con
-       ellas. Alineados a la izquierda para que se lean como lo que son:
-       enlaces normales, igual que si tuvieran su propio texto a la izquierda. */
-    #nav-links li:has(> a[href="eventos.html"]), #nav-links li:has(> a[href="libro.html"]) { text-align: left; padding-left: 1rem; }
+    /* "Libro" es un enlace suelto, no una etiqueta de grupo como
+       "MEDIOS"/"PROFESIONAL" -- centrado se confundía visualmente con
+       ellas. Alineado a la izquierda para que se lea como lo que es: un
+       enlace normal, igual que si tuviera su propio texto a la izquierda.
+       "Eventos" ya no necesita este ajuste: pasó a ser el primer ítem
+       dentro del desplegable "Profesional" (24/07/2026), donde ya se
+       alinea a la izquierda igual que el resto de esa lista. */
+    #nav-links li:has(> a[href="libro.html"]) { text-align: left; padding-left: 1rem; }
     #nav-links a, #nav-links a:visited { padding: 0.4rem 1rem; display: inline-block; width: 90%; font-size: 1.1rem; }
     #nav-links a::after { display: none; }
     .nav-logo-mobile {
@@ -4406,11 +4409,14 @@ a.expandable-image:hover img {
     #nav-links::-webkit-scrollbar { display: none; }
     #nav-links.nav-open { left: 0; }
     #nav-links li { margin: 0; width: 100%; text-align: center; }
-    /* "Eventos" y "Libro" son enlaces sueltos, no etiquetas de grupo como
-       "MEDIOS"/"PROFESIONAL" -- centrados se confundían visualmente con
-       ellas. Alineados a la izquierda para que se lean como lo que son:
-       enlaces normales, igual que si tuvieran su propio texto a la izquierda. */
-    #nav-links li:has(> a[href="eventos.html"]), #nav-links li:has(> a[href="libro.html"]) { text-align: left; padding-left: 1rem; }
+    /* "Libro" es un enlace suelto, no una etiqueta de grupo como
+       "MEDIOS"/"PROFESIONAL" -- centrado se confundía visualmente con
+       ellas. Alineado a la izquierda para que se lea como lo que es: un
+       enlace normal, igual que si tuviera su propio texto a la izquierda.
+       "Eventos" ya no necesita este ajuste: pasó a ser el primer ítem
+       dentro del desplegable "Profesional" (24/07/2026), donde ya se
+       alinea a la izquierda igual que el resto de esa lista. */
+    #nav-links li:has(> a[href="libro.html"]) { text-align: left; padding-left: 1rem; }
     #nav-links a, #nav-links a:visited { padding: 0.4rem 1rem; display: inline-block; width: 90%; font-size: 1.1rem; white-space: normal; }
     #nav-links a::after { display: none; }
     #nav-links a:hover { transform: none; }
