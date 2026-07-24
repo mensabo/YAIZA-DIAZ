@@ -435,21 +435,31 @@ nav ul li a[aria-current="page"]::after {
     z-index: 1;
 }
 
-/* Dos capas apiladas para hacer crossfade real: background-image no es
-   animable por CSS, asi que en vez de cambiar la imagen de una sola capa
-   (lo que provocaba un corte seco a negro entre foto y foto), script.js
-   pinta la imagen nueva en la capa oculta y luego alterna su opacidad. */
+/* Dos capas apiladas para hacer crossfade real: en vez de cambiar la
+   imagen de una sola capa (lo que provocaba un corte seco a negro entre
+   foto y foto), script.js pinta la imagen nueva en la capa oculta (un
+   <img> real, no background-image) y luego alterna la opacidad de la
+   capa. Usar <img> en vez de background-image, además, le da a Chrome un
+   candidato real a LCP -- antes hacía falta una imagen decorativa
+   invisible aparte (opacity:0.01) solo para que Lighthouse tuviera algo
+   que medir, una dependencia frágil de que Chrome siga sin contar nunca
+   los fondos CSS ni las capas exactamente invisibles/a tamaño completo. */
 .hero-bg-layer {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center 20%;
     opacity: 0;
     transition: opacity 1s ease-in-out;
+}
+
+.hero-bg-layer img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
 }
 
 .hero-bg-layer.active {

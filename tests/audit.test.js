@@ -55,7 +55,7 @@ for (const f of PUBLIC_HTML_FILES) {
   for (const tag of imgTags) {
     if (/src=""/.test(tag)) continue; // lightbox / galeria dinamica, sin src inicial
     if (/logo-personal\.png/.test(tag)) continue; // logo de nav, above-the-fold
-    if (/aria-hidden="true"/.test(tag) && /presentadora-bg\.jpg/.test(tag)) continue; // marcador invisible de LCP del hero, a proposito sin lazy
+    if (/fetchpriority="high"/.test(tag)) continue; // candidato a LCP, a proposito sin lazy
     check(
       `${f}: <img> tiene loading="lazy"`,
       /loading="lazy"/.test(tag),
@@ -218,7 +218,7 @@ check(
 const indexContent = readFile('index.html');
 check(
   'index.html: la capa de fondo activa del hero trae una imagen estatica de fallback',
-  /hero-bg-layer active"[^>]*background-image:\s*url\(/.test(indexContent)
+  /hero-bg-layer active"><img src="images\//.test(indexContent)
 );
 check(
   'index.html: precarga la imagen del hero con rel="preload"',

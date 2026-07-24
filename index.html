@@ -31,7 +31,7 @@
     <meta name="twitter:description" content="Presentadora y directora de eventos, galas y actos corporativos en Canarias. Periodista, escritora y comunicadora.">
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/comunicadora-bg.jpeg">
 
-    <link rel="stylesheet" href="style.css?v=1784886883259">
+    <link rel="stylesheet" href="style.css?v=1784887847961">
     <!-- La fuente Caveat solo la usan elementos que arrancan
          display:none (la anotacion del hero / la carta de libro.html)
          y el navegador no la pide hasta que se hacen visibles via JS -
@@ -152,6 +152,7 @@
                         <li><a href="television.html">Televisión</a></li>
                         <li><a href="radio.html">Radio</a></li>
                         <li><a href="investigacion.html">Documentales</a></li>
+                        <li><a href="entrevistas.html">Entrevistas</a></li>
                     </ul>
                 </li>
                 <li class="nav-item-dropdown">
@@ -161,16 +162,10 @@
                         <li><a href="comunicacion.html">Comunicación</a></li>
                         <li><a href="proyectos.html">Proyectos</a></li>
                         <li><a href="premios.html">Premios</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item-dropdown">
-                    <span class="nav-dropdown-toggle" tabindex="0">Contenido</span>
-                    <ul class="nav-dropdown-menu">
-                        <li><a href="entrevistas.html">Entrevistas</a></li>
-                        <li><a href="libro.html">Libro</a></li>
                         <li><a href="modelaje.html">Modelo</a></li>
                     </ul>
                 </li>
+                <li><a href="libro.html">Libro</a></li>
                 <li><a href="contacto.html" class="nav-cta">Contacto</a></li>
             </ul>
                 <div id="scroll-indicator"><i class="fas fa-chevron-down"></i></div>
@@ -179,9 +174,8 @@
 
     <section id="main-content" class="hero-dynamic">
         <div class="hero-background-container">
-            <div class="hero-bg-layer active" style="background-image: url('images/presentadora-bg.jpg');"></div>
-            <div class="hero-bg-layer"></div>
-            <img src="images/presentadora-bg.jpg" alt="" aria-hidden="true" fetchpriority="high" width="1284" height="1617" style="position:absolute; top:0; left:0; width:99%; height:99%; object-fit:cover; opacity:0.01; pointer-events:none;">
+            <div class="hero-bg-layer active"><img src="images/presentadora-bg.jpg" alt="" aria-hidden="true" fetchpriority="high" width="1284" height="1617"></div>
+            <div class="hero-bg-layer"><img alt="" aria-hidden="true" loading="lazy"></div>
         </div>
         <div class="hero-tabs-container">
             <div class="hero-tabs-desktop">
@@ -383,6 +377,6 @@
             db, collection, getDocs, orderBy, query, doc, getDoc, setDoc
         };
     </script>
-    <script src="script.js?v=1784886883259" type="module"></script>
+    <script src="script.js?v=1784887847961" type="module"></script>
 </body>
 </html>

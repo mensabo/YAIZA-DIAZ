@@ -38,6 +38,26 @@ function cachedImg(url) {
     return `https://yaiza-diaz.web.app/img-cache?u=${encodeURIComponent(u)}`;
 }
 
+// Respaldo automático: imgCache es una única Cloud Function de la que
+// dependen TODAS las imágenes del sitio — si algún día falla (cuota,
+// caída de Firebase Functions, despliegue roto), sin esto se romperían a
+// la vez todas las imágenes en vez de solo notarse una lectura de más
+// contra Storage. Un solo listener global (no hace falta tocar ninguno de
+// los sitios que llaman a cachedImg()): en cuanto una <img> con URL de
+// img-cache falla, recupera la URL original de Storage desde el propio
+// parámetro "u" y la sirve directamente.
+document.addEventListener('error', function (e) {
+    var el = e.target;
+    if (!el || el.tagName !== 'IMG') return;
+    try {
+        var url = new URL(el.src);
+        if (url.pathname === '/img-cache') {
+            var original = url.searchParams.get('u');
+            if (original && el.src !== original) el.src = original;
+        }
+    } catch (err) { /* URL invalida o relativa: nada que recuperar */ }
+}, true);
+
 // =======================================================
 // 0. FOOTER COMPARTIDO
 // Se inyecta aquí en vez de repetirse en las 17 páginas públicas,
@@ -546,8 +566,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (requestId !== heroBgRequestId) return; // llegó una pestaña más nueva mientras cargaba
                 const nextLayer = bgLayers[1 - activeLayerIndex];
                 const currentLayer = bgLayers[activeLayerIndex];
-                nextLayer.style.backgroundImage = `url('${imageUrl}')`;
-                nextLayer.style.backgroundPosition = `center ${posY}`;
+                const img = nextLayer.querySelector('img');
+                img.src = imageUrl;
+                img.style.objectPosition = `center ${posY}`;
                 nextLayer.classList.add('active');
                 currentLayer.classList.remove('active');
                 activeLayerIndex = 1 - activeLayerIndex;
