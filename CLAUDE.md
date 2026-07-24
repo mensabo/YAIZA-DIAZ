@@ -6,6 +6,8 @@ Sitio web personal/portfolio de Yaiza Díaz (periodista/presentadora/modelo). Es
 
 Cuando el usuario escriba **"Jarvis"** en un chat nuevo, hay que actualizar el `CLAUDE.md` del repo con lo aprendido o cambiado en esa sesión. Mantenerlo conciso y en español.
 
+**Los tres proyectos hermanos, siempre juntos (24/07/2026)**: este proyecto se trabaja en paralelo con `mensabo/RenacerCanarias` y `mensabo/FORMULA`, mismo cliente. Si "Jarvis" llega en un chat nuevo y alguno de los otros dos repos todavía no está añadido a esta sesión, añádelos ya mismo con la herramienta de añadir repo (sin preguntar, es rutina) y lee sus respectivos CLAUDE.md antes de responder.
+
 ## Stack y estructura
 
 - Cada página pública es un `.html` independiente en la raíz (19 páginas: `index`, `television`, `eventos`, `radio`, `publicidad`, `comunicacion`, `investigacion`, `proyectos`, `premios`, `entrevistas`, `libro`, `modelaje`, `contacto`, `evento-detalle`, `404`, `aviso-legal`, `politica-cookies`, `politica-privacidad`, + panel admin).
