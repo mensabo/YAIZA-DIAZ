@@ -1322,7 +1322,10 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         
         navLinks.addEventListener('scroll', checkScroll, { passive: true });
-        scrollIndicator.addEventListener('click', () => navLinks.scrollTo({ top: navLinks.scrollHeight, behavior: 'smooth' }));
+        scrollIndicator.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navLinks.scrollTo({ top: navLinks.scrollHeight, behavior: 'smooth' });
+        });
     }
 
     function initializeEscapeKeyForModals() {
