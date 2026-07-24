@@ -2428,6 +2428,16 @@ footer {
     gap: 2rem;
 }
 
+/* Aviso de "cargando" cuando ya hay una primera tarjeta horneada delante:
+   sin esto, ocupa su propia celda de la rejilla como si fuera otra
+   tarjeta vacía en vez de leerse como un simple indicador de carga. */
+.events-grid .grid-loading-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #888;
+    padding: 1rem 0;
+}
+
 .event-card-link {
     text-decoration: none;
     color: inherit;

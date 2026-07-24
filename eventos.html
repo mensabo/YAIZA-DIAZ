@@ -28,7 +28,7 @@
     <meta name="twitter:description" content="Presentadora y directora de eventos en Canarias: galas, congresos, premios y actos corporativos.">
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/social/og-eventos.jpg">
 
-    <link rel="stylesheet" href="style.css?v=1784907218021">
+    <link rel="stylesheet" href="style.css?v=1784911250066">
     <!-- Playfair Display/Montserrat/Caveat autoalojadas (ver style.css),
          ya no hace falta preconectar a Google Fonts. Solo queda cdnjs
          (Font Awesome); Firebase/Analytics se cargan después (JS async o
@@ -110,9 +110,6 @@
       "url": "https://www.yaizadiaz.com/eventos.html"
     }
     </script>
-    <!-- PRELOAD-PRIMER-MEDIA:INICIO -->
-    <link rel="preload" as="image" href="https://yaiza-diaz.web.app/img-cache?u=https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fyaiza-diaz.firebasestorage.app%2Fo%2Fevents%252F1765824036324_1000502323.jpg%3Falt%3Dmedia%26token%3D81866151-d5a9-4ccf-862a-8ddde293655a" fetchpriority="high">
-    <!-- PRELOAD-PRIMER-MEDIA:FIN -->
 </head>
 <body id="eventosPage" class="libro-page">
     <a href="#main-content" class="skip-link">Saltar al contenido</a>
@@ -169,7 +166,10 @@
     <section id="events-gallery-section">
         <div class="container">
             <div id="dynamic-events-grid" class="events-grid">
-                <p>Cargando eventos...</p>
+                <!-- PRIMER-EVENTO:INICIO -->
+                <a href="evento-detalle.html?id=0uPMwdCrah7LqVO8Kz99" class="event-card-link"><div class="event-card-image"><img src="https://yaiza-diaz.web.app/img-cache?u=https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fyaiza-diaz.firebasestorage.app%2Fo%2Fevents%252F1765824036324_1000502323.jpg%3Falt%3Dmedia%26token%3D81866151-d5a9-4ccf-862a-8ddde293655a" alt="Agrocanarias" fetchpriority="high" style="object-position: center;"></div><div class="event-card-content"><h2>Agrocanarias</h2></div></a>
+                <!-- PRIMER-EVENTO:FIN -->
+                <p class="grid-loading-msg">Cargando eventos...</p>
             </div>
         </div>
     </section>
@@ -213,6 +213,6 @@
             db, collection, getDocs, orderBy, query, doc, getDoc, setDoc
         };
     </script>
-        <script src="script.js?v=1784907218021" type="module"></script>
+        <script src="script.js?v=1784911250066" type="module"></script>
 </body>
 </html>

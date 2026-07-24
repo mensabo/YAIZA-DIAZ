@@ -716,7 +716,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const fetchPriorityAttr = index === 0 ? ' fetchpriority="high"' : '';
 
                 programDiv.innerHTML = `
-                    <h3>${escapeHtml(program.title)}</h3>
+                    <h2>${escapeHtml(program.title)}</h2>
                     ${textHtml}
                     <a href="${escapeHtml(program.url)}" class="video-fallback js-video-modal-trigger" data-video-src="${escapeHtml(program.url)}">
                         <img src="${escapeHtml(cachedImg(program.thumbnailUrl))}" alt="Miniatura ${escapeHtml(program.title)}"${loadingAttr}${fetchPriorityAttr}>
