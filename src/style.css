@@ -415,6 +415,87 @@ nav ul li a[aria-current="page"]::after {
     display: none;
 }
 
+/* Menú de escritorio en fila plana (25/07/2026, a petición del usuario):
+   en pantallas con sitio de sobra, "Medios"/"Profesional" dejan de
+   comportarse como desplegables -- sus enlaces se sueltan y se muestran
+   igual que el resto del menú, en vez de esconderse detrás de una
+   etiqueta que hay que abrir. En móvil (ver @media max-width:768px, más
+   abajo) el grupo se queda exactamente igual que antes: ahí sí hace
+   falta agrupar por lo poco que cabe en pantalla. display:contents en
+   el <li>/<ul> del desplegable saca sus <li> hijos a la fila principal
+   sin duplicar ningún enlace en el HTML. */
+@media (min-width: 851px) {
+    .nav-item-dropdown,
+    .nav-dropdown-menu {
+        display: contents;
+    }
+    .nav-dropdown-toggle {
+        display: none;
+    }
+    .nav-dropdown-menu a, .nav-dropdown-menu a:visited {
+        display: inline-block !important;
+        padding: 1rem clamp(0.2rem, 0.5vw, 0.4rem) !important;
+        white-space: nowrap;
+        text-align: left;
+        color: var(--color-acento);
+        font-size: clamp(0.6rem, 0.8vw, 0.95rem);
+        font-family: var(--fuente-titulos);
+        font-weight: 400;
+        position: relative;
+        transition: color 0.3s ease, transform 0.3s ease;
+    }
+    .nav-dropdown-menu a::after {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 1px;
+        background-color: var(--color-blanco);
+        bottom: 0.7rem;
+        left: 0;
+        transform: scaleX(0);
+        transform-origin: center;
+        transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    .nav-dropdown-menu a:hover {
+        color: var(--color-blanco);
+        transform: translateY(-2px);
+    }
+    .nav-dropdown-menu a:hover::after {
+        transform: scaleX(1);
+    }
+    .nav-dropdown-menu a[aria-current="page"] {
+        color: var(--color-blanco);
+    }
+    .nav-dropdown-menu a[aria-current="page"]::after {
+        transform: scaleX(1);
+        background-color: var(--color-acento);
+    }
+
+    /* Reflejo/brillo al pasar el ratón por cualquier enlace del menú de
+       escritorio (pedido explícitamente por el usuario para que el menú
+       plano quede más llamativo) -- un barrido diagonal de luz, mismo
+       espíritu que el destello ya usado en otros puntos del sitio. */
+    nav ul li a {
+        overflow: hidden;
+    }
+    nav ul li a::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -60%;
+        width: 40%;
+        height: 100%;
+        background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+        transform: skewX(-20deg);
+        transition: left 0.6s ease;
+        pointer-events: none;
+    }
+    nav ul li a:hover::before {
+        left: 130%;
+    }
+}
+
 /* ================================================== */
 /*   HERO DINÁMICO   */
 /* ================================================== */
