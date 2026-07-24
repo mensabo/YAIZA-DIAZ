@@ -490,6 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const bgContainer = document.querySelector('.hero-background-container');
         const mobileTitle = document.getElementById('mobile-tab-title');
         const mobileBookLink = document.getElementById('mobile-book-link');
+        const mobileEventsLink = document.getElementById('mobile-events-link');
         const dotsContainer = document.getElementById('hero-dots-nav');
         if (!tabs.length || !bgContainer) return;
 
@@ -585,6 +586,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (mobileBookLink) {
                 mobileBookLink.classList.toggle('visible', activeTab.id === 'escritora-tab');
+            }
+            if (mobileEventsLink) {
+                mobileEventsLink.classList.toggle('visible', activeTab.id === 'eventos-tab');
             }
             if (dots.length > 0) {
                 dots.forEach(d => d.classList.remove('active'));
