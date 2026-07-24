@@ -429,6 +429,17 @@ nav ul li a[aria-current="page"]::after {
     .nav-dropdown-menu {
         display: contents;
     }
+    /* La regla original ".nav-item-dropdown:hover .nav-dropdown-menu"
+       (fuera de este media query) tiene más especificidad (dos clases)
+       que ".nav-dropdown-menu{display:contents}" de arriba (una clase) --
+       sin esto, en el momento exacto de pasar el ratón por encima, esa
+       regla más específica gana y el desplegable "de verdad" se activaba
+       por debajo de la fila plana (el parpadeo que reportó el usuario).
+       Misma especificidad aquí, pero después en la cascada: gana esta. */
+    .nav-item-dropdown:hover .nav-dropdown-menu,
+    .nav-item-dropdown:focus-within .nav-dropdown-menu {
+        display: contents;
+    }
     .nav-dropdown-toggle {
         display: none;
     }
