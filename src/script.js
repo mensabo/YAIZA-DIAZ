@@ -430,6 +430,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Ejecutamos Firebase en bloque protegido
         (async function runFirebase() {
             try {
+                // Firestore Lite (a diferencia del SDK completo) no espera sola a que
+                // App Check tenga token: dispara la petición al instante. Sin esta espera
+                // explícita, las primeras lecturas de cada carga de página saldrían sin
+                // token válido (mismo bug ya resuelto en FORMULA).
+                if (window.firebaseServices.appCheckListo) {
+                    await window.firebaseServices.appCheckListo;
+                }
+
                 await loadDynamicText();
 
                 if (pageId === 'homepage') initializeHeroSlider();

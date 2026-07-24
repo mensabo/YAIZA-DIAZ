@@ -28,7 +28,7 @@
     <meta name="twitter:description" content="Un canal de divulgación y apoyo sobre el cáncer de mama triple negativo en primera persona.">
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/ftr-banner.jpg">
 
-    <link rel="stylesheet" href="style.css?v=1784911250066">
+    <link rel="stylesheet" href="style.css?v=1784922134270">
     <!-- Playfair Display/Montserrat/Caveat autoalojadas (ver style.css),
          ya no hace falta preconectar a Google Fonts. Solo queda cdnjs
          (Font Awesome); Firebase/Analytics se cargan después (JS async o
@@ -213,11 +213,22 @@
     <script src="config.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+        import { initializeAppCheck, ReCaptchaV3Provider, getToken } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app-check.js";
         import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-firestore-lite.js";
         const app = initializeApp(firebaseConfig);
+        // App Check: initializeAppCheck() debe ir ANTES de getFirestore(app)/getStorage(app) --
+        // Firestore Lite captura el proveedor de App Check en ese momento, no despues (misma
+        // leccion que costo horas en FORMULA). getToken() se espera explicitamente antes de la
+        // primera lectura real para evitar el bug conocido de reCAPTCHA "placeholder must be
+        // empty" si se dispara una consulta antes de que el widget termine de montarse.
+        const appCheck = initializeAppCheck(app, {
+            provider: new ReCaptchaV3Provider('6LfOsmMtAAAAAIxFDSsA5odYb5rctz1vG6KUhgUy'),
+            isTokenAutoRefreshEnabled: true
+        });
+        const appCheckListo = getToken(appCheck).catch(function () {});
         const db = getFirestore(app);
-        window.firebaseServices = { db, doc, getDoc };
+        window.firebaseServices = { appCheckListo, db, doc, getDoc };
     </script>
-    <script src="script.js?v=1784911250066" type="module"></script>
+    <script src="script.js?v=1784922134270" type="module"></script>
 </body>
 </html>
