@@ -335,6 +335,86 @@ nav ul li a[aria-current="page"]::after {
     background-color: var(--color-acento);
 }
 
+/* Menú agrupado: en vez de 12-13 enlaces sueltos en una sola fila, Medios/
+   Profesional/Contenido se pliegan en un desplegable. Sin JS (solo :hover/
+   :focus-within), así que sigue funcionando si algo falla en script.js, y
+   es accesible por teclado (el span del grupo es focusable con tabindex). */
+.nav-item-dropdown {
+    position: relative;
+}
+
+.nav-dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--color-acento);
+    font-size: clamp(0.6rem, 0.8vw, 0.95rem);
+    padding: 1rem clamp(0.2rem, 0.5vw, 0.4rem);
+    font-family: var(--fuente-titulos);
+    cursor: pointer;
+}
+
+.nav-dropdown-toggle::after {
+    content: '▾';
+    font-size: 0.7em;
+    transition: transform 0.25s ease;
+}
+
+.nav-item-dropdown:hover .nav-dropdown-toggle,
+.nav-item-dropdown:focus-within .nav-dropdown-toggle {
+    color: var(--color-blanco);
+}
+
+.nav-item-dropdown:hover .nav-dropdown-toggle::after,
+.nav-item-dropdown:focus-within .nav-dropdown-toggle::after {
+    transform: rotate(180deg);
+}
+
+/* Si la página actual está dentro de este grupo, el propio grupo se marca
+   sutilmente aunque el desplegable esté cerrado (para no perder la
+   referencia de "dónde estoy" que sí tenían los enlaces sueltos). */
+.nav-item-dropdown:has(a[aria-current="page"]) > .nav-dropdown-toggle {
+    color: var(--color-blanco);
+}
+
+.nav-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    flex-direction: column;
+    background-color: rgba(20, 20, 20, 0.97);
+    backdrop-filter: blur(8px);
+    padding: 0.5rem 0;
+    min-width: 190px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    z-index: 20;
+    list-style: none;
+    margin: 0;
+}
+
+.nav-item-dropdown:hover .nav-dropdown-menu,
+.nav-item-dropdown:focus-within .nav-dropdown-menu {
+    display: flex;
+}
+
+.nav-dropdown-menu li {
+    width: 100%;
+}
+
+.nav-dropdown-menu a, .nav-dropdown-menu a:visited {
+    display: block;
+    padding: 0.6rem 1.3rem !important;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.nav-dropdown-menu a::after {
+    display: none;
+}
+
 /* ================================================== */
 /*   HERO DINÁMICO   */
 /* ================================================== */
@@ -703,8 +783,15 @@ NUEVO DISEÑO ARTÍSTICO PARA BOTONES/ETIQUETAS:
     font-size: 1.2rem;
 }
 
+.contact-alt-cta {
+    margin-top: 2.5rem !important;
+    margin-bottom: 0 !important;
+    font-size: 0.95rem;
+    opacity: 0.75;
+}
+
 .social-icons {
-    margin-top: 3rem;
+    margin-top: 0.75rem;
 }
 
 .social-icons a {
@@ -2551,6 +2638,36 @@ footer {
     }
     #nav-links a:hover {
         transform: none;
+    }
+
+    /* En el panel móvil no hay hover: el grupo se muestra siempre
+       desplegado, como una etiqueta de sección seguida de sus enlaces
+       (en vez de un desplegable que habría que tocar para abrir). */
+    .nav-dropdown-toggle {
+        display: block;
+        width: 100%;
+        padding: 0.35rem 1rem;
+        font-size: 0.85rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        opacity: 0.6;
+        cursor: default;
+    }
+    .nav-dropdown-toggle::after {
+        display: none;
+    }
+    .nav-dropdown-menu {
+        position: static;
+        display: flex;
+        transform: none;
+        background: none;
+        backdrop-filter: none;
+        box-shadow: none;
+        padding: 0;
+        min-width: 0;
+    }
+    .nav-dropdown-menu a, .nav-dropdown-menu a:visited {
+        padding: 0.35rem 1rem !important;
     }
 
 
