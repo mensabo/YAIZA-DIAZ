@@ -635,7 +635,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 // para esta foto, si no la miniatura de la tarjeta sale descentrada.
                 const positionStyle = firstItem.position ? ` style="object-position: ${escapeHtml(firstItem.position)};"` : '';
                 const loadingAttr = index === 0 ? '' : ' loading="lazy"';
-                const mediaHtml = firstItem.type === 'video' && firstItem.videoSrc ? `<video autoplay loop muted playsinline poster="${escapeHtml(firstItem.thumbnailSrc || '')}"${positionStyle}><source src="${escapeHtml(firstItem.videoSrc)}" type="video/mp4"></video>` : `<img src="${escapeHtml(cachedImg(firstItem.thumbnailSrc || firstItem.src))}" alt="${escapeHtml(event.title)}"${loadingAttr}${positionStyle}>`;
+                const fetchPriorityAttr = index === 0 ? ' fetchpriority="high"' : '';
+                const mediaHtml = firstItem.type === 'video' && firstItem.videoSrc ? `<video autoplay loop muted playsinline poster="${escapeHtml(firstItem.thumbnailSrc || '')}"${positionStyle}><source src="${escapeHtml(firstItem.videoSrc)}" type="video/mp4"></video>` : `<img src="${escapeHtml(cachedImg(firstItem.thumbnailSrc || firstItem.src))}" alt="${escapeHtml(event.title)}"${loadingAttr}${fetchPriorityAttr}${positionStyle}>`;
                 const card = document.createElement('a');
                 card.href = `evento-detalle.html?id=${encodeURIComponent(event.id)}`;
                 card.className = 'event-card-link';
@@ -665,7 +666,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.target = '_blank';
                 card.rel = 'noopener noreferrer';
                 const loadingAttr = index === 0 ? '' : ' loading="lazy"';
-                card.innerHTML = `<div class="image-container"><img src="${escapeHtml(cachedImg(interview.thumbnailUrl))}" alt="${escapeHtml(interview.mainTitle)}"${loadingAttr}>${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}</div><div class="media-card-text"><h3>${escapeHtml(interview.mainTitle)}</h3><p>${escapeHtml(interview.subtitle)}</p></div><button type="button" class="share-btn" data-share-title="${escapeHtml(interview.mainTitle)}" data-share-url="${escapeHtml(interview.url)}" aria-label="Compartir esta entrevista"><i class="fas fa-share-alt"></i></button>`;
+                const fetchPriorityAttr = index === 0 ? ' fetchpriority="high"' : '';
+                card.innerHTML = `<div class="image-container"><img src="${escapeHtml(cachedImg(interview.thumbnailUrl))}" alt="${escapeHtml(interview.mainTitle)}"${loadingAttr}${fetchPriorityAttr}>${isVideo ? '<div class="video-overlay-icon"><i class="fas fa-play"></i></div>' : ''}</div><div class="media-card-text"><h3>${escapeHtml(interview.mainTitle)}</h3><p>${escapeHtml(interview.subtitle)}</p></div><button type="button" class="share-btn" data-share-title="${escapeHtml(interview.mainTitle)}" data-share-url="${escapeHtml(interview.url)}" aria-label="Compartir esta entrevista"><i class="fas fa-share-alt"></i></button>`;
                 grid.appendChild(card);
             });
         } catch (error) { console.error("Error cargando entrevistas:", error); }
@@ -690,12 +692,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 programDiv.className = 'comunicacion-section';
                 const textHtml = program.text ? `<p>${escapeHtml(program.text)}</p>` : '';
                 const loadingAttr = index === 0 ? '' : ' loading="lazy"';
+                const fetchPriorityAttr = index === 0 ? ' fetchpriority="high"' : '';
 
                 programDiv.innerHTML = `
                     <h3>${escapeHtml(program.title)}</h3>
                     ${textHtml}
                     <a href="${escapeHtml(program.url)}" class="video-fallback js-video-modal-trigger" data-video-src="${escapeHtml(program.url)}">
-                        <img src="${escapeHtml(cachedImg(program.thumbnailUrl))}" alt="Miniatura ${escapeHtml(program.title)}"${loadingAttr}>
+                        <img src="${escapeHtml(cachedImg(program.thumbnailUrl))}" alt="Miniatura ${escapeHtml(program.title)}"${loadingAttr}${fetchPriorityAttr}>
                         <div class="play-button-overlay"><i class="fas fa-play"></i></div>
                     </a>
                 `;

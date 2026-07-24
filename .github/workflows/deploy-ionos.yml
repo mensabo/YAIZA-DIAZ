@@ -24,6 +24,9 @@ jobs:
       - name: Instalar dependencias de build
         run: npm ci
 
+      - name: Precalentar la primera imagen de Eventos/Entrevistas/Televisión
+        run: node tools/preload-first-media.mjs
+
       - name: Generar style.css/script.js minificados
         run: npm run build
 
