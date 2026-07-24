@@ -3685,6 +3685,32 @@ a.expandable-image:hover img {
     .cookie-btn {
         flex: 1 1 auto;
     }
+    /* El parrafo legal completo (~350 caracteres) sin recortar ocupaba
+       casi toda la pantalla en movil, tapando el hero por completo hasta
+       que el visitante interactuaba -- primera impresion real de la mayoria
+       del trafico (auditoria UX 24/07/2026). Se recorta visualmente a 2
+       lineas con line-clamp (el texto completo sigue en el DOM, accesible
+       para lectores de pantalla) y se reduce padding/tipografia; el enlace
+       a la Politica de Cookies ya cubre el detalle completo. */
+    .cookie-banner {
+        padding: 0.85rem 1rem;
+        gap: 0.6rem;
+    }
+    .cookie-banner-content p {
+        font-size: 0.8rem;
+        margin-bottom: 0.35rem;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    .cookie-banner-settings {
+        margin-top: 0.5rem;
+        gap: 0.5rem 1.25rem;
+    }
+    .cookie-btn {
+        padding: 0.5rem 1rem;
+    }
 }
 
 /* =================================== */
