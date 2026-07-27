@@ -139,6 +139,9 @@ El usuario avisó que en 1-2 días migra este sitio (y FORMULA) de IONOS a Raiol
 - **Sin acción de código esperada en `.htaccess`**: Raiola es hosting cPanel/Apache estándar, debería soportar `mod_rewrite`/`mod_headers`/`mod_deflate` igual o mejor que IONOS — a verificar con `curl -sI` real tras el primer despliegue de prueba.
 - **Revisar tras la migración**: si el dominio final (`www.yaizadiaz.com`) no cambia, no debería hacer falta tocar dominios autorizados en Firebase Auth/App Check, solo el registro DNS. Si Raiola exige clave SSH en vez de contraseña para SFTP, adaptar `tools/deploy-ionos-sftp.mjs` (ya usa `ssh2-sftp-client`, que soporta `privateKey` además de `password`).
 
+## Sesión 27/07/2026 — Orden del menú desplegable
+A petición del usuario, "Profesional" pasa a aparecer antes que "Medios" en el menú (18 páginas) — mismo contenido interno de cada desplegable, solo cambia el orden de los dos bloques. `npm test` (520 checks) en verde tras el cambio.
+
 ## Trato con el usuario
 
 - El usuario **no edita en local**: todas las ediciones van por Claude Code.
