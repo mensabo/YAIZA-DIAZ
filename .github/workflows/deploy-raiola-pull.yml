@@ -11,15 +11,20 @@ name: Publicar en un Release (para el Cron pull de Raiola)
 # cPanel de Raiola lo descarga por conexion SALIENTE (no bloqueada) y lo
 # despliega el solo.
 #
-# NO activo por defecto -- solo workflow_dispatch, mientras se confirma si
-# el SFTP de deploy-raiola.yml funciona o hace falta este plan B. El push a
-# master sigue disparando solo deploy-ionos.yml, sin cambios.
+# Activado en cada push a master (29/07/2026): se confirmo que la cuenta
+# Raiola compartida (jzpvizms) bloquea conexiones entrantes FTP/cPanel --
+# mismo firewall ya detectado en mensabo/RenacerCanarias -- asi que se opta
+# directamente por el Cron pull sin perder tiempo probando el SFTP de
+# deploy-raiola.yml (que se deja tal cual, solo workflow_dispatch, por si
+# Raiola arregla el firewall mas adelante y se quiere volver a el).
 #
 # Mismas exclusiones que tools/deploy-ionos-sftp.mjs (lo que de verdad se
 # publica en el hosting), para que este Release contenga exactamente lo
 # mismo que subiria el otro camino.
 
 on:
+  push:
+    branches: [master]
   workflow_dispatch: {}
 
 permissions:
