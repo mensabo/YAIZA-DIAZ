@@ -102,6 +102,18 @@ RELEASE_TAG="$(trim "${RELEASE_TAG:-}")"
 : "${SITE_DIR:?Falta SITE_DIR en raiola-deploy.env (ruta real del sitio en el servidor)}"
 RELEASE_TAG="${RELEASE_TAG:-raiola-dist}"
 
+# Si SITE_DIR no existe ya como directorio, algo va mal -- normalmente
+# deberia ser la carpeta del sitio YA publicado. Lo mas probable es un
+# caracter invisible colado en el .env (ej. un espacio Unicode en vez de
+# ASCII) que hace que "mv" cree una carpeta nueva con un nombre casi
+# identico en vez de sustituir la real, sin dar ningun error. Se vuelca en
+# hex+texto para verlo de un vistazo en el log.
+if [ ! -d "$SITE_DIR" ]; then
+    echo "$(date -Iseconds) AVISO: SITE_DIR ('$SITE_DIR') no existe como directorio -- no se va a poder hacer backup de lo que ya hay publicado, y el 'mv' final puede acabar creando una carpeta nueva con un nombre parecido en vez de sustituir el sitio real." >&2
+    echo "Volcado en hex+texto de SITE_DIR (cada caracter raro se ve como '.' en texto, con su byte real a la izquierda):" >&2
+    printf '%s' "$SITE_DIR" | od -An -tx1c >&2
+fi
+
 MARKER_FILE="$SCRIPT_DIR/.last-asset-id"
 WORK_DIR="$SCRIPT_DIR/work"
 mkdir -p "$WORK_DIR"
