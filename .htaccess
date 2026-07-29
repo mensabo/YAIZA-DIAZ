@@ -16,7 +16,7 @@ Require all denied
 <Files "panel-yz28da.html">
 AuthType Basic
 AuthName "Acceso restringido"
-AuthUserFile "/homepages/28/d4299186613/htdocs/YAIZADIAZ/.htpasswd-panel"
+AuthUserFile "/home/jzpvizms/public_html/.htpasswd-panel"
 Require valid-user
 </Files>
 
