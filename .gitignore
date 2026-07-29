@@ -1,3 +1,4 @@
 node_modules/
 tools/serviceAccountKey.json
 firestore-export.json
+tools/raiola-deploy.env

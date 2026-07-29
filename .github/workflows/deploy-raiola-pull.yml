@@ -1,0 +1,76 @@
+name: Publicar en un Release (para el Cron pull de Raiola)
+
+# Alternativa a deploy-raiola.yml (SFTP, puerto 22) por si el firewall de
+# Raiola tambien lo bloquea -- mismo problema que se confirmo con el FTP
+# (puerto 21) y el panel cPanel (puerto 443) del hosting de RenacerCanarias,
+# en la misma cuenta Raiola. Mismo patron ya verificado y funcionando de
+# verdad en produccion en ese repo (ver mensabo/RenacerCanarias, PRs
+# #110/#112-115): en vez de que GitHub Actions empuje archivos hacia Raiola
+# (conexion entrante, posiblemente bloqueada), construye el sitio y lo
+# publica como el asset de un Release descargable; un Cron Job dentro del
+# cPanel de Raiola lo descarga por conexion SALIENTE (no bloqueada) y lo
+# despliega el solo.
+#
+# NO activo por defecto -- solo workflow_dispatch, mientras se confirma si
+# el SFTP de deploy-raiola.yml funciona o hace falta este plan B. El push a
+# master sigue disparando solo deploy-ionos.yml, sin cambios.
+#
+# Mismas exclusiones que tools/deploy-ionos-sftp.mjs (lo que de verdad se
+# publica en el hosting), para que este Release contenga exactamente lo
+# mismo que subiria el otro camino.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  publish-release:
+    name: Build + publicar dist.zip en el Release "raiola-dist"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Precalentar la primera imagen de Eventos/Entrevistas/Television
+        run: node tools/preload-first-media.mjs
+
+      - name: Generar style.css/script.js minificados
+        run: npm run build
+
+      - name: Preparar carpeta a publicar (mismas exclusiones que tools/deploy-ionos-sftp.mjs)
+        run: |
+          mkdir -p dist_pull
+          rsync -a \
+            --exclude='.git' --exclude='.github' --exclude='node_modules' \
+            --exclude='src' --exclude='tools' --exclude='tests' --exclude='functions' \
+            --exclude='.vscode' \
+            --exclude='CLAUDE.md' --exclude='package.json' --exclude='package-lock.json' \
+            --exclude='firebase.json' --exclude='.firebaserc' --exclude='firestore.rules' \
+            --exclude='storage.rules' --exclude='cors.json' --exclude='.gitignore' \
+            --exclude='dist_pull' \
+            ./ dist_pull/
+
+      - name: Comprimir dist_pull/
+        run: cd dist_pull && zip -qr ../dist.zip . && cd ..
+
+      - name: Publicar/actualizar el Release "raiola-dist"
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: raiola-dist
+          name: "Ultima build para Raiola (Cron pull)"
+          body: "Generado automaticamente por deploy-raiola-pull.yml. No editar a mano -- el Cron Job de Raiola descarga este dist.zip tal cual (ver tools/raiola-cron-pull.sh)."
+          files: dist.zip
+          make_latest: false
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
