@@ -1,12 +1,12 @@
 name: Desplegar en IONOS
 
-# Se ejecuta solo cuando cambia master (por ejemplo, al fusionar un PR).
-# tambien se puede lanzar a mano desde la pestaña "Actions" de GitHub
-# (workflow_dispatch) para volver a desplegar sin necesidad de un commit
-# nuevo.
+# Desactivado el disparo automatico en cada push (01/08/2026): el sitio ya
+# se despliega en Raiola via deploy-raiola-pull.yml, e IONOS ya no es el
+# destino real -- este workflow seguia intentando subir por SFTP en cada
+# push y fallando siempre, generando un email de fallo por cada commit. Se
+# deja solo el disparo manual (workflow_dispatch) por si algun dia hiciera
+# falta reactivarlo a mano.
 on:
-  push:
-    branches: [master]
   workflow_dispatch:
 
 jobs:
