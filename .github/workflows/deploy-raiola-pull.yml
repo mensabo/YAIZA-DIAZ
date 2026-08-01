@@ -18,7 +18,7 @@ name: Publicar en un Release (para el Cron pull de Raiola)
 # deploy-raiola.yml (que se deja tal cual, solo workflow_dispatch, por si
 # Raiola arregla el firewall mas adelante y se quiere volver a el).
 #
-# Mismas exclusiones que tools/deploy-ionos-sftp.mjs (lo que de verdad se
+# Mismas exclusiones que tools/deploy-raiola-sftp.mjs (lo que de verdad se
 # publica en el hosting), para que este Release contenga exactamente lo
 # mismo que subiria el otro camino.
 
@@ -52,7 +52,7 @@ jobs:
       - name: Generar style.css/script.js minificados
         run: npm run build
 
-      - name: Preparar carpeta a publicar (mismas exclusiones que tools/deploy-ionos-sftp.mjs)
+      - name: Preparar carpeta a publicar (mismas exclusiones que tools/deploy-raiola-sftp.mjs)
         run: |
           mkdir -p dist_pull
           rsync -a \

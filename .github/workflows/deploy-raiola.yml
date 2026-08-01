@@ -1,19 +1,17 @@
-name: Desplegar en Raiola (preparación, aún no activo)
+name: Desplegar en Raiola por SFTP (respaldo manual, bloqueado por firewall)
 
-# Migración prevista de IONOS a Raiola (ver CLAUDE.md, pendiente #X).
-# Este workflow es una copia del de IONOS apuntando a credenciales nuevas,
-# pensado para probarse a mano (workflow_dispatch) mientras el despliegue
-# automático en cada push sigue yendo a IONOS (deploy-ionos.yml) sin tocar.
-# Cuando Raiola esté verificado y el dominio apunte allí, se puede:
-#   1. Cambiar el `on:` de este archivo a `push: branches: [master]`.
-#   2. Quitar (o poner en workflow_dispatch) el `on: push` de deploy-ionos.yml.
+# El sitio ya se despliega en producción vía deploy-raiola-pull.yml (Cron
+# pull desde el cPanel de Raiola). Este workflow es el intento original por
+# SFTP directo, descartado porque el firewall de la cuenta Raiola bloquea
+# las conexiones entrantes -- se deja solo para probarlo a mano
+# (workflow_dispatch) por si Raiola llega a levantar el bloqueo algún día,
+# en cuyo caso sería una vía más directa que el Cron pull.
 #
-# Requiere estos 3 secrets nuevos en GitHub (Settings → Secrets → Actions),
-# con los datos de la cuenta SFTP de Raiola:
+# Requiere estos 3 secrets en GitHub (Settings → Secrets → Actions), con
+# los datos de la cuenta SFTP de Raiola:
 #   RAIOLA_HOST, RAIOLA_USER, RAIOLA_PASSWORD
-# Mismo supuesto que con IONOS: la cuenta SFTP debe estar ya acotada a la
-# carpeta del sitio (el remoto "/" de esta conexión = raíz del sitio) —
-# confirmar con Raiola/panel de hosting antes de la primera prueba.
+# La cuenta SFTP debe estar ya acotada a la carpeta del sitio (el remoto
+# "/" de esta conexión = raíz del sitio).
 
 on:
   workflow_dispatch: {}
@@ -44,4 +42,4 @@ jobs:
           FTP_SERVER: ${{ secrets.RAIOLA_HOST }}
           FTP_USERNAME: ${{ secrets.RAIOLA_USER }}
           FTP_PASSWORD: ${{ secrets.RAIOLA_PASSWORD }}
-        run: node tools/deploy-ionos-sftp.mjs
+        run: node tools/deploy-raiola-sftp.mjs

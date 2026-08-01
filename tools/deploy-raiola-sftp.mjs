@@ -1,12 +1,15 @@
 #!/usr/bin/env node
-// Sube el sitio (ya generado con `npm run build`) al espacio web de IONOS
+// Sube el sitio (ya generado con `npm run build`) al espacio web de Raiola
 // por SFTP. Pensado para ejecutarse desde GitHub Actions
-// (.github/workflows/deploy-ionos.yml), usando las credenciales de la
+// (.github/workflows/deploy-raiola.yml), usando las credenciales de la
 // cuenta SFTP dedicada (ver FTP_SERVER/FTP_USERNAME/FTP_PASSWORD).
+// Bloqueado en la practica por el firewall de Raiola (ver
+// deploy-raiola-pull.yml, el mecanismo que si funciona); se conserva por
+// si Raiola llega a levantar el bloqueo algun dia.
 //
-// La cuenta SFTP de IONOS ya esta limitada a la carpeta /YAIZADIAZ, asi
-// que el remoto "/" de esta conexion YA ES esa carpeta - no hace falta
-// (ni se debe) anadir /YAIZADIAZ a las rutas remotas de aqui.
+// Hereda el enfoque de un script equivalente escrito originalmente para
+// IONOS: la cuenta SFTP ya esta limitada a la carpeta del sitio, asi que
+// el remoto "/" de esta conexion YA ES esa carpeta.
 
 import SftpClient from 'ssh2-sftp-client';
 import { readdirSync, statSync } from 'node:fs';
@@ -54,7 +57,7 @@ async function ensureRemoteDir(sftp, remoteDir, cache) {
 
 async function main() {
     const files = collectFiles(root);
-    console.log(`Subiendo ${files.length} archivos a IONOS por SFTP...`);
+    console.log(`Subiendo ${files.length} archivos a Raiola por SFTP...`);
 
     const sftp = new SftpClient();
     await sftp.connect({
@@ -106,6 +109,6 @@ async function main() {
 }
 
 main().catch((err) => {
-    console.error('Error subiendo a IONOS:', err);
+    console.error('Error subiendo a Raiola:', err);
     process.exit(1);
 });
