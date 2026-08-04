@@ -512,7 +512,16 @@ nav ul li a[aria-current="page"]::after {
 /* ================================================== */
 .hero-dynamic {
     position: relative;
-    height: 100vh;
+    /* 100vh exacto (no calc(100vh - 1px)) hace que Chrome EXCLUYA la foto
+       del hero como candidato de LCP -- regla real del navegador: un
+       elemento que ocupa el 100% exacto del viewport (ancho Y alto) nunca
+       cuenta, para que nadie "haga trampa" con un fondo a pantalla
+       completa. Confirmado en auditoría real (04/08/2026): con height:100vh
+       el LCP pasaba al texto del banner de cookies en vez de a la foto,
+       mucho más pequeño pero válido como candidato al no ser exactamente
+       el viewport. El -1px es imperceptible visualmente y no cambia el
+       diseño ni el comportamiento del hero (fotos/rotación intactas). */
+    height: calc(100vh - 1px);
     color: var(--color-blanco);
     overflow: hidden;
 }
@@ -4583,7 +4592,10 @@ a.expandable-image:hover img {
     #scroll-indicator.is-hidden { opacity: 0 !important; animation: none; }
 
     /* --- PORTADA MÓVIL (Recuperada) --- */
-    .hero-dynamic { min-height: 100vh; }
+    /* min-height: calc(100vh - 1px), no 100vh exacto -- mismo motivo que la
+       regla base de .hero-dynamic más arriba (evita que Chrome excluya la
+       foto del hero como candidato de LCP por ocupar el viewport exacto). */
+    .hero-dynamic { min-height: calc(100vh - 1px); }
     .hero-background-container { background-size: cover; z-index: 1; }
     .hero-tabs-container { width: 100%; top: auto; bottom: 0; right: 0; transform: none; height: auto; }
     .hero-tabs-desktop { display: none; }
