@@ -412,49 +412,58 @@ document.addEventListener('DOMContentLoaded', () => {
     // =======================================================
     let db, collection, getDocs, orderBy, query, doc, getDoc, addDoc, serverTimestamp, storage, ref, uploadBytes, getDownloadURL;
 
-    if (window.firebaseServices) {
-        db = window.firebaseServices.db;
-        collection = window.firebaseServices.collection;
-        getDocs = window.firebaseServices.getDocs;
-        orderBy = window.firebaseServices.orderBy;
-        query = window.firebaseServices.query;
-        doc = window.firebaseServices.doc;
-        getDoc = window.firebaseServices.getDoc;
-        addDoc = window.firebaseServices.addDoc;
-        serverTimestamp = window.firebaseServices.serverTimestamp;
-        storage = window.firebaseServices.storage;
-        ref = window.firebaseServices.ref;
-        uploadBytes = window.firebaseServices.uploadBytes;
-        getDownloadURL = window.firebaseServices.getDownloadURL;
-        
-        // Ejecutamos Firebase en bloque protegido
-        (async function runFirebase() {
-            try {
-                // Firestore Lite (a diferencia del SDK completo) no espera sola a que
-                // App Check tenga token: dispara la petición al instante. Sin esta espera
-                // explícita, las primeras lecturas de cada carga de página saldrían sin
-                // token válido (mismo bug ya resuelto en FORMULA).
-                if (window.firebaseServices.appCheckListo) {
-                    await window.firebaseServices.appCheckListo;
+    if (window.firebaseServicesReady) {
+        // firebaseServicesReady (ver firebase-init.js) se resuelve una vez que
+        // App Check + Firestore + Storage terminan de inicializarse en segundo
+        // plano (diferido a requestIdleCallback para no competir con el
+        // pintado inicial -- reCAPTCHA v3 consume ~2.4s de hilo principal).
+        // Antes esto era una comprobación síncrona de window.firebaseServices;
+        // con la inicialización diferida esa comprobación habría fallado
+        // siempre, así que ahora se espera a la promesa.
+        window.firebaseServicesReady.then(function (services) {
+            db = services.db;
+            collection = services.collection;
+            getDocs = services.getDocs;
+            orderBy = services.orderBy;
+            query = services.query;
+            doc = services.doc;
+            getDoc = services.getDoc;
+            addDoc = services.addDoc;
+            serverTimestamp = services.serverTimestamp;
+            storage = services.storage;
+            ref = services.ref;
+            uploadBytes = services.uploadBytes;
+            getDownloadURL = services.getDownloadURL;
+
+            // Ejecutamos Firebase en bloque protegido
+            (async function runFirebase() {
+                try {
+                    // Firestore Lite (a diferencia del SDK completo) no espera sola a que
+                    // App Check tenga token: dispara la petición al instante. Sin esta espera
+                    // explícita, las primeras lecturas de cada carga de página saldrían sin
+                    // token válido (mismo bug ya resuelto en FORMULA).
+                    if (services.appCheckListo) {
+                        await services.appCheckListo;
+                    }
+
+                    await loadDynamicText();
+
+                    if (pageId === 'homepage') initializeHeroSlider();
+                    if (pageId === 'eventosPage') loadAndRenderEventsGridPage();
+                    if (pageId === 'entrevistasPage') loadAndRenderInterviews();
+                    if (pageId === 'televisionPage') loadAndRenderTVPrograms();
+                    if (pageId === 'premiosPage') loadAndRenderAwards();
+
+                    if (document.getElementById('galeria-interactiva')) initializeInteractiveGallery('galeria-interactiva', 'gallery');
+                    if (document.getElementById('galeria-interactiva-modelo')) initializeInteractiveGallery('galeria-interactiva-modelo', 'modeling_gallery');
+                    if (document.getElementById('galeria-interactiva-television')) initializeInteractiveGallery('galeria-interactiva-television', 'television_gallery');
+                    if (document.getElementById('galeria-interactiva-radio')) initializeInteractiveGallery('galeria-interactiva-radio', 'radio_gallery');
+                    if (document.getElementById('galeria-interactiva-habecu')) initializeInteractiveGallery('galeria-interactiva-habecu', 'habecu_gallery');
+                } catch (err) {
+                    console.error("Error cargando base de datos:", err);
                 }
-
-                await loadDynamicText();
-
-                if (pageId === 'homepage') initializeHeroSlider();
-                if (pageId === 'eventosPage') loadAndRenderEventsGridPage();
-                if (pageId === 'entrevistasPage') loadAndRenderInterviews();
-                if (pageId === 'televisionPage') loadAndRenderTVPrograms();
-                if (pageId === 'premiosPage') loadAndRenderAwards();
-
-                if (document.getElementById('galeria-interactiva')) initializeInteractiveGallery('galeria-interactiva', 'gallery');
-                if (document.getElementById('galeria-interactiva-modelo')) initializeInteractiveGallery('galeria-interactiva-modelo', 'modeling_gallery');
-                if (document.getElementById('galeria-interactiva-television')) initializeInteractiveGallery('galeria-interactiva-television', 'television_gallery');
-                if (document.getElementById('galeria-interactiva-radio')) initializeInteractiveGallery('galeria-interactiva-radio', 'radio_gallery');
-                if (document.getElementById('galeria-interactiva-habecu')) initializeInteractiveGallery('galeria-interactiva-habecu', 'habecu_gallery');
-            } catch (err) {
-                console.error("Error cargando base de datos:", err);
-            }
-        })();
+            })();
+        });
     } else {
         console.warn("Aviso: Firebase no detectado. El menú y la interfaz funcionan correctamente.");
     }
