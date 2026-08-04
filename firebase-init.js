@@ -2,14 +2,20 @@
    Compartido por las 18 páginas públicas (antes cada una duplicaba este bloque
    inline, ligeramente distinto según si necesitaba Storage o no).
 
-   Diferido a requestIdleCallback (con margen de 2s como red de seguridad en
-   navegadores sin soporte, ej. Safari) para no competir con el pintado
-   inicial: reCAPTCHA v3 (usado por App Check) consume ~2.4s de hilo principal
-   por contexto (página + iframe interno), justo la ventana en la que antes se
-   decidía el LCP -- auditoría real 04/08/2026, Lighthouse Performance cayó de
-   77 a 47-60. Las páginas con contenido de Firestore ya llevan sus propios
-   fallbacks estáticos (ver CLAUDE.md) mientras esto termina, así que el
-   retraso (bien por debajo de 1s en la práctica) no deja ningún hueco vacío.
+   Diferido al evento "load" (con red de seguridad de 3s si "load" nunca
+   llegara a disparar) para no competir con el pintado inicial: reCAPTCHA v3
+   (usado por App Check) consume ~2.4s de hilo principal por contexto (página
+   + iframe interno), justo la ventana en la que antes se decidía el LCP --
+   auditoría real 04/08/2026, Lighthouse Performance cayó de 77 a 47-60.
+   Primer intento con requestIdleCallback (04/08/2026): mejoró bootup-time
+   (3.0s->1.5s) y FCP (2.6s->2.0s) pero el score global apenas se movió --
+   bajo la simulación de Lighthouse (Lantern), el navegador se considera
+   "inactivo" casi de inmediato, así que apenas retrasaba nada de verdad. El
+   evento "load" es un punto determinista (todos los recursos, imágenes
+   incluidas, ya han terminado), no una estimación de inactividad que
+   Lighthouse puede interpretar de otra forma. Las páginas con contenido de
+   Firestore ya llevan sus propios fallbacks estáticos (ver CLAUDE.md)
+   mientras esto termina, así que el retraso no deja ningún hueco vacío.
 
    Expone window.firebaseServicesReady (promesa) en vez de solo
    window.firebaseServices (objeto) para que script.js pueda ESPERAR a que
@@ -69,10 +75,19 @@ function iniciarServiciosPesados() {
 }
 
 window.firebaseServicesReady = new Promise(function (resolve) {
-    function arrancar() { iniciarServiciosPesados().then(resolve); }
-    if ('requestIdleCallback' in window) {
-        requestIdleCallback(arrancar, { timeout: 2000 });
+    var arrancado = false;
+    function arrancar() {
+        if (arrancado) return;
+        arrancado = true;
+        iniciarServiciosPesados().then(resolve);
+    }
+    if (document.readyState === 'complete') {
+        // La página ya había terminado de cargar (script insertado tarde,
+        // navegación de vuelta con bfcache, etc.) -- "load" no volverá a
+        // disparar, así que arrancamos ya mismo.
+        arrancar();
     } else {
-        setTimeout(arrancar, 200);
+        window.addEventListener('load', arrancar);
+        setTimeout(arrancar, 3000); // red de seguridad si "load" nunca llega
     }
 });
