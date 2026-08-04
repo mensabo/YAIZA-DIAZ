@@ -801,7 +801,11 @@ NUEVO DISEÑO ARTÍSTICO PARA BOTONES/ETIQUETAS:
 - Fuente de títulos para un toque elegante.
 - Borde y sombra sutil para un efecto "letterpress" o de relieve.
 */
-.event-tags span {
+/* .event-tags a: las marcas de #trusted-by son enlaces reales (llevan al
+   evento asociado en evento-detalle.html) -- mismo aspecto exacto que las
+   etiquetas sueltas (span, ej. #habilidades), solo añaden cursor de enlace. */
+.event-tags span,
+.event-tags a {
     background-color: var(--color-blanco); /* Blanco roto #FDFBF6 */
     color: var(--color-primario);
     font-family: var(--fuente-titulos);
@@ -815,10 +819,12 @@ NUEVO DISEÑO ARTÍSTICO PARA BOTONES/ETIQUETAS:
     position: relative;
     overflow: hidden;
     text-decoration: none;
+    display: inline-block;
 }
 
 /* Hover mejorado con levantamiento y sombra más pronunciada */
-.event-tags span:hover {
+.event-tags span:hover,
+.event-tags a:hover {
     background-color: var(--color-acento);
     color: var(--color-blanco); /* Aseguramos texto blanco sobre fondo dorado */
     border-color: var(--color-acento);
@@ -828,7 +834,8 @@ NUEVO DISEÑO ARTÍSTICO PARA BOTONES/ETIQUETAS:
 
 
 /* El destello ahora es dorado para mejor contraste en móvil */
-.event-tags span::after {
+.event-tags span::after,
+.event-tags a::after {
     content: '';
     position: absolute;
     top: 0;
@@ -839,7 +846,8 @@ NUEVO DISEÑO ARTÍSTICO PARA BOTONES/ETIQUETAS:
     transform: translateX(-150%) skewX(-25deg);
 }
 
-.event-tags span:hover::after {
+.event-tags span:hover::after,
+.event-tags a:hover::after {
     background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
     animation: shine-sweep 1s ease;
 }
