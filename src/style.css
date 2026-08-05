@@ -740,6 +740,12 @@ nav ul li a[aria-current="page"]::after {
    demasiado de cerca la cara. Se deja con su proporción real aunque la
    tarjeta quede algo más baja que las otras dos de la cuadrícula. */
 .project-card img.natural-ratio {
+    /* Mismo bug que en .sinopsis-img img.natural-ratio (ver ese comentario):
+       sin resetear el aspect-ratio:4/3 heredado de la regla base, la foto
+       panorámica se estira para encajar en esa caja en vez de conservar su
+       proporción real -- justo lo contrario de lo que dice el comentario
+       de arriba sobre portfolio-2.jpeg. */
+    aspect-ratio: auto;
     object-fit: initial;
 }
 
@@ -1364,6 +1370,13 @@ footer {
    definida de la que derivar el aspect-ratio, la caja colapsa a 0x0 hasta
    que la imagen (lazy) empieza a cargar, causando layout shift real. */
 .sinopsis-img img.natural-ratio {
+    /* Resetea el aspect-ratio:1/1 forzado de la regla base de arriba --
+       sin esto, la foto se ESTIRA (object-fit:initial = fill) para encajar
+       en una caja cuadrada en vez de conservar su proporción real, que es
+       justo lo contrario de lo que dice el comentario de arriba (bug real
+       reportado por el usuario: foto "deformada" en comunicacion.html,
+       mismo patrón en las demás páginas que usan esta clase). */
+    aspect-ratio: auto;
     object-fit: initial;
     max-width: 100%;
     height: auto;
