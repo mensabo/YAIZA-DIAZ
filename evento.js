@@ -11,19 +11,27 @@ function escapeHtml(value) {
     }[char]));
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-    // Asegurarse de que los servicios de Firebase estén disponibles
-    if (!window.firebaseServices) {
+document.addEventListener('DOMContentLoaded', () => {
+    // firebase-init.js difiere la carga de Firebase hasta el evento "load"
+    // (optimización de Lighthouse Performance, ver ese archivo) y expone
+    // window.firebaseServicesReady (promesa) en vez de window.firebaseServices
+    // directo -- la comprobación síncrona antigua de window.firebaseServices
+    // fallaba siempre con el nuevo diferido, dejando esta página atascada en
+    // "Cargando evento..." para siempre (bug real reportado por el usuario).
+    // script.js ya se actualizó a este patrón cuando se hizo el diferido;
+    // este archivo se había quedado con el patrón viejo.
+    if (!window.firebaseServicesReady) {
         console.error("Firebase no está inicializado. Revisa la etiqueta <script> en tu HTML.");
         return;
     }
-    const { db, doc, getDoc } = window.firebaseServices;
+    window.firebaseServicesReady.then(async (services) => {
+    const { db, doc, getDoc } = services;
 
     // Elementos del DOM donde se mostrará el contenido
     const eventTitleEl = document.getElementById('event-title');
     const eventTextEl = document.getElementById('event-text');
     const eventGalleryEl = document.getElementById('event-gallery');
-    
+
     // Obtener el ID del evento desde la URL (ej: evento-detalle.html?id=DOCUMENTO_ID)
     const params = new URLSearchParams(window.location.search);
     const eventId = params.get('id');
@@ -35,6 +43,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     try {
+        // Firestore Lite no espera sola a que App Check tenga token (mismo
+        // motivo que en script.js) -- sin esto, esta primera lectura podría
+        // salir sin token válido.
+        if (services.appCheckListo) {
+            await services.appCheckListo;
+        }
+
         // Cargar los datos del documento del evento desde Firestore
         const docRef = doc(db, 'events', eventId);
         const docSnap = await getDoc(docRef);
@@ -96,6 +111,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Inicializar los modales de vídeo después de que la galería se haya renderizado
     initializeVideoModalsForDetailsPage();
+    });
 });
 
 // Función específica para los modales en esta página
