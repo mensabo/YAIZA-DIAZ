@@ -402,6 +402,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pageId === 'modelajePage') {
         initializeStaticGallery('galeria-interactiva-calendario');
     }
+    if (pageId === 'proyectosPage') {
+        initializeStaticGallery('galeria-interactiva-renacer');
+    }
     if (pageId === 'contactPage') {
         initializeContactForm();
     }
