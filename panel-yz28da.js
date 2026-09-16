@@ -461,7 +461,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="drag-handle" title="Arrastrar para reordenar" aria-hidden="true"></div>
                 <img src="${escapeHtml(item.thumbnailSrc || item.src)}" alt="miniatura">
                 <span class="item-type-badge">${item.type === 'video' ? 'VÍDEO' : 'IMAGEN'}</span>
-                <textarea class="description-input" placeholder="Descripción...">${escapeHtml(item.descripcion || '')}</textarea>
+                ${item.type === 'video' ? `<textarea class="description-input" placeholder="Descripción...">${escapeHtml(item.descripcion || '')}</textarea>` : ''}
                 ${item.type === 'video' ? '' : '<button class="rotate-button" title="Rotar 90°">⟳ Rotar</button>'}
                 <button class="delete-button">Eliminar</button>`;
             galleryListEl.appendChild(div);
@@ -484,7 +484,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await uploadBytes(storageRef, file);
             const url = await getDownloadURL(storageRef);
             await addDoc(collection(db, currentCollection), {
-                type: 'image', src: url, descripcion: "Nueva imagen", order: currentCount + i
+                type: 'image', src: url, order: currentCount + i
             });
         }
         loadGalleries();
@@ -507,7 +507,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const batch = writeBatch(db);
         galleryListEl.querySelectorAll('.gallery-item').forEach((item, index) => {
             const docRef = doc(db, currentCollection, item.dataset.id);
-            batch.update(docRef, { order: index, descripcion: item.querySelector('.description-input').value });
+            const updateData = { order: index };
+            const descInput = item.querySelector('.description-input');
+            if (descInput) updateData.descripcion = descInput.value;
+            batch.update(docRef, updateData);
         });
         await batch.commit();
         showToast('¡Galería guardada con éxito!');

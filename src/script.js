@@ -923,10 +923,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     mainImage.src = cachedImg(item.thumbnailSrc || item.src);
                     bgImage.style.backgroundImage = `url(${cachedImg(item.thumbnailSrc || item.src)})`;
-                    mainDesc.textContent = item.descripcion || '';
+                    // Las fotos ya no llevan pie editable, solo los videos.
+                    const texto = item.type === 'video' ? (item.descripcion || '') : '';
+                    mainDesc.textContent = texto;
+                    mainDesc.parentElement.style.display = texto ? '' : 'none';
                     mainImage.style.opacity = '1';
                 }, 200);
-                
+
                 container.querySelectorAll('.miniatura-item').forEach(el => el.classList.remove('active'));
                 thumbElement.classList.add('active');
             }
@@ -987,7 +990,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             const nuevaRuta = cachedImg(currentItem.src || currentItem.thumbnailSrc || currentItem.videoSrc);
-            const nuevoTexto = currentItem.descripcion || currentItem.description || '';
+            // Las fotos de las galerias de Firestore (type:'image') ya no llevan
+            // pie editable (ver setActiveItem en initializeInteractiveGallery);
+            // el resto de imagenes sueltas del sitio (figcaption) conservan su texto.
+            const nuevoTexto = currentItem.type === 'image' ? '' : (currentItem.descripcion || currentItem.description || '');
             const esLogo = nuevaRuta.includes('chacho-creations-logo');
 
             caption.textContent = nuevoTexto;
