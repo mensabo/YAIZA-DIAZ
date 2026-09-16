@@ -402,9 +402,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (pageId === 'modelajePage') {
         initializeStaticGallery('galeria-interactiva-calendario');
     }
-    if (pageId === 'proyectosPage') {
-        initializeStaticGallery('galeria-interactiva-renacer');
-    }
     if (pageId === 'contactPage') {
         initializeContactForm();
     }
@@ -462,6 +459,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (document.getElementById('galeria-interactiva-television')) initializeInteractiveGallery('galeria-interactiva-television', 'television_gallery');
                     if (document.getElementById('galeria-interactiva-radio')) initializeInteractiveGallery('galeria-interactiva-radio', 'radio_gallery');
                     if (document.getElementById('galeria-interactiva-habecu')) initializeInteractiveGallery('galeria-interactiva-habecu', 'habecu_gallery');
+                    if (document.getElementById('galeria-interactiva-renacer')) initializeInteractiveGallery('galeria-interactiva-renacer', 'renacer_gallery');
                 } catch (err) {
                     console.error("Error cargando base de datos:", err);
                 }

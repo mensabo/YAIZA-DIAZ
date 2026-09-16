@@ -28,7 +28,7 @@
     <meta name="twitter:description" content="Un canal de divulgación y apoyo sobre el cáncer de mama triple negativo en primera persona, y la feria Renacer Tenerife 2026.">
     <meta name="twitter:image" content="https://www.yaizadiaz.com/images/ftr-banner.jpg">
 
-    <link rel="stylesheet" href="style.css?v=1789554922053">
+    <link rel="stylesheet" href="style.css?v=1789555608784">
     <!-- Playfair Display/Montserrat/Caveat autoalojadas (ver style.css),
          ya no hace falta preconectar a Google Fonts. Solo queda cdnjs
          (Font Awesome); Firebase/Analytics se cargan después (JS async o
@@ -198,51 +198,23 @@
                 </div>
 
                 <!-- GALERÍA RENACER TENERIFE: mismo componente "galería interactiva"
-                     (visor principal + tira de miniaturas + lightbox) que usan
-                     radio.html/television.html/modelaje.html, aquí con
-                     initializeStaticGallery() en vez de la versión con Firestore
-                     -- son fotos reales de renacercanarias.com (Cloudinary,
-                     cloud wpbrmknm), no hay una colección propia para esto.
-                     ABIERTA a propósito: añadir más bloques ".miniatura-item"
-                     aquí a medida que haya nuevo material real del evento
-                     (25-27 sept 2026) o de próximas ediciones, sin límite fijo
-                     ni necesidad de rehacer la sección entera. -->
+                     con Firestore (visor principal + tira de miniaturas + lightbox)
+                     que usan radio.html/television.html/modelaje.html/habecu, vía
+                     initializeInteractiveGallery('galeria-interactiva-renacer',
+                     'renacer_gallery'). Gestionable desde panel-yz28da.html
+                     seleccionando "Galería de Renacer Tenerife", igual que el
+                     resto -- no es una rejilla fija de HTML. La imagen de abajo es
+                     solo el fallback estático (foto real, orden 0 en Firestore)
+                     para el primer pintado, misma nota que en las otras páginas. -->
                 <div id="galeria-interactiva-renacer" class="galeria-interactiva-container" style="margin-top: 2.5rem;">
                     <div class="galeria-principal">
-                        <div class="galeria-bg-desenfocado"></div>
-                        <img class="imagen-principal" src="" alt="Visor principal de la galería de Renacer Tenerife" loading="lazy">
+                        <div class="galeria-bg-desenfocado" style="background-image: url(https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_1200,c_limit/renacer-canarias/tenerife/galeria/DSC7847_4eef538c.jpg);"></div>
+                        <img class="imagen-principal" src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_1200,c_limit/renacer-canarias/tenerife/galeria/DSC7847_4eef538c.jpg" alt="Visor principal de la galería de Renacer Tenerife" loading="lazy">
                         <div class="descripcion-principal">
-                            <p></p>
+                            <p>Yaiza Díaz presentando Renacer Tenerife</p>
                         </div>
                     </div>
-                    <div class="galeria-lista-miniaturas">
-                        <div class="miniatura-item" data-img-src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_1200,c_limit/renacer-canarias/tenerife/galeria/DSC7847_4eef538c.jpg" data-description="Yaiza Díaz presentando Renacer Tenerife">
-                            <img src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_400,c_limit/renacer-canarias/tenerife/galeria/DSC7847_4eef538c.jpg" alt="Miniatura: Yaiza Díaz presentando Renacer Tenerife" loading="lazy" width="400" height="600">
-                        </div>
-                        <div class="miniatura-item" data-img-src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_1200,c_limit/renacer-canarias/tenerife/galeria/RP_RenacerTenerife_29julio2026_5-2_d8f592bf.jpg" data-description="Yaiza Díaz en la presentación de Renacer Tenerife">
-                            <img src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_400,c_limit/renacer-canarias/tenerife/galeria/RP_RenacerTenerife_29julio2026_5-2_d8f592bf.jpg" alt="Miniatura: Yaiza Díaz en la presentación de Renacer Tenerife" loading="lazy" width="400" height="267">
-                        </div>
-                        <div class="miniatura-item" data-img-src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_1200,c_limit/renacer-canarias/tenerife/galeria/RP_RenacerTenerife_29julio2026_43_1480e164.jpg" data-description="Organizadores y colaboradores de Renacer Tenerife">
-                            <img src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_400,c_limit/renacer-canarias/tenerife/galeria/RP_RenacerTenerife_29julio2026_43_1480e164.jpg" alt="Miniatura: organizadores y colaboradores de Renacer Tenerife" loading="lazy" width="400" height="267">
-                        </div>
-                        <div class="miniatura-item" data-img-src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_1200,c_limit/renacer-canarias/tenerife/galeria/DSC7881_22da7b3d.jpg" data-description="Fotocol oficial de Renacer Tenerife con organizadores y colaboradores">
-                            <img src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_400,c_limit/renacer-canarias/tenerife/galeria/DSC7881_22da7b3d.jpg" alt="Miniatura: fotocol de Renacer Tenerife" loading="lazy" width="400" height="267">
-                        </div>
-                        <div class="miniatura-item" data-img-src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_1200,c_limit/renacer-canarias/tenerife/galeria/DSC7764_24ce2f28.jpg" data-description="Mesa redonda de presentación de Renacer Tenerife">
-                            <img src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_400,c_limit/renacer-canarias/tenerife/galeria/DSC7764_24ce2f28.jpg" alt="Miniatura: mesa redonda de Renacer Tenerife" loading="lazy" width="400" height="267">
-                        </div>
-                        <div class="miniatura-item" data-img-src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_1200,c_limit/renacer-canarias/tenerife/galeria/DSC7736_72e09d26.jpg" data-description="Yaiza Díaz con asistentes al evento Renacer Tenerife">
-                            <img src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_400,c_limit/renacer-canarias/tenerife/galeria/DSC7736_72e09d26.jpg" alt="Miniatura: Yaiza Díaz con asistentes a Renacer Tenerife" loading="lazy" width="400" height="267">
-                        </div>
-                        <div class="miniatura-item" data-img-src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_1200,c_limit/renacer-canarias/tenerife/galeria/DSC7728_f11fecd7.jpg" data-description="Yaiza Díaz saludando a una asistente en Renacer Tenerife">
-                            <img src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_400,c_limit/renacer-canarias/tenerife/galeria/DSC7728_f11fecd7.jpg" alt="Miniatura: Yaiza Díaz saludando a una asistente" loading="lazy" width="400" height="267">
-                        </div>
-                        <div class="miniatura-item" data-img-src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_1200,c_limit/renacer-canarias/tenerife/galeria/DSC7787_07f20cbf.jpg" data-description="Ponente en el turno de palabra de Renacer Tenerife">
-                            <img src="https://res.cloudinary.com/wpbrmknm/image/upload/f_auto,q_auto,w_400,c_limit/renacer-canarias/tenerife/galeria/DSC7787_07f20cbf.jpg" alt="Miniatura: ponente de Renacer Tenerife" loading="lazy" width="400" height="600">
-                        </div>
-                        <!-- AÑADIR AQUÍ más bloques ".miniatura-item" cuando lleguen
-                             las fotos reales del evento de septiembre. -->
-                    </div>
+                    <div class="galeria-lista-miniaturas"></div>
                 </div>
             </div>
 
@@ -275,6 +247,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="config.js"></script>
     <script src="firebase-init.js?v=2" type="module"></script>
-    <script src="script.js?v=1789554922053" type="module"></script>
+    <script src="script.js?v=1789555608784" type="module"></script>
 </body>
 </html>

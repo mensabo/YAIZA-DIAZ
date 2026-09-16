@@ -432,7 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const galleryTitles = {
         gallery: "Galería del Libro", modeling_gallery: "Galería de Modelaje",
         television_gallery: "Galería de Televisión", radio_gallery: "Galería de Radio",
-        habecu_gallery: "Galería de HABECU"
+        habecu_gallery: "Galería de HABECU", renacer_gallery: "Galería de Renacer Tenerife"
     };
 
     gallerySelector.addEventListener('change', (e) => {
