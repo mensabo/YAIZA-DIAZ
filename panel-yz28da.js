@@ -485,17 +485,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function handleGalleryImageUpload(files) {
         const validFiles = filterValidImageFiles(files);
-        const currentCount = galleryListEl.querySelectorAll('.gallery-item').length;
+        if (validFiles.length === 0) return;
+        // Lo más reciente siempre va primero: se desplaza el orden de lo ya
+        // existente y lo nuevo entra en las primeras posiciones (order 0, 1...).
+        await desplazarOrdenParaNuevos(validFiles.length);
         for (let i = 0; i < validFiles.length; i++) {
             const file = await compressImage(validFiles[i]);
             const storageRef = ref(storage, `${currentStoragePath}${Date.now()}_${file.name}`);
             await uploadBytes(storageRef, file);
             const url = await getDownloadURL(storageRef);
             await addDoc(collection(db, currentCollection), {
-                type: 'image', src: url, order: currentCount + i
+                type: 'image', src: url, order: i
             });
         }
         loadGalleries();
+    }
+
+    async function desplazarOrdenParaNuevos(cantidadNueva) {
+        const existentes = Array.from(galleryListEl.querySelectorAll('.gallery-item'));
+        if (existentes.length === 0) return;
+        const batch = writeBatch(db);
+        existentes.forEach((item, idx) => {
+            batch.update(doc(db, currentCollection, item.dataset.id), { order: idx + cantidadNueva });
+        });
+        await batch.commit();
     }
     
     addVideoButton.addEventListener('click', async () => {
@@ -503,9 +516,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const thumbUrl = thumbnailUrlInput.value.trim();
         const desc = videoDescriptionInput.value.trim();
         if (!videoUrl || !thumbUrl || !desc) return showToast("Por favor, completa todos los campos del vídeo.", "error");
-        const currentCount = galleryListEl.querySelectorAll('.gallery-item').length;
+        await desplazarOrdenParaNuevos(1);
         await addDoc(collection(db, currentCollection), {
-            type: 'video', videoSrc: videoUrl, thumbnailSrc: thumbUrl, descripcion: desc, order: currentCount
+            type: 'video', videoSrc: videoUrl, thumbnailSrc: thumbUrl, descripcion: desc, order: 0
         });
         videoUrlInput.value = thumbnailUrlInput.value = videoDescriptionInput.value = '';
         loadGalleries();
