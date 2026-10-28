@@ -469,6 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <img src="${escapeHtml(item.thumbnailSrc || item.src)}" alt="miniatura">
                 <span class="item-type-badge">${item.type === 'video' ? 'VÍDEO' : 'IMAGEN'}</span>
                 ${item.type === 'video' ? `<textarea class="description-input" placeholder="Descripción...">${escapeHtml(item.descripcion || '')}</textarea>` : ''}
+                <input type="text" class="section-input" placeholder="Sección (opcional, ej. Gala X 2026)" value="${escapeHtml(item.seccion || '')}">
                 ${item.type === 'video' ? '' : '<button class="rotate-button" title="Rotar 90°">⟳ Rotar</button>'}
                 <button class="delete-button">Eliminar</button>`;
             galleryListEl.appendChild(div);
@@ -517,6 +518,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const updateData = { order: index };
             const descInput = item.querySelector('.description-input');
             if (descInput) updateData.descripcion = descInput.value;
+            const sectionInput = item.querySelector('.section-input');
+            if (sectionInput) updateData.seccion = sectionInput.value.trim();
             batch.update(docRef, updateData);
         });
         await batch.commit();
