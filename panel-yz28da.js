@@ -440,7 +440,8 @@ document.addEventListener('DOMContentLoaded', () => {
         gallery: "Galería del Libro", modeling_gallery: "Galería de Modelaje",
         television_gallery: "Galería de Televisión", radio_gallery: "Galería de Radio",
         habecu_gallery: "Galería de HABECU", renacer_gallery: "Galería de Renacer Tenerife",
-        gala_carrera_vida_gallery: "Galería Gala Carrera por la Vida 2026"
+        gala_carrera_vida_gallery: "Galería Gala Carrera por la Vida 2026",
+        gala_carrera_vida_2025_gallery: "Galería Gala Carrera por la Vida 2025"
     };
 
     gallerySelector.addEventListener('change', (e) => {

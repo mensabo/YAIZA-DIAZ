@@ -461,6 +461,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (document.getElementById('galeria-interactiva-habecu')) initializeInteractiveGallery('galeria-interactiva-habecu', 'habecu_gallery');
                     if (document.getElementById('galeria-interactiva-renacer')) initializeInteractiveGallery('galeria-interactiva-renacer', 'renacer_gallery');
                     if (document.getElementById('galeria-interactiva-gala-carrera')) initializeInteractiveGallery('galeria-interactiva-gala-carrera', 'gala_carrera_vida_gallery');
+                    if (document.getElementById('galeria-interactiva-gala-carrera-2025')) initializeInteractiveGallery('galeria-interactiva-gala-carrera-2025', 'gala_carrera_vida_2025_gallery');
                 } catch (err) {
                     console.error("Error cargando base de datos:", err);
                 }
