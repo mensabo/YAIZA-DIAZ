@@ -439,7 +439,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const galleryTitles = {
         gallery: "Galería del Libro", modeling_gallery: "Galería de Modelaje",
         television_gallery: "Galería de Televisión", radio_gallery: "Galería de Radio",
-        habecu_gallery: "Galería de HABECU", renacer_gallery: "Galería de Renacer Tenerife"
+        habecu_gallery: "Galería de HABECU", renacer_gallery: "Galería de Renacer Tenerife",
+        gala_carrera_vida_gallery: "Galería Gala Carrera por la Vida 2026"
     };
 
     gallerySelector.addEventListener('change', (e) => {
@@ -469,7 +470,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <img src="${escapeHtml(item.thumbnailSrc || item.src)}" alt="miniatura">
                 <span class="item-type-badge">${item.type === 'video' ? 'VÍDEO' : 'IMAGEN'}</span>
                 ${item.type === 'video' ? `<textarea class="description-input" placeholder="Descripción...">${escapeHtml(item.descripcion || '')}</textarea>` : ''}
-                <input type="text" class="section-input" placeholder="Sección (opcional, ej. Gala X 2026)" value="${escapeHtml(item.seccion || '')}">
                 ${item.type === 'video' ? '' : '<button class="rotate-button" title="Rotar 90°">⟳ Rotar</button>'}
                 <button class="delete-button">Eliminar</button>`;
             galleryListEl.appendChild(div);
@@ -518,8 +518,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const updateData = { order: index };
             const descInput = item.querySelector('.description-input');
             if (descInput) updateData.descripcion = descInput.value;
-            const sectionInput = item.querySelector('.section-input');
-            if (sectionInput) updateData.seccion = sectionInput.value.trim();
             batch.update(docRef, updateData);
         });
         await batch.commit();

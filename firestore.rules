@@ -59,6 +59,10 @@ service cloud.firestore {
       allow read: if true;
       allow write: if isAdmin();
     }
+    match /gala_carrera_vida_gallery/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
 
     // --- FORMULARIO DE CONTACTO ---
     // Cualquiera puede crear un mensaje; solo el admin puede leerlos/gestionarlos.

@@ -460,6 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (document.getElementById('galeria-interactiva-radio')) initializeInteractiveGallery('galeria-interactiva-radio', 'radio_gallery');
                     if (document.getElementById('galeria-interactiva-habecu')) initializeInteractiveGallery('galeria-interactiva-habecu', 'habecu_gallery');
                     if (document.getElementById('galeria-interactiva-renacer')) initializeInteractiveGallery('galeria-interactiva-renacer', 'renacer_gallery');
+                    if (document.getElementById('galeria-interactiva-gala-carrera')) initializeInteractiveGallery('galeria-interactiva-gala-carrera', 'gala_carrera_vida_gallery');
                 } catch (err) {
                     console.error("Error cargando base de datos:", err);
                 }
@@ -903,11 +904,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const thumbDiv = document.createElement('div');
                     thumbDiv.className = 'miniatura-item';
                     const playBadge = item.type === 'video' ? '<div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.7); color:white; border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-size:12px; border: 1px solid rgba(255,255,255,0.5);"><i class="fas fa-play"></i></div>' : '';
-                    // Marca discreta en la miniatura de las fotos agrupadas en una sección
-                    // (ej. un evento concreto) -- el nombre completo se ve como pie bajo
-                    // la foto principal al seleccionarla (ver setActiveItem).
-                    const sectionBadge = (item.type !== 'video' && item.seccion) ? `<div class="miniatura-seccion-badge" title="${escapeHtml(item.seccion)}"><i class="fas fa-star"></i></div>` : '';
-                    thumbDiv.innerHTML = `<img src="${escapeHtml(cachedImg(item.thumbnailSrc || item.src))}" alt="Miniatura" loading="lazy">${playBadge}${sectionBadge}`;
+                    thumbDiv.innerHTML = `<img src="${escapeHtml(cachedImg(item.thumbnailSrc || item.src))}" alt="Miniatura" loading="lazy">${playBadge}`;
                     thumbDiv.addEventListener('click', () => setActiveItem(item, thumbDiv));
                     thumbnailsContainer.appendChild(thumbDiv);
                 });
@@ -927,9 +924,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 setTimeout(() => {
                     mainImage.src = cachedImg(item.thumbnailSrc || item.src);
                     bgImage.style.backgroundImage = `url(${cachedImg(item.thumbnailSrc || item.src)})`;
-                    // Las fotos no llevan pie editable libre (solo los videos), pero si
-                    // pertenecen a una sección (ej. un evento concreto) se muestra su nombre.
-                    const texto = item.type === 'video' ? (item.descripcion || '') : (item.seccion || '');
+                    // Las fotos ya no llevan pie editable, solo los videos.
+                    const texto = item.type === 'video' ? (item.descripcion || '') : '';
                     mainDesc.textContent = texto;
                     mainDesc.parentElement.style.display = texto ? '' : 'none';
                     mainImage.style.opacity = '1';

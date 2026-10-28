@@ -317,12 +317,6 @@ button.is-loading::before {
     background-color: #fff;
     margin-bottom: 0.5rem;
 }
-.section-input {
-    font-size: 0.8rem;
-    padding: 6px 8px;
-    background-color: #fff;
-    margin-bottom: 0.5rem;
-}
 .position-input, .position-input-desktop, .position-input-mobile {
     font-size: 0.8rem;
     padding: 6px 8px !important;
