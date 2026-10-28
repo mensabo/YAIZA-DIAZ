@@ -62,7 +62,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- VALIDACIÓN DE ARCHIVOS ANTES DE SUBIR A STORAGE ---
-    const MAX_UPLOAD_BYTES = 8 * 1024 * 1024; // 8MB, razonable para fotos de portfolio
+    // Este límite es solo una red de seguridad contra archivos disparatados
+    // (vídeos renombrados, RAW sin querer) -- el tamaño real que importa lo
+    // resuelve compressImage() justo después, que deja cualquier foto en unos
+    // cientos de KB como mucho. Puesto demasiado bajo (8MB, valor anterior),
+    // rechazaba fotos reales de cámara/móvil ANTES de que la compresión
+    // tuviera ocasión de encogerlas -- el usuario veía "pesa demasiado" con
+    // fotos normales de 9-10MB que la compresión habría dejado en ~300KB.
+    const MAX_UPLOAD_BYTES = 30 * 1024 * 1024; // 30MB
     // Filtra una FileList/array a solo imágenes válidas y de tamaño razonable,
     // avisando por toast de lo que se descarta para que no sea un fallo silencioso.
     const filterValidImageFiles = (files) => {
@@ -73,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 continue;
             }
             if (file.size > MAX_UPLOAD_BYTES) {
-                showToast(`"${file.name}" pesa demasiado (máx. 8MB) y se ha omitido.`, 'error');
+                showToast(`"${file.name}" pesa demasiado (máx. 30MB) y se ha omitido.`, 'error');
                 continue;
             }
             valid.push(file);
